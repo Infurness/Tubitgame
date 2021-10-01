@@ -4,6 +4,8 @@ on:
   push :
       branches:
       - Development
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 jobs:
 
     buildAndroid:
