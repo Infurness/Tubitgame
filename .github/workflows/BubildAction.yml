@@ -49,7 +49,7 @@ jobs:
             name: build-Android
             path: build/Android
 
-      - uses: game-ci/unity-builder@v2
-        id: myBuildStep
-      - run:
-          echo 'Project Version: ${{ steps.myBuildStep.outputs.buildVersion }}'
+        - uses: game-ci/unity-builder@v2
+          id: myBuildStep
+        - run:
+            echo 'Project Version: ${{ steps.myBuildStep.outputs.buildVersion }}'
