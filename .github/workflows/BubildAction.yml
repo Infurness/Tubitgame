@@ -40,7 +40,7 @@ jobs:
             restore-keys: |
               Library-build-
               Library-
-        - uses: game-ci/unity-builder@v2.0-alpha-13
+        - uses: game-ci/unity-builder@v2
           with:
             targetPlatform: Android
 
@@ -49,22 +49,7 @@ jobs:
             name: build-Android
             path: build/Android
 
-    deployPages:
-      needs: buildAndroid
-      name: Deploy to Github Pages 🚀
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-
-        - uses: actions/download-artifact@v2
-          with:
-            name: build-Android
-            path: build
-
-        - name: Deploy 🚀
-          uses: JamesIves/github-pages-deploy-action@4.1.4
-          with:
-            branch: gh-pages
-            folder: build/Android
-
+      - uses: game-ci/unity-builder@v2
+        id: myBuildStep
+      - run:
+          echo 'Project Version: ${{ steps.myBuildStep.outputs.buildVersion }}'
