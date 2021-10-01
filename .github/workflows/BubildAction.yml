@@ -1,6 +1,9 @@
 name: GameCI Template 🎮
 
-on: push
+on: 
+  push :
+      branches:
+      - Devlopment
 jobs:
 
     buildAndroid:
