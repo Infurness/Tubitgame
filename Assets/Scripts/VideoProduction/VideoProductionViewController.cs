@@ -6,20 +6,28 @@ using Zenject;
 
 public class VideoProductionViewController : MonoBehaviour
 {
-    [Inject] private SignalBus m_SignalBus;
+    [Inject] SignalBus _signalBus;
+
+   
 
     [SerializeField] private TMP_Text selectedTheme;
     [SerializeField] private GameObject preProductionPanel, productionPanel, postProduction;
-
+      
     public void OnSelectTheme(string themeName)
     {
-        m_SignalBus.Fire<SelectThemeSignal>(new SelectThemeSignal()
+        _signalBus.TryFire<SelectThemeSignal>(new SelectThemeSignal()
         {
             ThemeName = themeName
+            
+            
         });
+        selectedTheme.text = "Theme : " + themeName;
     }
-    
-    
+
+    public void OnStartRecordingPressed()
+    {
+        
+    }
 
    
     void Start()

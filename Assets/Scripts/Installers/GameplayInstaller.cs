@@ -6,7 +6,10 @@ public class GameplayInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        base.InstallBindings();
+        SignalBusInstaller.Install(Container);
+        
         Container.DeclareSignal<SelectThemeSignal>();
+
+  
     }
 }
