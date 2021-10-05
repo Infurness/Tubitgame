@@ -32,7 +32,7 @@ public class GetBuildHash : MonoBehaviour
         string shellCmdArg = "-c";
 #endif
 
-        string cmdArguments = shellCmdArg + " \"" + "git rev-parse HEAD" + "\"";
+        string cmdArguments = shellCmdArg + " \"" + "git rev-parse --short HEAD" + "\"";
 
         var procStartInfo = new System.Diagnostics.ProcessStartInfo (shellCmd, cmdArguments);
         procStartInfo.RedirectStandardOutput = true;

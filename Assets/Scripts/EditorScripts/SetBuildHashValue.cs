@@ -21,7 +21,7 @@ class SetBuildHashValue : IPreprocessBuildWithReport
             string shellCmdArg = "-c";
         #endif
 
-        string cmdArguments = shellCmdArg + " \"" + "git rev-parse HEAD" + "\"";
+        string cmdArguments = shellCmdArg + " \"" + "git rev-parse --short HEAD" + "\"";
         Debug.Log ("GitTool.Exec: Attempting to execute command: " + (shellCmd + " " + cmdArguments));
 
         var procStartInfo = new System.Diagnostics.ProcessStartInfo (shellCmd, cmdArguments);
