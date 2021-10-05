@@ -9,7 +9,8 @@ public class GameplayInstaller : MonoInstaller
         SignalBusInstaller.Install(Container);
         
         Container.DeclareSignal<SelectThemeSignal>();
+        Container.DeclareSignal<StartRecordingSignal>();
 
-  
+
     }
 }

@@ -7,33 +7,22 @@ using Zenject;
 
 public class VideoProductionViewController : MonoBehaviour
 {
-    [Inject] SignalBus _signalBus;
-
-   
-
-    [SerializeField] private TMP_Text selectedTheme;
-    [SerializeField] private GameObject preProductionPanel, productionPanel, postProduction;
-    [SerializeField] private Button recordButton;
+    [Inject] private SignalBus _SignalBus;
+    [SerializeField] private GameObject  productionPanel;
     [SerializeField] private Image recording_image;
-    public void OnSelectTheme(string themeName)
+    
+    void Start()
     {
-        _signalBus.TryFire<SelectThemeSignal>(new SelectThemeSignal()
-        {
-            ThemeName = themeName
-            
-            
-        });
-        selectedTheme.text = "Theme : " + themeName;
-        recordButton.interactable = true;
+        _SignalBus.Subscribe<StartRecordingSignal>(StartRecording);
     }
 
-    public void OnStartRecordingPressed()
+
+    void StartRecording(StartRecordingSignal recordingSignal)
     {
-        preProductionPanel.SetActive(false);
         productionPanel.SetActive(true);
-        StartCoroutine(FillTheRecordImage(10));
+        StartCoroutine(FillTheRecordImage(recordingSignal.RecordingTime));
     }
-
+    
     IEnumerator FillTheRecordImage(float time)
     {
 
@@ -47,11 +36,6 @@ public class VideoProductionViewController : MonoBehaviour
         
     }
 
-   
-    void Start()
-    {
-        recordButton.onClick.AddListener(OnStartRecordingPressed);
-    }
     
 
     void Update()
