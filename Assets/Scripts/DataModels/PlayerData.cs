@@ -1,8 +1,9 @@
-﻿[System.Serializable]
+﻿using System.Collections.Generic;
+
+[System.Serializable]
 public class PlayerData
 {
-    public long views;
-    public long likes;
-    public long subscribers;
-    public long comments;
+    public string ID;
+    public List<Video> videos;
+    public ulong subscribers;
 }

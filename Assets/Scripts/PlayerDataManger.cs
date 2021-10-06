@@ -8,5 +8,6 @@ using UnityEngine;
  */
 public class PlayerDataManger : MonoBehaviour
 {
-   
+    private PlayerData m_PlayerData;
+    
 }
