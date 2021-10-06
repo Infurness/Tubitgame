@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class YouTubeVideoManger : MonoBehaviour
+public class YouTubeVideoManager : MonoBehaviour
 {
     [Inject] private SignalBus _signalBus;
     [Inject] private PlayerDataManger playerDataManger;

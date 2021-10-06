@@ -7,14 +7,16 @@ using Zenject;
 
 public class VideoProductionViewController : MonoBehaviour
 {
-    [Inject] private SignalBus _signalBus;
-    
+    [Inject] private SignalBus _SignalBus;
     [SerializeField] private GameObject  productionPanel;
     [SerializeField] private Image recording_image;
+    [SerializeField] private Button publishButton;
     
     void Start()
     {
-        _signalBus.Subscribe<StartRecordingSignal>(StartRecording);
+        _SignalBus.Subscribe<StartRecordingSignal>(StartRecording);
+        publishButton.interactable = false;
+        publishButton.onClick.AddListener (OnPublishButtonPressed);
     }
 
 
@@ -34,22 +36,16 @@ public class VideoProductionViewController : MonoBehaviour
             tACC += Time.deltaTime;
             recording_image.fillAmount=tACC/time;
         }
+        publishButton.interactable = true;
         
     }
 
-    public void OnPublishButtonPressed()
+    private void OnPublishButtonPressed ()
     {
-        _signalBus.Fire<PublishNewVideoSignal>(new PublishNewVideoSignal()
-        {
-            Video =new Video()
-            {
-                quality = 0.2f,
-                name = "GamePlay"
-                
-            }
-        });
+        publishButton.interactable = false;
+        productionPanel.SetActive (false);
+        _SignalBus.Fire<StartPublishSignal> (new StartPublishSignal());
     }
-    
 
     void Update()
     {

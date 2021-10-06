@@ -25,7 +25,7 @@ public class VideoPreProductionViewController : MonoBehaviour
             
             
         });
-        selectedTheme.text = "Theme : " + themeName;
+        selectedTheme.text = $"Theme: {themeName}";
         recordButton.interactable = true;
     }
     public void OnStartRecordingPressed()
