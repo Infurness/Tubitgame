@@ -10,6 +10,7 @@ public class GameplayInstaller : MonoInstaller
         
         Container.DeclareSignal<SelectThemeSignal>();
         Container.DeclareSignal<StartRecordingSignal>();
+        Container.DeclareSignal<StartPublishSignal> ();
 
 
     }

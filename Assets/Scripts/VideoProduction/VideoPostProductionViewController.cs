@@ -9,11 +9,17 @@ public class VideoPostProductionViewController : MonoBehaviour
     [SerializeField] private GameObject postProductionPanel;
     void Start()
     {
-        
+        _SignalBus.Subscribe<StartPublishSignal> (PublishVideo);
     }
 
     void Update()
     {
         
+    }
+
+    void PublishVideo ()
+    {
+        postProductionPanel.SetActive (true);
+        Debug.Log ("Video published");
     }
 }
