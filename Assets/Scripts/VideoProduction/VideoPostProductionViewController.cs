@@ -6,7 +6,7 @@ using Zenject;
 public class VideoPostProductionViewController : MonoBehaviour
 {
     [Inject] private SignalBus _SignalBus;
-    [SerializeField] private GameObject postProduction;
+    [SerializeField] private GameObject postProductionPanel;
     void Start()
     {
         
