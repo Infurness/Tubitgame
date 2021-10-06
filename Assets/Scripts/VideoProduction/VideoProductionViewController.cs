@@ -7,13 +7,14 @@ using Zenject;
 
 public class VideoProductionViewController : MonoBehaviour
 {
-    [Inject] private SignalBus _SignalBus;
+    [Inject] private SignalBus _signalBus;
+    
     [SerializeField] private GameObject  productionPanel;
     [SerializeField] private Image recording_image;
     
     void Start()
     {
-        _SignalBus.Subscribe<StartRecordingSignal>(StartRecording);
+        _signalBus.Subscribe<StartRecordingSignal>(StartRecording);
     }
 
 
@@ -36,6 +37,18 @@ public class VideoProductionViewController : MonoBehaviour
         
     }
 
+    public void OnPublishButtonPressed()
+    {
+        _signalBus.Fire<PublishNewVideoSignal>(new PublishNewVideoSignal()
+        {
+            Video =new Video()
+            {
+                quality = 0.2f,
+                name = "GamePlay"
+                
+            }
+        });
+    }
     
 
     void Update()
