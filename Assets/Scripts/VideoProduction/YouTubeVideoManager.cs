@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class YouTubeVideoManger : MonoBehaviour
+public class YouTubeVideoManager : MonoBehaviour
 {
     
     void Start()
