@@ -1,4 +1,6 @@
-
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class SelectThemeSignal
 {
@@ -11,7 +13,7 @@ public class StartRecordingSignal
     public float RecordingTime;
 }
 
-public class PublishNewVideoSignal
+public class StartPublishSignal
 {
-    public Video Video;
+
 }

@@ -9,5 +9,5 @@ public class Video
     public ulong views;
     public ulong likes;
     public ulong comments;
-
+    public ulong newSubscribers;
 }
