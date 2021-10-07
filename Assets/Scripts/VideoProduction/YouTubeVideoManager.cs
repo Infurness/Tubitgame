@@ -10,15 +10,9 @@ public class YouTubeVideoManager : MonoBehaviour
      private List<Video> videos;
     void Start()
     {
-       _signalBus.Subscribe<PublishNewVideoSignal>(OnPublish);
        playerDataManger.gameObject.SetActive(false);
     }
 
-
-    void OnPublish(PublishNewVideoSignal ps)
-    {
-        videos.Add(ps.video);
-    }
     void Update()
     {
         
