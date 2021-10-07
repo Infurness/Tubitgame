@@ -6,5 +6,5 @@ public class PlayerData
     public string ID;
     public List<Video> videos = new List<Video>();
     public ulong subscribers;
-    public float quality;
+    public float quality = 1f;
 }

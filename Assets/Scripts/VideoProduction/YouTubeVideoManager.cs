@@ -8,10 +8,10 @@ public class YouTubeVideoManager : MonoBehaviour
     [Inject] private SignalBus _signalBus;
     [Inject] private PlayerDataManager playerDataManger;
     [Inject] private AlgorithmManager algorithmManager;
+    [Inject] private ThemesManager themesManager;
 
     void Start()
     {
-        playerDataManger.gameObject.SetActive (false);
         _signalBus.Subscribe<PublishVideoSignal> (CreateVideo);
     }
 
@@ -23,7 +23,7 @@ public class YouTubeVideoManager : MonoBehaviour
     private void CreateVideo (PublishVideoSignal signal)
     {
         string videoName = signal.videoName;
-        Theme[] videoThemes = signal.videoThemes;
+        ThemeType[] videoThemes = signal.videoThemes;
         Video newVideo = new Video ();
 
         newVideo.name = videoName;
@@ -31,10 +31,11 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.quality = playerDataManger.GetQuality();
 
         List<float> themeValues = new List<float> ();
-        foreach(Theme theme in videoThemes)
+        foreach(ThemeType themeType in videoThemes)
         {
-            themeValues.Add (theme.popularity);
+            themeValues.Add(themesManager.GetThemePopularity (themeType));
         }
+
         ulong videoViews = algorithmManager.GetVideoViews 
                             (800, 
                              playerDataManger.GetSubscribers (), 

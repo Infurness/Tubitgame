@@ -4,5 +4,4 @@ public class Theme
 {
     public ThemeType themeType;
     public float popularity;
-    
 }

@@ -11,6 +11,7 @@ public class VideoProductionViewController : MonoBehaviour
     [SerializeField] private GameObject  productionPanel;
     [SerializeField] private Image recording_image;
     [SerializeField] private Button publishButton;
+    private ThemeType[] videoThemes;
     
     void Start()
     {
@@ -23,7 +24,8 @@ public class VideoProductionViewController : MonoBehaviour
     void StartRecording(StartRecordingSignal recordingSignal)
     {
         productionPanel.SetActive(true);
-        StartCoroutine(FillTheRecordImage(recordingSignal.RecordingTime));
+        StartCoroutine(FillTheRecordImage(recordingSignal.recordingTime));
+        videoThemes = recordingSignal.recordedThemes;
     }
     
     IEnumerator FillTheRecordImage(float time)
@@ -44,13 +46,11 @@ public class VideoProductionViewController : MonoBehaviour
     {
         publishButton.interactable = false;
         productionPanel.SetActive (false);
-        Theme dummyTheme = new Theme ();
-        dummyTheme.themeType = ThemeType.Games;
-        dummyTheme.popularity = 0.5f;
+
         _signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal ()
         {
              videoName = "DummyVideoName", 
-             videoThemes =new Theme[] {dummyTheme}            
+             videoThemes = videoThemes
         });
         _signalBus.Fire<StartPublishSignal> (new StartPublishSignal());
     }

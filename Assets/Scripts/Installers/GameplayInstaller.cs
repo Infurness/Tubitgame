@@ -20,5 +20,6 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<PlayerDataManager> ().FromComponentInHierarchy().AsSingle ();
         Container.Bind<YouTubeVideoManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<AlgorithmManager> ().FromComponentInHierarchy ().AsSingle ();
+        Container.Bind<ThemesManager> ().FromComponentInHierarchy ().AsSingle ();
     }
 }
