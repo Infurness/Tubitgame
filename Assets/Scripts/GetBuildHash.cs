@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,12 @@ using System.IO;
 
 public class GetBuildHash : MonoBehaviour
 {
+    private void Awake()
+    {
+      
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     [SerializeField] private TMP_Text buildHashText;
     // Start is called before the first frame update
     void Start()
