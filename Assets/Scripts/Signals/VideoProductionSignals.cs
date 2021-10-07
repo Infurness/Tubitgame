@@ -12,3 +12,8 @@ public class StartRecordingSignal
 {
     public float RecordingTime;
 }
+
+public class StartPublishSignal
+{
+
+}

@@ -10,10 +10,13 @@ public class VideoProductionViewController : MonoBehaviour
     [Inject] private SignalBus _SignalBus;
     [SerializeField] private GameObject  productionPanel;
     [SerializeField] private Image recording_image;
+    [SerializeField] private Button publishButton;
     
     void Start()
     {
         _SignalBus.Subscribe<StartRecordingSignal>(StartRecording);
+        publishButton.interactable = false;
+        publishButton.onClick.AddListener (OnPublishButtonPressed);
     }
 
 
@@ -33,10 +36,16 @@ public class VideoProductionViewController : MonoBehaviour
             tACC += Time.deltaTime;
             recording_image.fillAmount=tACC/time;
         }
+        publishButton.interactable = true;
         
     }
 
-    
+    private void OnPublishButtonPressed ()
+    {
+        publishButton.interactable = false;
+        productionPanel.SetActive (false);
+        _SignalBus.Fire<StartPublishSignal> (new StartPublishSignal());
+    }
 
     void Update()
     {
