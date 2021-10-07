@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class SelectThemeSignal
 {
@@ -15,5 +16,10 @@ public class StartRecordingSignal
 
 public class StartPublishSignal
 {
+}
 
+public class PublishVideoSignal
+{
+    public string videoName;
+    public Theme[] videoThemes;
 }

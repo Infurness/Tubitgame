@@ -7,14 +7,14 @@ using Zenject;
 
 public class VideoProductionViewController : MonoBehaviour
 {
-    [Inject] private SignalBus _SignalBus;
+    [Inject] private SignalBus _signalBus;
     [SerializeField] private GameObject  productionPanel;
     [SerializeField] private Image recording_image;
     [SerializeField] private Button publishButton;
     
     void Start()
     {
-        _SignalBus.Subscribe<StartRecordingSignal>(StartRecording);
+        _signalBus.Subscribe<StartRecordingSignal>(StartRecording);
         publishButton.interactable = false;
         publishButton.onClick.AddListener (OnPublishButtonPressed);
     }
@@ -44,7 +44,15 @@ public class VideoProductionViewController : MonoBehaviour
     {
         publishButton.interactable = false;
         productionPanel.SetActive (false);
-        _SignalBus.Fire<StartPublishSignal> (new StartPublishSignal());
+        Theme dummyTheme = new Theme ();
+        dummyTheme.themeType = ThemeType.Games;
+        dummyTheme.popularity = 0.5f;
+        _signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal ()
+        {
+             videoName = "DummyVideoName", 
+             videoThemes =new Theme[] {dummyTheme}            
+        });
+        _signalBus.Fire<StartPublishSignal> (new StartPublishSignal());
     }
 
     void Update()
