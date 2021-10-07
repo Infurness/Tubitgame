@@ -16,6 +16,19 @@ public class PlayerDataManager : MonoBehaviour
         m_PlayerData.videos.Add (_video);
     }
 
+    public Video GetVideoByName (string _name)
+    {
+        foreach(Video video in m_PlayerData.videos)
+        {
+            if(video.name == _name)
+            {
+                return video;
+            }
+        }
+        Debug.LogError ($"Video named -{_name}- does not exist");
+        return null;
+    }
+
     public float GetQuality ()
     {
         return m_PlayerData.quality;
