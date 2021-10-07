@@ -17,3 +17,8 @@ public class StartPublishSignal
 {
 
 }
+
+public class PublishNewVideoSignal
+{
+    public Video video;
+}

@@ -17,7 +17,7 @@ public class YouTubeVideoManager : MonoBehaviour
 
     void OnPublish(PublishNewVideoSignal ps)
     {
-        videos.Add(ps.Video);
+        videos.Add(ps.video);
     }
     void Update()
     {
