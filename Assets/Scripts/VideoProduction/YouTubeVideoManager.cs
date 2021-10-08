@@ -33,7 +33,7 @@ public class YouTubeVideoManager : MonoBehaviour
         List<float> themeValues = new List<float> ();
         foreach(ThemeType themeType in videoThemes)
         {
-            themeValues.Add(themesManager.GetThemePopularity (themeType));
+            themeValues.Add(themesManager.GetThemePopularity (themeType, GetTimeHour ()));
         }
 
         ulong videoViews = algorithmManager.GetVideoViews 
@@ -52,5 +52,9 @@ public class YouTubeVideoManager : MonoBehaviour
     public Video GetVideoByName (string _name)
     {
         return playerDataManger.GetVideoByName (_name);
+    }
+    int GetTimeHour ()
+    {
+        return System.DateTime.Now.Hour;
     }
 }

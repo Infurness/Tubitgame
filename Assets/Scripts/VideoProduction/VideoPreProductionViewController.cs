@@ -34,6 +34,7 @@ public class VideoPreProductionViewController : MonoBehaviour
 
     public void OnSelectTheme(GameObject button)
     {
+        selectedThemes.Clear ();
         ThemeType _themeType = button.GetComponent<ButtonThemePreProductionView> ().themeType;
         _signalBus.TryFire<SelectThemeSignal>(new SelectThemeSignal()
         {
@@ -51,7 +52,6 @@ public class VideoPreProductionViewController : MonoBehaviour
             recordingTime = 3f,
             recordedThemes = selectedThemes.ToArray()
         });
-        selectedThemes.Clear ();
     }
 
     void SetUpThemeButtons ()
