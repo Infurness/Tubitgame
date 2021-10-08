@@ -37,7 +37,7 @@ public class VideoPreProductionViewController : MonoBehaviour
         preProductionPanel.SetActive(false);
         _signalBus.Fire<StartRecordingSignal>(new StartRecordingSignal()
         {
-            recordingTime = 10f,
+            recordingTime = 3f,
             recordedThemes = selectedThemes.ToArray()
         });
         selectedThemes.Clear ();
