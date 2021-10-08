@@ -7,11 +7,15 @@ public class ThemesManager : MonoBehaviour
 {
     [SerializeField] private List<Theme> availableThemes = new List<Theme>();
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         UpdateAvailableThemes ();
     }
 
+    public ThemeType[] GetThemes ()
+    {
+        return (ThemeType[])Enum.GetValues (typeof (ThemeType));
+    }
     void UpdateAvailableThemes ()
     {
         availableThemes.Clear ();
