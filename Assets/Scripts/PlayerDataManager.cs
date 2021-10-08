@@ -28,7 +28,14 @@ public class PlayerDataManager : MonoBehaviour
         Debug.LogError ($"Video named -{_name}- does not exist");
         return null;
     }
-
+    public float GetPlayerTotalVideos ()
+    {
+        return m_PlayerData.videos.Count;
+    }
+    public string GetLastVideoName ()
+    {
+        return m_PlayerData.videos[m_PlayerData.videos.Count-1].name;
+    }
     public float GetQuality ()
     {
         return m_PlayerData.quality;
@@ -37,4 +44,5 @@ public class PlayerDataManager : MonoBehaviour
     {
         return m_PlayerData.subscribers;
     }
+
 }

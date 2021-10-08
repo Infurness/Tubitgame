@@ -9,6 +9,7 @@ public class VideoPostProductionViewController : MonoBehaviour
 {
     [Inject] private SignalBus _SignalBus;
     [Inject] private YouTubeVideoManager youTubeVideoManager;
+    [Inject] private PlayerDataManager playerDataManager;
 
     [SerializeField] private GameObject postProductionPanel;
     [SerializeField] private TMP_Text videoName;
@@ -34,7 +35,8 @@ public class VideoPostProductionViewController : MonoBehaviour
     {
         postProductionPanel.SetActive (true);
         Debug.Log ("Video published");
-        ShowVideoStats (youTubeVideoManager.GetVideoByName("DummyVideoName"));
+        //Dummy look for last video to show stats
+        ShowVideoStats (youTubeVideoManager.GetVideoByName(playerDataManager.GetLastVideoName ()));
     }
 
     void ShowVideoStats (Video _video)

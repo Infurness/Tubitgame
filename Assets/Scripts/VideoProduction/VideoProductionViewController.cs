@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,6 +9,8 @@ using Zenject;
 public class VideoProductionViewController : MonoBehaviour
 {
     [Inject] private SignalBus _signalBus;
+    [Inject] private PlayerDataManager playerDataManager;
+
     [SerializeField] private GameObject  productionPanel;
     [SerializeField] private Image recording_image;
     [SerializeField] private Button publishButton;
@@ -47,9 +50,12 @@ public class VideoProductionViewController : MonoBehaviour
         publishButton.interactable = false;
         productionPanel.SetActive (false);
 
+        //Dummy name Creation
+        string videoName = $"{Enum.GetName (videoThemes[0].GetType (), videoThemes[0])}_{playerDataManager.GetPlayerTotalVideos()}" ;
+
         _signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal ()
         {
-             videoName = "DummyVideoName", 
+             videoName = videoName, 
              videoThemes = videoThemes
         });
         _signalBus.Fire<StartPublishSignal> (new StartPublishSignal());
