@@ -12,7 +12,7 @@ public class LaunchScreenViewController : MonoBehaviour
     {
         signalBus.Subscribe<OnLoginSuccessesSignal>((signal =>
         {
-            playFabIDText.text += signal.playFabID;
+            playFabIDText.text += signal.playerID;
 
             playFabIDText.gameObject.SetActive(true);
         }) );

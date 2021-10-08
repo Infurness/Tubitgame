@@ -1,7 +1,7 @@
 ﻿
  public class OnLoginSuccessesSignal
  {
-     public string playFabID;
+     public string playerID;
  }
 public class OnLoginFailedSignal
 {
