@@ -17,7 +17,7 @@ public class PlayFabAuthenticator : IAuthenticator
       #elif UNITY_ANDROID 
         LoginWithAndroidDevice();
       #elif UNITY_IOS
-        LoginWithIOSDevice
+        LoginWithIOSDevice();
       #endif
     }
 
@@ -30,7 +30,7 @@ public class PlayFabAuthenticator : IAuthenticator
         {
             signalBus.Fire<OnLoginSuccessesSignal>(new OnLoginSuccessesSignal()
             {
-                playFabID = result.PlayFabId
+                playerID = result.PlayFabId
             });
         }, (error) =>
         {
@@ -51,7 +51,7 @@ public class PlayFabAuthenticator : IAuthenticator
         {
             signalBus.Fire<OnLoginSuccessesSignal>(new OnLoginSuccessesSignal()
             {
-                playFabID = result.PlayFabId
+                playerID = result.PlayFabId
             });
         }, (error) =>
         {
@@ -72,7 +72,7 @@ public class PlayFabAuthenticator : IAuthenticator
         {
             signalBus.Fire<OnLoginSuccessesSignal>(new OnLoginSuccessesSignal()
             {
-                playFabID = result.PlayFabId
+                playerID = result.PlayFabId
             });
         }, (error) =>
         {
