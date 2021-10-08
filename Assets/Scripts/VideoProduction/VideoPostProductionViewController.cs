@@ -7,8 +7,9 @@ using Zenject;
 public class VideoPostProductionViewController : MonoBehaviour
 {
     [Inject] private SignalBus _SignalBus;
-    [SerializeField] private GameObject postProductionPanel;
+    [Inject] private YouTubeVideoManager youTubeVideoManager;
 
+    [SerializeField] private GameObject postProductionPanel;
     [SerializeField] private TMP_Text videoName;
     [SerializeField] private TMP_Text videoViews;
     [SerializeField] private TMP_Text videoLikes;
@@ -36,11 +37,13 @@ public class VideoPostProductionViewController : MonoBehaviour
         dummyVideo.likes = 82;
         dummyVideo.comments = 30;
         dummyVideo.newSubscribers = 4;
-        ShowVideoStats (dummyVideo);
+        ShowVideoStats (youTubeVideoManager.GetVideoByName("DummyVideoName"));
     }
 
     void ShowVideoStats (Video _video)
     {
+        if (_video == null)
+            return;
         videoName.text = _video.name;
         videoViews.text = $"Views: {_video.views}";
         videoLikes.text = $"Likes: {_video.likes}";
