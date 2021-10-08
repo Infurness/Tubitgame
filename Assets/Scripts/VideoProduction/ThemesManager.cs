@@ -12,6 +12,11 @@ public class ThemesManager : MonoBehaviour
         UpdateAvailableThemes ();
     }
 
+    public ThemeType[] GetThemes ()
+    {
+        return (ThemeType[])Enum.GetValues (typeof (ThemeType));
+    }
+
     public void UpdateAvailableThemes ()
     {
         if(availableThemes.Count != Enum.GetValues (typeof (ThemeType)).Length)

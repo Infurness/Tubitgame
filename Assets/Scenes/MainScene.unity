@@ -1272,7 +1272,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d3119f4a15d1c48b3b77fc37eda01f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableThemes: []
+  availableThemes:
+  - themeType: 0
+    popularityEachHour: []
+  - themeType: 1
+    popularityEachHour: []
+  - themeType: 2
+    popularityEachHour: []
+  - themeType: 3
+    popularityEachHour: []
+  - themeType: 4
+    popularityEachHour: []
+  - themeType: 5
+    popularityEachHour: []
+  - themeType: 6
+    popularityEachHour: []
+  - themeType: 7
+    popularityEachHour: []
+  - themeType: 8
+    popularityEachHour: []
+  - themeType: 9
+    popularityEachHour: []
+  - themeType: 10
+    popularityEachHour: []
+  - themeType: 11
+    popularityEachHour: []
+  - themeType: 12
+    popularityEachHour: []
+  - themeType: 13
+    popularityEachHour: []
 --- !u!1 &476314452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,8 +1437,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 403, y: 0}
-  m_SizeDelta: {x: 426.83716, y: 513.5691}
+  m_AnchoredPosition: {x: 403, y: -22.6572}
+  m_SizeDelta: {x: 426.8372, y: 558.8833}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &508425004
 MonoBehaviour:
@@ -3605,7 +3633,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.000030518, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1462435598
 MonoBehaviour:
