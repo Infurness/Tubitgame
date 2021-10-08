@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Google;
 using UnityEngine;
 using Zenject;
 
@@ -10,7 +11,10 @@ public class GlobalInstaller : MonoInstaller
     SignalBusInstaller.Install(Container);
     Container.DeclareSignal<OnLoginSuccessesSignal>();
     Container.DeclareSignal<OnLoginFailedSignal>();
-
-    Container.Bind<IAuthenticator>().To<PlayFabAuthenticator>().AsCached();
+    Container.DeclareSignal<OnGoogleSignInFailed>();
+    Container.DeclareSignal<OnGoogleSignInSuccessSignal>();
+    
+    Container.Bind<IAuthenticator>().To<PlayFabAuthenticator>().AsSingle();
+  
   }
 }

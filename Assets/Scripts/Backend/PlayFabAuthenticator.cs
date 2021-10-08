@@ -9,7 +9,7 @@ using Zenject;
 public class PlayFabAuthenticator : IAuthenticator
 {
     [Inject] SignalBus signalBus;
-
+   private SigninWithGoogle swg;
     public void LoginWithDeviceID()
     {
        #if UNITY_EDITOR
@@ -44,6 +44,7 @@ public class PlayFabAuthenticator : IAuthenticator
 
     void LoginWithIOSDevice()
     {
+        
         LoginWithIOSDeviceIDRequest req = new LoginWithIOSDeviceIDRequest();
         req.CreateAccount = true;
         req.DeviceId = SystemInfo.deviceUniqueIdentifier;
@@ -86,10 +87,37 @@ public class PlayFabAuthenticator : IAuthenticator
     
     public void FacebookLogin()
     {
+        
     }
 
     public void GoogleLogin()
     {
+        swg = new SigninWithGoogle();
+        signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
+        {
+            LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
+            req.CreateAccount = true;
+            req.ServerAuthCode = signal.authCode;
+            PlayFabClientAPI.LoginWithGoogleAccount(req, (result =>
+            {
+                signalBus.Fire<OnLoginSuccessesSignal>(new OnLoginSuccessesSignal()
+                {
+                    playerID = result.PlayFabId
+                });
+                Debug.Log("Login Succeeded " );
+            }), (error =>
+            {
+                signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
+                {
+                    reason = error.ErrorMessage
+                });
+                Debug.Log("Login Failed " + error.ErrorMessage);
+
+            }));
+        }));
+        swg.SingInWithGoogleID();
+        
+      
     }
 
     public void AppleLogin()

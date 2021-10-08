@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,6 +9,8 @@ public class LaunchScreenViewController : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
     [SerializeField] private TMP_Text playFabIDText;
+    [Inject] private IAuthenticator authenticator;
+
     void Start()
     {
         signalBus.Subscribe<OnLoginSuccessesSignal>((signal =>
@@ -18,5 +21,9 @@ public class LaunchScreenViewController : MonoBehaviour
         }) );
     }
 
+    public void OnGoogleLoginPressed()
+    {
+        authenticator.GoogleLogin();
+    }
   
 }
