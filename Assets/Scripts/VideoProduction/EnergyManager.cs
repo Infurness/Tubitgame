@@ -28,18 +28,18 @@ public class EnergyManager : MonoBehaviour
     void AddEnergy (AddEnergySignal _signal)
     {
         energy += _signal.energyAddition;
+        StopAllCoroutines ();
         StartCoroutine (UpdateEnergy ());
     }
 
     IEnumerator UpdateEnergy ()
     {
-        Debug.LogError ($"Update{energy}");
+        _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energy });
         while (energy < 100)
         {
-            _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energy });
             yield return new WaitForSeconds (1);
             energy += 3; //Adds 3 per second
-           
+            _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energy });
         }
     }
 }
