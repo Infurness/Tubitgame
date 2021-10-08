@@ -28,3 +28,12 @@ public class PublishVideoSignal
     public string videoName;
     public ThemeType[] videoThemes;
 }
+
+public class EnergyValueSignal
+{
+    public float energy;
+}
+public class AddEnergySignal
+{
+    public float energyAddition;
+}

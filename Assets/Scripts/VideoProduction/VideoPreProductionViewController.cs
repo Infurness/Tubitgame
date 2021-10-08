@@ -10,6 +10,7 @@ public class VideoPreProductionViewController : MonoBehaviour
 {
     [Inject] SignalBus _signalBus;
     [Inject] ThemesManager themesManager;
+    [Inject] EnergyManager energyManager;
 
     [SerializeField] private GameObject preProductionPanel;
     [SerializeField] private TMP_Text selectedTheme;
@@ -46,12 +47,16 @@ public class VideoPreProductionViewController : MonoBehaviour
     }
     public void OnStartRecordingPressed()
     {
+        if (energyManager.GetEnergy () < 30)
+            return;
+
         preProductionPanel.SetActive(false);
         _signalBus.Fire<StartRecordingSignal>(new StartRecordingSignal()
         {
             recordingTime = 3f,
             recordedThemes = selectedThemes.ToArray()
         });
+        _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -30 });
     }
 
     void SetUpThemeButtons ()
