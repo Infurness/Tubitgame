@@ -9,21 +9,21 @@ using Zenject;
 public class VideoPreProductionViewController : MonoBehaviour
 {
     [Inject] SignalBus _signalBus;
+    [Inject] ThemesManager themesManager;
 
     [SerializeField] private GameObject preProductionPanel;
     [SerializeField] private TMP_Text selectedTheme;
     [SerializeField] private Button recordButton;
+
+    [SerializeField] private GameObject themeButtonsHolder;
+    [SerializeField] private GameObject themeButtonPrefab;
 
     private List<ThemeType> selectedThemes = new List<ThemeType> ();
 
     void Start()
     {
         recordButton.onClick.AddListener(OnStartRecordingPressed);
-        _signalBus.Subscribe<OpenThemeSelectionSignal> (OpenThisMenu);
-    }
-    public void OpenThisMenu ()
-    {
-        preProductionPanel.SetActive (true);
+        SetUpThemeButtons ();
     }
     public void OnSelectTheme(GameObject button)
     {
@@ -41,12 +41,25 @@ public class VideoPreProductionViewController : MonoBehaviour
         preProductionPanel.SetActive(false);
         _signalBus.Fire<StartRecordingSignal>(new StartRecordingSignal()
         {
-            recordingTime = 3f,
+            recordingTime = 10f,
             recordedThemes = selectedThemes.ToArray()
         });
         selectedThemes.Clear ();
     }
 
+    void SetUpThemeButtons ()
+    {
+        foreach(ThemeType themeType in themesManager.GetThemes())
+        {
+            CreateThemeButton (themeType);
+        }
+    }
+    void CreateThemeButton (ThemeType _themeType)
+    {
+        GameObject button = Instantiate (themeButtonPrefab, themeButtonsHolder.transform);
+        button.GetComponent<ButtonThemePreProductionView> ().themeType = _themeType;
+        button.GetComponent<Button> ().onClick.AddListener (() => { OnSelectTheme (button); });
+    }
     
     void Update()
     {
