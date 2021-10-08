@@ -22,9 +22,16 @@ public class VideoPreProductionViewController : MonoBehaviour
 
     void Start()
     {
+        _signalBus.Subscribe<OpenThemeSelectionSignal> (OpenThisMenu);
         recordButton.onClick.AddListener(OnStartRecordingPressed);
-        SetUpThemeButtons ();
+        
+        SetUpThemeButtons ();  
     }
+    public void OpenThisMenu ()
+    {
+        preProductionPanel.SetActive (true);
+    }
+
     public void OnSelectTheme(GameObject button)
     {
         ThemeType _themeType = button.GetComponent<ButtonThemePreProductionView> ().themeType;
@@ -41,7 +48,7 @@ public class VideoPreProductionViewController : MonoBehaviour
         preProductionPanel.SetActive(false);
         _signalBus.Fire<StartRecordingSignal>(new StartRecordingSignal()
         {
-            recordingTime = 10f,
+            recordingTime = 3f,
             recordedThemes = selectedThemes.ToArray()
         });
         selectedThemes.Clear ();
