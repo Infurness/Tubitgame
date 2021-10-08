@@ -34,13 +34,6 @@ public class VideoPostProductionViewController : MonoBehaviour
     {
         postProductionPanel.SetActive (true);
         Debug.Log ("Video published");
-
-        Video dummyVideo = new Video ();
-        dummyVideo.name = "Dummy video";
-        dummyVideo.views = 1234;
-        dummyVideo.likes = 82;
-        dummyVideo.comments = 30;
-        dummyVideo.newSubscribers = 4;
         ShowVideoStats (youTubeVideoManager.GetVideoByName("DummyVideoName"));
     }
 

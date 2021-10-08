@@ -13,7 +13,6 @@ public class AlgorithmManager : MonoBehaviour
         {
             themesPopularity += theme;
         }
-
         ulong viewers = (ulong)(((ulong)_base + _subscribers) + (((ulong)_base + _subscribers) * themesPopularity * _videoQuality));
         return viewers;
     }

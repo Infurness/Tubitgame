@@ -63,6 +63,8 @@ public class ThemesManager : MonoBehaviour
         if (_dayHour > _theme.popularityEachHour.Length)
         {
             hourIndex = (_dayHour % _theme.popularityEachHour.Length) - 1;
+            if (hourIndex < 0)
+                hourIndex = 0;
         }
 
         float themPopularity = _theme.popularityEachHour[hourIndex];
