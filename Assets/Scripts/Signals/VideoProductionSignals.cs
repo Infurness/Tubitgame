@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
+public class OpenThemeSelectionSignal
+{
+
+}
 public class SelectThemeSignal
 {
     public ThemeType themeType;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using Zenject;
 
 public class VideoPostProductionViewController : MonoBehaviour
@@ -16,9 +17,12 @@ public class VideoPostProductionViewController : MonoBehaviour
     [SerializeField] private TMP_Text videoComments;
     [SerializeField] private TMP_Text videoNewSubscribers;
 
+    [SerializeField] private Button backToRecordingButton; //Dummy: just for testing purposes
+
     void Start ()
     {
         _SignalBus.Subscribe<StartPublishSignal> (PublishVideo);
+        backToRecordingButton.onClick.AddListener (BackToThemeView);
     }
 
     void Update()
@@ -49,5 +53,11 @@ public class VideoPostProductionViewController : MonoBehaviour
         videoLikes.text = $"Likes: {_video.likes}";
         videoComments.text = $"Comments: {_video.comments}";
         videoNewSubscribers.text = $"Subscribers: {_video.newSubscribers}";
+    }
+
+    void BackToThemeView ()
+    {
+        postProductionPanel.SetActive (false);
+        _SignalBus.Fire<OpenThemeSelectionSignal> ();
     }
 }

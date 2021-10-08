@@ -19,7 +19,11 @@ public class VideoPreProductionViewController : MonoBehaviour
     void Start()
     {
         recordButton.onClick.AddListener(OnStartRecordingPressed);
-
+        _signalBus.Subscribe<OpenThemeSelectionSignal> (OpenThisMenu);
+    }
+    public void OpenThisMenu ()
+    {
+        preProductionPanel.SetActive (true);
     }
     public void OnSelectTheme(GameObject button)
     {
