@@ -10,6 +10,7 @@ public class HomePanel_VC : MonoBehaviour
 
     [SerializeField] private Button publishButton;
     [SerializeField] private Image videoProgressBar;
+    [SerializeField] private ScrollRect viewsScroll;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,7 @@ public class HomePanel_VC : MonoBehaviour
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
 
         publishButton.onClick.AddListener (OnPublishVideoPressed);
+        viewsScroll.onValueChanged.AddListener (OnViewsScroll);
 
         InitialScreenState ();
     }
@@ -59,5 +61,14 @@ public class HomePanel_VC : MonoBehaviour
     void PublishVideo ()
     {
         _signalBus.Fire<ShowVideosStatsSignal> (new ShowVideosStatsSignal ());
+    }
+    void OnViewsScroll (Vector2 vector)
+    {
+        if(vector!=Vector2.zero)
+        {
+            //Debug.Log (viewsScroll.content.position);
+            //Debug.Log (viewsScroll.content.position);
+        }
+
     }
 }
