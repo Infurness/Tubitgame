@@ -29,6 +29,11 @@ public class PublishVideoSignal
     public ThemeType[] videoThemes;
 }
 
+public class ShowVideosStatsSignal
+{
+
+}
+
 public class EnergyValueSignal
 {
     public float energy;

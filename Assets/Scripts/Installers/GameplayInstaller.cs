@@ -15,6 +15,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<OpenThemeSelectionSignal> ();
         Container.DeclareSignal<EnergyValueSignal> ();
         Container.DeclareSignal<AddEnergySignal> ();
+        Container.DeclareSignal<ShowVideosStatsSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();

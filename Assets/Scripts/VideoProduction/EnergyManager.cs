@@ -37,9 +37,9 @@ public class EnergyManager : MonoBehaviour
         _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energy });
         while (energy < 100)
         {
-            yield return new WaitForSeconds (1);
-            energy += 3; //Adds 3 per second
+            energy += 3*Time.deltaTime; //Adds 3 per second
             _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energy });
+            yield return null;
         }
     }
 }
