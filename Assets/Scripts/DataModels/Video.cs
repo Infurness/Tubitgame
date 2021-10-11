@@ -10,4 +10,5 @@ public class Video
     public ulong likes;
     public ulong comments;
     public ulong newSubscribers;
+    public int money;
 }

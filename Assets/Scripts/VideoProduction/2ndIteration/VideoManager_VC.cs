@@ -11,7 +11,9 @@ public class VideoManager_VC : MonoBehaviour
 {
 
     [Inject] private SignalBus _signalBus;
-    [Inject] ThemesManager themesManager;
+    [Inject] private YouTubeVideoManager _youTubeVideoManager;
+    [Inject] private ThemesManager _themesManager;
+    [Inject] private EnergyManager _energyManager;
 
     [SerializeField] private GameObject makeAVideoPanel;
     [SerializeField] private GameObject manageVideosPanel;
@@ -24,13 +26,18 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private Button theme3Button;
     [SerializeField] private GameObject themesScrollView;
     private TMP_Text lastThemeButtonPressedText;
+    private List<ThemeType> selectedThemes = new List<ThemeType>();
     [SerializeField] private GameObject themeButtonsHolder;
     [SerializeField] private GameObject themeButtonPrefab;
+
+    [SerializeField] private Transform videoInfoHolder;
+    [SerializeField] private GameObject videoInfoPrefab;
 
     // Start is called before the first frame update
     void Start ()
     {
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenManageVideosPanel);
+        _signalBus.Subscribe<EndPublishVideoSignal> (CreateVideo);
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
@@ -60,14 +67,14 @@ public class VideoManager_VC : MonoBehaviour
     {
         OpenPanel (VideoManagerPanels.ManageVideos);
     }
-    void OpenPanel (VideoManagerPanels panel)
+    void OpenPanel (VideoManagerPanels _panel)
     {
-        if (panel == VideoManagerPanels.MakeAVideo)
+        if (_panel == VideoManagerPanels.MakeAVideo)
             makeAVideoPanel.SetActive (true);
         else
             makeAVideoPanel.SetActive (false);
 
-        if (panel == VideoManagerPanels.ManageVideos)
+        if (_panel == VideoManagerPanels.ManageVideos)
             manageVideosPanel.SetActive (true);
         else
             manageVideosPanel.SetActive (false);
@@ -75,20 +82,19 @@ public class VideoManager_VC : MonoBehaviour
 
     void OnRecordButtonPressed ()
     {
-        //if (energyManager.GetEnergy () < 30)
-        //    return;
-
+        if (_energyManager.GetEnergy () < 30)
+            return;
 
         _signalBus.Fire<StartRecordingSignal> (new StartRecordingSignal ()
         {
-            recordingTime = 3f
-            //recordedThemes = selectedThemes.ToArray ()
+            recordingTime = 3f,
+            recordedThemes = selectedThemes.ToArray ()
         });
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -30 });
     }
     void SetUpThemeButtons ()
     {
-        foreach (ThemeType themeType in themesManager.GetThemes ())
+        foreach (ThemeType themeType in _themesManager.GetThemes ())
         {
             CreateThemeButton (themeType);
         }
@@ -99,15 +105,22 @@ public class VideoManager_VC : MonoBehaviour
         button.GetComponent<ButtonThemePreProductionView> ().themeType = _themeType;
         button.GetComponent<Button> ().onClick.AddListener (() => OnThemeSelected (button.GetComponentInChildren<TMP_Text>().text));
     }
-    void OnThemeButtonPressed (TMP_Text themeText)
+    void OnThemeButtonPressed (TMP_Text _themeText)
     {
-        lastThemeButtonPressedText = themeText;
+        lastThemeButtonPressedText = _themeText;
         themesScrollView.SetActive (true);
     }
-    void OnThemeSelected (string themeName)
+    void OnThemeSelected (string _themeName)
     {
-        themeName = string.Concat (themeName.Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
-        lastThemeButtonPressedText.text = themeName;
+        _themeName = string.Concat (_themeName.Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
+        lastThemeButtonPressedText.text = _themeName;
         themesScrollView.SetActive (false);
+    }
+    void CreateVideo (EndPublishVideoSignal _signal)
+    {
+        GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
+        VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
+        vc.SetReferences (_signalBus, _youTubeVideoManager);
+        vc.SetVideoInfoUp (_signal.videoName);
     }
 }

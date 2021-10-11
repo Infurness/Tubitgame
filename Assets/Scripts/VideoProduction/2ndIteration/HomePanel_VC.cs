@@ -12,6 +12,7 @@ public class HomePanel_VC : MonoBehaviour
     [SerializeField] private Image videoProgressBar;
     [SerializeField] private ScrollRect viewsScroll;
 
+    ThemeType[] selectedThemeTypes;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,10 +34,11 @@ public class HomePanel_VC : MonoBehaviour
         videoProgressBar.gameObject.SetActive (false);
         publishButton.gameObject.SetActive (false);
     }
-    void StartRecording (StartRecordingSignal recordingSignal)
+    void StartRecording (StartRecordingSignal _recordingSignal)
     {
+        selectedThemeTypes = _recordingSignal.recordedThemes;
         StopAllCoroutines ();
-        StartCoroutine (FillTheRecordImage (recordingSignal.recordingTime));   
+        StartCoroutine (FillTheRecordImage (_recordingSignal.recordingTime));   
     }
 
     IEnumerator FillTheRecordImage (float time)
@@ -61,6 +63,7 @@ public class HomePanel_VC : MonoBehaviour
     void PublishVideo ()
     {
         _signalBus.Fire<ShowVideosStatsSignal> (new ShowVideosStatsSignal ());
+        _signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = "a", videoThemes = selectedThemeTypes});
     }
     void OnViewsScroll (Vector2 vector)
     {

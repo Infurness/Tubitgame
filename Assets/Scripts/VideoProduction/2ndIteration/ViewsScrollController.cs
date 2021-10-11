@@ -8,8 +8,8 @@ public class ViewsScrollController : MonoBehaviour,IEndDragHandler,IBeginDragHan
 {
     [SerializeField] private RectTransform canvas;
     [SerializeField] private RectTransform contentPanel;
-    [SerializeField] private RectTransform roomViewPanelRect;
-    [SerializeField] private RectTransform streetViewPanelRect;
+    [SerializeField] private RectTransform[] views;
+    int currentViewIndex;
     private ScrollRect scrollRect;
     private float startContentPosX;
     [SerializeField] float movementSpeed;
@@ -27,9 +27,9 @@ public class ViewsScrollController : MonoBehaviour,IEndDragHandler,IBeginDragHan
     }
     void ResizeContentPanel ()
     {
-        contentPanel.sizeDelta = new Vector2 (canvas.sizeDelta.x, contentPanel.sizeDelta.y);
+        contentPanel.sizeDelta = new Vector2 (canvas.sizeDelta.x * (views.Length-1), contentPanel.sizeDelta.y);
     }
-    public void OnBeginDrag (PointerEventData eventData)
+    public void OnBeginDrag (PointerEventData _eventData)
     {
         startContentPosX = scrollRect.content.position.x;
         StopAllCoroutines ();
@@ -41,20 +41,27 @@ public class ViewsScrollController : MonoBehaviour,IEndDragHandler,IBeginDragHan
             ResizeContentPanel ();
         }
     }
-    public void OnEndDrag (PointerEventData eventData)
+    public void OnEndDrag (PointerEventData _eventData)
     {
         float scrollDir = scrollRect.content.position.x - startContentPosX;
+        int newViewIndex = currentViewIndex;
         if (scrollDir < 0)
-            StartCoroutine (SmoothSnapTo (streetViewPanelRect));
+            newViewIndex += 1;
         else if (scrollDir > 0)
-            StartCoroutine (SmoothSnapTo (roomViewPanelRect));
+            newViewIndex -= 1;
+
+        if(newViewIndex >= 0 && newViewIndex < views.Length)
+        {
+            currentViewIndex = newViewIndex;
+            StartCoroutine (SmoothSnapTo (views[newViewIndex]));
+        }
     }
 
-    public IEnumerator SmoothSnapTo (RectTransform target)
+    public IEnumerator SmoothSnapTo (RectTransform _target)
     {
         float lerpCounter = 0;
         Vector2 contentPanelNewPos = (Vector2)scrollRect.transform.InverseTransformPoint (contentPanel.position)
-                                     - (Vector2)scrollRect.transform.InverseTransformPoint (target.position);
+                                     - (Vector2)scrollRect.transform.InverseTransformPoint (_target.position);
         contentPanelNewPos.x += canvas.sizeDelta.x/2;
         contentPanelNewPos.y = 0;
 

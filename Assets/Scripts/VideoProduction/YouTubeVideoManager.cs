@@ -48,10 +48,16 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.newSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
 
         playerDataManger.AddVideo (newVideo);
+
+        _signalBus.Fire<EndPublishVideoSignal> (new EndPublishVideoSignal () {videoName = videoName });
     }
     public Video GetVideoByName (string _name)
     {
         return playerDataManger.GetVideoByName (_name);
+    }
+    public int RecollectVideoMoney (string _name)
+    {
+        return playerDataManger.RecollectVideoMoney (_name);
     }
     int GetTimeHour ()
     {

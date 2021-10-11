@@ -28,6 +28,13 @@ public class PlayerDataManager : MonoBehaviour
         Debug.LogError ($"Video named -{_name}- does not exist");
         return null;
     }
+    public int RecollectVideoMoney (string _name)
+    {
+        Video video = GetVideoByName (_name);
+        int videoMoney = video.money;
+        video.money = 0;
+        return videoMoney;
+    }
     public float GetPlayerTotalVideos ()
     {
         return m_PlayerData.videos.Count;

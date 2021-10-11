@@ -40,14 +40,14 @@ public class HUD_VC : MonoBehaviour
     {
         OpenScreenPanel (HUDScreen.VideoManager);
     }
-    void OpenScreenPanel (HUDScreen screenToOpen)
+    void OpenScreenPanel (HUDScreen _screenToOpen)
     {
-        if(screenToOpen == HUDScreen.Home)
+        if(_screenToOpen == HUDScreen.Home)
             homePanel.SetActive (true);
         else
             homePanel.SetActive (false);
 
-        if (screenToOpen == HUDScreen.VideoManager)
+        if (_screenToOpen == HUDScreen.VideoManager)
             videoManagerPanel.SetActive (true);
         else
             videoManagerPanel.SetActive (false);
@@ -62,8 +62,8 @@ public class HUD_VC : MonoBehaviour
         //else
         //    homePanel.SetActive (false);
     }
-    void SetEnergy (EnergyValueSignal signal)
+    void SetEnergy (EnergyValueSignal _signal)
     {
-        energyBar.fillAmount = signal.energy / 100;
+        energyBar.fillAmount = _signal.energy / 100;
     }
 }
