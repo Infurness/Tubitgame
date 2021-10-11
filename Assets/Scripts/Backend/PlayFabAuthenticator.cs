@@ -10,6 +10,8 @@ public class PlayFabAuthenticator : IAuthenticator
 {
     [Inject] SignalBus signalBus;
    private SigninWithGoogle swg;
+   
+   private PlayFabAuthenticationContext playFabAuthenticationContext;
     public void LoginWithDeviceID()
     {
        #if UNITY_EDITOR
@@ -21,6 +23,11 @@ public class PlayFabAuthenticator : IAuthenticator
       #endif
     }
 
+    public void LinkToFaceBook()
+    {
+        
+    }
+
     void LoginWithAndroidDevice()
     {
         LoginWithAndroidDeviceIDRequest req = new LoginWithAndroidDeviceIDRequest();
@@ -28,9 +35,12 @@ public class PlayFabAuthenticator : IAuthenticator
         req.AndroidDeviceId = SystemInfo.deviceUniqueIdentifier;
         PlayFabClientAPI.LoginWithAndroidDeviceID(req,(result) =>
         {
-            signalBus.Fire<OnLoginSuccessesSignal>(new OnLoginSuccessesSignal()
+            playFabAuthenticationContext = result.AuthenticationContext;
+
+            signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
             {
-                playerID = result.PlayFabId
+                playerID = result.PlayFabId,
+                authenticationContext = result.AuthenticationContext
             });
         }, (error) =>
         {
@@ -50,9 +60,11 @@ public class PlayFabAuthenticator : IAuthenticator
         req.DeviceId = SystemInfo.deviceUniqueIdentifier;
         PlayFabClientAPI.LoginWithIOSDeviceID(req,(result) =>
         {
-            signalBus.Fire<OnLoginSuccessesSignal>(new OnLoginSuccessesSignal()
+            playFabAuthenticationContext = result.AuthenticationContext;
+            signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
             {
-                playerID = result.PlayFabId
+                playerID = result.PlayFabId,
+                authenticationContext = result.AuthenticationContext
             });
         }, (error) =>
         {
@@ -69,11 +81,15 @@ public class PlayFabAuthenticator : IAuthenticator
         LoginWithCustomIDRequest req = new LoginWithCustomIDRequest();
         req.CreateAccount = true;
         req.CustomId = SystemInfo.deviceUniqueIdentifier;
+        
         PlayFabClientAPI.LoginWithCustomID(req,(result) =>
         {
-            signalBus.Fire<OnLoginSuccessesSignal>(new OnLoginSuccessesSignal()
+            playFabAuthenticationContext = result.AuthenticationContext;
+
+            signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
             {
-                playerID = result.PlayFabId
+                playerID = result.PlayFabId,
+                authenticationContext = result.AuthenticationContext                
             });
         }, (error) =>
         {
@@ -90,21 +106,23 @@ public class PlayFabAuthenticator : IAuthenticator
         
     }
 
-    public void GoogleLogin()
+    public async void LinkToGoogleAccount()
     {
-        swg = new SigninWithGoogle();
+        if (swg==null)
+        {
+                    swg = new SigninWithGoogle(signalBus);
+
+        }
         signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
         {
-            LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
-            req.CreateAccount = true;
+            LinkGoogleAccountRequest req = new LinkGoogleAccountRequest();
             req.ServerAuthCode = signal.authCode;
-            PlayFabClientAPI.LoginWithGoogleAccount(req, (result =>
+            req.AuthenticationContext = playFabAuthenticationContext;
+         
+            PlayFabClientAPI.LinkGoogleAccount(req, (result =>
             {
-                signalBus.Fire<OnLoginSuccessesSignal>(new OnLoginSuccessesSignal()
-                {
-                    playerID = result.PlayFabId
-                });
-                Debug.Log("Login Succeeded " );
+                
+               
             }), (error =>
             {
                 signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
@@ -115,13 +133,55 @@ public class PlayFabAuthenticator : IAuthenticator
 
             }));
         }));
-        swg.SingInWithGoogleID();
+      await  swg.SingInWithGoogleID();
         
-      
+         
     }
 
-    public void AppleLogin()
+
+    public async void LoginWithGoogle()
+    {
+        if (swg==null)
+        {
+            swg = new SigninWithGoogle(signalBus);
+
+        }
+        signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
+        {
+            LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
+            req.ServerAuthCode = signal.authCode;
+         
+            PlayFabClientAPI.LoginWithGoogleAccount(req, (result =>
+            {
+                
+               
+            }), (error =>
+            {
+                signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
+                {
+                    reason = error.ErrorMessage
+                });
+                Debug.Log("Login Failed " + error.ErrorMessage);
+
+            }));
+        }));
+        await  swg.SingInWithGoogleID();
+
+    }
+
+    public void LoginWithFaceBook()
     {
         
     }
+
+    public void LoginWithAppleID()
+    {
+        
+    }
+
+    public void LinkToAppleID()
+    {
+        
+    }
+
 }

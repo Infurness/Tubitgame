@@ -7,25 +7,32 @@ using Zenject;
 
 public class SigninWithGoogle
 {
-    [Inject] private SignalBus signalBus;
+    private readonly SignalBus signalBus;
     private GoogleSignInConfiguration configuration;
 
-        public SigninWithGoogle(string webclientId="786436489167-rtuno9jd4smvkstqqmv7kjsj4rvkfdtq.apps.googleusercontent.com")
+        public SigninWithGoogle(SignalBus sb=null,string webclientId="786436489167-rtuno9jd4smvkstqqmv7kjsj4rvkfdtq.apps.googleusercontent.com")
         {
+            signalBus = sb;
             configuration = new GoogleSignInConfiguration()
             {
                 WebClientId = webclientId,
-                RequestIdToken = true
+                RequestIdToken = true,
+                RequestAuthCode = true ,
+                UseGameSignIn = false
+                
             };
+            GoogleSignIn.Configuration = configuration;
+
         }
 
 
-        public async void SingInWithGoogleID()
+        public async Task<GoogleSignInUser> SingInWithGoogleID()
         {
-            GoogleSignIn.Configuration = configuration;
-            GoogleSignIn.Configuration.UseGameSignIn = false;
-            GoogleSignIn.Configuration.RequestIdToken = true;
-          await  GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
+            var loginTask = GoogleSignIn.DefaultInstance.SignIn();
+            await loginTask;
+            
+            OnAuthenticationFinished(loginTask);
+            return loginTask.Result;
         }
         
         

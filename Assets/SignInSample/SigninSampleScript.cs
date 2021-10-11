@@ -42,19 +42,19 @@ namespace SignInSample {
       GoogleSignIn.Configuration = configuration;
       GoogleSignIn.Configuration.UseGameSignIn = false;
       GoogleSignIn.Configuration.RequestIdToken = true;
-      AddStatusText("Calling SignIn");
+      UnityEngine.Debug.Log("Calling SignIn");
 
       GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
         OnAuthenticationFinished);
     }
 
     public void OnSignOut() {
-      AddStatusText("Calling SignOut");
+      UnityEngine.Debug.Log("Calling SignOut");
       GoogleSignIn.DefaultInstance.SignOut();
     }
 
     public void OnDisconnect() {
-      AddStatusText("Calling Disconnect");
+      UnityEngine.Debug.Log("Calling Disconnect");
       GoogleSignIn.DefaultInstance.Disconnect();
     }
 
@@ -65,15 +65,15 @@ namespace SignInSample {
           if (enumerator.MoveNext()) {
             GoogleSignIn.SignInException error =
                     (GoogleSignIn.SignInException)enumerator.Current;
-            AddStatusText("Got Error: " + error.Status + " " + error.Message);
+            UnityEngine.Debug.Log("Got Error: " + error.Status + " " + error.Message);
           } else {
-            AddStatusText("Got Unexpected Exception?!?" + task.Exception);
+            UnityEngine.Debug.Log("Got Unexpected Exception?!?" + task.Exception);
           }
         }
       } else if(task.IsCanceled) {
-        AddStatusText("Canceled");
+        UnityEngine.Debug.Log("Canceled");
       } else  {
-        AddStatusText("Welcome: " + task.Result.IdToken + "!");
+        UnityEngine.Debug.Log("Welcome: " + task.Result.IdToken + "!");
       }
     }
 
@@ -81,7 +81,7 @@ namespace SignInSample {
       GoogleSignIn.Configuration = configuration;
       GoogleSignIn.Configuration.UseGameSignIn = false;
       GoogleSignIn.Configuration.RequestIdToken = true;
-      AddStatusText("Calling SignIn Silently");
+      UnityEngine.Debug.Log("Calling SignIn Silently");
 
       GoogleSignIn.DefaultInstance.SignInSilently()
             .ContinueWith(OnAuthenticationFinished);
@@ -93,14 +93,14 @@ namespace SignInSample {
       GoogleSignIn.Configuration.UseGameSignIn = true;
       GoogleSignIn.Configuration.RequestIdToken = false;
 
-      AddStatusText("Calling Games SignIn");
+      UnityEngine.Debug.Log("Calling Games SignIn");
 
       GoogleSignIn.DefaultInstance.SignIn().ContinueWith(
         OnAuthenticationFinished);
     }
 
     private List<string> messages = new List<string>();
-    void AddStatusText(string text) {
+    void AddToText(string text) {
       if (messages.Count == 5) {
         messages.RemoveAt(0);
       }

@@ -1,7 +1,10 @@
 ﻿
- public class OnLoginSuccessesSignal
+ using PlayFab;
+
+ public class OnPlayFabLoginSuccessesSignal
  {
      public string playerID;
+     public PlayFabAuthenticationContext authenticationContext;
  }
 public class OnLoginFailedSignal
 {

@@ -13,7 +13,7 @@ public class LaunchScreenViewController : MonoBehaviour
 
     void Start()
     {
-        signalBus.Subscribe<OnLoginSuccessesSignal>((signal =>
+        signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal =>
         {
             playFabIDText.text += signal.playerID;
 
@@ -23,7 +23,7 @@ public class LaunchScreenViewController : MonoBehaviour
 
     public void OnGoogleLoginPressed()
     {
-        authenticator.GoogleLogin();
+        authenticator.LinkToGoogleAccount();
     }
   
 }

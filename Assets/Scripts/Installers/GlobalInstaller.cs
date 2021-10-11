@@ -9,7 +9,7 @@ public class GlobalInstaller : MonoInstaller
   public override void InstallBindings()
   {
     SignalBusInstaller.Install(Container);
-    Container.DeclareSignal<OnLoginSuccessesSignal>();
+    Container.DeclareSignal<OnPlayFabLoginSuccessesSignal>();
     Container.DeclareSignal<OnLoginFailedSignal>();
     Container.DeclareSignal<OnGoogleSignInFailed>();
     Container.DeclareSignal<OnGoogleSignInSuccessSignal>();

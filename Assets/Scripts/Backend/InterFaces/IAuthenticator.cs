@@ -5,9 +5,13 @@ using UnityEngine;
 public interface IAuthenticator
 {
   public void LoginWithDeviceID();
-  public void FacebookLogin();
-  public void GoogleLogin();
-  public void AppleLogin();
-  
+  public void LinkToFaceBook();
+  public void LinkToGoogleAccount();
+  public void LinkToAppleID();
+  public void LoginWithGoogle();
+
+  public void LoginWithFaceBook();
+
+  public void LoginWithAppleID();
 
 }

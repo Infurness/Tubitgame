@@ -8,8 +8,8 @@ public class GameAuthenticator : MonoBehaviour
 
     [Inject] private IAuthenticator authenticator;
     void Start()
-    {
-       // authenticator.GoogleLogin();
+    { 
+        authenticator.LoginWithGoogle();
     }
 
     // Update is called once per frame
