@@ -9,7 +9,7 @@ public class GameAuthenticator : MonoBehaviour
     [Inject] private IAuthenticator authenticator;
     void Start()
     { 
-        authenticator.LoginWithGoogle();
+        authenticator.LoginWithDeviceID();
     }
 
     // Update is called once per frame
