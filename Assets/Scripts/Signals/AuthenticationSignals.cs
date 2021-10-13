@@ -1,4 +1,5 @@
 ﻿
+ using Facebook.Unity;
  using PlayFab;
 
  public class OnPlayFabLoginSuccessesSignal
@@ -21,4 +22,14 @@ public class OnLoginFailedSignal
  public class OnGoogleSignInFailed
  {
      public string reason;
+ }
+
+ public class OnFacebookLoginSuccessSignal
+ {
+     public AccessToken accessToken;
+ }
+
+ public class OnFacebookLoginFailedSignal
+ {
+     public bool canceled;
  }

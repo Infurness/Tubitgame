@@ -4,7 +4,7 @@ using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 
 public static class GoogleSignInPostBuild {
-
+#if UNITY_IOS
     [PostProcessBuild(999)]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string buildPath)
     {
@@ -16,5 +16,7 @@ public static class GoogleSignInPostBuild {
         proj.WriteToFile(projPath);
     }
 
+#endif
+    
 }
 

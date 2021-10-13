@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Facebook.Unity;
 using PlayFab;
 using UnityEngine;
 using PlayFab.ClientModels;
@@ -12,6 +13,11 @@ public class PlayFabAuthenticator : IAuthenticator
    private SigninWithGoogle swg;
    
    private PlayFabAuthenticationContext playFabAuthenticationContext;
+
+   public PlayFabAuthenticator()
+   {
+       FB.Init();
+   }
     public void LoginWithDeviceID()
     {
        #if UNITY_EDITOR
@@ -102,7 +108,7 @@ public class PlayFabAuthenticator : IAuthenticator
     }
     
     public void FacebookLogin()
-    {
+    { 
         
     }
 
