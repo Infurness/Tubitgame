@@ -13,16 +13,16 @@ public class SceneManager : MonoBehaviour
     {
         signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal =>
         {
-        //    StartCoroutine(LoadSceneAsync("MainScene"));
+            StartCoroutine(LoadSceneAsync(1));
         } ));
     }
 
 
-    IEnumerator LoadSceneAsync(string sceneName)
+    IEnumerator LoadSceneAsync(int index)
     {
         yield return new WaitForSecondsRealtime(3);
         
-      yield return  UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+      yield return  UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1);
 
     }
 }

@@ -9,11 +9,28 @@ using Zenject;
 public class SigninWithFacebook
 {
     private SignalBus signalBus;
-
+    private Action<string> AutoLoginCallback;
     public SigninWithFacebook(SignalBus sb)
     {
         signalBus = sb;
-        FB.Init();
+        if (!FB.IsInitialized)
+        {
+            FB.Init((() =>
+            {
+                if (FB.IsLoggedIn)
+                {
+                    AutoLoginCallback.Invoke(AccessToken.CurrentAccessToken.TokenString); 
+                }
+            }));
+           
+
+        }
+      
+    }
+
+    public void SetAutoLoginCallBack(Action<string> autoLoginCallBack)
+    {
+        AutoLoginCallback = autoLoginCallBack;
     }
 
     public void SingInFacebook()
@@ -26,10 +43,12 @@ public class SigninWithFacebook
                 {
                     canceled = true
                 });
-                return;
-            }else if ((result.AccessToken == null)||(result.Error!=String.Empty))
+                Debug.Log("Facebook Login Cancelled ");
+            }else if ((result.AccessToken == null)||(result.Error!=null))
             {
                 signalBus.Fire<OnFacebookLoginFailedSignal>();
+                Debug.Log("Facebook Login failed "+result.Error );
+
             }
             else
             {
@@ -37,6 +56,7 @@ public class SigninWithFacebook
                 {
                     accessToken = result.AccessToken
                 });
+                Debug.Log("Facebook Logged in");
             }
 
         }));

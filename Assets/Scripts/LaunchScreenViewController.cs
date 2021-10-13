@@ -12,23 +12,24 @@ public class LaunchScreenViewController : MonoBehaviour
     [SerializeField] private TMP_Text playFabIDText;
     [Inject] private IAuthenticator authenticator;
     [SerializeField] private Button googleSignIn_Bt, appleSignin_Bt, facebookSignIn_Bt;
-    [SerializeField] private GameObject signInButtonsPanel;
+    [SerializeField] private GameObject signInCanvas;
 
     
-    void Start()
+    void Awake()
     {
 #if !UNITY_IOS
         appleSignin_Bt.gameObject.SetActive(false);   
 #endif
-        if (PlayerPrefs.HasKey("PlayerLogedIn"))
+        if (PlayerPrefs.HasKey("LoginMethod"))
         {
-            signInButtonsPanel.gameObject.SetActive(false);
+            signInCanvas.gameObject.SetActive(false);
         }
         signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal =>
         {
-            playFabIDText.text += signal.playerID;
+            playFabIDText.text ="PlayFabID: "+ signal.playerID;
 
             playFabIDText.gameObject.SetActive(true);
+            
         }) );
     }
 
@@ -36,5 +37,19 @@ public class LaunchScreenViewController : MonoBehaviour
     {
         authenticator.LoginWithGoogle();
     }
-  
+
+    public void OnFacebookLoginPressed()
+    {
+        authenticator.LoginWithFaceBook();
+    }
+
+    public void OnSkipButtonPresses()
+    {
+        authenticator.LoginWithDeviceID();
+    }
+
+    public void OnAppleLoginPressed()
+    {
+        authenticator.LoginWithAppleID();
+    }
 }

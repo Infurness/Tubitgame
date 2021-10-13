@@ -11,6 +11,7 @@ public interface IAuthenticator
   public void LoginWithGoogle();
 
   public void LoginWithFaceBook();
+  
 
   public void LoginWithAppleID();
 
