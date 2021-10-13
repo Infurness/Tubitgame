@@ -50,6 +50,6 @@ public class VideoInfo_VC : MonoBehaviour
     void RecollectMoney ()
     {
         moneyText.text = "0$";
-        signalBus.Fire<GetMoneyFromVideo> (new GetMoneyFromVideo () { videoName = videoName});
+        signalBus.Fire<GetMoneyFromVideoSignal> (new GetMoneyFromVideoSignal () { videoName = videoName});
     } 
 }

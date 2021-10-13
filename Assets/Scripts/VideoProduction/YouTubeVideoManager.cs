@@ -47,6 +47,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.likes = algorithmManager.GetVideoLikes(videoViews, playerDataManger.GetQuality ());
         newVideo.comments = algorithmManager.GetVideoComments(videoViews);
         newVideo.newSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
+        newVideo.money = algorithmManager.GetVideoMoney ();
 
         playerDataManger.AddVideo (newVideo);
 
@@ -69,6 +70,10 @@ public class YouTubeVideoManager : MonoBehaviour
     public Video GetVideoByName (string _name)
     {
         return playerDataManger.GetVideoByName (_name);
+    }
+    public int GetVideoMoneyByName (string _name)
+    {
+        return GetVideoByName (_name).money;
     }
     public int RecollectVideoMoney (string _name)
     {

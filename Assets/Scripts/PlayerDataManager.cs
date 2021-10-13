@@ -73,5 +73,4 @@ public class PlayerDataManager : MonoBehaviour
     {
         return m_PlayerData.subscribers;
     }
-
 }

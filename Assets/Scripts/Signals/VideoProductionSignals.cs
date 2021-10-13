@@ -47,7 +47,7 @@ public class AddEnergySignal
     public float energyAddition;
 }
 
-public class GetMoneyFromVideo
+public class GetMoneyFromVideoSignal
 {
     public string videoName;
 }

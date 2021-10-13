@@ -29,4 +29,8 @@ public class AlgorithmManager : MonoBehaviour
     {
         return (ulong)(_views * ((_videoQuality * 0.2f) * 0.01f));
     }
+    public int GetVideoMoney ()
+    {
+        return 5;
+    }
 }
