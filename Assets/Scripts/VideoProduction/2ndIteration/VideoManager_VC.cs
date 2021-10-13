@@ -19,6 +19,7 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private GameObject manageVideosPanel;
     [SerializeField] private Button makeAVideoButton;
     [SerializeField] private Button manageVideosButton;
+    [SerializeField] private Color buttonsHighlightColor;
 
     [SerializeField] private Button recordVideoButton;
     bool isRecording;
@@ -75,14 +76,28 @@ public class VideoManager_VC : MonoBehaviour
     void OpenPanel (VideoManagerPanels _panel)
     {
         if (_panel == VideoManagerPanels.MakeAVideo)
+        {
             makeAVideoPanel.SetActive (true);
+            makeAVideoButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
+        }
         else
+        {
             makeAVideoPanel.SetActive (false);
+            makeAVideoButton.GetComponentInChildren<Image> ().color = Color.white;
+
+        }
 
         if (_panel == VideoManagerPanels.ManageVideos)
+        {
             manageVideosPanel.SetActive (true);
+            manageVideosButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
+        }
         else
+        {
             manageVideosPanel.SetActive (false);
+            manageVideosButton.GetComponentInChildren<Image> ().color = Color.white;
+
+        }
     }
 
     void OnRecordButtonPressed ()
