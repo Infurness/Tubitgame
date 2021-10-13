@@ -28,6 +28,28 @@ public class PlayerDataManager : MonoBehaviour
         Debug.LogError ($"Video named -{_name}- does not exist");
         return null;
     }
+    public int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
+    {
+        int videoCounter = 0;
+        foreach (Video video in m_PlayerData.videos)
+        {
+            bool sameThemes = true;
+            if(video.themes.Length == _themeTypes.Length)
+            {
+                for(int i =0; i<video.themes.Length;i++)
+                {
+                    if (video.themes[i] != _themeTypes[i])
+                    {
+                        sameThemes = false;
+                        break;
+                    }    
+                }
+                if (sameThemes)
+                    videoCounter++;
+            }
+        }
+        return videoCounter;
+    }
     public int RecollectVideoMoney (string _name)
     {
         Video video = GetVideoByName (_name);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,6 +51,20 @@ public class YouTubeVideoManager : MonoBehaviour
         playerDataManger.AddVideo (newVideo);
 
         _signalBus.Fire<EndPublishVideoSignal> (new EndPublishVideoSignal () {videoName = videoName });
+    }
+    public string GetVideoNameByTheme (ThemeType[] _themeTypes)
+    {
+        string videoName ="";
+        foreach(ThemeType themeType in _themeTypes)
+        {
+            videoName += Enum.GetName (themeType.GetType (), themeType);
+        }
+        videoName += $" {GetNumberOfVideoByThemes (_themeTypes)}";
+        return videoName;
+    }
+    int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
+    {
+        return playerDataManger.GetNumberOfVideoByThemes (_themeTypes);
     }
     public Video GetVideoByName (string _name)
     {

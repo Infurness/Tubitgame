@@ -7,6 +7,7 @@ using Zenject;
 public class HomePanel_VC : MonoBehaviour
 {
     [Inject] private SignalBus _signalBus;
+    [Inject] private YouTubeVideoManager youTubeVideoManager;
 
     [SerializeField] private Button publishButton;
     [SerializeField] private Image videoProgressBar;
@@ -62,8 +63,8 @@ public class HomePanel_VC : MonoBehaviour
     }
     void PublishVideo ()
     {
-        _signalBus.Fire<ShowVideosStatsSignal> (new ShowVideosStatsSignal ());
-        _signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = "a", videoThemes = selectedThemeTypes});
+        _signalBus.Fire<ShowVideosStatsSignal> (new ShowVideosStatsSignal ());     
+        _signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = youTubeVideoManager.GetVideoNameByTheme(selectedThemeTypes), videoThemes = selectedThemeTypes});
     }
     void OnViewsScroll (Vector2 vector)
     {
