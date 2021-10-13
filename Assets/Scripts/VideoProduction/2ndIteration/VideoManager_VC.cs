@@ -26,6 +26,7 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private Button theme2Button;
     [SerializeField] private Button theme3Button;
     [SerializeField] private GameObject themesScrollView;
+    [SerializeField] private GameObject themeSelecctionBlocker;
     private TMP_Text lastThemeButtonPressedText;
     private int lastThemeButtonPressedIndex;
     private Dictionary<int,ThemeType> selectedThemes = new Dictionary<int,ThemeType>();
@@ -56,6 +57,7 @@ public class VideoManager_VC : MonoBehaviour
         themesScrollView.SetActive (false);
         SetUpThemeButtons ();
         recordVideoButton.interactable = false;
+        OpenThemeSelector (false);
     }
     // Update is called once per frame
     void Update()
@@ -108,11 +110,20 @@ public class VideoManager_VC : MonoBehaviour
         button.GetComponent<ButtonThemePreProductionView> ().themeType = _themeType;
         button.GetComponent<Button> ().onClick.AddListener (() => OnThemeSelected (_themeType, button.GetComponentInChildren<TMP_Text>().text));
     }
+    void OpenThemeSelector (bool open)
+    {
+        themesScrollView.SetActive (open);
+        themeSelecctionBlocker.SetActive (open);
+        if (open)
+            StartCoroutine (CloseThemeSelector ());
+        else
+            StopAllCoroutines ();
+    }
     void OnThemeButtonPressed (int buttonIndex, TMP_Text _themeText)
     {
         lastThemeButtonPressedIndex = buttonIndex;
         lastThemeButtonPressedText = _themeText;
-        themesScrollView.SetActive (true);
+        OpenThemeSelector (true);
     }
     void OnThemeSelected (ThemeType _themeType, string _themeName)
     {
@@ -120,7 +131,7 @@ public class VideoManager_VC : MonoBehaviour
         lastThemeButtonPressedText.text = _themeName;
         selectedThemes[lastThemeButtonPressedIndex] = _themeType;
         recordVideoButton.interactable = true;
-        themesScrollView.SetActive (false);
+        OpenThemeSelector (false);
     }
     void CreateVideo (EndPublishVideoSignal _signal)
     {
@@ -132,5 +143,23 @@ public class VideoManager_VC : MonoBehaviour
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager);
         vc.SetVideoInfoUp (_signal.videoName);
+    }
+
+    IEnumerator CloseThemeSelector ()
+    {
+        yield return WaitForAnyInput();
+        OpenThemeSelector (false);
+    }
+
+    IEnumerator WaitForAnyInput ()
+    {
+        bool done = false;
+        while(!done)
+        {
+            Vector2 mousePos = Input.mousePosition;
+            if (Input.anyKeyDown && !RectTransformUtility.RectangleContainsScreenPoint (themesScrollView.GetComponent<RectTransform> (), mousePos))
+                done = true;
+            yield return null;
+        }
     }
 }
