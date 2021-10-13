@@ -11,6 +11,11 @@ public class PlayerDataManager : MonoBehaviour
 {
     [Inject] private PlayerData m_PlayerData;
     
+    public string GetPlayerName ()
+    {
+        return m_PlayerData.ID;
+    }
+
     public void AddVideo (Video _video)
     {
         m_PlayerData.videos.Add (_video);
