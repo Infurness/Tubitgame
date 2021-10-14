@@ -7,11 +7,42 @@ public class GameAuthenticator : MonoBehaviour
 {
 
     [Inject] private IAuthenticator authenticator;
+
     void Start()
     {
-        authenticator.LoginWithDeviceID();
+        if (PlayerPrefs.HasKey("LoginMethod"))
+        {
+            var loginMethod = PlayerPrefs.GetString("LoginMethod");
+            switch (loginMethod)
+            {
+                case "DeviceID": authenticator.LoginWithDeviceID(); break;
+                
+                case  "AppleID": authenticator.LoginWithAppleID(); break;
+                
+                case  "GoogleSignIn": authenticator.LoginWithGoogle(); break;
+            }
+        }
     }
 
+    public void LoginWithDeviceID()
+    {
+     authenticator.LoginWithDeviceID();   
+    }
+
+     public void LoginWithGoogle()
+    {
+        authenticator.LoginWithGoogle();
+    }
+
+    public void LoginWithFacebook()
+    {
+        authenticator.LoginWithFaceBook();
+    }
+
+    public void LoginWithAppleID()
+    {
+        authenticator.LoginWithAppleID();
+    }
     // Update is called once per frame
     void Update()
     {
