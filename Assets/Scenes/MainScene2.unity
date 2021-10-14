@@ -1188,6 +1188,7 @@ GameObject:
   - component: {fileID: 191028580}
   - component: {fileID: 191028579}
   - component: {fileID: 191028581}
+  - component: {fileID: 191028582}
   m_Layer: 5
   m_Name: EventsPanel
   m_TagString: Untagged
@@ -1274,6 +1275,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &191028582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191028577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &197656322
 GameObject:
   m_ObjectHideFlags: 0
@@ -2302,6 +2320,7 @@ GameObject:
   - component: {fileID: 301303280}
   - component: {fileID: 301303279}
   - component: {fileID: 301303281}
+  - component: {fileID: 301303282}
   m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
@@ -2391,6 +2410,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &301303282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301303277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &377962400
 GameObject:
   m_ObjectHideFlags: 0
@@ -3504,6 +3540,7 @@ MonoBehaviour:
     popularityEachHour: []
   - themeType: 13
     popularityEachHour: []
+  themesData: {fileID: 11400000, guid: d5eb651cdf68fe8469830e7a26fc827c, type: 2}
 --- !u!114 &454522158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5363,6 +5400,7 @@ GameObject:
   - component: {fileID: 762663797}
   - component: {fileID: 762663796}
   - component: {fileID: 762663799}
+  - component: {fileID: 762663800}
   m_Layer: 5
   m_Name: BottomButtonsPanel
   m_TagString: Untagged
@@ -5474,10 +5512,27 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &762663800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762663794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &797748509
 GameObject:
   m_ObjectHideFlags: 0
@@ -7341,6 +7396,7 @@ GameObject:
   - component: {fileID: 1027633538}
   - component: {fileID: 1027633537}
   - component: {fileID: 1027633539}
+  - component: {fileID: 1027633540}
   m_Layer: 5
   m_Name: StorePanel
   m_TagString: Untagged
@@ -7427,6 +7483,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1027633540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027633535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1056572714
 GameObject:
   m_ObjectHideFlags: 0
@@ -9147,6 +9220,7 @@ GameObject:
   - component: {fileID: 1264219835}
   - component: {fileID: 1264219834}
   - component: {fileID: 1264219836}
+  - component: {fileID: 1264219837}
   m_Layer: 5
   m_Name: TopInfoPanel
   m_TagString: Untagged
@@ -9233,10 +9307,27 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1264219837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264219832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1279578192
 GameObject:
   m_ObjectHideFlags: 0
@@ -12876,6 +12967,7 @@ GameObject:
   - component: {fileID: 1881887510}
   - component: {fileID: 1881887509}
   - component: {fileID: 1881887511}
+  - component: {fileID: 1881887512}
   m_Layer: 5
   m_Name: VideoManagerPanel
   m_TagString: Untagged
@@ -12963,6 +13055,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1881887512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881887507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1882679198
 GameObject:
   m_ObjectHideFlags: 0
@@ -13528,6 +13637,7 @@ GameObject:
   - component: {fileID: 1993492105}
   - component: {fileID: 1993492104}
   - component: {fileID: 1993492106}
+  - component: {fileID: 1993492107}
   m_Layer: 5
   m_Name: HomePanel
   m_TagString: Untagged
@@ -13617,6 +13727,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1993492107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993492102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &2029856449
 GameObject:
   m_ObjectHideFlags: 0
