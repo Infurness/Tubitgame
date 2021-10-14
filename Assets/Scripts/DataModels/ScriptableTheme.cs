@@ -28,6 +28,23 @@ public class ScriptableTheme : ScriptableObject
         return themesData.Exists (x => x.themeType == _themeType);
     }
 }
+public enum ThemeType
+{
+    FilmsAndAnimation,
+    AutosAndVehicles,
+    Music,
+    PetsAndAnimals,
+    Sports,
+    TravelAndEvents,
+    Gaming,
+    PeopleAndBlogs,
+    Comedy,
+    Entertainment,
+    NewsAndPolitics,
+    HowToAndStyle,
+    Education,
+    ScienceAndTechnology
+}
 [Serializable]
 public struct ThemeData
 {
