@@ -11,6 +11,11 @@ public class PlayerDataManager : MonoBehaviour
 {
     [Inject] private PlayerData m_PlayerData;
     
+    public string GetPlayerName ()
+    {
+        return m_PlayerData.ID;
+    }
+
     public void AddVideo (Video _video)
     {
         m_PlayerData.videos.Add (_video);
@@ -28,7 +33,43 @@ public class PlayerDataManager : MonoBehaviour
         Debug.LogError ($"Video named -{_name}- does not exist");
         return null;
     }
-
+    public int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
+    {
+        int videoCounter = 0;
+        foreach (Video video in m_PlayerData.videos)
+        {
+            bool sameThemes = true;
+            if(video.themes.Length == _themeTypes.Length)
+            {
+                for(int i =0; i<video.themes.Length;i++)
+                {
+                    if (video.themes[i] != _themeTypes[i])
+                    {
+                        sameThemes = false;
+                        break;
+                    }    
+                }
+                if (sameThemes)
+                    videoCounter++;
+            }
+        }
+        return videoCounter;
+    }
+    public int RecollectVideoMoney (string _name)
+    {
+        Video video = GetVideoByName (_name);
+        int videoMoney = video.money;
+        video.money = 0;
+        return videoMoney;
+    }
+    public float GetPlayerTotalVideos ()
+    {
+        return m_PlayerData.videos.Count;
+    }
+    public string GetLastVideoName ()
+    {
+        return m_PlayerData.videos[m_PlayerData.videos.Count-1].name;
+    }
     public float GetQuality ()
     {
         return m_PlayerData.quality;

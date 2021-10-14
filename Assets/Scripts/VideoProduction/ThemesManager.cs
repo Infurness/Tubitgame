@@ -5,34 +5,42 @@ using UnityEngine;
 
 public class ThemesManager : MonoBehaviour
 {
-    [SerializeField] private List<Theme> availableThemes = new List<Theme>();
+
+    [SerializeField] private ScriptableTheme themesData;
     // Start is called before the first frame update
-    void Start()
+
+    public ThemeType[] GetThemes ()
     {
-        UpdateAvailableThemes ();
+        return (ThemeType[])Enum.GetValues (typeof (ThemeType));
     }
 
-    void UpdateAvailableThemes ()
+    public float GetThemePopularity (ThemeType _themeType, int _dayHour)
     {
-        availableThemes.Clear ();
-        foreach (int i in Enum.GetValues (typeof (ThemeType)))
+        foreach (ThemeData theme in themesData.themesData)
         {
-            Theme theme = new Theme ();
-            theme.themeType = (ThemeType)i;
-            availableThemes.Add (theme);
-        }
-    }
-
-    public float GetThemePopularity (ThemeType _themeType)
-    {
-        foreach(Theme theme in availableThemes)
-        {
-            if(theme.themeType == _themeType)
+            if (theme.themeType == _themeType)
             {
-                return theme.popularity;
+                return ThemePopularityBasedOnTime (theme, _dayHour);
             }
         }
         Debug.LogError ($"No theme: {Enum.GetName (_themeType.GetType (), _themeType)}, is available");
         return 0;
+    }
+
+    private float ThemePopularityBasedOnTime (ThemeData _themeData, int _dayHour) //Dummy: this may be changed in the future
+    {
+        
+        if (_themeData.themeAlgorithm.length==0)
+        {
+            Debug.LogError ($"No popularity set for theme {Enum.GetName (_themeData.themeType.GetType (), _themeData.themeType)}");
+            return 0;
+        }
+
+        AnimationCurve algorithm = _themeData.themeAlgorithm;
+        float hourInGraph =_dayHour * algorithm[algorithm.length-1].time / 24; //Since last number in time would be the hour 24, hourInGraph gets the value for the expected hour in the graph, no matter if the max time value is 1 or 37
+
+        float themPopularity = algorithm.Evaluate(hourInGraph);
+        Debug.Log ($"Theme popularity is: {themPopularity}");
+        return themPopularity;
     }
 }

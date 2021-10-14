@@ -12,7 +12,12 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<StartRecordingSignal>();
         Container.DeclareSignal<StartPublishSignal>();
         Container.DeclareSignal<PublishVideoSignal>();
-
+        Container.DeclareSignal<EndPublishVideoSignal> ();
+        Container.DeclareSignal<OpenThemeSelectionSignal> ();
+        Container.DeclareSignal<EnergyValueSignal> ();
+        Container.DeclareSignal<AddEnergySignal> ();
+        Container.DeclareSignal<ShowVideosStatsSignal> ();
+        Container.DeclareSignal<GetMoneyFromVideoSignal> (); 
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
@@ -20,5 +25,6 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<YouTubeVideoManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<AlgorithmManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<ThemesManager> ().FromComponentInHierarchy ().AsSingle ();
+        Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
     }
 }

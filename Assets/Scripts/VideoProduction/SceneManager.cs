@@ -13,7 +13,7 @@ public class SceneManager : MonoBehaviour
     {
         signalBus.Subscribe<OnLoginSuccessesSignal>((signal =>
         {
-            StartCoroutine(LoadSceneAsync("MainScene"));
+            StartCoroutine(LoadSceneAsync("MainScene2"));
         } ));
     }
 
