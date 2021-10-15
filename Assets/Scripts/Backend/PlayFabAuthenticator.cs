@@ -13,14 +13,17 @@ public class PlayFabAuthenticator : IAuthenticator
 	[Inject] SignalBus signalBus;
 	private SigninWithGoogle swg;
 	private SigninWithFacebook swfb;
+	private SigninWithAppleID _signinWithAppleID;
    private PlayFabAuthenticationContext playFabAuthenticationContext;
 
    public PlayFabAuthenticator(SignalBus sb)
    {
 	   signalBus = sb;
 	   swfb = new SigninWithFacebook(signalBus);
+	   _signinWithAppleID = new SigninWithAppleID(signalBus);
 	  swfb.SetAutoLoginCallBack(PlayFabFacebookLogin);
-	  signalBus.Subscribe<OnFacebookLoginSuccessSignal>((signal => { PlayFabFacebookLogin(signal.accessToken.TokenString); }));
+	  signalBus.Subscribe<OnFacebookLoginSuccessSignal>((signal => { PlayFabFacebookLogin(signal.AccessToken.TokenString); }));
+	  signalBus.Subscribe<OnAppleLoginSuccessSignal>((signal => { OnAppleLoginSuccess(signal); }));
    }
 	public void LoginWithDeviceID()
 	{
@@ -73,8 +76,8 @@ public class PlayFabAuthenticator : IAuthenticator
 		PlayerPrefs.SetString("LoginMethod","DeviceID");
 		signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
 		{
-			playerID = result.PlayFabId,
-			authenticationContext = result.AuthenticationContext
+			PlayerID = result.PlayFabId,
+			AuthenticationContext = result.AuthenticationContext
 		});
 	}
 
@@ -82,7 +85,7 @@ public class PlayFabAuthenticator : IAuthenticator
 	{
 		signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
 		{
-			reason = error.ErrorMessage
+			Reason = error.ErrorMessage
 		});
 		Debug.Log("Login Failed "+error.ErrorMessage);
 	 
@@ -97,7 +100,7 @@ public class PlayFabAuthenticator : IAuthenticator
 		signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
 		{
 			LinkGoogleAccountRequest req = new LinkGoogleAccountRequest();
-			req.ServerAuthCode = signal.authCode;
+			req.ServerAuthCode = signal.AuthCode;
 			req.AuthenticationContext = playFabAuthenticationContext;
 		 
 			PlayFabClientAPI.LinkGoogleAccount(req, (result =>
@@ -108,7 +111,7 @@ public class PlayFabAuthenticator : IAuthenticator
 			{
 				signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
 				{
-					reason = error.ErrorMessage
+					Reason = error.ErrorMessage
 				});
 				Debug.Log("Login Failed " + error.ErrorMessage);
 
@@ -128,15 +131,15 @@ public class PlayFabAuthenticator : IAuthenticator
 			signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
 			{
 				LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
-				req.ServerAuthCode = signal.authCode;
+				req.ServerAuthCode = signal.AuthCode;
 		 
 				PlayFabClientAPI.LoginWithGoogleAccount(req, (result =>
 				{
 				 
 					signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
 					{
-						playerID = result.PlayFabId,
-						authenticationContext = result.AuthenticationContext
+						PlayerID = result.PlayFabId,
+						AuthenticationContext = result.AuthenticationContext
 					});
 					Debug.Log("PlayFabLogin with Google");
 					PlayerPrefs.SetString("LoginMethod","GoogleSignIn");
@@ -145,7 +148,7 @@ public class PlayFabAuthenticator : IAuthenticator
 				{
 					signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
 					{
-						reason = error.ErrorMessage
+						Reason = error.ErrorMessage
 					});
 					Debug.Log("Login Failed " + error.ErrorMessage);
 
@@ -175,8 +178,8 @@ public class PlayFabAuthenticator : IAuthenticator
 			playFabAuthenticationContext = result.AuthenticationContext;
 			signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
 			{
-				playerID = result.PlayFabId,
-				authenticationContext = result.AuthenticationContext
+				PlayerID = result.PlayFabId,
+				AuthenticationContext = result.AuthenticationContext
 			});
 			PlayerPrefs.SetString("LoginMethod", "Facebook");
 		}), (error => { Debug.Log("PlayFab Facebook login failed " + error.ErrorMessage); }));
@@ -186,7 +189,46 @@ public class PlayFabAuthenticator : IAuthenticator
 
 	public void LoginWithAppleID()
 	{
+		if (PlayerPrefs.HasKey("AppleIDToken"))
+		{
+			OnAppleLoginSuccess(new OnAppleLoginSuccessSignal()
+			{
+				IdToken = PlayerPrefs.GetString("AppleIDToken")
+			});
+		}
+		else
+		{
+			_signinWithAppleID.SigninWithApple();
+
+		}
 		
+	}
+
+	private void OnAppleLoginSuccess(OnAppleLoginSuccessSignal signal)
+	{
+		
+		LoginWithAppleRequest req = new LoginWithAppleRequest();
+		req.CreateAccount = true;
+		req.IdentityToken = signal.IdToken;
+		PlayFabClientAPI.LoginWithApple(req, (result =>
+		{
+			signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
+			{
+				PlayerID = result.PlayFabId,
+				AuthenticationContext = result.AuthenticationContext
+			});
+			PlayerPrefs.SetString("LoginMethod", "AppleID");
+			PlayerPrefs.SetString("AppleIDToken",signal.IdToken);
+			Debug.Log("Playfab Apple login success");
+		}), (error =>
+		{
+			signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
+			{
+				Reason = error.ErrorMessage
+			});
+			PlayerPrefs.DeleteKey("AppleIDToken");
+			Debug.Log("Failed to Login with apple id Playfab " + error.ErrorMessage);
+		}));
 	}
 
 	public void LinkToAppleID()
