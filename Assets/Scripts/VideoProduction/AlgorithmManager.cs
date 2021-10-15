@@ -14,6 +14,7 @@ public class AlgorithmManager : MonoBehaviour
             themesPopularity += theme;
         }
         ulong viewers = (ulong)(((ulong)_base + _subscribers) + (((ulong)_base + _subscribers) * themesPopularity * _videoQuality));
+        viewers *= (ulong)GetVirality ();
         return viewers;
     }
 
@@ -32,5 +33,16 @@ public class AlgorithmManager : MonoBehaviour
     public int GetVideoMoney ()
     {
         return 5;
+    }
+    int GetVirality ()
+    {
+        if(Random.Range(0,101) >=95)
+        {
+            return Random.Range (25, 101);
+        }
+        else
+        {
+            return 1;
+        }
     }
 }
