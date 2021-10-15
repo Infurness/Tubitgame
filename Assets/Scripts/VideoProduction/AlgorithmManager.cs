@@ -33,4 +33,15 @@ public class AlgorithmManager : MonoBehaviour
     {
         return 5;
     }
+    public int GetVirality ()
+    {
+        if(Random.Range(0,101) >=95)
+        {
+            return Random.Range (25, 101);
+        }
+        else
+        {
+            return 1;
+        }
+    }
 }
