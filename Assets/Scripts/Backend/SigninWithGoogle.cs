@@ -28,11 +28,21 @@ public class SigninWithGoogle
 
         public async Task<GoogleSignInUser> SingInWithGoogleID()
         {
-            var loginTask = GoogleSignIn.DefaultInstance.SignIn();
-            await loginTask;
+            try
+            {
+                var loginTask = GoogleSignIn.DefaultInstance.SignIn();
+                await loginTask;
             
-            OnAuthenticationFinished(loginTask);
-            return loginTask.Result;
+                OnAuthenticationFinished(loginTask);
+                return loginTask.Result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal() );
+                throw;
+            }
+           
         }
         
         
@@ -48,13 +58,24 @@ public class SigninWithGoogle
                         {
                             Reason = error.Message
                         });
+                        signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
+                        {
+                            Reason = error.Message
+                        });
+                        
+                        
                         
                     } else {
+                        signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal() );
                         Debug.Log("Got Unexpected Exception?!?" + task.Exception);
                     }
                 }
             } else if(task.IsCanceled) {
                 Debug.Log("Canceled");
+                signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
+                {
+                    Reason = "Canceled"
+                });
             } else  {
                 Debug.Log("Welcome: " + task.Result.AuthCode+ "!");
 
