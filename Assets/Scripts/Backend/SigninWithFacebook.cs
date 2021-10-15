@@ -41,20 +41,28 @@ public class SigninWithFacebook
             {
                 signalBus.Fire<OnFacebookLoginFailedSignal>(new OnFacebookLoginFailedSignal()
                 {
-                    canceled = true
+                    Canceled = true
+                });
+                signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
+                {
+                    Reason ="Canceled"
                 });
                 Debug.Log("Facebook Login Cancelled ");
             }else if ((result.AccessToken == null)||(result.Error!=null))
             {
                 signalBus.Fire<OnFacebookLoginFailedSignal>();
                 Debug.Log("Facebook Login failed "+result.Error );
+                signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
+                {
+                    Reason = result.Error
+                });
 
             }
             else
             {
                 signalBus.Fire<OnFacebookLoginSuccessSignal>(new OnFacebookLoginSuccessSignal()
                 {
-                    accessToken = result.AccessToken
+                    AccessToken = result.AccessToken
                 });
                 Debug.Log("Facebook Logged in");
             }

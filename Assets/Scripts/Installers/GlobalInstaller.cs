@@ -17,7 +17,8 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OnGoogleSignInSuccessSignal>();
     Container.DeclareSignal<OnFacebookLoginFailedSignal>();
     Container.DeclareSignal<OnFacebookLoginSuccessSignal>();
-    
+    Container.DeclareSignal<OnAppleLoginSuccessSignal>();
+    Container.DeclareSignal<OnAppleLoginFailedSignal>();
     
     //Dependencies
  

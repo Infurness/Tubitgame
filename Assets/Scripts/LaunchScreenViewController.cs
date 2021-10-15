@@ -26,30 +26,46 @@ public class LaunchScreenViewController : MonoBehaviour
         }
         signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal =>
         {
-            playFabIDText.text ="PlayFabID: "+ signal.playerID;
+            playFabIDText.text ="PlayFabID: "+ signal.PlayerID;
 
             playFabIDText.gameObject.SetActive(true);
             
         }) );
     }
 
+    private void Start()
+    {
+        signalBus.Subscribe<OnLoginFailedSignal>(signal =>
+        {
+           signInCanvas.gameObject.SetActive(true);
+        });
+    }
+
     public void OnGoogleLoginPressed()
     {
         authenticator.LoginWithGoogle();
+        signInCanvas.gameObject.SetActive(false);
+
     }
 
     public void OnFacebookLoginPressed()
     {
         authenticator.LoginWithFaceBook();
+        signInCanvas.gameObject.SetActive(false);
+
     }
 
     public void OnSkipButtonPresses()
     {
         authenticator.LoginWithDeviceID();
+        signInCanvas.gameObject.SetActive(false);
+
     }
 
     public void OnAppleLoginPressed()
     {
         authenticator.LoginWithAppleID();
+        signInCanvas.gameObject.SetActive(false);
+
     }
 }

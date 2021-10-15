@@ -33,7 +33,7 @@ namespace Google {
     /// failed to connect.</summary>
     ApiNotConnected = 1,
 
-    /// <summary>The result was canceled either due to client disconnect
+    /// <summary>The result was Canceled either due to client disconnect
     /// or cancel().</summary>
     Canceled = 2,
 

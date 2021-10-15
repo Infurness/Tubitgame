@@ -46,7 +46,7 @@ public class SigninWithGoogle
                         Debug.Log("Got Error: " + error.Status + " " + error.Message);
                         signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
                         {
-                            reason = error.Message
+                            Reason = error.Message
                         });
                         
                     } else {
@@ -60,7 +60,7 @@ public class SigninWithGoogle
 
                 signalBus.Fire(new OnGoogleSignInSuccessSignal()
                 {
-                    authCode =task.Result.AuthCode
+                    AuthCode =task.Result.AuthCode
                     
                 });
                

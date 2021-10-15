@@ -17,7 +17,8 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<EnergyValueSignal> ();
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
-        Container.DeclareSignal<GetMoneyFromVideoSignal> (); 
+        Container.DeclareSignal<GetMoneyFromVideoSignal> ();
+        
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
