@@ -20,10 +20,12 @@ public class PlayFabAuthenticator : IAuthenticator
    {
 	   signalBus = sb;
 	   swfb = new SigninWithFacebook(signalBus);
+#if UNITY_IOS
 	   _signinWithAppleID = new SigninWithAppleID(signalBus);
+	   signalBus.Subscribe<OnAppleLoginSuccessSignal>((signal => { OnAppleLoginSuccess(signal); }));
+#endif
 	  swfb.SetAutoLoginCallBack(PlayFabFacebookLogin);
 	  signalBus.Subscribe<OnFacebookLoginSuccessSignal>((signal => { PlayFabFacebookLogin(signal.AccessToken.TokenString); }));
-	  signalBus.Subscribe<OnAppleLoginSuccessSignal>((signal => { OnAppleLoginSuccess(signal); }));
    }
 	public void LoginWithDeviceID()
 	{
