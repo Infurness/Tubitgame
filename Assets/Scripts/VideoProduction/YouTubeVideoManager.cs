@@ -43,7 +43,7 @@ public class YouTubeVideoManager : MonoBehaviour
                              themeValues.ToArray (), 
                              playerDataManger.GetQuality ());
 
-        newVideo.views = videoViews * (ulong)algorithmManager.GetVirality ();
+        newVideo.views = videoViews;
         newVideo.likes = algorithmManager.GetVideoLikes(videoViews, playerDataManger.GetQuality ());
         newVideo.comments = algorithmManager.GetVideoComments(videoViews);
         newVideo.newSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
