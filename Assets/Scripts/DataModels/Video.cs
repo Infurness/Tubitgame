@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Video
@@ -11,4 +12,16 @@ public class Video
     public ulong comments;
     public ulong newSubscribers;
     public int money;
+    public int LifeTime_Mins;
+
+    public DateTime CreateDateTime
+    {
+        get;
+       private set;
+    }
+
+    public Video(DateTime createDateTime)
+    {
+        CreateDateTime = createDateTime;
+    }
 }

@@ -21,8 +21,8 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OnAppleLoginFailedSignal>();
     
     //Dependencies
- 
-    
+
+    Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance).AsSingle();
     Container.Bind<IAuthenticator>().To<PlayFabAuthenticator>().AsSingle();
   
   }

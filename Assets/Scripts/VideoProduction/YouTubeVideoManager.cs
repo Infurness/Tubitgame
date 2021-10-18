@@ -25,7 +25,7 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         string videoName = signal.videoName;
         ThemeType[] videoThemes = signal.videoThemes;
-        Video newVideo = new Video ();
+        Video newVideo = new Video (GameClock.Instance.Now);
 
         newVideo.name = videoName;
         newVideo.themes = videoThemes;
@@ -65,6 +65,10 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
     {
+        if (playerDataManger==null)
+        {
+            print("Player DataManger is Null");
+        }
         return playerDataManger.GetNumberOfVideoByThemes (_themeTypes);
     }
     public Video GetVideoByName (string _name)
