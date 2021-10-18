@@ -19,7 +19,6 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private GameObject manageVideosPanel;
     [SerializeField] private Button makeAVideoButton;
     [SerializeField] private Button manageVideosButton;
-    [SerializeField] private Color buttonsHighlightColor;
 
     [SerializeField] private Button recordVideoButton;
     bool isRecording;
@@ -42,6 +41,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenManageVideosPanel);
         _signalBus.Subscribe<EndPublishVideoSignal> (CreateVideo);
+        _signalBus.Subscribe<OpenVideoManager> (InitialState);
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
@@ -49,12 +49,10 @@ public class VideoManager_VC : MonoBehaviour
         theme1Button.onClick.AddListener (() => { OnThemeButtonPressed (1, theme1Button.GetComponentInChildren<TMP_Text>());});
         theme2Button.onClick.AddListener (() => { OnThemeButtonPressed (2, theme2Button.GetComponentInChildren<TMP_Text> ()); });
         theme3Button.onClick.AddListener (() => { OnThemeButtonPressed (3, theme3Button.GetComponentInChildren<TMP_Text> ()); });
-
-        InitialState ();
     }
     void InitialState ()
     {
-        OpenMakeAVideoPanel ();
+        OpenManageVideosPanel ();
         themesScrollView.SetActive (false);
         SetUpThemeButtons ();
         recordVideoButton.interactable = false;
@@ -78,7 +76,6 @@ public class VideoManager_VC : MonoBehaviour
         if (_panel == VideoManagerPanels.MakeAVideo)
         {
             makeAVideoPanel.SetActive (true);
-            makeAVideoButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
         }
         else
         {
@@ -90,7 +87,6 @@ public class VideoManager_VC : MonoBehaviour
         if (_panel == VideoManagerPanels.ManageVideos)
         {
             manageVideosPanel.SetActive (true);
-            manageVideosButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
         }
         else
         {

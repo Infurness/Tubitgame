@@ -22,7 +22,6 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private Button storeButton;
     private int softCurrency = 0; //Dummy Here until player data has this field
     [SerializeField] private TMP_Text softCurrencyText;
-    [SerializeField] private Color buttonsHighlightColor;
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +64,6 @@ public class HUD_VC : MonoBehaviour
         if (_screenToOpen == HUDScreen.Home)
         {
             homePanel.SetActive (true);
-            homeButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
         }
         else
         {
@@ -77,7 +75,7 @@ public class HUD_VC : MonoBehaviour
         if (_screenToOpen == HUDScreen.VideoManager)
         {
             videoManagerPanel.SetActive (true);
-            videoManagerButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
+            _signalBus.Fire<OpenVideoManager> ();
         }
         else
         {
@@ -90,7 +88,6 @@ public class HUD_VC : MonoBehaviour
         if (_screenToOpen == HUDScreen.Events)
         { 
             eventsPanel.SetActive (true);
-            eventsButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
         }
         else
         { 
@@ -101,7 +98,6 @@ public class HUD_VC : MonoBehaviour
         if (_screenToOpen == HUDScreen.Store)
         {
             storePanel.SetActive (true);
-            storeButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
         }      
         else
         {
@@ -116,6 +112,6 @@ public class HUD_VC : MonoBehaviour
     void AddSoftCurrency (GetMoneyFromVideoSignal _signal) //Dummy This should be in player manager, will be here until currency is set in player data
     {
         softCurrency+= youTubeVideoManager.RecollectVideoMoney (_signal.videoName);
-        softCurrencyText.text = $"{softCurrency}$";
+        softCurrencyText.text = $"Soft Currency: {softCurrency}$";
     }
 }

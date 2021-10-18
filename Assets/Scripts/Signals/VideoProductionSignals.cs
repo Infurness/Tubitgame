@@ -51,3 +51,8 @@ public class GetMoneyFromVideoSignal
 {
     public string videoName;
 }
+
+public class OpenVideoManager
+{
+
+}
