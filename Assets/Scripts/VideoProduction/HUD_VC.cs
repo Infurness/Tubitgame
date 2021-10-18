@@ -11,7 +11,7 @@ public class HUD_VC : MonoBehaviour
     [Inject] SignalBus _signalBus;
     [Inject] YouTubeVideoManager youTubeVideoManager;
 
-    [SerializeField] private Image energyBar;
+    [SerializeField] private TMP_Text energyText;
     [SerializeField] private GameObject homePanel;
     [SerializeField] private GameObject videoManagerPanel;
     [SerializeField] private GameObject eventsPanel;
@@ -111,7 +111,7 @@ public class HUD_VC : MonoBehaviour
     }
     void SetEnergy (EnergyValueSignal _signal)
     {
-        energyBar.fillAmount = _signal.energy / 100;
+        energyText.text = $"Energy: { (int)_signal.energy}";
     }
     void AddSoftCurrency (GetMoneyFromVideoSignal _signal) //Dummy This should be in player manager, will be here until currency is set in player data
     {

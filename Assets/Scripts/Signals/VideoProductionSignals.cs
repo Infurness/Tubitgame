@@ -51,3 +51,9 @@ public class GetMoneyFromVideoSignal
 {
     public string videoName;
 }
+
+public class ChangeHomeView
+{
+    public int view;
+    public int totalViews;
+}
