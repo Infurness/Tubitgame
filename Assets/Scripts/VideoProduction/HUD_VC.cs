@@ -16,32 +16,48 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private GameObject videoManagerPanel;
     [SerializeField] private GameObject eventsPanel;
     [SerializeField] private GameObject storePanel;
-    [SerializeField] private Button homeButton;
+    [SerializeField] private Button[] homeButtons;
     [SerializeField] private Button videoManagerButton;
     [SerializeField] private Button eventsButton;
-    [SerializeField] private Button storeButton;
+    [SerializeField] private Button[] storeButtons;
     private int softCurrency = 0; //Dummy Here until player data has this field
     [SerializeField] private TMP_Text softCurrencyText;
+    [SerializeField] private TMP_Text clockTimeText;
+    private int timeHour;
+    private int timeMinutes;
 
     // Start is called before the first frame update
     void Start()
-    {
-        OpenHomePanel ();
-        homeButton.onClick.AddListener (OpenHomePanel);
+    {     
+        foreach(Button button in homeButtons)
+            button.onClick.AddListener (OpenHomePanel);
         videoManagerButton.onClick.AddListener (OpenVideoManagerPanel);
         eventsButton.onClick.AddListener (OpenEventsPanel);
-        storeButton.onClick.AddListener (OpenStorePanel);
+        foreach(Button button in storeButtons)
+            button.onClick.AddListener (OpenStorePanel);
 
         _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
         _signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenVideoManagerPanel);
         _signalBus.Subscribe<GetMoneyFromVideoSignal> (AddSoftCurrency);
+
+        InitialState ();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(timeMinutes!= System.DateTime.Now.Minute)
+        {
+            SetTime ();
+        }
+            
+    }
+
+    void InitialState ()
+    {
+        OpenHomePanel ();
+        SetTime ();
     }
     void OpenHomePanel ()
     {
@@ -68,7 +84,6 @@ public class HUD_VC : MonoBehaviour
         else
         {
             homePanel.SetActive (false);
-            homeButton.GetComponentInChildren<Image> ().color = Color.white;
         }
 
 
@@ -80,8 +95,6 @@ public class HUD_VC : MonoBehaviour
         else
         {
             videoManagerPanel.SetActive (false);
-            videoManagerButton.GetComponentInChildren<Image> ().color = Color.white;
-
         }
 
 
@@ -92,7 +105,6 @@ public class HUD_VC : MonoBehaviour
         else
         { 
             eventsPanel.SetActive (false);
-            eventsButton.GetComponentInChildren<Image> ().color = Color.white;
         }
 
         if (_screenToOpen == HUDScreen.Store)
@@ -102,7 +114,6 @@ public class HUD_VC : MonoBehaviour
         else
         {
             storePanel.SetActive (false);
-            storeButton.GetComponentInChildren<Image> ().color = Color.white;
         }          
     }
     void SetEnergy (EnergyValueSignal _signal)
@@ -113,5 +124,12 @@ public class HUD_VC : MonoBehaviour
     {
         softCurrency+= youTubeVideoManager.RecollectVideoMoney (_signal.videoName);
         softCurrencyText.text = $"Soft Currency: {softCurrency}$";
+    }
+    void SetTime ()
+    {
+        System.DateTime time = System.DateTime.Now;
+        timeHour = time.Hour;
+        timeMinutes = time.Minute;
+        clockTimeText.text = $"{timeHour}:{timeMinutes}";
     }
 }
