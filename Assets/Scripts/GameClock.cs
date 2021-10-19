@@ -58,7 +58,7 @@ public class GameClock : MonoBehaviour
         if (timeSeted)
         {
           Now= Now.AddSeconds(Time.unscaledDeltaTime);
-         print(Now);
+//         print(Now);
         }
     }
     

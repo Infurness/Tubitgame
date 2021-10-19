@@ -32,15 +32,11 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.quality = playerDataManger.GetQuality();
 
         List<float> themeValues = new List<float> ();
-        foreach(ThemeType themeType in videoThemes)
-        {
-            themeValues.Add(themesManager.GetThemePopularity (themeType, GetTimeHour ()));
-        }
 
         ulong videoViews = algorithmManager.GetVideoViews 
                             (800, 
                              playerDataManger.GetSubscribers (), 
-                             themeValues.ToArray (), 
+                             videoThemes, 
                              playerDataManger.GetQuality ());
 
         newVideo.views = videoViews;
@@ -85,6 +81,6 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     int GetTimeHour ()
     {
-        return System.DateTime.Now.Hour;
+        return GameClock.Instance.Now.Hour;
     }
 }

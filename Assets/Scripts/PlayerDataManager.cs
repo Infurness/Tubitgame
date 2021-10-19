@@ -71,19 +71,32 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.playerName = JsonConvert.DeserializeObject<string>(datarecord.Value);
             }
 
+            if (result.Data.TryGetValue("Subscribers",out datarecord))
+            {
+                playerData.subscribers = JsonConvert.DeserializeObject<ulong>(datarecord.Value);
+            }
+
+            
+
           
         }), (error => { print("Cant Retrieve User data"); }));
     }
 
    
 
-    private void UpdateUserDatabase(string key,object data)
+    private void UpdateUserDatabase(string[] keys,object[] data)
     {
-        var dataJson = JsonConvert.SerializeObject(data,Formatting.Indented);
+      
         var dataRequest = new UpdateUserDataRequest();
-        dataRequest.Data=new Dictionary<string, string>(){{key,dataJson}};
-        PlayFabClientAPI.UpdateUserData(dataRequest, (result => { print(key+ "Updated"); }),
-            (error => { print("Cant update "+key ); }));
+        dataRequest.Data=new Dictionary<string, string>();
+        for (int i = 0; i < keys.Length; i++)
+        {
+            var dataJson = JsonConvert.SerializeObject(data[i],Formatting.Indented);
+            dataRequest.Data.Add(keys[i],dataJson);
+        }
+       
+        PlayFabClientAPI.UpdateUserData(dataRequest, (result => { print(keys[0]+ "Updated"); }),
+            (error => { print("Cant update "+keys[0] ); }));
 
     }
     public string GetPlayerName ()
@@ -94,13 +107,13 @@ public class PlayerDataManager : MonoBehaviour
     public void SetPLayerName(string playerName)
     {
         playerData.playerName = playerName;
-        UpdateUserDatabase("PlayerName",playerName);
+        UpdateUserDatabase(new[] {"PlayerName"},new[] {playerName});
     }
 
     public void AddVideo (Video _video)
     {
         playerData.videos.Add (_video);
-        UpdateUserDatabase("Videos",playerData.videos);
+        UpdateUserDatabase(new[] {"Videos"},new[] {playerData.videos});
     }
 
     public Video GetVideoByName (string _name)
@@ -160,17 +173,25 @@ public class PlayerDataManager : MonoBehaviour
     public void UpdatePlayerQuality(float newQuality)
     {
         playerData.quality = newQuality;
-        UpdateUserDatabase("PlayerQuality",playerData.quality);
+        UpdateUserDatabase(new[] {"PlayerQuality"},new  [] {playerData.quality.ToString()});
     }
     public ulong GetSubscribers ()
     {
         return playerData.subscribers;
     }
 
-    public void UpdateSubscribers(ulong newCount)
+    public List<Video> GetVideos()
     {
-        playerData.subscribers += newCount;
-        UpdateUserDatabase("Subscribers",playerData.subscribers);
+        return playerData.videos;
+    }
+
+    public void UpdateSubscribersAndVideos(ulong subscribersCount,List<Video> videos)
+    {
+        playerData.subscribers = subscribersCount;
+        playerData.videos = videos;
+        UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[] {playerData.subscribers.ToString(),videos});
         
     }
+
+
 }
