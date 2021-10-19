@@ -19,6 +19,8 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
         Container.DeclareSignal<OpenVideoManager> ();
+        Container.DeclareSignal<Recieve3BestLeaderboard> ();
+        Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
@@ -26,8 +28,8 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<YouTubeVideoManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<AlgorithmManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<ThemesManager> ().FromComponentInHierarchy ().AsSingle ();
-        
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
+        Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();
         
     }
 }
