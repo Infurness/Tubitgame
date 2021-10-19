@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class Video
@@ -12,8 +13,9 @@ public class Video
     public ulong comments;
     public ulong newSubscribers;
     public int money;
-    public int LifeTime_Mins;
-
+    public int lifeTimeHours;
+    public bool IsMiningCompleted=false;
+    public DateTime lastUpdateTime;
     public DateTime CreateDateTime
     {
         get;

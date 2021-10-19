@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class YouTubeVideoManager : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.comments = algorithmManager.GetVideoComments(videoViews);
         newVideo.newSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
         newVideo.money = algorithmManager.GetVideoMoney ();
-
+        newVideo.lifeTimeHours = Random.Range(1, 2);  
         playerDataManger.AddVideo (newVideo);
 
         _signalBus.Fire<EndPublishVideoSignal> (new EndPublishVideoSignal () {videoName = videoName });

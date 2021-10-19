@@ -5,7 +5,9 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 using Zenject;
-
+/*
+ * Todo Tested in background on phone
+ */
 public class GameClock : MonoBehaviour
 {
     public static GameClock Instance;
@@ -20,6 +22,7 @@ public class GameClock : MonoBehaviour
 
     private void Awake()
     {
+        
         if (Instance==null)
         {
             Instance = this;
@@ -58,7 +61,7 @@ public class GameClock : MonoBehaviour
         if (timeSeted)
         {
           Now= Now.AddSeconds(Time.unscaledDeltaTime);
-//         print(Now);
+        //print(Now);
         }
     }
     
