@@ -12,15 +12,20 @@ public class HomePanel_VC : MonoBehaviour
     [SerializeField] private Button publishButton;
     [SerializeField] private Image videoProgressBar;
     [SerializeField] private ScrollRect viewsScroll;
+    [SerializeField] private Button playerIconButton;
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private Button closeSettingsButton;
 
     ThemeType[] selectedThemeTypes;
     // Start is called before the first frame update
-    void Start()
+    void Start ()
     {
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
 
         publishButton.onClick.AddListener (OnPublishVideoPressed);
         viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+        playerIconButton.onClick.AddListener (() => { OpenSettingsPanel (true); });
+        closeSettingsButton.onClick.AddListener (() => { OpenSettingsPanel (false); });
 
         InitialScreenState ();
     }
@@ -30,10 +35,12 @@ public class HomePanel_VC : MonoBehaviour
     {
         
     }
+
     void InitialScreenState ()
     {
         videoProgressBar.gameObject.SetActive (false);
         publishButton.gameObject.SetActive (false);
+        OpenSettingsPanel (false);
     }
     void StartRecording (StartRecordingSignal _recordingSignal)
     {
@@ -74,5 +81,9 @@ public class HomePanel_VC : MonoBehaviour
             //Debug.Log (viewsScroll.content.position);
         }
 
+    }
+    void OpenSettingsPanel (bool open)
+    {
+        settingsPanel.SetActive (open);
     }
 }
