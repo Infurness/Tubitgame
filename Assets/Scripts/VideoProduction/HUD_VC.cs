@@ -23,9 +23,7 @@ public class HUD_VC : MonoBehaviour
     private int softCurrency = 0; //Dummy Here until player data has this field
     [SerializeField] private TMP_Text softCurrencyText;
     [SerializeField] private TMP_Text clockTimeText;
-    private int timeHour;
-    private int timeMinutes;
-
+    int timeMinutes;
     // Start is called before the first frame update
     void Start()
     {     
@@ -128,8 +126,10 @@ public class HUD_VC : MonoBehaviour
     void SetTime ()
     {
         System.DateTime time = System.DateTime.Now;
-        timeHour = time.Hour;
+        string timeHourText = time.Hour<10?$"0{time.Hour}": time.Hour.ToString();
         timeMinutes = time.Minute;
-        clockTimeText.text = $"{timeHour}:{timeMinutes}";
+        string timeMinutesText = timeMinutes < 10 ? $"0{timeMinutes}" : timeMinutes.ToString ();
+
+        clockTimeText.text = $"{timeHourText}:{timeMinutesText}";
     }
 }
