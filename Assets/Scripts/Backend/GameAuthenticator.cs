@@ -7,6 +7,8 @@ public class GameAuthenticator : MonoBehaviour
 {
 
     [Inject] private IAuthenticator authenticator;
+    
+    
 
     void Start()
     {
@@ -22,6 +24,7 @@ public class GameAuthenticator : MonoBehaviour
                 case  "GoogleSignIn": authenticator.LoginWithGoogle(); break;
             }
         }
+        
     }
 
     public void LoginWithDeviceID()

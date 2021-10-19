@@ -22,12 +22,13 @@ public class GameplayInstaller : MonoInstaller
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
-        Container.Bind<PlayerDataManager> ().FromComponentInHierarchy().AsSingle ();
         Container.Bind<YouTubeVideoManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<AlgorithmManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<ThemesManager> ().FromComponentInHierarchy ().AsSingle ();
         
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
-        
+        Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance).AsSingle();
+
+
     }
 }

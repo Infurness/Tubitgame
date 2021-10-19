@@ -1,10 +1,13 @@
 ﻿
+ using System;
  using Facebook.Unity;
  using PlayFab;
 
  public class OnPlayFabLoginSuccessesSignal
  {
      public string PlayerID;
+     public bool NewPlayer;
+     public DateTime StartTime;
      public PlayFabAuthenticationContext AuthenticationContext;
  }
 public class OnLoginFailedSignal

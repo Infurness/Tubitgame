@@ -79,6 +79,8 @@ public class PlayFabAuthenticator : IAuthenticator
 		signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
 		{
 			PlayerID = result.PlayFabId,
+			NewPlayer = result.NewlyCreated,
+			
 			AuthenticationContext = result.AuthenticationContext
 		});
 	}
@@ -141,6 +143,7 @@ public class PlayFabAuthenticator : IAuthenticator
 					signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
 					{
 						PlayerID = result.PlayFabId,
+						NewPlayer = result.NewlyCreated,
 						AuthenticationContext = result.AuthenticationContext
 					});
 					Debug.Log("PlayFabLogin with Google");
@@ -181,6 +184,7 @@ public class PlayFabAuthenticator : IAuthenticator
 			signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
 			{
 				PlayerID = result.PlayFabId,
+				NewPlayer = result.NewlyCreated,
 				AuthenticationContext = result.AuthenticationContext
 			});
 			PlayerPrefs.SetString("LoginMethod", "Facebook");
@@ -217,6 +221,7 @@ public class PlayFabAuthenticator : IAuthenticator
 			signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
 			{
 				PlayerID = result.PlayFabId,
+				NewPlayer = result.NewlyCreated,
 				AuthenticationContext = result.AuthenticationContext
 			});
 			PlayerPrefs.SetString("LoginMethod", "AppleID");

@@ -1,20 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Security.Cryptography;
 using UnityEngine;
+using Zenject;
+using Random = UnityEngine.Random;
 
 public class AlgorithmManager : MonoBehaviour
 {
+    [Inject] private ThemesManager themesManager;
+    [Inject] private SignalBus signalBus;
+    private bool shouldUpdate=true;
+    [SerializeField] private float updateTime = 15;
+    [SerializeField] public int baseNum=800;
+    private void Start()
+    {
+        StartCoroutine(UpdateTimer());
+    }
 
-    public ulong GetVideoViews (int _base, ulong _subscribers, float[] _themes, float _videoQuality)
+    public ulong GetVideoViews (int _base, ulong _subscribers, ThemeType[] _themes, float _videoQuality)
     {
         float themesPopularity = 0;
-        foreach (float theme in _themes)
+        foreach (var theme in _themes)
         {
-            themesPopularity += theme;
+            themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now.Hour);
         }
         ulong viewers = (ulong)(((ulong)_base + _subscribers) + (((ulong)_base + _subscribers) * themesPopularity * _videoQuality));
-        viewers *= (ulong)GetVirality ();
+       // viewers *= (ulong)GetVirality ();
         return viewers;
     }
 
@@ -43,6 +56,51 @@ public class AlgorithmManager : MonoBehaviour
         else
         {
             return 1;
+        }
+    }
+
+    IEnumerator UpdateTimer()
+    {
+
+        yield return new WaitForSecondsRealtime(updateTime);
+        shouldUpdate = true;
+
+    }
+    private void Update()
+    {
+        if (shouldUpdate)
+        {
+            shouldUpdate = false;
+            var videos = PlayerDataManager.Instance.GetVideos();
+            var subscribers = PlayerDataManager.Instance.GetSubscribers();
+            foreach (var video in videos)
+            {
+                print("Video Completeness" + video.IsMiningCompleted);
+                if (video.IsMiningCompleted==false)
+                {
+                    float  dt =(float) (video.lastUpdateTime-video.CreateDateTime).TotalHours*60.0f;
+                    print("dt mins = "+dt);
+                    var completePercentage = Mathf.Min((dt / (video.lifeTimeHours*60.0f)), 1.0f);
+                    print("Complete percentage "+ completePercentage);
+                    video.views=(ulong)(GetVideoViews(baseNum,subscribers,video.themes, video.quality)*completePercentage);
+                    video.likes = (ulong)(GetVideoLikes(video.views, video.quality)*completePercentage);
+                    video.comments =(ulong) (GetVideoComments(video.views)*completePercentage);
+                    video.money =(int) (GetVideoMoney()*completePercentage);
+                    video.newSubscribers =(ulong) (GetVideoSubscribers(video.views, video.quality)*completePercentage);
+                    subscribers += video.newSubscribers;
+                    video.lastUpdateTime = GameClock.Instance.Now;
+                    if (completePercentage==1.0)
+                    {
+                        video.IsMiningCompleted = true;
+                    }
+                }
+             
+
+            }
+            signalBus.TryFire<OnVideosStatsUpdatedSignal>();
+            PlayerDataManager.Instance.UpdateSubscribersAndVideos(subscribers,videos);
+            StartCoroutine(UpdateTimer());
+
         }
     }
 }

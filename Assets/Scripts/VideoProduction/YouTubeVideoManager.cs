@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class YouTubeVideoManager : MonoBehaviour
 {
@@ -25,22 +26,18 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         string videoName = signal.videoName;
         ThemeType[] videoThemes = signal.videoThemes;
-        Video newVideo = new Video ();
+        Video newVideo = new Video (GameClock.Instance.Now);
 
         newVideo.name = videoName;
         newVideo.themes = videoThemes;
         newVideo.quality = playerDataManger.GetQuality();
 
         List<float> themeValues = new List<float> ();
-        foreach(ThemeType themeType in videoThemes)
-        {
-            themeValues.Add(themesManager.GetThemePopularity (themeType, GetTimeHour ()));
-        }
 
         ulong videoViews = algorithmManager.GetVideoViews 
                             (800, 
                              playerDataManger.GetSubscribers (), 
-                             themeValues.ToArray (), 
+                             videoThemes, 
                              playerDataManger.GetQuality ());
 
         newVideo.views = videoViews;
@@ -48,7 +45,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.comments = algorithmManager.GetVideoComments(videoViews);
         newVideo.newSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
         newVideo.money = algorithmManager.GetVideoMoney ();
-
+        newVideo.lifeTimeHours = Random.Range(1, 2);  
         playerDataManger.AddVideo (newVideo);
 
         _signalBus.Fire<EndPublishVideoSignal> (new EndPublishVideoSignal () {videoName = videoName });
@@ -65,6 +62,10 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
     {
+        if (playerDataManger==null)
+        {
+            print("Player DataManger is Null");
+        }
         return playerDataManger.GetNumberOfVideoByThemes (_themeTypes);
     }
     public Video GetVideoByName (string _name)
@@ -81,6 +82,6 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     int GetTimeHour ()
     {
-        return System.DateTime.Now.Hour;
+        return GameClock.Instance.Now.Hour;
     }
 }
