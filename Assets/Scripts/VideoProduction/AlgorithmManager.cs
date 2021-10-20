@@ -80,7 +80,7 @@ public class AlgorithmManager : MonoBehaviour
                 if (!video.IsMiningCompleted)
                 {
                    
-                    double  dt =(double) (video.lastUpdateTime.Subtract(video.CreateDateTime)).Minutes;
+                    double  dt =(double) (video.lastUpdateTime.Subtract(video.CreateDateTime)).TotalMinutes;
                     print("dt mins = "+dt);
                     
                     double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeHours*60.0f)), 1.0f);

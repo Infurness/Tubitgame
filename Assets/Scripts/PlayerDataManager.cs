@@ -77,7 +77,14 @@ public class PlayerDataManager : MonoBehaviour
             {
                 playerData.subscribers = 0;
             }
-
+            if (result.Data.TryGetValue("SoftCurrency",out datarecord))
+            {
+                playerData.softCurrency = JsonConvert.DeserializeObject<ulong>(datarecord.Value);
+            }
+            else
+            {
+                playerData.softCurrency= 0;
+            }
             
 
           
