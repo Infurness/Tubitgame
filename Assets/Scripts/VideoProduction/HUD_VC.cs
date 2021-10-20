@@ -115,7 +115,7 @@ public class HUD_VC : MonoBehaviour
     }
     void AddSoftCurrency (GetMoneyFromVideoSignal _signal) //Dummy This should be in player manager, will be here until currency is set in player data
     {
-        softCurrency = PlayerDataManager.Instance.GetSoftCurrency();
+        softCurrency =PlayerDataManager.Instance.GetSoftCurrency();
         softCurrencyText.text = $"{softCurrency}$";
     }
 }
