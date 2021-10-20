@@ -72,7 +72,7 @@ public class PlayfabLeaderboard : MonoBehaviour
 
     public void GetPlayerPositionInLeaderboard ()
     {
-        string playerID = playerDataManager.GetPlayerName ();
+        string playerID = PlayerDataManager.Instance.GetPlayerName ();
 
         GetLeaderboardAroundPlayerRequest request = new GetLeaderboardAroundPlayerRequest 
         {

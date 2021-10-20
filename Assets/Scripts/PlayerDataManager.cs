@@ -21,18 +21,19 @@ public class PlayerDataManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
 
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
-
+        playerData = new PlayerData ();
     }
 
     private void Start()
     {
+        
         signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal =>
         {
             if (!signal.NewPlayer)
@@ -45,7 +46,7 @@ public class PlayerDataManager : MonoBehaviour
 
     private void GetUserData()
     {
-        playerData = new PlayerData();
+        
         GetUserDataRequest dataRequest = new GetUserDataRequest();
         dataRequest.Keys = new List<string>() {};
         PlayFabClientAPI.GetUserData(dataRequest, (result =>
