@@ -8,11 +8,11 @@ public class Video
     public string name;
     public ThemeType[] themes = new ThemeType[3];
     public float quality;
-    public ulong views;
-    public ulong likes;
-    public ulong comments;
-    public ulong newSubscribers;
-    public int money;
+    public ulong views,maxViews;
+    public ulong likes,maxLikes;
+    public ulong comments,maxComments;
+    public ulong newSubscribers,maxNewSubscribers;
+    public int money,maxMoney;
     public int lifeTimeHours;
     public bool IsMiningCompleted=false;
     public DateTime lastUpdateTime;
