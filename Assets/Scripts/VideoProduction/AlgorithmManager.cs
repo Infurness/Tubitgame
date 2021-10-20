@@ -88,10 +88,9 @@ public class AlgorithmManager : MonoBehaviour
                     video.views=(ulong)(video.maxViews*completePercentage);
                     video.likes = (ulong)(video.maxLikes*completePercentage);
                     video.comments =(ulong) (video.maxComments*completePercentage);
-                    video.videoSoftCurrency =(ulong)(video.videoMaxSoftCurrency*completePercentage);
+                    video.videoSoftCurrency =((ulong)(video.videoMaxSoftCurrency*completePercentage))-video.collectedCurrencies;
                     video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
                     subscribers += video.newSubscribers;
-                    softCurrency += video.videoSoftCurrency;
                     video.lastUpdateTime = GameClock.Instance.Now;
                     if (completePercentage==1.0)
                     {
@@ -101,13 +100,12 @@ public class AlgorithmManager : MonoBehaviour
                 else
                 {
                     subscribers += video.newSubscribers;
-                    softCurrency += video.videoSoftCurrency;
                 }
              
 
             }
             signalBus.TryFire<OnVideosStatsUpdatedSignal>();
-            PlayerDataManager.Instance.UpdatePlayerData(subscribers,softCurrency,videos);
+            PlayerDataManager.Instance.UpdatePlayerData(subscribers,videos);
             StartCoroutine(UpdateTimer());
 
         }

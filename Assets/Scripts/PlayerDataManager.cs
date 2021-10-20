@@ -163,6 +163,9 @@ public class PlayerDataManager : MonoBehaviour
     {
         Video video = GetVideoByName (_name);
         var videoMoney = video.videoSoftCurrency;
+        video.collectedCurrencies += video.videoSoftCurrency;
+        playerData.softCurrency += videoMoney;
+        UpdateUserDatabase(new[] {"SoftCurrency","Videos"},new object[]{ playerData.softCurrency,playerData.videos});
         video.videoSoftCurrency = 0;
         return videoMoney;
     }
@@ -182,7 +185,7 @@ public class PlayerDataManager : MonoBehaviour
     public void UpdatePlayerQuality(float newQuality)
     {
         playerData.quality = newQuality;
-        UpdateUserDatabase(new[] {"PlayerQuality"},new  [] {playerData.quality.ToString()});
+        UpdateUserDatabase(new[] {"PlayerQuality"},new object[] {playerData.quality});
     }
     public ulong GetSubscribers ()
     {
@@ -199,12 +202,11 @@ public class PlayerDataManager : MonoBehaviour
         return playerData.softCurrency;
 
     }
-    public void UpdatePlayerData(ulong subscribersCount,ulong softCurrency,List<Video> videos)
+    public void UpdatePlayerData(ulong subscribersCount,List<Video> videos)
     {
         playerData.subscribers = subscribersCount;
         playerData.videos = videos;
-        playerData.softCurrency = softCurrency;
-        UpdateUserDatabase(new[] {"Subscribers","Videos","SoftCurrency"},new object[] {playerData.subscribers,videos,softCurrency});
+        UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[] {playerData.subscribers,videos});
         
     }
 
