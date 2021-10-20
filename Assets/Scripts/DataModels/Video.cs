@@ -12,7 +12,8 @@ public class Video
     public ulong likes,maxLikes;
     public ulong comments,maxComments;
     public ulong newSubscribers,maxNewSubscribers;
-    public int money,maxMoney;
+    public ulong videoSoftCurrency;
+    public ulong videoMaxSoftCurrency;
     public int lifeTimeHours;
     public bool IsMiningCompleted=false;
     public DateTime lastUpdateTime;

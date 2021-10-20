@@ -41,7 +41,7 @@ public class VideoInfo_VC : MonoBehaviour
         Video video = youTubeVideoManager.GetVideoByName (_name);
         nameText.text = _name;
         videoName = _name;
-        moneyText.text = $"{video.money}$";
+        moneyText.text = $"{video.videoSoftCurrency}$";
         viewsText.text = video.views.ToString ();
         likesText.text = video.likes.ToString ();
         subscribersText.text = video.newSubscribers.ToString ();

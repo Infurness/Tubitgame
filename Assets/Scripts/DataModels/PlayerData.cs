@@ -7,4 +7,6 @@ public class PlayerData
     public List<Video> videos = new List<Video>();
     public ulong subscribers;
     public float quality = 1f;
+    public ulong softCurrency;
+    public ulong hardCurrency;
 }

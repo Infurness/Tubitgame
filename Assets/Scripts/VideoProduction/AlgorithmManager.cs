@@ -43,9 +43,9 @@ public class AlgorithmManager : MonoBehaviour
     {
         return (ulong)(_views * ((_videoQuality * 0.2f) * 0.01f));
     }
-    public int GetVideoMoney ()
+    public ulong GetVideoSoftCurrency (ulong maxViews)
     {
-        return 5;
+        return maxViews/100 ;
     }
     int GetVirality ()
     {
@@ -72,7 +72,8 @@ public class AlgorithmManager : MonoBehaviour
         {
             shouldUpdate = false;
             var videos = PlayerDataManager.Instance.GetVideos();
-            var subscribers = PlayerDataManager.Instance.GetSubscribers();
+            ulong subscribers=0;
+            ulong softCurrency=0;
             foreach (var video in videos)
             {
                 print("Video Completeness" + video.IsMiningCompleted);
@@ -87,20 +88,26 @@ public class AlgorithmManager : MonoBehaviour
                     video.views=(ulong)(video.maxViews*completePercentage);
                     video.likes = (ulong)(video.maxLikes*completePercentage);
                     video.comments =(ulong) (video.maxComments*completePercentage);
-                    video.money =(int) (video.maxMoney*completePercentage);
+                    video.videoSoftCurrency =(ulong)(video.videoMaxSoftCurrency*completePercentage);
                     video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
                     subscribers += video.newSubscribers;
+                    softCurrency += video.videoSoftCurrency;
                     video.lastUpdateTime = GameClock.Instance.Now;
                     if (completePercentage==1.0)
                     {
                         video.IsMiningCompleted = true;
                     }
                 }
+                else
+                {
+                    subscribers += video.newSubscribers;
+                    softCurrency += video.videoSoftCurrency;
+                }
              
 
             }
             signalBus.TryFire<OnVideosStatsUpdatedSignal>();
-            PlayerDataManager.Instance.UpdateSubscribersAndVideos(subscribers,videos);
+            PlayerDataManager.Instance.UpdatePlayerData(subscribers,softCurrency,videos);
             StartCoroutine(UpdateTimer());
 
         }
