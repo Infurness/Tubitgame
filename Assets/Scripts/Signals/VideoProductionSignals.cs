@@ -55,4 +55,7 @@ public class GetMoneyFromVideoSignal
 public class OpenVideoManager
 {
 
+public class OnVideosStatsUpdatedSignal
+{
+    
 }

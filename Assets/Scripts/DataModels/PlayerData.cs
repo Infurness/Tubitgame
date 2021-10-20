@@ -3,7 +3,7 @@
 [System.Serializable]
 public class PlayerData
 {
-    public string ID;
+    public string playerName;
     public List<Video> videos = new List<Video>();
     public ulong subscribers;
     public float quality = 1f;
