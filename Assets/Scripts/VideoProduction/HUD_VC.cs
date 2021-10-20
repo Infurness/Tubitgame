@@ -20,7 +20,7 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private Button videoManagerButton;
     [SerializeField] private Button eventsButton;
     [SerializeField] private Button storeButton;
-    private int softCurrency = 0; //Dummy Here until player data has this field
+    private ulong softCurrency = 0; //Dummy Here until player data has this field
     [SerializeField] private TMP_Text softCurrencyText;
     [SerializeField] private Color buttonsHighlightColor;
 
@@ -115,7 +115,7 @@ public class HUD_VC : MonoBehaviour
     }
     void AddSoftCurrency (GetMoneyFromVideoSignal _signal) //Dummy This should be in player manager, will be here until currency is set in player data
     {
-        softCurrency+= youTubeVideoManager.RecollectVideoMoney (_signal.videoName);
+        softCurrency = PlayerDataManager.Instance.GetSoftCurrency();
         softCurrencyText.text = $"{softCurrency}$";
     }
 }

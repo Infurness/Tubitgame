@@ -77,7 +77,14 @@ public class PlayerDataManager : MonoBehaviour
             {
                 playerData.subscribers = 0;
             }
-
+            if (result.Data.TryGetValue("SoftCurrency",out datarecord))
+            {
+                playerData.softCurrency = JsonConvert.DeserializeObject<ulong>(datarecord.Value);
+            }
+            else
+            {
+                playerData.softCurrency= 0;
+            }
             
 
           
@@ -152,11 +159,11 @@ public class PlayerDataManager : MonoBehaviour
         }
         return videoCounter;
     }
-    public int RecollectVideoMoney (string _name)
+    public ulong RecollectVideoMoney (string _name)
     {
         Video video = GetVideoByName (_name);
-        int videoMoney = video.money;
-        video.money = 0;
+        var videoMoney = video.videoSoftCurrency;
+        video.videoSoftCurrency = 0;
         return videoMoney;
     }
     public float GetPlayerTotalVideos ()
@@ -187,11 +194,17 @@ public class PlayerDataManager : MonoBehaviour
         return playerData.videos;
     }
 
-    public void UpdateSubscribersAndVideos(ulong subscribersCount,List<Video> videos)
+    public ulong GetSoftCurrency()
+    {
+        return playerData.softCurrency;
+
+    }
+    public void UpdatePlayerData(ulong subscribersCount,ulong softCurrency,List<Video> videos)
     {
         playerData.subscribers = subscribersCount;
         playerData.videos = videos;
-        UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[] {playerData.subscribers.ToString(),videos});
+        playerData.softCurrency = softCurrency;
+        UpdateUserDatabase(new[] {"Subscribers","Videos","SoftCurrency"},new object[] {playerData.subscribers,videos,softCurrency});
         
     }
 
