@@ -19,15 +19,15 @@ public class AlgorithmManager : MonoBehaviour
         StartCoroutine(UpdateTimer());
     }
 
-    public ulong GetVideoViews (int _base, ulong _subscribers, ThemeType[] _themes, float _videoQuality)
+    public ulong GetVideoViews (ulong _subscribers, ThemeType[] _themes, float _videoQuality)
     {
         float themesPopularity = 0;
         foreach (var theme in _themes)
         {
             themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now.Hour);
         }
-        ulong viewers = (ulong)(((ulong)_base + _subscribers) + (((ulong)_base + _subscribers) * themesPopularity * _videoQuality));
-       // viewers *= (ulong)GetVirality ();
+        ulong viewers = (ulong)(((ulong)baseNum + _subscribers) + (((ulong)baseNum + _subscribers) * themesPopularity * _videoQuality));
+        viewers *= (ulong)GetVirality ();
         return viewers;
     }
 
@@ -76,17 +76,19 @@ public class AlgorithmManager : MonoBehaviour
             foreach (var video in videos)
             {
                 print("Video Completeness" + video.IsMiningCompleted);
-                if (video.IsMiningCompleted==false)
+                if (!video.IsMiningCompleted)
                 {
-                    float  dt =(float) (video.lastUpdateTime-video.CreateDateTime).TotalHours*60.0f;
+                   
+                    double  dt =(double) (video.lastUpdateTime.Subtract(video.CreateDateTime)).Minutes;
                     print("dt mins = "+dt);
-                    var completePercentage = Mathf.Min((dt / (video.lifeTimeHours*60.0f)), 1.0f);
+                    
+                    double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeHours*60.0f)), 1.0f);
                     print("Complete percentage "+ completePercentage);
-                    video.views=(ulong)(GetVideoViews(baseNum,subscribers,video.themes, video.quality)*completePercentage);
-                    video.likes = (ulong)(GetVideoLikes(video.views, video.quality)*completePercentage);
-                    video.comments =(ulong) (GetVideoComments(video.views)*completePercentage);
-                    video.money =(int) (GetVideoMoney()*completePercentage);
-                    video.newSubscribers =(ulong) (GetVideoSubscribers(video.views, video.quality)*completePercentage);
+                    video.views=(ulong)(video.maxViews*completePercentage);
+                    video.likes = (ulong)(video.maxLikes*completePercentage);
+                    video.comments =(ulong) (video.maxComments*completePercentage);
+                    video.money =(int) (video.maxMoney*completePercentage);
+                    video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
                     subscribers += video.newSubscribers;
                     video.lastUpdateTime = GameClock.Instance.Now;
                     if (completePercentage==1.0)

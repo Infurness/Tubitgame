@@ -31,21 +31,22 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.name = videoName;
         newVideo.themes = videoThemes;
         newVideo.quality = playerDataManger.GetQuality();
-
+        var subscribers = playerDataManger.GetSubscribers();
         List<float> themeValues = new List<float> ();
 
         ulong videoViews = algorithmManager.GetVideoViews 
-                            (800, 
+                            (
                              playerDataManger.GetSubscribers (), 
                              videoThemes, 
                              playerDataManger.GetQuality ());
 
-        newVideo.views = videoViews;
-        newVideo.likes = algorithmManager.GetVideoLikes(videoViews, playerDataManger.GetQuality ());
-        newVideo.comments = algorithmManager.GetVideoComments(videoViews);
-        newVideo.newSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
-        newVideo.money = algorithmManager.GetVideoMoney ();
-        newVideo.lifeTimeHours = Random.Range(1, 2);  
+        newVideo.maxViews = videoViews;
+        newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews, playerDataManger.GetQuality ());
+        newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
+        newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
+        newVideo.maxMoney = algorithmManager.GetVideoMoney ();
+        newVideo.lifeTimeHours = Random.Range(1, 2);
+        newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
 
         _signalBus.Fire<EndPublishVideoSignal> (new EndPublishVideoSignal () {videoName = videoName });

@@ -73,6 +73,10 @@ public class PlayerDataManager : MonoBehaviour
             {
                 playerData.subscribers = JsonConvert.DeserializeObject<ulong>(datarecord.Value);
             }
+            else
+            {
+                playerData.subscribers = 0;
+            }
 
             
 
