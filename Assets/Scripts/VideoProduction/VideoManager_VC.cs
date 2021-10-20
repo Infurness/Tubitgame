@@ -35,13 +35,14 @@ public class VideoManager_VC : MonoBehaviour
 
     [SerializeField] private Transform videoInfoHolder;
     [SerializeField] private GameObject videoInfoPrefab;
+    private Dictionary<string, GameObject> videosShown = new Dictionary<string, GameObject>();
 
     // Start is called before the first frame update
     void Start ()
     {
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenManageVideosPanel);
         _signalBus.Subscribe<EndPublishVideoSignal> (CreateVideo);
-        _signalBus.Subscribe<OpenVideoManager> (InitialState);
+        _signalBus.Subscribe<OpenVideoManager> (InitialState);      
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
@@ -87,10 +88,12 @@ public class VideoManager_VC : MonoBehaviour
         if (_panel == VideoManagerPanels.ManageVideos)
         {
             manageVideosPanel.SetActive (true);
+            _signalBus.Subscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
         }
         else
         {
             manageVideosPanel.SetActive (false);
+            _signalBus.Unsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             manageVideosButton.GetComponentInChildren<Image> ().color = Color.white;
 
         }
@@ -154,6 +157,24 @@ public class VideoManager_VC : MonoBehaviour
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager);
         vc.SetVideoInfoUp (_signal.videoName);
+        videosShown.Add (_signal.videoName, videoInfoObject);
+    }
+
+    void UpdateVideoList ()
+    {
+        Debug.Log ("Update videos");
+        Video[] playerVideos = PlayerDataManager.Instance.GetVideos ().ToArray();
+        foreach(Video video in playerVideos)
+        {
+            if (videosShown.ContainsKey (video.name))
+            {
+                videosShown[video.name].GetComponent<VideoInfo_VC> ().UpdateVideoInfo ();
+            }
+            else
+            {
+                CreateVideo (new EndPublishVideoSignal { videoName = video.name});
+            }
+        }
     }
 
     IEnumerator CloseThemeSelector ()

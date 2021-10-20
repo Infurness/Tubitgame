@@ -38,9 +38,13 @@ public class VideoInfo_VC : MonoBehaviour
     }
     public void SetVideoInfoUp (string _name)
     {
-        Video video = youTubeVideoManager.GetVideoByName (_name);
-        nameText.text = _name;
         videoName = _name;
+        nameText.text = videoName;
+        UpdateVideoInfo ();
+    }
+    public void UpdateVideoInfo ()
+    {
+        Video video = youTubeVideoManager.GetVideoByName (videoName);//Dummy - can this be stored so its only called once?
         moneyText.text = $"{video.money}$";
         viewsText.text = video.views.ToString ();
         likesText.text = video.likes.ToString ();

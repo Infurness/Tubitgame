@@ -21,6 +21,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<OpenVideoManager> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
         Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();
+        Container.DeclareSignal<OnVideosStatsUpdatedSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
