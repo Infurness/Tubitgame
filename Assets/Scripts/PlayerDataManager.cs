@@ -41,6 +41,17 @@ public class PlayerDataManager : MonoBehaviour
             }
 
         }));
+        signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
+    }
+
+    void ProcessSuccessesPurchases(ProcessPurchaseSignal purchaseSignal)
+    {
+        switch (purchaseSignal.product.definition.id)
+        {
+            case "10HC": AddHardCurrency(10); break;
+            case "50HC": AddHardCurrency(50); break;
+
+        }
     }
 
     private void GetUserData()
@@ -208,6 +219,18 @@ public class PlayerDataManager : MonoBehaviour
         playerData.videos = videos;
         UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[] {playerData.subscribers,videos});
         
+    }
+
+    public void AddHardCurrency(int amount)
+    {
+        playerData.hardCurrency += (ulong)amount;
+        UpdateUserDatabase(new[] {"HardCurrency"},new object[playerData.hardCurrency]);
+    }
+
+    public void ConsumeHardCurrency(int amount)
+    {
+        playerData.hardCurrency -= (ulong) amount;
+        UpdateUserDatabase(new[] {"HardCurrency"},new object[playerData.hardCurrency]);
     }
 
 
