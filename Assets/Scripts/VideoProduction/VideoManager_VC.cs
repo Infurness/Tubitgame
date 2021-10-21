@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,16 +23,22 @@ public class VideoManager_VC : MonoBehaviour
 
     [SerializeField] private Button recordVideoButton;
     bool isRecording;
-    [SerializeField] private Button theme1Button;
-    [SerializeField] private Button theme2Button;
-    [SerializeField] private Button theme3Button;
-    [SerializeField] private GameObject themesScrollView;
-    [SerializeField] private GameObject themeSelecctionBlocker;
-    private TMP_Text lastThemeButtonPressedText;
-    private int lastThemeButtonPressedIndex;
-    private Dictionary<int,ThemeType> selectedThemes = new Dictionary<int,ThemeType>();
-    [SerializeField] private GameObject themeButtonsHolder;
-    [SerializeField] private GameObject themeButtonPrefab;
+    //[SerializeField] private Button theme1Button;
+    //[SerializeField] private Button theme2Button;
+    //[SerializeField] private Button theme3Button;
+    //[SerializeField] private GameObject themesScrollView;
+    //[SerializeField] private GameObject themeSelecctionBlocker;
+    //private TMP_Text lastThemeButtonPressedText;
+    //private int lastThemeButtonPressedIndex;
+
+    [SerializeField] private TMP_Text videoNameText;
+    [SerializeField] private Button generateVideoName;
+
+    [SerializeField] private Button[] themeSelectionButtons;
+
+    private ThemeType lastThemePressed;
+    private ThemeType[] selectedThemes;
+
 
     [SerializeField] private Transform videoInfoHolder;
     [SerializeField] private GameObject videoInfoPrefab;
@@ -42,22 +49,32 @@ public class VideoManager_VC : MonoBehaviour
     {
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenManageVideosPanel);
         _signalBus.Subscribe<EndPublishVideoSignal> (CreateVideo);
-        _signalBus.Subscribe<OpenVideoManager> (InitialState);      
+        _signalBus.Subscribe<OpenVideoManagerSignal> (InitialState);
+        _signalBus.Subscribe<ConfirmThemesSignal> (SetConfirmedThemes);
+        _signalBus.Subscribe<EndPublishVideoSignal> (ResetVideoCreationInfo);
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
         recordVideoButton.onClick.AddListener (OnRecordButtonPressed);
-        theme1Button.onClick.AddListener (() => { OnThemeButtonPressed (1, theme1Button.GetComponentInChildren<TMP_Text>());});
-        theme2Button.onClick.AddListener (() => { OnThemeButtonPressed (2, theme2Button.GetComponentInChildren<TMP_Text> ()); });
-        theme3Button.onClick.AddListener (() => { OnThemeButtonPressed (3, theme3Button.GetComponentInChildren<TMP_Text> ()); });
+        foreach(Button button in themeSelectionButtons)
+        {
+            button.onClick.AddListener (OpenThemeSelectorPopUp);
+        }
+        //theme1Button.onClick.AddListener (() => { OnThemeButtonPressed (1, theme1Button.GetComponentInChildren<TMP_Text>());});
+        //theme2Button.onClick.AddListener (() => { OnThemeButtonPressed (2, theme2Button.GetComponentInChildren<TMP_Text> ()); });
+        //theme3Button.onClick.AddListener (() => { OnThemeButtonPressed (3, theme3Button.GetComponentInChildren<TMP_Text> ()); });
     }
     void InitialState ()
     {
         OpenManageVideosPanel ();
-        themesScrollView.SetActive (false);
-        SetUpThemeButtons ();
         recordVideoButton.interactable = false;
-        OpenThemeSelector (false);
+    }
+    void ResetVideoCreationInfo ()
+    {
+        Array.Clear (selectedThemes, 0, selectedThemes.Length);
+        foreach (Button button in themeSelectionButtons)
+            button.GetComponentInChildren<TMP_Text> ().text = "+";
+        recordVideoButton.interactable = false;
     }
     // Update is called once per frame
     void Update()
@@ -88,12 +105,13 @@ public class VideoManager_VC : MonoBehaviour
         if (_panel == VideoManagerPanels.ManageVideos)
         {
             manageVideosPanel.SetActive (true);
+            _signalBus.TryUnsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             _signalBus.Subscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
         }
         else
         {
             manageVideosPanel.SetActive (false);
-            _signalBus.Unsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
+            _signalBus.TryUnsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             manageVideosButton.GetComponentInChildren<Image> ().color = Color.white;
 
         }
@@ -101,58 +119,48 @@ public class VideoManager_VC : MonoBehaviour
 
     void OnRecordButtonPressed ()
     {
-        if (_energyManager.GetEnergy () < 30 || selectedThemes.Count==0)
+        if (_energyManager.GetEnergy () < 30 || selectedThemes.Length==0)
             return;
-        recordVideoButton.interactable = false;
+
         _signalBus.Fire<StartRecordingSignal> (new StartRecordingSignal ()
         {
             recordingTime = 3f,
-            recordedThemes = selectedThemes.Values.ToArray()
+            recordedThemes = selectedThemes
         });
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -30 });
     }
-    void SetUpThemeButtons ()
+
+
+    void OpenThemeSelectorPopUp()
     {
-        foreach (ThemeType themeType in _themesManager.GetThemes ())
-        {
-            CreateThemeButton (themeType);
-        }
+        _signalBus.Fire<OpenThemeSelectorPopUpSignal> ();
     }
-    void CreateThemeButton (ThemeType _themeType)
-    {
-        GameObject button = Instantiate (themeButtonPrefab, themeButtonsHolder.transform);
-        button.GetComponent<ButtonThemePreProductionView> ().themeType = _themeType;
-        button.GetComponent<Button> ().onClick.AddListener (() => OnThemeSelected (_themeType, button.GetComponentInChildren<TMP_Text>().text));
-    }
-    void OpenThemeSelector (bool open)
-    {
-        themesScrollView.SetActive (open);
-        themeSelecctionBlocker.SetActive (open);
-        if (open)
-            StartCoroutine (CloseThemeSelector ());
-        else
-            StopAllCoroutines ();
-    }
-    void OnThemeButtonPressed (int buttonIndex, TMP_Text _themeText)
-    {
-        lastThemeButtonPressedIndex = buttonIndex;
-        lastThemeButtonPressedText = _themeText;
-        OpenThemeSelector (true);
-    }
-    void OnThemeSelected (ThemeType _themeType, string _themeName)
-    {
-        _themeName = string.Concat (_themeName.Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
-        lastThemeButtonPressedText.text = _themeName;
-        selectedThemes[lastThemeButtonPressedIndex] = _themeType;
-        recordVideoButton.interactable = true;
-        OpenThemeSelector (false);
-    }
+
+    //void OpenThemeSelector (bool open)
+    //{
+    //    themesScrollView.SetActive (open);
+    //    themeSelecctionBlocker.SetActive (open);
+    //    if (open)
+    //        StartCoroutine (CloseThemeSelector ());
+    //    else
+    //        StopAllCoroutines ();
+    //}
+    //void OnThemeButtonPressed (int buttonIndex, TMP_Text _themeText)
+    //{
+    //    lastThemeButtonPressedIndex = buttonIndex;
+    //    lastThemeButtonPressedText = _themeText;
+    //    OpenThemeSelector (true);
+    //}
+    //void OnThemeSelected (ThemeType _themeType, string _themeName)
+    //{
+    //    _themeName = string.Concat (_themeName.Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
+    //    lastThemeButtonPressedText.text = _themeName;
+    //    selectedThemes[lastThemeButtonPressedIndex] = _themeType;
+    //    recordVideoButton.interactable = true;
+    //    OpenThemeSelector (false);
+    //}
     void CreateVideo (EndPublishVideoSignal _signal)
     {
-        theme1Button.GetComponentInChildren<TMP_Text> ().text = "Theme 1";
-        theme2Button.GetComponentInChildren<TMP_Text> ().text = "Theme 2";
-        theme3Button.GetComponentInChildren<TMP_Text> ().text = "Theme 3";
-        selectedThemes.Clear ();
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager);
@@ -177,21 +185,42 @@ public class VideoManager_VC : MonoBehaviour
         }
     }
 
-    IEnumerator CloseThemeSelector ()
-    {
-        yield return WaitForAnyInput();
-        OpenThemeSelector (false);
-    }
+    //IEnumerator CloseThemeSelector ()
+    //{
+    //    yield return WaitForAnyInput();
+    //    OpenThemeSelector (false);
+    //}
 
-    IEnumerator WaitForAnyInput ()
+    //IEnumerator WaitForAnyInput ()
+    //{
+    //    bool done = false;
+    //    while(!done)
+    //    {
+    //        Vector2 mousePos = Input.mousePosition;
+    //        if (Input.anyKeyDown && !RectTransformUtility.RectangleContainsScreenPoint (themesScrollView.GetComponent<RectTransform> (), mousePos))
+    //            done = true;
+    //        yield return null;
+    //    }
+    //}
+    void SetConfirmedThemes (ConfirmThemesSignal signal)
     {
-        bool done = false;
-        while(!done)
+        for(int i=0; i < themeSelectionButtons.Length; i++)
         {
-            Vector2 mousePos = Input.mousePosition;
-            if (Input.anyKeyDown && !RectTransformUtility.RectangleContainsScreenPoint (themesScrollView.GetComponent<RectTransform> (), mousePos))
-                done = true;
-            yield return null;
+            if (signal.selectedThemesSlots.ContainsKey (i))
+            {
+                ThemeType themeType = signal.selectedThemesSlots[i];
+                themeSelectionButtons[i].GetComponentInChildren<TMP_Text>().text = string.Concat (Enum.GetName (themeType.GetType (), themeType).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
+            }
+            else
+            {
+                themeSelectionButtons[i].GetComponentInChildren<TMP_Text> ().text = "+";
+            }
         }
+        selectedThemes = signal.selectedThemesSlots.Values.ToArray();
+
+        if(selectedThemes.Length > 0)
+            recordVideoButton.interactable = true;
+        else
+            recordVideoButton.interactable = false;
     }
 }

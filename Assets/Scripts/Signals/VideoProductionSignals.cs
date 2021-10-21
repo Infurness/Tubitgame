@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class OpenThemeSelectionSignal
-{
-
-}
 public class SelectThemeSignal
 {
     public ThemeType themeType;
@@ -52,10 +48,26 @@ public class GetMoneyFromVideoSignal
     public string videoName;
 }
 
-public class OpenVideoManager
+public class OpenVideoManagerSignal
 {
 }
 public class OnVideosStatsUpdatedSignal
 {
     
+}
+
+public class OpenThemeSelectorPopUpSignal
+{
+
+}
+
+public class ThemeHeldSignal
+{
+    public GameObject themeBox;
+    public ThemeType themeType;
+    public string buttonText;
+}
+public class ConfirmThemesSignal
+{
+    public Dictionary<int, ThemeType> selectedThemesSlots;
 }

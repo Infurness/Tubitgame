@@ -61,10 +61,8 @@ public class AlgorithmManager : MonoBehaviour
 
     IEnumerator UpdateTimer()
     {
-
         yield return new WaitForSecondsRealtime(updateTime);
         shouldUpdate = true;
-
     }
     private void Update()
     {
@@ -96,12 +94,10 @@ public class AlgorithmManager : MonoBehaviour
                         video.IsMiningCompleted = true;
                     }
                 }
-             
-
             }
             signalBus.TryFire<OnVideosStatsUpdatedSignal>();
             PlayerDataManager.Instance.UpdateSubscribersAndVideos(subscribers,videos);
-            StartCoroutine(UpdateTimer());
+            StartCoroutine (UpdateTimer());
 
         }
     }

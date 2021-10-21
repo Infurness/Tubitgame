@@ -88,7 +88,7 @@ public class HUD_VC : MonoBehaviour
         if (_screenToOpen == HUDScreen.VideoManager)
         {
             videoManagerPanel.SetActive (true);
-            _signalBus.Fire<OpenVideoManager> ();
+            _signalBus.Fire<OpenVideoManagerSignal> ();
         }
         else
         {
