@@ -124,55 +124,46 @@ public class VideoManager_VC : MonoBehaviour
 
         _signalBus.Fire<StartRecordingSignal> (new StartRecordingSignal ()
         {
-            recordingTime = 3f,
-            recordedThemes = selectedThemes
+            recordedThemes = selectedThemes,
+            videoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes)
         });
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -30 });
+        StartRecordingVideo ();
     }
-
-
-    void OpenThemeSelectorPopUp()
+    
+    void StartRecordingVideo ()
     {
-        _signalBus.Fire<OpenThemeSelectorPopUpSignal> ();
+        //Create video info in the video manager screen
+        CreateVideoToRecord ();
+        //Change to video manager screen
+        OpenManageVideosPanel ();
     }
-
-    //void OpenThemeSelector (bool open)
-    //{
-    //    themesScrollView.SetActive (open);
-    //    themeSelecctionBlocker.SetActive (open);
-    //    if (open)
-    //        StartCoroutine (CloseThemeSelector ());
-    //    else
-    //        StopAllCoroutines ();
-    //}
-    //void OnThemeButtonPressed (int buttonIndex, TMP_Text _themeText)
-    //{
-    //    lastThemeButtonPressedIndex = buttonIndex;
-    //    lastThemeButtonPressedText = _themeText;
-    //    OpenThemeSelector (true);
-    //}
-    //void OnThemeSelected (ThemeType _themeType, string _themeName)
-    //{
-    //    _themeName = string.Concat (_themeName.Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
-    //    lastThemeButtonPressedText.text = _themeName;
-    //    selectedThemes[lastThemeButtonPressedIndex] = _themeType;
-    //    recordVideoButton.interactable = true;
-    //    OpenThemeSelector (false);
-    //}
+    void CreateVideoToRecord ()
+    {
+        GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
+        string newVideoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes);
+        VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
+        vc.SetReferences (_signalBus, _youTubeVideoManager);
+        vc.SetVideoInfoUp (newVideoName,
+                            3f,
+                            selectedThemes
+                            );
+        videosShown.Add (newVideoName, videoInfoObject);
+    }
     void CreateVideo (EndPublishVideoSignal _signal)
     {
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager);
-        vc.SetVideoInfoUp (_signal.videoName);
-        videosShown.Add (_signal.videoName, videoInfoObject);
+        vc.SetVideoInfoUp (_signal.video);
+        videosShown.Add (_signal.video.name, videoInfoObject);
     }
 
     void UpdateVideoList ()
     {
         Debug.Log ("Update videos");
-        Video[] playerVideos = PlayerDataManager.Instance.GetVideos ().ToArray();
-        foreach(Video video in playerVideos)
+        Video[] playerVideos = PlayerDataManager.Instance.GetVideos ().ToArray ();
+        foreach (Video video in playerVideos)
         {
             if (videosShown.ContainsKey (video.name))
             {
@@ -180,28 +171,16 @@ public class VideoManager_VC : MonoBehaviour
             }
             else
             {
-                CreateVideo (new EndPublishVideoSignal { videoName = video.name});
+                CreateVideo (new EndPublishVideoSignal { video = video });
             }
         }
     }
 
-    //IEnumerator CloseThemeSelector ()
-    //{
-    //    yield return WaitForAnyInput();
-    //    OpenThemeSelector (false);
-    //}
+    void OpenThemeSelectorPopUp()
+    {
+        _signalBus.Fire<OpenThemeSelectorPopUpSignal> ();
+    }
 
-    //IEnumerator WaitForAnyInput ()
-    //{
-    //    bool done = false;
-    //    while(!done)
-    //    {
-    //        Vector2 mousePos = Input.mousePosition;
-    //        if (Input.anyKeyDown && !RectTransformUtility.RectangleContainsScreenPoint (themesScrollView.GetComponent<RectTransform> (), mousePos))
-    //            done = true;
-    //        yield return null;
-    //    }
-    //}
     void SetConfirmedThemes (ConfirmThemesSignal signal)
     {
         for(int i=0; i < themeSelectionButtons.Length; i++)

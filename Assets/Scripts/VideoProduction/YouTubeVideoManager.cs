@@ -49,7 +49,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
 
-        _signalBus.Fire<EndPublishVideoSignal> (new EndPublishVideoSignal () {videoName = videoName });
+        _signalBus.Fire<EndPublishVideoSignal> (new EndPublishVideoSignal () {video = newVideo });
     }
     public string GetVideoNameByTheme (ThemeType[] _themeTypes)
     {

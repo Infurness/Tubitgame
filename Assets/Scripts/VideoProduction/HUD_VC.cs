@@ -35,7 +35,7 @@ public class HUD_VC : MonoBehaviour
             button.onClick.AddListener (OpenStorePanel);
 
         _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
-        _signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
+        //_signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenVideoManagerPanel);
         _signalBus.Subscribe<GetMoneyFromVideoSignal> (AddSoftCurrency);
 

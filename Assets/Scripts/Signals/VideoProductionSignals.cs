@@ -9,13 +9,13 @@ public class SelectThemeSignal
     public short ThemeId;
 }
 
-public class StartRecordingSignal
+public class StartRecordingSignal //Deprecated, this is done in VideoManager_VC - StartRecordingVideo()
 {
-    public float recordingTime;
     public ThemeType[] recordedThemes;
+    public string videoName;
 }
 
-public class StartPublishSignal
+public class StartPublishSignal //Not used
 {
 }
 
@@ -26,7 +26,7 @@ public class PublishVideoSignal
 }
 public class EndPublishVideoSignal
 {
-    public string videoName;
+    public Video video;
 }
 
 public class ShowVideosStatsSignal
