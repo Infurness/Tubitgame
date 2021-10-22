@@ -30,14 +30,17 @@ public class IAPManager : MonoBehaviour,IStoreListener
        signalBus.Subscribe<ConfirmPendingPurchaseSignal>(ConfirmPendingPurchase);
     }
 
-     void  ConfirmPendingPurchase(ConfirmPendingPurchaseSignal confirmPendingPurchaseSignal)
+
+
+    void  ConfirmPendingPurchase(ConfirmPendingPurchaseSignal confirmPendingPurchaseSignal)
     {
         controller.ConfirmPendingPurchase(confirmPendingPurchaseSignal.product);
+        
     }
 
      void PurchaseProduct(OnPurchaseProductSignal purchaseProductSignal)
     {
-     controller.InitiatePurchase(purchaseProductSignal.product.definition.id);
+     controller.InitiatePurchase(purchaseProductSignal.productID);
     }
 
     public void OnInitializeFailed(InitializationFailureReason error)
@@ -46,9 +49,9 @@ public class IAPManager : MonoBehaviour,IStoreListener
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
     {
+        print("Attempting to buy "+purchaseEvent.purchasedProduct.definition.id);
         
-        
-        signalBus.Fire<ProcessPurchaseSignal>(new ProcessPurchaseSignal()
+        signalBus.Fire(new ProcessPurchaseSignal()
         {
             product = purchaseEvent.purchasedProduct
         });

@@ -5,7 +5,7 @@ using UnityEngine.Purchasing;
 
 public class OnPurchaseProductSignal
 {
-    public Product product;
+    public string productID;
 
 }
 
