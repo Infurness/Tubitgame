@@ -276,15 +276,37 @@ public class PlayerDataManager : MonoBehaviour
         }));
     }
 
-    public void ConsumeHardCurrency(int amount)
+    public void ConsumeHardCurrency(ulong amount)
     {
+        if (amount>playerData.hardCurrency)
+        {
+            return;
+        }
         var hc = playerData.hardCurrency;
+        
         hc -= (ulong) amount;
+     
         UpdateUserDatabase(new[] {"HardCurrency"},new object[playerData.hardCurrency],(() =>
         {
             playerData.hardCurrency = hc;
         }));
+        
     }
-
+    public void ConsumeSoftCurrency(ulong amount)
+    {
+        if (amount>playerData.softCurrency)
+        {
+            return;
+        }
+        var sc = playerData.hardCurrency;
+        
+        sc -= amount;
+     
+        UpdateUserDatabase(new[] {"SoftCurrency"},new object[playerData.softCurrency],(() =>
+        {
+            playerData.softCurrency = sc;
+        }));
+        
+    }
 
 }
