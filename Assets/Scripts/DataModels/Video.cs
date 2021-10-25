@@ -9,6 +9,7 @@ public class Video
     public ThemeType[] themes = new ThemeType[3];
     public float quality;
     public ulong views,maxViews;
+    public bool isViral;
     public ulong likes,maxLikes;
     public ulong comments,maxComments;
     public ulong newSubscribers,maxNewSubscribers;
@@ -16,6 +17,7 @@ public class Video
     public int lifeTimeHours;
     public bool IsMiningCompleted=false;
     public DateTime lastUpdateTime;
+    
     public DateTime CreateDateTime
     {
         get;

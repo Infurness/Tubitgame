@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +23,10 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private TMP_Text likesText;
     [SerializeField] private TMP_Text subscribersText;
     [SerializeField] private TMP_Text commentsText;
+    [SerializeField] private GameObject subscribersPanel;
+    [SerializeField] private GameObject viralVisual;
+
+    [SerializeField] GameObject[] themeHolders;
 
     [SerializeField] private GameObject progressBarPanel;
     [SerializeField] private GameObject statsPanel;
@@ -36,14 +42,43 @@ public class VideoInfo_VC : MonoBehaviour
     void Start ()
     {
         //moneyButton.onClick.AddListener (RecollectMoney);
-        if(videoRef==null)
+        if (videoRef == null)
             StartRecordingVideo ();
+        else
+            InitialState ();
+
+        publishButton.onClick.AddListener (PublishVideo);
+        cancelButton.onClick.AddListener (CancelVideo);
     }
 
     // Update is called once per frame
     void Update ()
     {
 
+    }
+    void InitialState ()
+    {
+        CheckVirality ();
+        publishButton.gameObject.SetActive (false);
+        moneyButton.gameObject.SetActive (true);
+        statsPanel.SetActive (true);
+        subscribersPanel.SetActive (true);
+        progressBarPanel.SetActive (false);
+        SetThemes (videoRef.themes);
+    }
+    void SetThemes (ThemeType[] themesRef)
+    {
+        for (int i = 0; i < themeHolders.Length; i++)
+        {
+            if (i < themesRef.Length)
+            {
+                themeHolders[i].GetComponentInChildren<TMP_Text> ().text = string.Concat (Enum.GetName (themesRef[i].GetType (), themesRef[i]).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
+            }
+            else
+            {
+                themeHolders[i].transform.GetChild(0).gameObject.SetActive (false);
+            }
+        }
     }
     public void SetReferences (SignalBus _signalBus, YouTubeVideoManager _youTubeVideoManager)
     {
@@ -57,7 +92,7 @@ public class VideoInfo_VC : MonoBehaviour
         nameText.text = videoName;
         themeTypes = videoThemes;
         internalRecordTime = recordTime;
-        UpdateVideoInfo ();
+        SetThemes (themeTypes);
     }
     public void SetVideoInfoUp(Video video)
     {
@@ -68,10 +103,10 @@ public class VideoInfo_VC : MonoBehaviour
         if(videoRef!=null)
         {
             moneyText.text = $"{videoRef.money}$";
-            viewsText.text = videoRef.views.ToString ();
-            likesText.text = videoRef.likes.ToString ();
-            subscribersText.text = videoRef.newSubscribers.ToString ();
-            commentsText.text = videoRef.comments.ToString ();
+            viewsText.text = $"Views\n{videoRef.views}";
+            likesText.text = $"Likes\n{videoRef.likes}";
+            subscribersText.text = $"Subscribers gained: {videoRef.newSubscribers}"; 
+            commentsText.text = $"Comments\n{videoRef.comments}"; 
         }
         else
         {
@@ -100,6 +135,22 @@ public class VideoInfo_VC : MonoBehaviour
     void PublishVideo ()
     {
         signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes });
+        videoRef = youTubeVideoManager.GetVideoByName (videoName);
+        InitialState ();
+
+        UpdateVideoInfo ();
+    }
+
+    void CancelVideo ()
+    {
+        signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
+        Destroy (gameObject);
+    }
+
+    void CheckVirality ()
+    {
+        if (videoRef.isViral)
+            viralVisual.SetActive (true);
     }
 
     IEnumerator FillTheRecordImage (float time)

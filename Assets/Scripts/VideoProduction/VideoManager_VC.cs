@@ -22,7 +22,6 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private Button manageVideosButton;
 
     [SerializeField] private Button recordVideoButton;
-    bool isRecording;
     //[SerializeField] private Button theme1Button;
     //[SerializeField] private Button theme2Button;
     //[SerializeField] private Button theme3Button;
@@ -39,19 +38,22 @@ public class VideoManager_VC : MonoBehaviour
     private ThemeType lastThemePressed;
     private ThemeType[] selectedThemes;
 
-
     [SerializeField] private Transform videoInfoHolder;
     [SerializeField] private GameObject videoInfoPrefab;
     private Dictionary<string, GameObject> videosShown = new Dictionary<string, GameObject>();
+
+    [SerializeField] private GameObject skipRecodingPanelPopUp;
+    [SerializeField] private Button skipRecodingPopUpCancelButton;
 
     // Start is called before the first frame update
     void Start ()
     {
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenManageVideosPanel);
-        _signalBus.Subscribe<EndPublishVideoSignal> (CreateVideo);
         _signalBus.Subscribe<OpenVideoManagerSignal> (InitialState);
         _signalBus.Subscribe<ConfirmThemesSignal> (SetConfirmedThemes);
         _signalBus.Subscribe<EndPublishVideoSignal> (ResetVideoCreationInfo);
+        _signalBus.Subscribe<CancelVideoRecordingSignal> (ResetVideoCreationInfo);
+        _signalBus.Subscribe<CancelVideoRecordingSignal> (CancelVideoRecording);
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
@@ -60,6 +62,7 @@ public class VideoManager_VC : MonoBehaviour
         {
             button.onClick.AddListener (OpenThemeSelectorPopUp);
         }
+        skipRecodingPopUpCancelButton.onClick.AddListener (() =>  OpenSkipRecordginPopUp (false));
         //theme1Button.onClick.AddListener (() => { OnThemeButtonPressed (1, theme1Button.GetComponentInChildren<TMP_Text>());});
         //theme2Button.onClick.AddListener (() => { OnThemeButtonPressed (2, theme2Button.GetComponentInChildren<TMP_Text> ()); });
         //theme3Button.onClick.AddListener (() => { OnThemeButtonPressed (3, theme3Button.GetComponentInChildren<TMP_Text> ()); });
@@ -68,6 +71,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         OpenManageVideosPanel ();
         recordVideoButton.interactable = false;
+        skipRecodingPanelPopUp.SetActive (false);
     }
     void ResetVideoCreationInfo ()
     {
@@ -83,7 +87,14 @@ public class VideoManager_VC : MonoBehaviour
     }
     void OpenMakeAVideoPanel ()
     {
-        OpenPanel (VideoManagerPanels.MakeAVideo);
+        if (_youTubeVideoManager.IsRecording ())
+            OpenSkipRecordginPopUp (true);
+        else
+            OpenPanel (VideoManagerPanels.MakeAVideo);
+    }
+    void OpenSkipRecordginPopUp (bool open)
+    {
+        skipRecodingPanelPopUp.SetActive (open);
     }
     void OpenManageVideosPanel ()
     {
@@ -150,13 +161,13 @@ public class VideoManager_VC : MonoBehaviour
                             );
         videosShown.Add (newVideoName, videoInfoObject);
     }
-    void CreateVideo (EndPublishVideoSignal _signal)
+    void CreateVideo (Video video)
     {
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager);
-        vc.SetVideoInfoUp (_signal.video);
-        videosShown.Add (_signal.video.name, videoInfoObject);
+        vc.SetVideoInfoUp (video);
+        videosShown.Add (video.name, videoInfoObject);
     }
 
     void UpdateVideoList ()
@@ -171,7 +182,7 @@ public class VideoManager_VC : MonoBehaviour
             }
             else
             {
-                CreateVideo (new EndPublishVideoSignal { video = video });
+                CreateVideo (video);
             }
         }
     }
@@ -201,5 +212,10 @@ public class VideoManager_VC : MonoBehaviour
             recordVideoButton.interactable = true;
         else
             recordVideoButton.interactable = false;
+    }
+
+    void CancelVideoRecording (CancelVideoRecordingSignal signal)
+    {
+        videosShown.Remove (signal.name);
     }
 }

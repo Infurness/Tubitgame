@@ -37,6 +37,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
     {
         signalBus.Subscribe<ThemeHeldSignal> (StartDraggingTheme);
         signalBus.Subscribe<EndPublishVideoSignal> (InitialState);
+        signalBus.Subscribe<CancelVideoRecordingSignal> (InitialState);
 
         confirmButton.onClick.AddListener (ConfirmThemes);
 
@@ -52,6 +53,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         usedSlotsInfo.Clear ();
         foreach (GameObject draggable in draggableThemeObjects)
             draggable.SetActive (false);
+        Debug.Log ("PopupCleared");
     }
     void SetUpThemeButtons ()
     {

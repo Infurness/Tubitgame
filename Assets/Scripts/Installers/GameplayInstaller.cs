@@ -24,6 +24,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<OpenThemeSelectorPopUpSignal> ();
         Container.DeclareSignal<ThemeHeldSignal> ();
         Container.DeclareSignal<ConfirmThemesSignal> ();
+        Container.DeclareSignal<CancelVideoRecordingSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();

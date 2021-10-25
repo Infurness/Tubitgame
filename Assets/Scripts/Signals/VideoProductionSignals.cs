@@ -26,7 +26,6 @@ public class PublishVideoSignal
 }
 public class EndPublishVideoSignal
 {
-    public Video video;
 }
 
 public class ShowVideosStatsSignal
@@ -70,4 +69,9 @@ public class ThemeHeldSignal
 public class ConfirmThemesSignal
 {
     public Dictionary<int, ThemeType> selectedThemesSlots;
+}
+
+public class CancelVideoRecordingSignal
+{
+    public string name;
 }
