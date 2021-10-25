@@ -18,7 +18,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
-        
+    
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
@@ -27,7 +27,7 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<ThemesManager> ().FromComponentInHierarchy ().AsSingle ();
         
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
-        Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance).AsSingle();
+        Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
 
 
     }

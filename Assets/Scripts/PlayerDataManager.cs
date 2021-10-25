@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PlayFab;
@@ -41,6 +42,31 @@ public class PlayerDataManager : MonoBehaviour
             }
 
         }));
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += ((arg0, mode) =>
+        {
+            signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
+
+        });
+    }
+
+
+
+    void ProcessSuccessesPurchases(ProcessPurchaseSignal purchaseSignal)
+    {
+        print("Process Currencies");
+        var confirmAction = new Action(() =>
+        {
+            signalBus.Fire<ConfirmPendingPurchaseSignal>(new ConfirmPendingPurchaseSignal()
+            {
+                product = purchaseSignal.product
+            });
+        });
+        switch (purchaseSignal.product.definition.id)
+        {
+            case "10HC": AddHardCurrency(10,confirmAction);break;
+            case "50HC": AddHardCurrency(50,confirmAction); break;
+
+        }
     }
 
     private void GetUserData()
@@ -93,7 +119,7 @@ public class PlayerDataManager : MonoBehaviour
 
    
 
-    private void UpdateUserDatabase(string[] keys,object[] data)
+    private void UpdateUserDatabase(string[] keys,object[] data,Action onsuccess=null,Action onFailed=null)
     {
       
         var dataRequest = new UpdateUserDataRequest();
@@ -104,10 +130,20 @@ public class PlayerDataManager : MonoBehaviour
             dataRequest.Data.Add(keys[i],dataJson);
         }
        
-        PlayFabClientAPI.UpdateUserData(dataRequest, (result => { print(keys[0]+ "Updated"); }),
-            (error => { print("Cant update "+keys[0] ); }));
+        PlayFabClientAPI.UpdateUserData(dataRequest, (result =>
+            {
+                print(keys[0]+ "Updated") ;
+                onsuccess?.Invoke();
+
+            }),
+            (error =>
+            {
+                print("Cant update "+keys[0] ); 
+                onFailed?.Invoke();
+            }));
 
     }
+    
     public string GetPlayerName ()
     {
         return playerData.playerName;
@@ -115,14 +151,21 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SetPLayerName(string playerName)
     {
-        playerData.playerName = playerName;
-        UpdateUserDatabase(new[] {"PlayerName"},new[] {playerName});
+        UpdateUserDatabase(new[] {"PlayerName"},new[] {playerName},(() =>
+        {
+            playerData.playerName = playerName;
+ 
+        }));
     }
 
     public void AddVideo (Video _video)
     {
-        playerData.videos.Add (_video);
-        UpdateUserDatabase(new[] {"Videos"},new[] {playerData.videos});
+        var videos = playerData.videos;
+        videos.Add(_video);
+        UpdateUserDatabase(new[] {"Videos"},new[] {videos},(() =>
+        {
+            playerData.videos = videos;
+        }));
     }
 
     public Video GetVideoByName (string _name)
@@ -184,8 +227,11 @@ public class PlayerDataManager : MonoBehaviour
 
     public void UpdatePlayerQuality(float newQuality)
     {
-        playerData.quality = newQuality;
-        UpdateUserDatabase(new[] {"PlayerQuality"},new object[] {playerData.quality});
+        UpdateUserDatabase(new[] {"PlayerQuality"},new object[] {newQuality},(() =>
+        {
+            playerData.quality = newQuality;
+
+        }));
     }
     public ulong GetSubscribers ()
     {
@@ -203,12 +249,65 @@ public class PlayerDataManager : MonoBehaviour
 
     }
     public void UpdatePlayerData(ulong subscribersCount,List<Video> videos)
-    {
-        playerData.subscribers = subscribersCount;
-        playerData.videos = videos;
-        UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[] {playerData.subscribers,videos});
+    { 
+        UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[]
+        {
+            subscribersCount,
+            videos
+        },(() =>
+        {
+            playerData.subscribers = subscribersCount;
+            playerData.videos = videos; 
+        }));
         
     }
 
+     void AddHardCurrency(int amount,Action confirmPurchase=null)
+    {
+        var hc = playerData.hardCurrency;
+        hc += (ulong) amount;
+        
+        
+        UpdateUserDatabase(new[] {"HardCurrency"},new object []  {hc},(() =>
+        {
+            playerData.hardCurrency = hc;
+            print("Added HC");
+            confirmPurchase?.Invoke();
+        }));
+    }
+
+    public void ConsumeHardCurrency(ulong amount,Action onRedeemed)
+    {
+        if (amount>playerData.hardCurrency)
+        {
+            return ;
+        }
+        var hc = playerData.hardCurrency;
+        
+        hc -= amount;
+     
+        UpdateUserDatabase(new[] {"HardCurrency"},new object[hc],(() =>
+        {
+            playerData.hardCurrency = hc;
+            onRedeemed?.Invoke();
+        }));
+
+    }
+    public void ConsumeSoftCurrency(ulong amount,Action onRedeemed)
+    {
+        if (amount>playerData.softCurrency)
+        {
+            return ;
+        }
+        var sc = playerData.hardCurrency;
+        
+        sc -= amount;
+     
+        UpdateUserDatabase(new[] {"SoftCurrency"},new object[sc],(() =>
+        {
+            playerData.softCurrency = sc;
+            onRedeemed?.Invoke();
+        }));
+    }
 
 }

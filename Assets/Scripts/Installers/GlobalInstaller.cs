@@ -19,10 +19,13 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OnFacebookLoginSuccessSignal>();
     Container.DeclareSignal<OnAppleLoginSuccessSignal>();
     Container.DeclareSignal<OnAppleLoginFailedSignal>();
+    Container.DeclareSignal<OnPurchaseProductSignal>();
+    Container.DeclareSignal<ProcessPurchaseSignal>();
+    Container.DeclareSignal<ConfirmPendingPurchaseSignal>();
     
     //Dependencies
 
-    Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance).AsSingle();
+    Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
     Container.Bind<IAuthenticator>().To<PlayFabAuthenticator>().AsSingle();
   
   }
