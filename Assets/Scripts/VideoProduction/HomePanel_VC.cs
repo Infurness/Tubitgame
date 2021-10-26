@@ -9,18 +9,22 @@ public class HomePanel_VC : MonoBehaviour
     [Inject] private SignalBus _signalBus;
     [Inject] private YouTubeVideoManager youTubeVideoManager;
 
-    [SerializeField] private Button publishButton;
-    [SerializeField] private Image videoProgressBar;
+    //[SerializeField] private Button publishButton;
     [SerializeField] private ScrollRect viewsScroll;
+    [SerializeField] private Button playerIconButton;
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private Button closeSettingsButton;
 
     ThemeType[] selectedThemeTypes;
     // Start is called before the first frame update
-    void Start()
+    void Start ()
     {
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
 
-        publishButton.onClick.AddListener (OnPublishVideoPressed);
+       // publishButton.onClick.AddListener (OnPublishVideoPressed);
         viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+        playerIconButton.onClick.AddListener (() => { OpenSettingsPanel (true); });
+        closeSettingsButton.onClick.AddListener (() => { OpenSettingsPanel (false); });
 
         InitialScreenState ();
     }
@@ -30,42 +34,31 @@ public class HomePanel_VC : MonoBehaviour
     {
         
     }
+
     void InitialScreenState ()
     {
-        videoProgressBar.gameObject.SetActive (false);
-        publishButton.gameObject.SetActive (false);
+        //publishButton.gameObject.SetActive (false);
+        OpenSettingsPanel (false);
     }
     void StartRecording (StartRecordingSignal _recordingSignal)
     {
-        selectedThemeTypes = _recordingSignal.recordedThemes;
-        StopAllCoroutines ();
-        StartCoroutine (FillTheRecordImage (_recordingSignal.recordingTime));   
+        //selectedThemeTypes = _recordingSignal.recordedThemes;
+        //StopAllCoroutines ();
+        //StartCoroutine (FillTheRecordImage (_recordingSignal.recordingTime));   
     }
 
-    IEnumerator FillTheRecordImage (float time)
-    {
-        videoProgressBar.gameObject.SetActive (true);
-        float tACC = 0;
-        while (tACC < time)
-        {
-            yield return new WaitForEndOfFrame ();
-            tACC += Time.deltaTime;
-            videoProgressBar.fillAmount = tACC / time;
-        }
-        videoProgressBar.gameObject.SetActive (false);
-        publishButton.gameObject.SetActive (true);
-    }
 
-    void OnPublishVideoPressed ()
-    {
-        publishButton.gameObject.SetActive (false);
-        PublishVideo ();
-    }
-    void PublishVideo ()
-    {
-        _signalBus.Fire<ShowVideosStatsSignal> (new ShowVideosStatsSignal ());     
-        _signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = youTubeVideoManager.GetVideoNameByTheme(selectedThemeTypes), videoThemes = selectedThemeTypes});
-    }
+
+    //void OnPublishVideoPressed ()
+    //{
+    //    publishButton.gameObject.SetActive (false);
+    //    PublishVideo ();
+    //}
+    //void PublishVideo ()
+    //{
+    //    _signalBus.Fire<ShowVideosStatsSignal> (new ShowVideosStatsSignal ());     
+    //    _signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = youTubeVideoManager.GetVideoNameByTheme(selectedThemeTypes), videoThemes = selectedThemeTypes});
+    //}
     void OnViewsScroll (Vector2 vector)
     {
         if(vector!=Vector2.zero)
@@ -74,5 +67,9 @@ public class HomePanel_VC : MonoBehaviour
             //Debug.Log (viewsScroll.content.position);
         }
 
+    }
+    void OpenSettingsPanel (bool open)
+    {
+        settingsPanel.SetActive (open);
     }
 }
