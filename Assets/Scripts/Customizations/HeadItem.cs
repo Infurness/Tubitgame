@@ -3,9 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HeadItem", menuName = "Customizations/HeadItem",order = 0)]
-public class HeadItem : CharacterItem
+namespace Customizations
 {
-    public Sprite headSprite;
-    
+
+    [CreateAssetMenu(fileName = "HeadItem", menuName = "Customizations/HeadItem", order = 0)]
+    public class HeadItem : CharacterItem
+    {
+        public HeadItemType HeadItemType;
+
+        public Sprite headSprite;
+    }
+
+    public enum HeadItemType
+    {
+        Hats,
+        Hair_Style
+    }
 }

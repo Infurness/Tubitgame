@@ -10,8 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92d97aa3918dd92418efdc80f5c74674, type: 3}
-  m_Name: HeadItem 1
+  m_Name: HeadItem
   m_EditorClassIdentifier: 
-  headSprite: {fileID: 0}
-  themePopularityFactor: 0
+  itemName: 
+  logoSprite: {fileID: 0}
+  affectedTheme: 
+  themePopularityFactor: 0.1
   rareness: 0
+  HeadItemType: 0
+  headSprite: {fileID: 0}
