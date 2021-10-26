@@ -102,7 +102,7 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if(videoRef!=null)
         {
-            moneyText.text = $"{videoRef.money}$";
+            moneyText.text = $"{videoRef.videoSoftCurrency}$";
             viewsText.text = $"Views\n{videoRef.views}";
             likesText.text = $"Likes\n{videoRef.likes}";
             subscribersText.text = $"Subscribers gained: {videoRef.newSubscribers}"; 

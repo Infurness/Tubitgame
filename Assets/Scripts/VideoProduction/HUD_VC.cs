@@ -45,17 +45,12 @@ public class HUD_VC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(timeMinutes!= System.DateTime.Now.Minute)
-        {
-            SetTime ();
-        }
-            
+   
     }
 
     void InitialState ()
     {
         OpenHomePanel ();
-        SetTime ();
     }
     void OpenHomePanel ()
     {

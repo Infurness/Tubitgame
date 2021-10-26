@@ -10,7 +10,6 @@ public class HomePanel_VC : MonoBehaviour
     [Inject] private YouTubeVideoManager youTubeVideoManager;
 
     //[SerializeField] private Button publishButton;
-    [SerializeField] private Image videoProgressBar;
     [SerializeField] private ScrollRect viewsScroll;
     [SerializeField] private Button playerIconButton;
     [SerializeField] private GameObject settingsPanel;
@@ -38,7 +37,6 @@ public class HomePanel_VC : MonoBehaviour
 
     void InitialScreenState ()
     {
-        videoProgressBar.gameObject.SetActive (false);
         //publishButton.gameObject.SetActive (false);
         OpenSettingsPanel (false);
     }
@@ -49,19 +47,7 @@ public class HomePanel_VC : MonoBehaviour
         //StartCoroutine (FillTheRecordImage (_recordingSignal.recordingTime));   
     }
 
-    IEnumerator FillTheRecordImage (float time)
-    {
-        videoProgressBar.gameObject.SetActive (true);
-        float tACC = 0;
-        while (tACC < time)
-        {
-            yield return new WaitForEndOfFrame ();
-            tACC += Time.deltaTime;
-            videoProgressBar.fillAmount = tACC / time;
-        }
-        videoProgressBar.gameObject.SetActive (false);
-        //publishButton.gameObject.SetActive (true);
-    }
+
 
     //void OnPublishVideoPressed ()
     //{
