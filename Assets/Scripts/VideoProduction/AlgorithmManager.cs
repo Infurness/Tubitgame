@@ -44,9 +44,9 @@ public class AlgorithmManager : MonoBehaviour
     {
         return (ulong)(_views * ((_videoQuality * 0.2f) * 0.01f));
     }
-    public int GetVideoMoney ()
+    public ulong GetVideoSoftCurrency (ulong maxViews)
     {
-        return 5;
+        return maxViews/100 ;
     }
     int GetVirality ()
     {
@@ -64,14 +64,15 @@ public class AlgorithmManager : MonoBehaviour
         {
             shouldUpdate = false;
             var videos = PlayerDataManager.Instance.GetVideos();
-            var subscribers = PlayerDataManager.Instance.GetSubscribers();
+            ulong subscribers=0;
+            ulong softCurrency=0;
             foreach (var video in videos)
             {
                 print("Video Completeness" + video.IsMiningCompleted);
                 if (!video.IsMiningCompleted)
                 {
                    
-                    double  dt =(double) (video.lastUpdateTime.Subtract(video.CreateDateTime)).Minutes;
+                    double  dt =(double) (video.lastUpdateTime.Subtract(video.CreateDateTime)).TotalMinutes;
                     print("dt mins = "+dt);
                     
                     double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeHours*60.0f)), 1.0f);
@@ -79,7 +80,7 @@ public class AlgorithmManager : MonoBehaviour
                     video.views=(ulong)(video.maxViews*completePercentage);
                     video.likes = (ulong)(video.maxLikes*completePercentage);
                     video.comments =(ulong) (video.maxComments*completePercentage);
-                    video.money =(int) (video.maxMoney*completePercentage);
+                    video.videoSoftCurrency =((ulong)(video.videoMaxSoftCurrency*completePercentage))-video.collectedCurrencies;
                     video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
                     subscribers += video.newSubscribers;
                     video.lastUpdateTime = GameClock.Instance.Now;
@@ -88,10 +89,14 @@ public class AlgorithmManager : MonoBehaviour
                         video.IsMiningCompleted = true;
                     }
                 }
+                else
+                {
+                    subscribers += video.newSubscribers;
+                }
             }
             signalBus.TryFire<OnVideosStatsUpdatedSignal>();
-            PlayerDataManager.Instance.UpdateSubscribersAndVideos(subscribers,videos);
-            StartCoroutine (UpdateTimer());
+            PlayerDataManager.Instance.UpdatePlayerData(subscribers,videos);
+            StartCoroutine(UpdateTimer());
 
         }
     }

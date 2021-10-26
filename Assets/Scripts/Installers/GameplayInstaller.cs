@@ -33,8 +33,7 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<ThemesManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();
-
-        Container.Bind<PlayerDataManager> ().FromComponentInHierarchy ().AsSingle ();
+        Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
 
 
     }

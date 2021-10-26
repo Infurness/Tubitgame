@@ -60,7 +60,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews, playerDataManger.GetQuality ());
         newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
         newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
-        newVideo.maxMoney = algorithmManager.GetVideoMoney ();
+        newVideo.videoMaxSoftCurrency = algorithmManager.GetVideoSoftCurrency(videoViews);
         newVideo.lifeTimeHours = Random.Range(1, 2);
         newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
@@ -90,11 +90,11 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         return playerDataManger.GetVideoByName (_name);
     }
-    public int GetVideoMoneyByName (string _name)
+    public ulong GetVideoMoneyByName (string _name)
     {
-        return GetVideoByName (_name).money;
+        return GetVideoByName (_name).videoSoftCurrency;
     }
-    public int RecollectVideoMoney (string _name)
+    public ulong RecollectVideoMoney (string _name)
     {
         return playerDataManger.RecollectVideoMoney (_name);
     }
