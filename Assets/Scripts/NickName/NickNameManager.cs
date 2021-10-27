@@ -23,13 +23,7 @@ public class NickNameManager : MonoBehaviour
     }
     public void UpdatePlayerName ()
     {
-        PlayFabClientAPI.UpdateUserTitleDisplayName (new UpdateUserTitleDisplayNameRequest
-        {
-            DisplayName = nickNameText.text
-        }, result =>
-        {
-            Debug.Log ("The player's display name is now: " + result.DisplayName);
-        }, error => Debug.LogError (error.GenerateErrorReport ()));
+        PlayerDataManager.Instance.SetPLayerName (nickNameText.text);
     }
     IEnumerator LoadSceneAsync (int index)
     {
