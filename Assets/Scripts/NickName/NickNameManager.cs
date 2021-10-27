@@ -22,19 +22,11 @@ public class NickNameManager : MonoBehaviour
     void OnConfirm ()
     {
         UpdatePlayerName ();
-        StartCoroutine (LoadSceneAsync (2));
     }
     public void UpdatePlayerName ()
     {
         PlayerDataManager.Instance.SetPLayerName (nickNameText.text);
         signalBus.Fire<ChangeUsernameSignal> ();
     }
-    IEnumerator LoadSceneAsync (int index)
-    {
-        yield return new WaitForSecondsRealtime (3);
-        yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (index);
-
-    }
-
 }
 
