@@ -147,7 +147,11 @@ public class PlayerDataManager : MonoBehaviour
     
     public string GetPlayerName ()
     {
-        return playerData.playerName;
+        if (playerData != null)
+            return playerData.playerName;
+        else
+            Debug.LogError ("NO PLAYER DATA SET");
+        return "Error: NoData";    
     }
 
     public void SetPLayerName(string playerName)
@@ -236,7 +240,12 @@ public class PlayerDataManager : MonoBehaviour
     }
     public ulong GetSubscribers ()
     {
-        return playerData.subscribers;
+        if (playerData != null)
+            return playerData.subscribers;
+        else
+            Debug.LogError ("NO PLAYER DATA SET");
+        return 0;
+       
     }
 
     public List<Video> GetVideos()

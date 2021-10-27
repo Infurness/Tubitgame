@@ -25,6 +25,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<ThemeHeldSignal> ();
         Container.DeclareSignal<ConfirmThemesSignal> ();
         Container.DeclareSignal<CancelVideoRecordingSignal> ();
+        Container.DeclareSignal<ChangeUsernameSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();

@@ -38,6 +38,7 @@ public class HUD_VC : MonoBehaviour
         //_signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenVideoManagerPanel);
         _signalBus.Subscribe<GetMoneyFromVideoSignal> (AddSoftCurrency);
+        _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
 
         gameClock = GameClock.Instance;
     }
@@ -68,9 +69,16 @@ public class HUD_VC : MonoBehaviour
 
     void InitialState ()
     {
-        playerName.text = PlayerDataManager.Instance.GetPlayerName ().ToUpper();
-        playerSubscribers.text = PlayerDataManager.Instance.GetSubscribers ().ToString();
+        UpdateUsername ();
+        playerSubscribers.text = PlayerDataManager.Instance.GetSubscribers ().ToString ();
         OpenHomePanel ();
+    }
+    void UpdateUsername ()
+    {
+        if (PlayerDataManager.Instance != null)
+        {
+            playerName.text = PlayerDataManager.Instance.GetPlayerName ().ToUpper ();
+        }
     }
     void OpenHomePanel ()
     {

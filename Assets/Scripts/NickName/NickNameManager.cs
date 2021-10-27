@@ -6,9 +6,12 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using PlayFab;
 using PlayFab.ClientModels;
+using Zenject;
 
 public class NickNameManager : MonoBehaviour
 {
+    [Inject] private SignalBus signalBus;
+
     [SerializeField] private Button confirmButton;
     [SerializeField] private TMP_Text nickNameText;
     // Start is called before the first frame update
@@ -24,6 +27,7 @@ public class NickNameManager : MonoBehaviour
     public void UpdatePlayerName ()
     {
         PlayerDataManager.Instance.SetPLayerName (nickNameText.text);
+        signalBus.Fire<ChangeUsernameSignal> ();
     }
     IEnumerator LoadSceneAsync (int index)
     {
