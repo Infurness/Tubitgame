@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +11,10 @@ public class HUD_VC : MonoBehaviour
 {
     [Inject] SignalBus _signalBus;
     [Inject] YouTubeVideoManager youTubeVideoManager;
+    GameClock gameClock;
 
     [SerializeField] private TMP_Text energyText;
+    [SerializeField] private Image energyFillBar;
     [SerializeField] private GameObject homePanel;
     [SerializeField] private GameObject videoManagerPanel;
     [SerializeField] private GameObject eventsPanel;
@@ -24,6 +27,16 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private TMP_Text softCurrencyText;
     [SerializeField] private TMP_Text clockTimeText;
     int timeMinutes;
+
+    private void Awake ()
+    {
+        _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
+        //_signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
+        _signalBus.Subscribe<ShowVideosStatsSignal> (OpenVideoManagerPanel);
+        _signalBus.Subscribe<GetMoneyFromVideoSignal> (AddSoftCurrency);
+
+        gameClock = GameClock.Instance;
+    }
     // Start is called before the first frame update
     void Start()
     {     
@@ -34,18 +47,19 @@ public class HUD_VC : MonoBehaviour
         foreach(Button button in storeButtons)
             button.onClick.AddListener (OpenStorePanel);
 
-        _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
-        //_signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
-        _signalBus.Subscribe<ShowVideosStatsSignal> (OpenVideoManagerPanel);
-        _signalBus.Subscribe<GetMoneyFromVideoSignal> (AddSoftCurrency);
+        
 
         InitialState ();
     }
 
     // Update is called once per frame
     void Update()
-    {
-   
+    {     
+        if(gameClock && timeMinutes != gameClock.Now.Minute)
+        {
+            timeMinutes = gameClock.Now.Minute;
+            clockTimeText.text = gameClock.Now.ToString("t", CultureInfo.CreateSpecificCulture ("en-US").DateTimeFormat);
+        }
     }
 
     void InitialState ()
@@ -112,6 +126,7 @@ public class HUD_VC : MonoBehaviour
     void SetEnergy (EnergyValueSignal _signal)
     {
         energyText.text = $"Energy: { (int)_signal.energy}";
+        energyFillBar.fillAmount = _signal.energy / 100; //Dummy : to be replaced by max energy amount
     }
     void AddSoftCurrency (GetMoneyFromVideoSignal _signal) //Dummy This should be in player manager, will be here until currency is set in player data
     {
