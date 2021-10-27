@@ -16,6 +16,10 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private TMP_Text energyText;
     [SerializeField] private Image energyFillBar;
     [SerializeField] private GameObject homePanel;
+    [SerializeField] private GameObject playerPanel;
+    [SerializeField] private TMP_Text playerName;
+    [SerializeField] private TMP_Text playerSubscribers;
+    [SerializeField] private GameObject leaderboardsPanel;
     [SerializeField] private GameObject videoManagerPanel;
     [SerializeField] private GameObject eventsPanel;
     [SerializeField] private GameObject storePanel;
@@ -64,6 +68,8 @@ public class HUD_VC : MonoBehaviour
 
     void InitialState ()
     {
+        playerName.text = PlayerDataManager.Instance.GetPlayerName ().ToUpper();
+        playerSubscribers.text = PlayerDataManager.Instance.GetSubscribers ().ToString();
         OpenHomePanel ();
     }
     void OpenHomePanel ()
@@ -87,10 +93,14 @@ public class HUD_VC : MonoBehaviour
         if (_screenToOpen == HUDScreen.Home)
         {
             homePanel.SetActive (true);
+            playerPanel.SetActive (true);
+            leaderboardsPanel.SetActive (true);
         }
         else
         {
             homePanel.SetActive (false);
+            playerPanel.SetActive (false);
+            leaderboardsPanel.SetActive (false);
         }
 
 
@@ -125,7 +135,7 @@ public class HUD_VC : MonoBehaviour
     }
     void SetEnergy (EnergyValueSignal _signal)
     {
-        energyText.text = $"Energy: { (int)_signal.energy}";
+        energyText.text = $"{(int)_signal.energy}";
         energyFillBar.fillAmount = _signal.energy / 100; //Dummy : to be replaced by max energy amount
     }
     void AddSoftCurrency (GetMoneyFromVideoSignal _signal) //Dummy This should be in player manager, will be here until currency is set in player data

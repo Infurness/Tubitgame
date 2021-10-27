@@ -8963,6 +8963,10 @@ MonoBehaviour:
   energyText: {fileID: 486541125}
   energyFillBar: {fileID: 1015051881}
   homePanel: {fileID: 1993492102}
+  playerPanel: {fileID: 1300993384}
+  playerName: {fileID: 420550252}
+  playerSubscribers: {fileID: 1712641035}
+  leaderboardsPanel: {fileID: 1940198051}
   videoManagerPanel: {fileID: 1881887507}
   eventsPanel: {fileID: 191028577}
   storePanel: {fileID: 1027633535}
@@ -13078,7 +13082,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
