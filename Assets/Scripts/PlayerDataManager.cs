@@ -45,7 +45,6 @@ public class PlayerDataManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += ((arg0, mode) =>
         {
             signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
-
         });
     }
 
@@ -63,8 +62,12 @@ public class PlayerDataManager : MonoBehaviour
         });
         switch (purchaseSignal.product.definition.id)
         {
-            case "10HC": AddHardCurrency(10,confirmAction);break;
-            case "50HC": AddHardCurrency(50,confirmAction); break;
+            case "10HC":
+                AddHardCurrency(10, confirmAction);
+                break;
+            case "50HC":
+                AddHardCurrency(50, confirmAction);
+                break;
 
         }
     }
@@ -73,29 +76,30 @@ public class PlayerDataManager : MonoBehaviour
     {
         playerData = new PlayerData();
         GetUserDataRequest dataRequest = new GetUserDataRequest();
-        dataRequest.Keys = new List<string>() {};
+        dataRequest.Keys = new List<string>() { };
         PlayFabClientAPI.GetUserData(dataRequest, (result =>
         {
             UserDataRecord datarecord;
-            
+
             foreach (var pair in result.Data.ToList())
             {
-                print("Data pair " +pair.Key+" "+ pair.Value.Value);
+                print("Data pair " + pair.Key + " " + pair.Value.Value);
             }
+
             if (result.Data.TryGetValue("Videos", out datarecord))
             {
-                
+
                 var videosJson = datarecord.Value;
                 playerData.videos = JsonConvert.DeserializeObject<List<Video>>(videosJson);
 
             }
 
-            if (result.Data.TryGetValue("PlayerName",out datarecord))
+            if (result.Data.TryGetValue("PlayerName", out datarecord))
             {
                 playerData.playerName = JsonConvert.DeserializeObject<string>(datarecord.Value);
             }
 
-            if (result.Data.TryGetValue("Subscribers",out datarecord))
+            if (result.Data.TryGetValue("Subscribers", out datarecord))
             {
                 playerData.subscribers = JsonConvert.DeserializeObject<ulong>(datarecord.Value);
             }
@@ -103,137 +107,153 @@ public class PlayerDataManager : MonoBehaviour
             {
                 playerData.subscribers = 0;
             }
-            if (result.Data.TryGetValue("SoftCurrency",out datarecord))
+
+            if (result.Data.TryGetValue("SoftCurrency", out datarecord))
             {
                 playerData.softCurrency = JsonConvert.DeserializeObject<ulong>(datarecord.Value);
             }
             else
             {
-                playerData.softCurrency= 0;
+                playerData.softCurrency = 0;
             }
-            
 
-          
+            if (result.Data.TryGetValue("Inventory",out datarecord))
+            {
+                var inventorydata = JsonConvert.DeserializeObject<PlayerInventoryData>(datarecord.Value);
+                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
+                {
+                    PlayerInventoryData = inventorydata
+                });
+            }
+            else
+            {
+                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
+                {
+                    PlayerInventoryData = new PlayerInventoryData()
+                });
+            }
+
+
+
         }), (error => { print("Cant Retrieve User data"); }));
     }
 
-   
 
-    private void UpdateUserDatabase(string[] keys,object[] data,Action onsuccess=null,Action onFailed=null)
+
+    private void UpdateUserDatabase(string[] keys, object[] data, Action onsuccess = null, Action onFailed = null)
     {
-      
+
         var dataRequest = new UpdateUserDataRequest();
-        dataRequest.Data=new Dictionary<string, string>();
+        dataRequest.Data = new Dictionary<string, string>();
         for (int i = 0; i < keys.Length; i++)
         {
-            var dataJson = JsonConvert.SerializeObject(data[i],Formatting.Indented);
-            dataRequest.Data.Add(keys[i],dataJson);
+            var dataJson = JsonConvert.SerializeObject(data[i], Formatting.Indented);
+            dataRequest.Data.Add(keys[i], dataJson);
         }
-       
+
         PlayFabClientAPI.UpdateUserData(dataRequest, (result =>
             {
-                print(keys[0]+ "Updated") ;
+                print(keys[0] + "Updated");
                 onsuccess?.Invoke();
 
             }),
             (error =>
             {
-                print("Cant update "+keys[0] ); 
+                print("Cant update " + keys[0]);
                 onFailed?.Invoke();
             }));
 
     }
-    
-    public string GetPlayerName ()
+
+    public string GetPlayerName()
     {
         return playerData.playerName;
     }
 
     public void SetPLayerName(string playerName)
     {
-        UpdateUserDatabase(new[] {"PlayerName"},new[] {playerName},(() =>
-        {
-            playerData.playerName = playerName;
- 
-        }));
+        UpdateUserDatabase(new[] {"PlayerName"}, new[] {playerName}, (() => { playerData.playerName = playerName; }));
     }
 
-    public void AddVideo (Video _video)
+    public void AddVideo(Video _video)
     {
         var videos = playerData.videos;
         videos.Add(_video);
-        UpdateUserDatabase(new[] {"Videos"},new[] {videos},(() =>
-        {
-            playerData.videos = videos;
-        }));
+        UpdateUserDatabase(new[] {"Videos"}, new[] {videos}, (() => { playerData.videos = videos; }));
     }
 
-    public Video GetVideoByName (string _name)
+    public Video GetVideoByName(string _name)
     {
-        foreach(Video video in playerData.videos)
+        foreach (Video video in playerData.videos)
         {
-            if(video.name == _name)
+            if (video.name == _name)
             {
                 return video;
             }
         }
-        Debug.LogError ($"Video named -{_name}- does not exist");
+
+        Debug.LogError($"Video named -{_name}- does not exist");
         return null;
     }
-    public int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
+
+    public int GetNumberOfVideoByThemes(ThemeType[] _themeTypes)
     {
         int videoCounter = 0;
         foreach (Video video in playerData.videos)
         {
             bool sameThemes = true;
-            if(video.themes.Length == _themeTypes.Length)
+            if (video.themes.Length == _themeTypes.Length)
             {
-                for(int i =0; i<video.themes.Length;i++)
+                for (int i = 0; i < video.themes.Length; i++)
                 {
                     if (video.themes[i] != _themeTypes[i])
                     {
                         sameThemes = false;
                         break;
-                    }    
+                    }
                 }
+
                 if (sameThemes)
                     videoCounter++;
             }
         }
+
         return videoCounter;
     }
-    public ulong RecollectVideoMoney (string _name)
+
+    public ulong RecollectVideoMoney(string _name)
     {
-        Video video = GetVideoByName (_name);
+        Video video = GetVideoByName(_name);
         var videoMoney = video.videoSoftCurrency;
         video.collectedCurrencies += video.videoSoftCurrency;
         playerData.softCurrency += videoMoney;
-        UpdateUserDatabase(new[] {"SoftCurrency","Videos"},new object[]{ playerData.softCurrency,playerData.videos});
+        UpdateUserDatabase(new[] {"SoftCurrency", "Videos"}, new object[] {playerData.softCurrency, playerData.videos});
         video.videoSoftCurrency = 0;
         return videoMoney;
     }
-    public float GetPlayerTotalVideos ()
+
+    public float GetPlayerTotalVideos()
     {
         return playerData.videos.Count;
     }
-    public string GetLastVideoName ()
+
+    public string GetLastVideoName()
     {
-        return playerData.videos[playerData.videos.Count-1].name;
+        return playerData.videos[playerData.videos.Count - 1].name;
     }
-    public float GetQuality ()
+
+    public float GetQuality()
     {
         return playerData.quality;
     }
 
     public void UpdatePlayerQuality(float newQuality)
     {
-        UpdateUserDatabase(new[] {"PlayerQuality"},new object[] {newQuality},(() =>
-        {
-            playerData.quality = newQuality;
-
-        }));
+        UpdateUserDatabase(new[] {"PlayerQuality"}, new object[] {newQuality},
+            (() => { playerData.quality = newQuality; }));
     }
-    public ulong GetSubscribers ()
+
+    public ulong GetSubscribers()
     {
         return playerData.subscribers;
     }
@@ -248,27 +268,28 @@ public class PlayerDataManager : MonoBehaviour
         return playerData.softCurrency;
 
     }
-    public void UpdatePlayerData(ulong subscribersCount,List<Video> videos)
-    { 
-        UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[]
+
+    public void UpdatePlayerVideosSubscribersData(ulong subscribersCount, List<Video> videos)
+    {
+        UpdateUserDatabase(new[] {"Subscribers", "Videos"}, new object[]
         {
             subscribersCount,
             videos
-        },(() =>
+        }, (() =>
         {
             playerData.subscribers = subscribersCount;
-            playerData.videos = videos; 
+            playerData.videos = videos;
         }));
-        
+
     }
 
-     void AddHardCurrency(int amount,Action confirmPurchase=null)
+    void AddHardCurrency(int amount, Action confirmPurchase = null)
     {
         var hc = playerData.hardCurrency;
         hc += (ulong) amount;
-        
-        
-        UpdateUserDatabase(new[] {"HardCurrency"},new object []  {hc},(() =>
+
+
+        UpdateUserDatabase(new[] {"HardCurrency"}, new object[] {hc}, (() =>
         {
             playerData.hardCurrency = hc;
             print("Added HC");
@@ -276,38 +297,48 @@ public class PlayerDataManager : MonoBehaviour
         }));
     }
 
-    public void ConsumeHardCurrency(ulong amount,Action onRedeemed)
+    public void ConsumeHardCurrency(ulong amount, Action onRedeemed)
     {
-        if (amount>playerData.hardCurrency)
+        if (amount > playerData.hardCurrency)
         {
-            return ;
+            return;
         }
+
         var hc = playerData.hardCurrency;
-        
+
         hc -= amount;
-     
-        UpdateUserDatabase(new[] {"HardCurrency"},new object[hc],(() =>
+
+        UpdateUserDatabase(new[] {"HardCurrency"}, new object[hc], (() =>
         {
             playerData.hardCurrency = hc;
             onRedeemed?.Invoke();
         }));
 
     }
-    public void ConsumeSoftCurrency(ulong amount,Action onRedeemed)
+
+    public void ConsumeSoftCurrency(ulong amount, Action onRedeemed)
     {
-        if (amount>playerData.softCurrency)
+        if (amount > playerData.softCurrency)
         {
-            return ;
+            return;
         }
+
         var sc = playerData.hardCurrency;
-        
+
         sc -= amount;
-     
-        UpdateUserDatabase(new[] {"SoftCurrency"},new object[sc],(() =>
+
+        UpdateUserDatabase(new[] {"SoftCurrency"}, new object[sc], (() =>
         {
             playerData.softCurrency = sc;
             onRedeemed?.Invoke();
         }));
     }
+
+    public void UpdatePlayerInventoryData(PlayerInventoryData playerInventoryData)
+    {
+        UpdateUserDatabase(new string[] {"Inventory"}, new object[] {playerInventoryData});
+    }
+
+ 
 
 }

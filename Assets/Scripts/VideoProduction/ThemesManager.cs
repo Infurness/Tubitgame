@@ -2,12 +2,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class ThemesManager : MonoBehaviour
 {
 
     [SerializeField] private ScriptableTheme themesData;
+
     // Start is called before the first frame update
+    [Inject] private SignalBus signBus;
+
+    private void Start()
+    {
+        signBus.Subscribe<OnPlayerEquippedItemChangedSignal>(OnPlayerEquipmentsChanged);
+    }
+
+    void OnPlayerEquipmentsChanged(OnPlayerEquippedItemChangedSignal playerEquippedItemChangedSignal)
+    {
+        //todo Process all current equipment update themes popularity @Jorge
+    }
 
     public ThemeType[] GetThemes ()
     {

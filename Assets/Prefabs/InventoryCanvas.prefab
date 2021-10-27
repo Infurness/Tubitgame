@@ -1490,7 +1490,7 @@ Canvas:
   m_GameObject: {fileID: 612004415255082668}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1500,7 +1500,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 115
+  m_SortingOrder: 69
   m_TargetDisplay: 0
 --- !u!114 &612004415255082670
 MonoBehaviour:
@@ -1819,7 +1819,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -39.237915}
+  m_AnchoredPosition: {x: 0, y: -39.237793}
   m_SizeDelta: {x: 0, y: -78.476}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &612004415352839259
@@ -2254,6 +2254,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 612004414700138115}
     m_Modifications:
+    - target: {fileID: 1975872481944744888, guid: 5dc2edc84a051fa478c00c7e4acf1b8d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3743338633033692247, guid: 5dc2edc84a051fa478c00c7e4acf1b8d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2320,11 +2324,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3743338633033692247, guid: 5dc2edc84a051fa478c00c7e4acf1b8d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 603.6874
+      value: 603.6875
       objectReference: {fileID: 0}
     - target: {fileID: 3743338633033692247, guid: 5dc2edc84a051fa478c00c7e4acf1b8d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -41.977
+      value: -41.97705
       objectReference: {fileID: 0}
     - target: {fileID: 3743338633033692247, guid: 5dc2edc84a051fa478c00c7e4acf1b8d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2341,6 +2345,10 @@ PrefabInstance:
     - target: {fileID: 4108987573260483247, guid: 5dc2edc84a051fa478c00c7e4acf1b8d, type: 3}
       propertyPath: m_Name
       value: TabviewPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7547585003771355915, guid: 5dc2edc84a051fa478c00c7e4acf1b8d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -64.53302
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dc2edc84a051fa478c00c7e4acf1b8d, type: 3}
