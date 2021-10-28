@@ -43,4 +43,13 @@ public class ThemesManager : MonoBehaviour
         Debug.Log ($"Theme popularity is: {themPopularity}");
         return themPopularity;
     }
+    public AnimationCurve[] GetThemesPopuarityData ()
+    {
+        List<AnimationCurve> curves = new List<AnimationCurve>();
+        foreach(ThemeData data in themesData.themesData)
+        {
+            curves.Add (data.themeAlgorithm);
+        }
+        return curves.ToArray ();
+    }
 }
