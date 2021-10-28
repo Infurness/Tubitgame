@@ -3,7 +3,7 @@
 namespace Customizations
 {
     [CreateAssetMenu(fileName = "LegsItem", menuName = "Customizations/LegsItem", order = 3)]
-    public class LegsItem : CharacterItem
+    public class LegsItem : CustomizationItem
     {
         public LegsItemType LegsType;
         public Sprite legSprite;

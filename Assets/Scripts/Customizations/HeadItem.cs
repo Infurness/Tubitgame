@@ -7,7 +7,7 @@ namespace Customizations
 {
 
     [CreateAssetMenu(fileName = "HeadItem", menuName = "Customizations/HeadItem", order = 0)]
-    public class HeadItem : CharacterItem
+    public class HeadItem : CustomizationItem
     {
         public HeadItemType HeadItemType;
 

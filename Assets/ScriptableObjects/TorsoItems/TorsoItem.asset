@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8814ae8fea24a1b9314e4eaf3061680, type: 3}
   m_Name: TorsoItem
   m_EditorClassIdentifier: 
-  affectedTheme: 
-  themePopularityFactor: 0
-  rareness: 0
+  logoSprite: {fileID: 0}
+  affectedTheme:
+  - ThemeType: 1
+    themePopularityFactor: 0.1
+  rareness: 1
+  TorsoItemType: 0
   torsoSprite: {fileID: 0}

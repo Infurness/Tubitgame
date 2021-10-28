@@ -119,17 +119,17 @@ public class PlayerDataManager : MonoBehaviour
 
             if (result.Data.TryGetValue("Inventory",out datarecord))
             {
-                var inventorydata = JsonConvert.DeserializeObject<PlayerInventoryData>(datarecord.Value);
+                var inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
                 signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
                 {
-                    PlayerInventoryData = inventorydata
+                    PlayerInventoryAddressedData = inventorydata
                 });
             }
             else
             {
                 signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
                 {
-                    PlayerInventoryData = new PlayerInventoryData()
+                    PlayerInventoryAddressedData = new PlayerInventoryAddressedData()
                 });
             }
 
@@ -334,9 +334,9 @@ public class PlayerDataManager : MonoBehaviour
         }));
     }
 
-    public void UpdatePlayerInventoryData(PlayerInventoryData playerInventoryData)
+    public void UpdatePlayerInventoryData(PlayerInventoryAddressedData playerInventoryAddressedData)
     {
-        UpdateUserDatabase(new string[] {"Inventory"}, new object[] {playerInventoryData});
+        UpdateUserDatabase(new string[] {"Inventory"}, new object[] {playerInventoryAddressedData});
     }
 
  

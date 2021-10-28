@@ -1,5 +1,6 @@
 ﻿
 
+using System.Collections.Generic;
 using Customizations;
 
 public class OnHeadEquippedSignal
@@ -29,10 +30,10 @@ public class OnFeetEquippedSignal
 
 public class OnPlayerInventoryFetchedSignal
 {
-    public PlayerInventoryData PlayerInventoryData;
+    public PlayerInventoryAddressedData PlayerInventoryAddressedData;
 }
 
 public class OnPlayerEquippedItemChangedSignal
 {
-    public PlayerInventoryData PlayerInventoryData;
+    public List<CustomizationItem> CustomizationItems;
 }

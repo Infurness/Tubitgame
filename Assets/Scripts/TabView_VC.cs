@@ -6,7 +6,7 @@ using UnityEngine;
 public class TabView_VC : MonoBehaviour
 {
     [SerializeField] private int numOfTabs=1;
-    [SerializeField] private GameObject tabButtonPrefab;
+    [SerializeField] private GameObject tabButtonPrefab,tabPrefab;
     [SerializeField] private GameObject buttonsPanel;
     private GameObject[] tabsButtons;
     private void Awake()
@@ -18,6 +18,10 @@ public class TabView_VC : MonoBehaviour
         }
     }
 
+    public void CreateTab(string tabName,Action<string> itemAction)
+    {
+        
+    }
     void Start()
     {
         
