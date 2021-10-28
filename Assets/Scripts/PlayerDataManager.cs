@@ -27,13 +27,14 @@ public class PlayerDataManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
-
+        playerData = new PlayerData ();
     }
 
     private void Start()
     {
+        
         signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal =>
         {
             if (!signal.NewPlayer)
@@ -71,7 +72,7 @@ public class PlayerDataManager : MonoBehaviour
 
     private void GetUserData()
     {
-        playerData = new PlayerData();
+        
         GetUserDataRequest dataRequest = new GetUserDataRequest();
         dataRequest.Keys = new List<string>() {};
         PlayFabClientAPI.GetUserData(dataRequest, (result =>
@@ -146,7 +147,11 @@ public class PlayerDataManager : MonoBehaviour
     
     public string GetPlayerName ()
     {
-        return playerData.playerName;
+        if (playerData != null)
+            return playerData.playerName;
+        else
+            Debug.LogError ("NO PLAYER DATA SET");
+        return "Error: NoData";    
     }
 
     public void SetPLayerName(string playerName)
@@ -235,7 +240,12 @@ public class PlayerDataManager : MonoBehaviour
     }
     public ulong GetSubscribers ()
     {
-        return playerData.subscribers;
+        if (playerData != null)
+            return playerData.subscribers;
+        else
+            Debug.LogError ("NO PLAYER DATA SET");
+        return 0;
+       
     }
 
     public List<Video> GetVideos()

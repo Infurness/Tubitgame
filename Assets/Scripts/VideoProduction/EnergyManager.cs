@@ -13,6 +13,7 @@ public class EnergyManager : MonoBehaviour
     {
         _signalBus.Subscribe<AddEnergySignal> (AddEnergy);
         energy = 100; //Dummy value
+        _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energy });
     }
 
     // Update is called once per frame

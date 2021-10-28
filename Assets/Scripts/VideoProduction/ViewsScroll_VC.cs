@@ -4,13 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ViewsScrollController : MonoBehaviour,IEndDragHandler,IBeginDragHandler
+public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
 {
     [SerializeField] private RectTransform canvas;
     [SerializeField] private RectTransform contentPanel;
+    [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private RectTransform[] views;
-    int currentViewIndex;
-    private ScrollRect scrollRect;
+    [SerializeField] private GameObject rightButtonPanel;
+    [SerializeField] private GameObject leftButtonPanel;
+    [SerializeField] private Button rightButton;
+    [SerializeField] private Button leftButton;
+    int currentViewIndex;   
     private float startContentPosX;
     [SerializeField] float movementSpeed;
 
@@ -19,12 +23,19 @@ public class ViewsScrollController : MonoBehaviour,IEndDragHandler,IBeginDragHan
     // Start is called before the first frame update
     void Start()
     { 
-        scrollRect = GetComponent<ScrollRect> ();
-        if (scrollRect == null)
-            Debug.LogError ($"No ScrollRect set in {gameObject.name}");
         ResizeContentPanel ();
         previousScreenSize = new Vector2 (Screen.width, Screen.height);
+        rightButton.onClick.AddListener (()=> { ScrollView (1); });
+        leftButton.onClick.AddListener (() => { ScrollView (-1); });
+        StartingState ();
     }
+
+    void StartingState ()
+    {
+        currentViewIndex = 0;
+        leftButtonPanel.SetActive (false);
+    }
+
     void ResizeContentPanel ()
     {
         contentPanel.sizeDelta = new Vector2 (canvas.sizeDelta.x * (views.Length-1), contentPanel.sizeDelta.y);
@@ -44,14 +55,37 @@ public class ViewsScrollController : MonoBehaviour,IEndDragHandler,IBeginDragHan
     public void OnEndDrag (PointerEventData _eventData)
     {
         float scrollDir = scrollRect.content.position.x - startContentPosX;
-        int newViewIndex = currentViewIndex;
+        int movement = 0;
         if (scrollDir < 0)
-            newViewIndex += 1;
+            movement = 1;
         else if (scrollDir > 0)
-            newViewIndex -= 1;
+            movement = -1;
 
-        if(newViewIndex >= 0 && newViewIndex < views.Length)
+        ScrollView (movement);
+    }
+
+    void ScrollView(int movement)
+    {
+        int newViewIndex = currentViewIndex + movement;
+        if (newViewIndex >= 0 && newViewIndex < views.Length)
         {
+            if (newViewIndex == 0)
+            {
+                rightButtonPanel.SetActive(true);
+                leftButtonPanel.SetActive (false);
+            }
+            else if( newViewIndex == views.Length - 1)
+            {
+                rightButtonPanel.SetActive (false);
+                leftButtonPanel.SetActive (true);
+            }
+            else
+            {
+                rightButtonPanel.SetActive (true);
+                leftButtonPanel.SetActive (true);
+            }
+                
+
             currentViewIndex = newViewIndex;
             StartCoroutine (SmoothSnapTo (views[newViewIndex]));
         }
