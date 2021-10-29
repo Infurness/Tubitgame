@@ -105,12 +105,13 @@ public class VideoManager_VC : MonoBehaviour
         if (_panel == VideoManagerPanels.MakeAVideo)
         {
             makeAVideoPanel.SetActive (true);
+            _signalBus.Fire<OpenVideoCreationSignal> ();
         }
         else
         {
             makeAVideoPanel.SetActive (false);
             makeAVideoButton.GetComponentInChildren<Image> ().color = Color.white;
-
+            _signalBus.Fire<CloseVideoCreationSignal> ();
         }
 
         if (_panel == VideoManagerPanels.ManageVideos)

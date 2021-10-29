@@ -5,33 +5,84 @@ using Zenject;
 
 public class ThemeGraph_VC : MonoBehaviour
 {
+    [Inject] private SignalBus signalBus;
     [Inject] private ThemesManager themesManager;
+
+    [SerializeField] private int refreshGraphSecondsRate = 300;
 
     [SerializeField] private Transform baseObject;
     [SerializeField] private GameObject graphLine;
     [SerializeField] private float enlargerValue;
+    [Tooltip ("Variable used to make de animation curve line renderer fit the graph in scene")]
+    [SerializeField] private float timeConversion;
+    [Tooltip("Variable used to make de animation curve line renderer fit the graph in scene")]
+    [SerializeField] private float valueConversion;
 
+    Dictionary<LineRenderer, ThemeData> lineRenderers = new Dictionary<LineRenderer, ThemeData> ();
     // Start is called before the first frame update
     void Start()
     {
-        foreach(AnimationCurve curve in themesManager.GetThemesPopuarityData ())
+        foreach(ThemeData themedata in themesManager.GetThemesData ())
         {
             GameObject newGraphLine = Instantiate (graphLine, baseObject);
             newGraphLine.transform.localPosition = Vector3.zero;
+
             LineRenderer lr = newGraphLine.GetComponent<LineRenderer> ();
-            lr.startWidth = enlargerValue / 100;
-            lr.positionCount = curve.keys.Length;
-            Color rndColor = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
-            lr.startColor = rndColor;
-            lr.endColor = rndColor;
+            lineRenderers.Add (lr, themedata);            
+        }
+        signalBus.Subscribe<OpenVideoCreationSignal> (StartGraph);
+        signalBus.Subscribe<CloseVideoCreationSignal> (StopGraph);
+    }
+
+    void StartGraph ()
+    {
+        StartCoroutine( UpdateGraphPeriodically ());
+    }
+
+    void StopGraph ()
+    {
+        StopAllCoroutines ();
+    }
+    void UpdateGraph ()
+    {       
+        foreach (KeyValuePair<LineRenderer,ThemeData> dictSlot in lineRenderers)
+        {
+            AnimationCurve themeCurve = themesManager.GetThemeAlgorithm (dictSlot.Value, GameClock.Instance.Now);
+            dictSlot.Key.startWidth = enlargerValue / 100;
+            int hour = GameClock.Instance.Now.Hour % 6;
+            float minutes = (float)GameClock.Instance.Now.Minute * 100f / 60f;
+            float limitTimeValue = (hour + (minutes / 100)) / 6f;
+            dictSlot.Key.startColor = dictSlot.Value.graphLineColor;
+            dictSlot.Key.endColor = dictSlot.Value.graphLineColor;
+            dictSlot.Key.positionCount = 0;
             int i = 0;
-            foreach(Keyframe key in curve.keys)
+            foreach (Keyframe key in themeCurve.keys)
             {
-                Vector3 lrNewPos = newGraphLine.transform.position;
-                lrNewPos += new Vector3 (key.time, key.value, 0)* enlargerValue;
-                lr.SetPosition (i, lrNewPos);
+                dictSlot.Key.positionCount += 1;
+                Vector3 lrNewPos = dictSlot.Key.gameObject.transform.position;
+                if (key.time < limitTimeValue)
+                {
+                    lrNewPos += new Vector3 (key.time * timeConversion, key.value * valueConversion, 0) * enlargerValue;
+                    dictSlot.Key.SetPosition (i, lrNewPos);
+                }
+                else
+                {
+                    lrNewPos += new Vector3 (limitTimeValue * timeConversion, themeCurve.Evaluate (limitTimeValue) * valueConversion, 0) * enlargerValue;
+                    dictSlot.Key.SetPosition (i, lrNewPos);
+                    break;
+                }
                 i++;
             }
+            Debug.Log ("ReDraw Graph");
         }
+    }
+
+    IEnumerator UpdateGraphPeriodically ()
+    {
+        do
+        {
+            UpdateGraph ();
+            yield return new WaitForSecondsRealtime (refreshGraphSecondsRate);//5 minutes
+        } while (true);
     }
 }

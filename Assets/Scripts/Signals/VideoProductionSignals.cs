@@ -50,6 +50,12 @@ public class GetMoneyFromVideoSignal
 public class OpenVideoManagerSignal
 {
 }
+public class OpenVideoCreationSignal
+{
+}
+public class CloseVideoCreationSignal
+{
+}
 public class OnVideosStatsUpdatedSignal
 {
     

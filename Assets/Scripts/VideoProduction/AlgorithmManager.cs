@@ -24,7 +24,7 @@ public class AlgorithmManager : MonoBehaviour
         float themesPopularity = 0;
         foreach (var theme in _themes)
         {
-            themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now.Hour);
+            themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now);
         }
         ulong viewers = (ulong)(((ulong)baseNum + _subscribers) + (((ulong)baseNum + _subscribers) * themesPopularity * _videoQuality));
         if(isViral)
