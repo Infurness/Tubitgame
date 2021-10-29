@@ -1,4 +1,5 @@
 
+using TMPro;
 using UnityEngine;
 
 namespace Customizations
@@ -8,6 +9,10 @@ namespace Customizations
         public Sprite logoSprite;
         public CustomizationThemeEffect[] affectedTheme;
         public Rareness rareness=Rareness.Common;
+        [TextArea]
+        public string descriptionText;
+
+        [TextArea] public string newStatsText;
     }
     
     

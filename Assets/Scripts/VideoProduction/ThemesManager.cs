@@ -26,7 +26,10 @@ public class ThemesManager : MonoBehaviour
 
     void OnPlayerEquipmentsChanged(OnPlayerEquippedItemChangedSignal playerEquippedItemChangedSignal)
     {
-        
+        foreach (var themeEffect in bounsEffect)
+        {
+            themeEffect.themePopularityFactor = 0;
+        }
         foreach (var item in playerEquippedItemChangedSignal.CustomizationItems)
         {
             foreach (var themeEffect in item.affectedTheme)

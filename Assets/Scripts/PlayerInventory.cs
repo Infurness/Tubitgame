@@ -10,7 +10,7 @@ public class PlayerInventory : MonoBehaviour
 {
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private SignalBus signalBus;
-    private PlayerInventoryAddressedData m_PlayerInventoryAddressedData;
+    [SerializeField] PlayerInventoryAddressedData m_PlayerInventoryAddressedData;
     public HeadItem currentHead;
     public FaceItem currentFace;
     public TorsoItem currentTorso;
@@ -23,8 +23,8 @@ public class PlayerInventory : MonoBehaviour
     public List<FeetItem> FeetItems;
     void Start()
     {
-       signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
-
+     //  signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
+     LoadAddressedData();
     }
 
      async void LoadAddressedData()
@@ -35,7 +35,6 @@ public class PlayerInventory : MonoBehaviour
         {
             var items= (List<CustomizationItem>) assets.Result;
             
-            print("Heads Loaded"+ items.Count);
             foreach (var item in items)
             {
                 switch (item)
@@ -59,7 +58,9 @@ public class PlayerInventory : MonoBehaviour
                         throw new ArgumentOutOfRangeException();
                 }
             }
-           // FaceItems=(List<FaceItem>)heads.Result;
+
+            currentHead = HeadItems.Find((hi) => hi.name == m_PlayerInventoryAddressedData.currentHead);
+            // FaceItems=(List<FaceItem>)heads.Result;
         }
         else
         {
@@ -138,7 +139,6 @@ public class PlayerInventory : MonoBehaviour
     public void EquipHead(HeadItem headItem)
     {
         m_PlayerInventoryAddressedData.currentHead = headItem.name;
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
         signalBus.Fire<OnHeadEquippedSignal>(new OnHeadEquippedSignal()
         {
             HeadItem = headItem
@@ -147,6 +147,8 @@ public class PlayerInventory : MonoBehaviour
         {
             CustomizationItems = new List<CustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
         });
+        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+
 
     }
     public void EquipFace(FaceItem faceItem)
