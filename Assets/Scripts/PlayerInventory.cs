@@ -60,6 +60,11 @@ public class PlayerInventory : MonoBehaviour
             }
 
             currentHead = HeadItems.Find((hi) => hi.name == m_PlayerInventoryAddressedData.currentHead);
+            currentFace = FaceItems.Find(item => item.name == m_PlayerInventoryAddressedData.currentFace);
+            currentTorso = TorsoItems.Find(item => item.name == m_PlayerInventoryAddressedData.currentTorso);
+            currentFeet = FeetItems.Find(item => item.name == m_PlayerInventoryAddressedData.currentFeet);
+            currentLegs = LegsItems.Find(item => item.name == m_PlayerInventoryAddressedData.currentLegs);
+
             // FaceItems=(List<FaceItem>)heads.Result;
         }
         else

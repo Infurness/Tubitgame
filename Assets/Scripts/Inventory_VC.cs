@@ -21,8 +21,9 @@ public class Inventory_VC : MonoBehaviour
     [SerializeField] private TMP_Text equippedText, selectedText;
     [SerializeField] private TMP_Text equippedStatsText, selectedStatsText;
     [SerializeField] private Image equippedImage, selectedImage;
-    
-    
+    [SerializeField] private Button backButton;
+    [SerializeField] private GameObject characterSlotsPanel,roomSlotsPanel,buttonsPanel;
+    [SerializeField] private Canvas inventoryCanvas;
     void Start()
     {
         headBt.onClick.AddListener(OnHeadButtonClicked);
@@ -42,53 +43,25 @@ public class Inventory_VC : MonoBehaviour
         // feetBt.image.sprite = playerInventory.currentFeet.logoSprite;
     }
 
-    public void OnHeadButtonClicked()
+   
+
+    private void SetEquippedPanelData(string description,string newStats,Sprite logoSprite,string itemName,string rarenessText)
     {
-        inventoryTabView.gameObject.SetActive(true);
-        foreach (var button in inventoryButtons)
-        {
-            Destroy(button.gameObject);
-        }
-             inventoryButtons.Clear();
-             var equippedHead = playerInventory.currentHead;
-        equippedText.text =equippedHead.descriptionText;
-        equippedStatsText.text =equippedHead.newStatsText;
-        equippedImage.sprite = equippedHead.logoSprite;
-        equippedItemName.text = equippedHead.name;
-        equippedItemRareness.text = equippedHead.rareness.ToString()+" "+equippedHead.HeadItemType.ToString();
+        equippedText.text = description;
+        equippedStatsText.text =newStats;
+        equippedImage.sprite = logoSprite;
+        equippedItemName.text = itemName;
+        equippedItemRareness.text = rarenessText;
         equipPanel.SetActive(true);
-
-        foreach (var headItem in playerInventory.HeadItems)
-        {
-            InventoryButton invBt =
-                Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
-                    .GetComponent<InventoryButton>();
-            invBt.Type = headItem.HeadItemType.ToString();
-            invBt.SetButtonLogo(headItem.logoSprite);
-            invBt.SetButtonAction(() =>
-            {
-                equipBt.onClick.RemoveAllListeners();
-                equipBt.onClick.AddListener(()=>playerInventory.EquipHead(headItem));
-     
-                selectedText.text = headItem.descriptionText;
-                selectedStatsText.text = headItem.newStatsText;
-                selectedImage.sprite = headItem.logoSprite;
-                selectPanel.gameObject.SetActive(true);
-                selectedItemName.text = headItem.name;
-                selectedItemRareness.text = headItem.rareness.ToString() +headItem.HeadItemType.ToString();
-
-                // unEquipBt.onClick.RemoveAllListeners();
-                // unEquipBt.onClick.AddListener(()=>);
-            });
-
-            inventoryButtons.Add(invBt);
-        }
-
-        inventoryTabView.InitTabView(
-            new string[] {"All", HeadItemType.Hats.ToString(), HeadItemType.Hair_Style.ToString()},
-            ShowButtonsByItemType);
     }
-
+    private void SetSelectedPanelData(string description,string newStats,Sprite logoSprite,string itemName,string rarenessText)
+    {
+        selectedText.text = description;
+        selectedStatsText.text =newStats;
+        selectedImage.sprite = logoSprite;
+        selectedItemName.text = itemName;
+        selectedItemRareness.text = rarenessText;
+        selectPanel.gameObject.SetActive(true);    }
     void ShowButtonsByItemType(string type)
     {
         print("Filter clicked "+ type);
@@ -104,192 +77,284 @@ public class Inventory_VC : MonoBehaviour
             }
         }
     }
-    public void OnFaceButtonClicked()
+    public void OnHeadButtonClicked()
     {
-       
+        inventoryTabView.gameObject.SetActive(true);
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
+        inventoryButtons.Clear();
+        var equippedHead = playerInventory.currentHead;
+        SetEquippedPanelData(equippedHead.descriptionText, equippedHead.newStatsText, equippedHead.logoSprite,
+            equippedHead.name, equippedHead.rareness.ToString() + " " +
+                               equippedHead.HeadItemType.ToString());
 
+        foreach (var headItem in playerInventory.HeadItems)
+        {
+            InventoryButton invBt =
+                Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
+                    .GetComponent<InventoryButton>();
+            invBt.Type = headItem.HeadItemType.ToString();
+            invBt.SetButtonLogo(headItem.logoSprite);
+            invBt.SetButtonAction(() =>
+            {
+                equipBt.onClick.RemoveAllListeners();
+                equipBt.onClick.AddListener(()=>
+                {
+                    SetEquippedPanelData(headItem.descriptionText,headItem.newStatsText,headItem.logoSprite,headItem.name,headItem.rareness.ToString() + " " +
+                        headItem.HeadItemType.ToString());
+                    playerInventory.EquipHead(headItem);
+
+                });
+     
+                SetSelectedPanelData(headItem.descriptionText,headItem.newStatsText,headItem.logoSprite,headItem.name,headItem.rareness.ToString() + " " +
+                    headItem.HeadItemType.ToString());
+
+                // unEquipBt.onClick.RemoveAllListeners();
+                // unEquipBt.onClick.AddListener(()=>);
+            });
+
+            inventoryButtons.Add(invBt);
+        }
+
+        inventoryTabView.InitTabView(
+            new string[] {"All", HeadItemType.Hats.ToString(), HeadItemType.Hair_Style.ToString()},
+            ShowButtonsByItemType);
+        inventoryTabView.SetButtonsTabVisibly(true);
+        SetBackButtonBehaviour();
+    }
+
+    private void SetBackButtonBehaviour()
+    {
+        backButton.onClick.RemoveAllListeners();
+
+        backButton.onClick.AddListener((() =>
+        {
+            inventoryTabView.gameObject.SetActive(false);
+            equipPanel.SetActive(false);
+            selectPanel.SetActive(false);
+            backButton.onClick.AddListener(() =>
+            {
+                backButton.onClick.RemoveAllListeners();
+
+                inventoryCanvas.gameObject.SetActive(false);
+            });
+        }));
+    }
+
+    public void OnFaceButtonClicked()
+    {
+       
+        inventoryTabView.gameObject.SetActive(true);
+        foreach (var button in inventoryButtons)
+        {
+            Destroy(button.gameObject);
+        }
+        inventoryButtons.Clear();
         var equippedFace = playerInventory.currentFace;
-        equippedText.text =equippedFace.descriptionText;
-        equippedStatsText.text =equippedFace.newStatsText;
-        equippedImage.sprite = equippedFace.logoSprite;
-        equippedItemName.text = equippedFace.name;
-        equippedItemRareness.text = equippedFace.rareness.ToString()+equippedFace.FaceItemType.ToString();
-        equipPanel.SetActive(true);
+        SetEquippedPanelData(equippedFace.descriptionText, equippedFace.newStatsText, equippedFace.logoSprite,
+            equippedFace.name, equippedFace.rareness.ToString() + " " +
+                               equippedFace.FaceItemType.ToString());
 
         foreach (var faceItem in playerInventory.FaceItems)
         {
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
-            invBt.Type = faceItem.faceSprite.ToString();
+            invBt.Type = faceItem.FaceItemType.ToString();
             invBt.SetButtonLogo(faceItem.logoSprite);
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
-                equipBt.onClick.AddListener(()=>playerInventory.EquipFace(faceItem));
+                equipBt.onClick.AddListener(()=>
+                {
+                    playerInventory.EquipFace(faceItem);
+                    SetEquippedPanelData(faceItem.descriptionText,faceItem.newStatsText,faceItem.logoSprite,faceItem.name,faceItem.rareness.ToString() + " " +
+                        faceItem.FaceItemType.ToString());
+
+                });
      
-                selectedText.text = faceItem.descriptionText;
-                selectedStatsText.text = faceItem.newStatsText;
-                selectedImage.sprite = faceItem.logoSprite;
-                selectPanel.gameObject.SetActive(true);
-                selectedItemName.text = faceItem.name;
-                selectedItemRareness.text = faceItem.rareness.ToString() +faceItem.FaceItemType.ToString();
+                SetSelectedPanelData(faceItem.descriptionText,faceItem.newStatsText,faceItem.logoSprite,faceItem.name,faceItem.rareness.ToString() + " " +
+                    faceItem.FaceItemType.ToString());
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
             });
-           
 
+            inventoryButtons.Add(invBt);
         }
 
         inventoryTabView.InitTabView(
-            new string[] {"All", FaceItemType.Glasses.ToString(), FaceItemType.Masks.ToString(),FaceItemType.Piercings.ToString(),FaceItemType.Bold_Makeup_Applications.ToString()},
+            new string[]
+            {
+                "All", FaceItemType.Glasses.ToString(), FaceItemType.Masks.ToString(),
+                FaceItemType.Piercings.ToString(), FaceItemType.Bold_Makeup_Applications.ToString()
+            },
             ShowButtonsByItemType);
+        SetBackButtonBehaviour();
+
     }
 
     public void OnTorsoButtonClicked()
     {
-       
+        inventoryTabView.gameObject.SetActive(true);
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
+        inventoryButtons.Clear();
+        var equippedTorso = playerInventory.currentTorso;
+        SetEquippedPanelData(equippedTorso.descriptionText, equippedTorso.newStatsText, equippedTorso.logoSprite,
+            equippedTorso.name, equippedTorso.rareness.ToString() + " " +
+                                equippedTorso.TorsoItemType.ToString());
 
-        var equippedHead = playerInventory.currentHead;
-        equippedText.text =equippedHead.descriptionText;
-        equippedStatsText.text =equippedHead.newStatsText;
-        equippedImage.sprite = equippedHead.logoSprite;
-        equippedItemName.text = equippedHead.name;
-        equippedItemRareness.text = equippedHead.rareness.ToString()+equippedHead.GetType().ToString();
-        equipPanel.SetActive(true);
-
-        foreach (var headItem in playerInventory.HeadItems)
+        foreach (var torsoItem in playerInventory.TorsoItems)
         {
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
-            invBt.Type = headItem.HeadItemType.ToString();
-            invBt.SetButtonLogo(headItem.logoSprite);
+            invBt.Type = torsoItem.TorsoItemType.ToString();
+            invBt.SetButtonLogo(torsoItem.logoSprite);
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
-                equipBt.onClick.AddListener(()=>playerInventory.EquipHead(headItem));
+                equipBt.onClick.AddListener(()=>
+                {
+                    playerInventory.EquipTorso(torsoItem);
+                    SetEquippedPanelData(torsoItem.descriptionText,torsoItem.newStatsText,torsoItem.logoSprite,torsoItem.name,torsoItem.rareness.ToString() + " " +
+                        torsoItem.TorsoItemType.ToString());
+                });
      
-                selectedText.text = headItem.descriptionText;
-                selectedStatsText.text = headItem.newStatsText;
-                selectedImage.sprite = headItem.logoSprite;
-                selectPanel.gameObject.SetActive(true);
-                selectedItemName.text = headItem.name;
-                selectedItemRareness.text = headItem.rareness.ToString() +headItem.HeadItemType.ToString();
+                SetSelectedPanelData(torsoItem.descriptionText,torsoItem.newStatsText,torsoItem.logoSprite,torsoItem.name,torsoItem.rareness.ToString() + " " +
+                    torsoItem.TorsoItemType.ToString());
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
             });
-           
 
+            inventoryButtons.Add(invBt);
         }
 
         inventoryTabView.InitTabView(
-            new string[] {"All", HeadItemType.Hats.ToString(), HeadItemType.Hair_Style.ToString()},
+            new string[]
+            {
+                "All", TorsoItemType.Jackets.ToString(), TorsoItemType.Tshirts.ToString(),
+               
+            },
             ShowButtonsByItemType);
+        SetBackButtonBehaviour();
+
+       
     }
 
     public void OnLegsButtonClicked()
     {
-      
+        inventoryTabView.gameObject.SetActive(true);
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
+        inventoryButtons.Clear();
+        var equippedLegs = playerInventory.currentLegs;
+        SetEquippedPanelData(equippedLegs.descriptionText, equippedLegs.newStatsText, equippedLegs.logoSprite,
+            equippedLegs.name, equippedLegs.rareness.ToString() + " " +
+                               equippedLegs.LegsType.ToString());
 
-        var equippedHead = playerInventory.currentHead;
-        equippedText.text =equippedHead.descriptionText;
-        equippedStatsText.text =equippedHead.newStatsText;
-        equippedImage.sprite = equippedHead.logoSprite;
-        equippedItemName.text = equippedHead.name;
-        equippedItemRareness.text = equippedHead.rareness.ToString()+equippedHead.GetType().ToString();
-        equipPanel.SetActive(true);
-
-        foreach (var headItem in playerInventory.HeadItems)
+        foreach (var legsItem in playerInventory.LegsItems)
         {
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
-            invBt.Type = headItem.HeadItemType.ToString();
-            invBt.SetButtonLogo(headItem.logoSprite);
+            invBt.Type = legsItem.LegsType.ToString();
+            invBt.SetButtonLogo(legsItem.logoSprite);
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
-                equipBt.onClick.AddListener(()=>playerInventory.EquipHead(headItem));
+                equipBt.onClick.AddListener(()=>
+                {
+                    playerInventory.EquipLegs(legsItem);
+                    SetEquippedPanelData(legsItem.descriptionText,legsItem.newStatsText,legsItem.logoSprite,legsItem.name,legsItem.rareness.ToString() + " " +
+                        legsItem.LegsType.ToString());
+                });
      
-                selectedText.text = headItem.descriptionText;
-                selectedStatsText.text = headItem.newStatsText;
-                selectedImage.sprite = headItem.logoSprite;
-                selectPanel.gameObject.SetActive(true);
-                selectedItemName.text = headItem.name;
-                selectedItemRareness.text = headItem.rareness.ToString() +headItem.HeadItemType.ToString();
+                SetSelectedPanelData(legsItem.descriptionText,legsItem.newStatsText,legsItem.logoSprite,legsItem.name,legsItem.rareness.ToString() + " " +
+                    legsItem.LegsType.ToString());
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
             });
-           
 
+            inventoryButtons.Add(invBt);
         }
 
         inventoryTabView.InitTabView(
-            new string[] {"All", HeadItemType.Hats.ToString(), HeadItemType.Hair_Style.ToString()},
+            new string[]
+            {
+                "All", LegsItemType.Pants.ToString(),LegsItemType.Shorts.ToString(),LegsItemType.Bathing_Suits.ToString()
+               
+            },
             ShowButtonsByItemType);
+        SetBackButtonBehaviour();
+
+        
     }
 
     public void OnFeetButtonClicked()
     {
       
+        inventoryTabView.gameObject.SetActive(true);
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
+        inventoryButtons.Clear();
+        var equippedFeet = playerInventory.currentFeet;
+        SetEquippedPanelData(equippedFeet.descriptionText, equippedFeet.newStatsText, equippedFeet.logoSprite,
+            equippedFeet.name, equippedFeet.rareness.ToString() + " " +
+                               equippedFeet.FeetItemType.ToString());
 
-        var equippedHead = playerInventory.currentHead;
-        equippedText.text =equippedHead.descriptionText;
-        equippedStatsText.text =equippedHead.newStatsText;
-        equippedImage.sprite = equippedHead.logoSprite;
-        equippedItemName.text = equippedHead.name;
-        equippedItemRareness.text = equippedHead.rareness.ToString()+equippedHead.GetType().ToString();
-        equipPanel.SetActive(true);
-
-        foreach (var headItem in playerInventory.HeadItems)
+        foreach (var feetItem in playerInventory.FeetItems)
         {
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
-            invBt.Type = headItem.HeadItemType.ToString();
-            invBt.SetButtonLogo(headItem.logoSprite);
+            invBt.Type = feetItem.FeetItemType.ToString();
+            invBt.SetButtonLogo(feetItem.logoSprite);
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
-                equipBt.onClick.AddListener(()=>playerInventory.EquipHead(headItem));
+                equipBt.onClick.AddListener(()=>
+                {
+                    SetEquippedPanelData(feetItem.descriptionText,feetItem.newStatsText,feetItem.logoSprite,feetItem.name,feetItem.rareness.ToString() + " " +
+                        feetItem.FeetItemType.ToString());
+                    playerInventory.EquipFeet(feetItem);
+
+                });
      
-                selectedText.text = headItem.descriptionText;
-                selectedStatsText.text = headItem.newStatsText;
-                selectedImage.sprite = headItem.logoSprite;
-                selectPanel.gameObject.SetActive(true);
-                selectedItemName.text = headItem.name;
-                selectedItemRareness.text = headItem.rareness.ToString() +headItem.HeadItemType.ToString();
+                SetSelectedPanelData(feetItem.descriptionText,feetItem.newStatsText,feetItem.logoSprite,feetItem.name,feetItem.rareness.ToString() + " " +
+                    feetItem.FeetItemType.ToString());
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
             });
-           
 
+            inventoryButtons.Add(invBt);
         }
 
         inventoryTabView.InitTabView(
-            new string[] {"All", HeadItemType.Hats.ToString(), HeadItemType.Hair_Style.ToString()},
+            new string[]
+            {
+                "All", FeetItemType.Boots.ToString(), FeetItemType.Sandals.ToString(), FeetItemType.Sneakers.ToString(), FeetItemType.Ankle_Bracelets.ToString()
+               
+            },
             ShowButtonsByItemType);
+           
+
+        
+        SetBackButtonBehaviour();
+
+      
     }
 
     void Update()

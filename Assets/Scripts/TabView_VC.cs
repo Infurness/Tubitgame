@@ -36,6 +36,11 @@ public class TabView_VC : MonoBehaviour
             tabsButtons.Add(tb);
         }
     }
+
+    public void SetButtonsTabVisibly(bool state)
+    {
+        buttonsView.gameObject.SetActive(state);
+    }
     void Start()
     {
     }
