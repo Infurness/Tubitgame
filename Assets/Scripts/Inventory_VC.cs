@@ -24,6 +24,7 @@ public class Inventory_VC : MonoBehaviour
     [SerializeField] private Button backButton;
     [SerializeField] private GameObject characterSlotsPanel,roomSlotsPanel,buttonsPanel;
     [SerializeField] private Canvas inventoryCanvas;
+    [SerializeField] private GameObject characterPreview;
     void Start()
     {
         headBt.onClick.AddListener(OnHeadButtonClicked);
@@ -35,12 +36,12 @@ public class Inventory_VC : MonoBehaviour
     }
 
     private void OnEnable()
-    {
-        headBt.image.sprite = playerInventory.currentHead.logoSprite;
-        // faceBt.image.sprite = playerInventory.currentFace.logoSprite;
-        // torsoBt.image.sprite = playerInventory.currentTorso.logoSprite;
-        // legsBt.image.sprite = playerInventory.currentLegs.logoSprite;
-        // feetBt.image.sprite = playerInventory.currentFeet.logoSprite;
+    { 
+         headBt.image.sprite = playerInventory.currentHead.logoSprite;
+         faceBt.image.sprite = playerInventory.currentFace.logoSprite;
+         torsoBt.image.sprite = playerInventory.currentTorso.logoSprite;
+         legsBt.image.sprite = playerInventory.currentLegs.logoSprite;
+         feetBt.image.sprite = playerInventory.currentFeet.logoSprite;
     }
 
    
@@ -123,6 +124,7 @@ public class Inventory_VC : MonoBehaviour
             ShowButtonsByItemType);
         inventoryTabView.SetButtonsTabVisibly(true);
         SetBackButtonBehaviour();
+        characterPreview.gameObject.SetActive(false);
     }
 
     private void SetBackButtonBehaviour()
@@ -131,6 +133,8 @@ public class Inventory_VC : MonoBehaviour
 
         backButton.onClick.AddListener((() =>
         {
+            characterPreview.gameObject.SetActive(true);
+
             inventoryTabView.gameObject.SetActive(false);
             equipPanel.SetActive(false);
             selectPanel.SetActive(false);
@@ -143,7 +147,7 @@ public class Inventory_VC : MonoBehaviour
         }));
     }
 
-    public void OnFaceButtonClicked()
+     void OnFaceButtonClicked()
     {
        
         inventoryTabView.gameObject.SetActive(true);
@@ -193,10 +197,11 @@ public class Inventory_VC : MonoBehaviour
             },
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
+        characterPreview.gameObject.SetActive(false);
 
     }
 
-    public void OnTorsoButtonClicked()
+     void OnTorsoButtonClicked()
     {
         inventoryTabView.gameObject.SetActive(true);
         foreach (var button in inventoryButtons)
@@ -244,11 +249,13 @@ public class Inventory_VC : MonoBehaviour
             },
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
+        characterPreview.gameObject.SetActive(false);
+
 
        
     }
 
-    public void OnLegsButtonClicked()
+     void OnLegsButtonClicked()
     {
         inventoryTabView.gameObject.SetActive(true);
         foreach (var button in inventoryButtons)
@@ -296,11 +303,13 @@ public class Inventory_VC : MonoBehaviour
             },
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
+        characterPreview.gameObject.SetActive(false);
+
 
         
     }
 
-    public void OnFeetButtonClicked()
+     void OnFeetButtonClicked()
     {
       
         inventoryTabView.gameObject.SetActive(true);
@@ -353,6 +362,8 @@ public class Inventory_VC : MonoBehaviour
 
         
         SetBackButtonBehaviour();
+        characterPreview.gameObject.SetActive(false);
+
 
       
     }
