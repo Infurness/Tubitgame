@@ -11,11 +11,11 @@ public class PlayerInventory : MonoBehaviour
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private SignalBus signalBus;
     [SerializeField] PlayerInventoryAddressedData m_PlayerInventoryAddressedData;
-    public HeadItem currentHead;
-    public FaceItem currentFace;
-    public TorsoItem currentTorso;
-    public LegsItem currentLegs;
-    public FeetItem currentFeet;
+    public HeadItem currentHead, defaultHead;
+    public FaceItem currentFace, defaultFace;
+    public TorsoItem currentTorso, defaultTorso;
+    public LegsItem currentLegs, defaultLegs;
+    public FeetItem currentFeet, defaultFeet;
     public List<HeadItem> HeadItems;
     public List<FaceItem> FaceItems;
     public List<TorsoItem> TorsoItems;
