@@ -17,6 +17,15 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
+
+        Container.DeclareSignal<OnFaceEquippedSignal>();
+        Container.DeclareSignal<OnHeadEquippedSignal>();
+        Container.DeclareSignal<OnTorsoEquippedSignal>();
+        Container.DeclareSignal<OnLegsEquippedSignal>();
+        Container.DeclareSignal<OnFeetEquippedSignal>();
+        Container.DeclareSignal<OnPlayerEquippedItemChangedSignal>();
+        Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
+
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
         Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();
@@ -27,11 +36,15 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<CancelVideoRecordingSignal> ();
         Container.DeclareSignal<ChangeUsernameSignal> ();
 
+
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
         Container.Bind<YouTubeVideoManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<AlgorithmManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<ThemesManager> ().FromComponentInHierarchy ().AsSingle ();
+
+        Container.Bind<PlayerInventory>().FromComponentInHierarchy().AsSingle();
+        
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
