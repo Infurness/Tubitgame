@@ -19,7 +19,7 @@ public class AlgorithmManager : MonoBehaviour
         StartCoroutine(UpdateTimer());
     }
 
-    public ulong GetVideoViews (ulong _subscribers, ThemeType[] _themes, float _videoQuality)
+    public ulong GetVideoViews (ulong _subscribers, ThemeType[] _themes, float _videoQuality, bool isViral)
     {
         float themesPopularity = 0;
         foreach (var theme in _themes)
@@ -27,7 +27,8 @@ public class AlgorithmManager : MonoBehaviour
             themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now.Hour);
         }
         ulong viewers = (ulong)(((ulong)baseNum + _subscribers) + (((ulong)baseNum + _subscribers) * themesPopularity * _videoQuality));
-        viewers *= (ulong)GetVirality ();
+        if(isViral)
+            viewers *= (ulong)GetVirality ();
         return viewers;
     }
 
@@ -49,22 +50,13 @@ public class AlgorithmManager : MonoBehaviour
     }
     int GetVirality ()
     {
-        if(Random.Range(0,101) >=95)
-        {
-            return Random.Range (25, 101);
-        }
-        else
-        {
-            return 1;
-        }
+        return Random.Range (25, 101);
     }
 
     IEnumerator UpdateTimer()
     {
-
         yield return new WaitForSecondsRealtime(updateTime);
         shouldUpdate = true;
-
     }
     private void Update()
     {
@@ -101,8 +93,6 @@ public class AlgorithmManager : MonoBehaviour
                 {
                     subscribers += video.newSubscribers;
                 }
-             
-
             }
             signalBus.TryFire<OnVideosStatsUpdatedSignal>();
             PlayerDataManager.Instance.UpdatePlayerVideosSubscribersData(subscribers,videos);

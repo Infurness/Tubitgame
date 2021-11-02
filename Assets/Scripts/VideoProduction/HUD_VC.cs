@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,39 +11,74 @@ public class HUD_VC : MonoBehaviour
 {
     [Inject] SignalBus _signalBus;
     [Inject] YouTubeVideoManager youTubeVideoManager;
+    GameClock gameClock;
 
-    [SerializeField] private Image energyBar;
+    [SerializeField] private TMP_Text energyText;
+    [SerializeField] private Image energyFillBar;
     [SerializeField] private GameObject homePanel;
+    [SerializeField] private GameObject playerPanel;
+    [SerializeField] private TMP_Text playerName;
+    [SerializeField] private TMP_Text playerSubscribers;
+    [SerializeField] private GameObject leaderboardsPanel;
     [SerializeField] private GameObject videoManagerPanel;
     [SerializeField] private GameObject eventsPanel;
     [SerializeField] private GameObject storePanel;
-    [SerializeField] private Button homeButton;
+    [SerializeField] private Button[] homeButtons;
     [SerializeField] private Button videoManagerButton;
     [SerializeField] private Button eventsButton;
-    [SerializeField] private Button storeButton;
+    [SerializeField] private Button[] storeButtons;
     private ulong softCurrency = 0; //Dummy Here until player data has this field
     [SerializeField] private TMP_Text softCurrencyText;
-    [SerializeField] private Color buttonsHighlightColor;
+    [SerializeField] private TMP_Text clockTimeText;
+    int timeMinutes;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake ()
     {
-        OpenHomePanel ();
-        homeButton.onClick.AddListener (OpenHomePanel);
-        videoManagerButton.onClick.AddListener (OpenVideoManagerPanel);
-        eventsButton.onClick.AddListener (OpenEventsPanel);
-        storeButton.onClick.AddListener (OpenStorePanel);
-
         _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
-        _signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
+        //_signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenVideoManagerPanel);
         _signalBus.Subscribe<GetMoneyFromVideoSignal> (AddSoftCurrency);
+        _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
+
+        gameClock = GameClock.Instance;
+    }
+    // Start is called before the first frame update
+    void Start()
+    {     
+        foreach(Button button in homeButtons)
+            button.onClick.AddListener (OpenHomePanel);
+        videoManagerButton.onClick.AddListener (OpenVideoManagerPanel);
+        eventsButton.onClick.AddListener (OpenEventsPanel);
+        foreach(Button button in storeButtons)
+            button.onClick.AddListener (OpenStorePanel);
+
+        
+
+        InitialState ();
     }
 
     // Update is called once per frame
     void Update()
+    {     
+        if(gameClock && timeMinutes != gameClock.Now.Minute)
+        {
+            timeMinutes = gameClock.Now.Minute;
+            clockTimeText.text = gameClock.Now.ToString("t", CultureInfo.CreateSpecificCulture ("en-US").DateTimeFormat);
+        }
+    }
+
+    void InitialState ()
     {
-        
+        UpdateUsername ();
+        playerSubscribers.text = PlayerDataManager.Instance.GetSubscribers ().ToString ();
+        OpenHomePanel ();
+    }
+    void UpdateUsername ()
+    {
+        if (PlayerDataManager.Instance != null)
+        {
+            playerName.text = PlayerDataManager.Instance.GetPlayerName ().ToUpper ();
+        }
     }
     void OpenHomePanel ()
     {
@@ -65,53 +101,50 @@ public class HUD_VC : MonoBehaviour
         if (_screenToOpen == HUDScreen.Home)
         {
             homePanel.SetActive (true);
-            homeButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
+            playerPanel.SetActive (true);
+            leaderboardsPanel.SetActive (true);
         }
         else
         {
             homePanel.SetActive (false);
-            homeButton.GetComponentInChildren<Image> ().color = Color.white;
+            playerPanel.SetActive (false);
+            leaderboardsPanel.SetActive (false);
         }
 
 
         if (_screenToOpen == HUDScreen.VideoManager)
         {
             videoManagerPanel.SetActive (true);
-            videoManagerButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
+            _signalBus.Fire<OpenVideoManagerSignal> ();
         }
         else
         {
             videoManagerPanel.SetActive (false);
-            videoManagerButton.GetComponentInChildren<Image> ().color = Color.white;
-
         }
 
 
         if (_screenToOpen == HUDScreen.Events)
         { 
             eventsPanel.SetActive (true);
-            eventsButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
         }
         else
         { 
             eventsPanel.SetActive (false);
-            eventsButton.GetComponentInChildren<Image> ().color = Color.white;
         }
 
         if (_screenToOpen == HUDScreen.Store)
         {
             storePanel.SetActive (true);
-            storeButton.GetComponentInChildren<Image> ().color = buttonsHighlightColor;
         }      
         else
         {
             storePanel.SetActive (false);
-            storeButton.GetComponentInChildren<Image> ().color = Color.white;
         }          
     }
     void SetEnergy (EnergyValueSignal _signal)
     {
-        energyBar.fillAmount = _signal.energy / 100;
+        energyText.text = $"{(int)_signal.energy}";
+        energyFillBar.fillAmount = _signal.energy / 100; //Dummy : to be replaced by max energy amount
     }
     void AddSoftCurrency (GetMoneyFromVideoSignal _signal) //Dummy This should be in player manager, will be here until currency is set in player data
     {

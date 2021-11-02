@@ -3,23 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class OpenThemeSelectionSignal
-{
-
-}
 public class SelectThemeSignal
 {
     public ThemeType themeType;
     public short ThemeId;
 }
 
-public class StartRecordingSignal
+public class StartRecordingSignal //Deprecated, this is done in VideoManager_VC - StartRecordingVideo()
 {
-    public float recordingTime;
     public ThemeType[] recordedThemes;
+    public string videoName;
 }
 
-public class StartPublishSignal
+public class StartPublishSignal //Not used
 {
 }
 
@@ -30,7 +26,6 @@ public class PublishVideoSignal
 }
 public class EndPublishVideoSignal
 {
-    public string videoName;
 }
 
 public class ShowVideosStatsSignal
@@ -52,7 +47,31 @@ public class GetMoneyFromVideoSignal
     public string videoName;
 }
 
+public class OpenVideoManagerSignal
+{
+}
 public class OnVideosStatsUpdatedSignal
 {
     
+}
+
+public class OpenThemeSelectorPopUpSignal
+{
+
+}
+
+public class ThemeHeldSignal
+{
+    public GameObject themeBox;
+    public ThemeType themeType;
+    public string buttonText;
+}
+public class ConfirmThemesSignal
+{
+    public Dictionary<int, ThemeType> selectedThemesSlots;
+}
+
+public class CancelVideoRecordingSignal
+{
+    public string name;
 }
