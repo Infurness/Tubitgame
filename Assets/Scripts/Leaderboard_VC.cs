@@ -6,6 +6,7 @@ using Zenject;
 
 public class Leaderboard_VC : MonoBehaviour
 {
+    [Inject] private SignalBus signalBus;
     [Inject] PlayerDataManager playerDataManager;
 
     [SerializeField] private TMP_Text firstPlayerName;
@@ -17,7 +18,8 @@ public class Leaderboard_VC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        signalBus.Subscribe<RecievePlayerLeaderboardPosition> (RecieveMyLeaderboardPosition);
+        signalBus.Subscribe<Recieve3BestLeaderboard> (RecieveBestLeaderboardPositions);
     }
 
     // Update is called once per frame
@@ -25,11 +27,36 @@ public class Leaderboard_VC : MonoBehaviour
     {
         
     }
-    void SetBestPlayers (string[] _playersNames)
+    void RecieveBestLeaderboardPositions (Recieve3BestLeaderboard signal)
     {
-        firstPlayerName.text = _playersNames[0];
-        secondPlayerName.text = _playersNames[1];
-        thirdPlayerName.text = _playersNames[2];
+        int i = 0;
+        foreach (KeyValuePair<string, int> pair in signal.players)
+        {
+            SetBestPlayers (i, pair.Key);
+            //Debug.Log ($"Position {i + 1} : Player {pair.Key} : Subscribers {pair.Value}");
+            i++;
+        }
+    }
+
+    void RecieveMyLeaderboardPosition (RecievePlayerLeaderboardPosition signal)
+    {
+        Debug.Log ($"Player pos: {signal.position+1}");
+        SetCurrentPlayer (signal.position+1);
+    }
+    void SetBestPlayers (int leaderboardPos, string playerName)
+    {
+        switch(leaderboardPos)
+        {
+            case 0:
+                 = playerName;
+                break;
+            case 1:
+                secondPlayerName.text = playerName;
+                break;
+            case 2:
+                thirdPlayerName.text = playerName;
+                break;
+        }
     }
 
     void SetCurrentPlayer (int _position)
