@@ -10,7 +10,7 @@ public class PlayerInventory : MonoBehaviour
 {
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private SignalBus signalBus;
-    [SerializeField] PlayerInventoryAddressedData m_PlayerInventoryAddressedData;
+    [SerializeField] PlayerInventoryAddressedData playerInventoryAddressedData;
     public HeadItem currentHead, defaultHead;
     public FaceItem currentFace, defaultFace;
     public TorsoItem currentTorso, defaultTorso;
@@ -21,6 +21,9 @@ public class PlayerInventory : MonoBehaviour
     public List<TorsoItem> TorsoItems;
     public List<LegsItem> LegsItems;
     public List<FeetItem> FeetItems;
+    public List<ThemeCustomizationItem> RoomItems;
+    public List<ThemeCustomizationItem> CurrentRoomItems;
+    public List<RealEstateCustomizationItem> RealEstateItems;
     void Start()
     {
      //  signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
@@ -29,11 +32,11 @@ public class PlayerInventory : MonoBehaviour
 
      async void LoadAddressedData()
     {
-        var assets= Addressables.LoadAssetsAsync<CustomizationItem>("default", null);
+        var assets= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("default", null);
         await assets.Task;
         if (assets.Status == AsyncOperationStatus.Succeeded)
         {
-            var items= (List<CustomizationItem>) assets.Result;
+            var items= (List<ThemeCustomizationItem>) assets.Result;
             
             foreach (var item in items)
             {
@@ -59,11 +62,11 @@ public class PlayerInventory : MonoBehaviour
                 }
             }
 
-            currentHead = HeadItems.Find((hi) => hi.name == m_PlayerInventoryAddressedData.currentHead);
-            currentFace = FaceItems.Find(item => item.name == m_PlayerInventoryAddressedData.currentFace);
-            currentTorso = TorsoItems.Find(item => item.name == m_PlayerInventoryAddressedData.currentTorso);
-            currentFeet = FeetItems.Find(item => item.name == m_PlayerInventoryAddressedData.currentFeet);
-            currentLegs = LegsItems.Find(item => item.name == m_PlayerInventoryAddressedData.currentLegs);
+            currentHead = HeadItems.Find((hi) => hi.name == playerInventoryAddressedData.currentHead);
+            currentFace = FaceItems.Find(item => item.name == playerInventoryAddressedData.currentFace);
+            currentTorso = TorsoItems.Find(item => item.name == playerInventoryAddressedData.currentTorso);
+            currentFeet = FeetItems.Find(item => item.name == playerInventoryAddressedData.currentFeet);
+            currentLegs = LegsItems.Find(item => item.name == playerInventoryAddressedData.currentLegs);
 
             // FaceItems=(List<FaceItem>)heads.Result;
         }
@@ -76,7 +79,7 @@ public class PlayerInventory : MonoBehaviour
     void OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
         LoadAddressedData();
-        m_PlayerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
+        playerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
         
         signalBus.Fire(new OnHeadEquippedSignal()
         {
@@ -102,119 +105,126 @@ public class PlayerInventory : MonoBehaviour
     }
     public void AddHeadItem(HeadItem headItem)
     {
-        if (m_PlayerInventoryAddressedData.headItemsNames.Contains(headItem.name))
+        if (playerInventoryAddressedData.headItemsNames.Contains(headItem.name))
             return;
-        m_PlayerInventoryAddressedData.headItemsNames.Add(headItem.name);
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.headItemsNames.Add(headItem.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         
     }
     public void AddFaceItem(FaceItem faceItem)
     {
-        if (m_PlayerInventoryAddressedData.faceItemsNames.Contains(faceItem.name))
+        if (playerInventoryAddressedData.faceItemsNames.Contains(faceItem.name))
             return;
-        m_PlayerInventoryAddressedData.faceItemsNames.Add(faceItem.name);
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.faceItemsNames.Add(faceItem.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         
     }
     public void AddTorsoItem(TorsoItem torsoItem)
     {
-        if (m_PlayerInventoryAddressedData.torsoItemsNames.Contains(torsoItem.name))
+        if (playerInventoryAddressedData.torsoItemsNames.Contains(torsoItem.name))
             return;
-        m_PlayerInventoryAddressedData.torsoItemsNames.Add(torsoItem.name);
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.torsoItemsNames.Add(torsoItem.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         
     }
     public void AddLegsItem(LegsItem legsItem)
     {
-        if (m_PlayerInventoryAddressedData.legsItemsNames.Contains(legsItem.name))
+        if (playerInventoryAddressedData.legsItemsNames.Contains(legsItem.name))
             return;
-        m_PlayerInventoryAddressedData.legsItemsNames.Add(legsItem.name);
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.legsItemsNames.Add(legsItem.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         
     }
     public void AddFeetItem(FeetItem feetItem)
     {
-        if (m_PlayerInventoryAddressedData.feetItemsNames.Contains(feetItem.name))
+        if (playerInventoryAddressedData.feetItemsNames.Contains(feetItem.name))
             return;
-        m_PlayerInventoryAddressedData.feetItemsNames.Add(feetItem.name);
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.feetItemsNames.Add(feetItem.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         
     }
 
     public void EquipHead(HeadItem headItem)
     {
-        m_PlayerInventoryAddressedData.currentHead = headItem.name;
+        playerInventoryAddressedData.currentHead = headItem.name;
         signalBus.Fire<OnHeadEquippedSignal>(new OnHeadEquippedSignal()
         {
             HeadItem = headItem
         });
         signalBus.Fire(new OnPlayerEquippedItemChangedSignal()
         {
-            CustomizationItems = new List<CustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
+            CustomizationItems = new List<ThemeCustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
         });
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
 
 
     }
     public void EquipFace(FaceItem faceItem)
     {
-        m_PlayerInventoryAddressedData.currentFace = faceItem.name;
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.currentFace = faceItem.name;
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         signalBus.Fire<OnFaceEquippedSignal>(new OnFaceEquippedSignal()
         {
             FaceItem = faceItem
         });
         signalBus.Fire(new OnPlayerEquippedItemChangedSignal()
         {
-            CustomizationItems = new List<CustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
+            CustomizationItems = new List<ThemeCustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
         });
     }
     public void EquipTorso(TorsoItem torsoItem)
     {
-        m_PlayerInventoryAddressedData.currentTorso = torsoItem.name;
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.currentTorso = torsoItem.name;
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
       signalBus.Fire(new OnTorsoEquippedSignal()
       {
           TorsoItem = torsoItem
       });
       signalBus.Fire(new OnPlayerEquippedItemChangedSignal()
       {
-          CustomizationItems = new List<CustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
+          CustomizationItems = new List<ThemeCustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
       });
     }
     public void EquipLegs(LegsItem legsItem)
     {
-        m_PlayerInventoryAddressedData.currentLegs = legsItem.name;
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.currentLegs = legsItem.name;
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
             signalBus.Fire<OnLegsEquippedSignal>(new OnLegsEquippedSignal()
             {
                 LegsItem = legsItem
             });
             signalBus.Fire(new OnPlayerEquippedItemChangedSignal()
             {
-                CustomizationItems = new List<CustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
+                CustomizationItems = new List<ThemeCustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
             });
     }
     public void EquipFeet(FeetItem feetItem)
     {
-        m_PlayerInventoryAddressedData.currentFeet = feetItem.name;
-        playerDataManager.UpdatePlayerInventoryData(m_PlayerInventoryAddressedData);
+        playerInventoryAddressedData.currentFeet = feetItem.name;
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
        signalBus.Fire<OnFeetEquippedSignal>(new OnFeetEquippedSignal()
        {
            FeetItem = feetItem
        });
        signalBus.Fire(new OnPlayerEquippedItemChangedSignal()
        {
-           CustomizationItems = new List<CustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
+           CustomizationItems = new List<ThemeCustomizationItem>(){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
        });
     }
 
-
-    // Update is called once per frame
-    void Update()
+    public void EquipRoomItem(ThemeCustomizationItem themeCustomizationItem)
     {
-        
+        signalBus.Fire(new OnPlayerRoomThemeItemEquippedSignal()
+        {
+            ThemeCustomizationItem = themeCustomizationItem
+        });
+        signalBus.Fire(new OnPlayerEquippedItemChangedSignal()
+        {
+            CustomizationItems = new List<ThemeCustomizationItem>(RoomItems){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
+        });
     }
+
+  
 }
 [System.Serializable]
     public class PlayerInventoryAddressedData
@@ -224,13 +234,13 @@ public class PlayerInventory : MonoBehaviour
         public  List<string> torsoItemsNames;
         public List<string> legsItemsNames;
         public  List<string> feetItemsNames;
-
+        public List<string> roomItemsNames;
         public string currentHead;
         public string currentFace;
         public string currentTorso;
         public string currentLegs;
         public string currentFeet;
-        
+        public List<string> equippedRoomItems;
       public  PlayerInventoryAddressedData()
         {
             headItemsNames = new List<string>();

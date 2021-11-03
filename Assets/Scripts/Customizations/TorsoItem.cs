@@ -3,7 +3,7 @@
 namespace Customizations
 {
     [CreateAssetMenu(fileName = "TorsoItem", menuName = "Customizations/TorsoItem", order = 2)]
-    public class TorsoItem : CustomizationItem
+    public class TorsoItem : ThemeCustomizationItem
     {
         public TorsoItemType TorsoItemType;
 

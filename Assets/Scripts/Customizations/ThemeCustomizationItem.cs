@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Customizations
 {
-    public class CustomizationItem : ScriptableObject
+    public class ThemeCustomizationItem : ScriptableObject
     {
         public Sprite logoSprite;
         public CustomizationThemeEffect[] affectedTheme;

@@ -35,5 +35,14 @@ public class OnPlayerInventoryFetchedSignal
 
 public class OnPlayerEquippedItemChangedSignal
 {
-    public List<CustomizationItem> CustomizationItems;
+    public List<ThemeCustomizationItem> CustomizationItems;
+}
+
+public class OnPlayerRoomThemeItemEquippedSignal
+{
+    public ThemeCustomizationItem ThemeCustomizationItem;
+}
+public class OnPlayerRoomVideoQualityItemEquippedSignal
+{
+    public VideoQualityCustomizationItem VideoQualityCustomizationItem;
 }
