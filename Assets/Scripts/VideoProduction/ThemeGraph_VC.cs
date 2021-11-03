@@ -43,8 +43,20 @@ public class ThemeGraph_VC : MonoBehaviour
     {
         StopAllCoroutines ();
     }
+    void UpdateLineRenderers ()
+    {
+        ThemeData[] themesData = themesManager.GetThemesData ();
+        LineRenderer[] lines = new LineRenderer[lineRenderers.Keys.Count];
+        lineRenderers.Keys.CopyTo(lines,0);
+
+        for(int i=0; i< lineRenderers.Keys.Count;i++)
+        {
+            lineRenderers[lines[i]] = themesData[i];
+        }
+    }
     void UpdateGraph ()
-    {       
+    {
+        UpdateLineRenderers ();
         foreach (KeyValuePair<LineRenderer,ThemeData> dictSlot in lineRenderers)
         {
             AnimationCurve themeCurve = themesManager.GetThemeAlgorithm (dictSlot.Value, GameClock.Instance.Now);
