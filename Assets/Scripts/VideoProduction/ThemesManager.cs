@@ -96,4 +96,8 @@ public class ThemesManager : MonoBehaviour
     {
         return themesData.themesData.ToArray ();
     }
+    public void UpdateThemesData (ScriptableTheme newThemesData)
+    {
+        themesData.themesData = newThemesData.themesData;
+    }
 }
