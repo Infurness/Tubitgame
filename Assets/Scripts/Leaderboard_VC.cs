@@ -48,7 +48,7 @@ public class Leaderboard_VC : MonoBehaviour
         switch(leaderboardPos)
         {
             case 0:
-                 = playerName;
+                 firstPlayerName.text = playerName;
                 break;
             case 1:
                 secondPlayerName.text = playerName;
