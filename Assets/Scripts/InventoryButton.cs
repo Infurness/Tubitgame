@@ -8,14 +8,15 @@ using UnityEngine.UI;
 public class InventoryButton : MonoBehaviour
 {
     private Button itemButton;
-    private Image itemLogo;
+    [SerializeField] Image itemLogo;
     public string Type;
 
     [SerializeField] private Image equippedLabel;
 
     public void SetButtonLogo(Sprite sprite)
     {
-        itemButton.image.sprite = sprite;
+        itemLogo.sprite = sprite;
+        itemLogo.preserveAspect = true;
     }
     void Awake()
     {

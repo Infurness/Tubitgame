@@ -21,9 +21,10 @@ public class PlayerInventory : MonoBehaviour
     public List<TorsoItem> TorsoItems;
     public List<LegsItem> LegsItems;
     public List<FeetItem> FeetItems;
-    public List<ThemeCustomizationItem> RoomItems;
-    public List<ThemeCustomizationItem> CurrentRoomItems;
+    public List<ThemeCustomizationItem> RoomThemeEffectItems;
+    public List<ThemeCustomizationItem> CurrentThemeEffectRoomItems;
     public List<RealEstateCustomizationItem> RealEstateItems;
+    public List<VideoQualityCustomizationItem> videoQualityRoomItems;
     void Start()
     {
      //  signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
@@ -212,7 +213,7 @@ public class PlayerInventory : MonoBehaviour
        });
     }
 
-    public void EquipRoomItem(ThemeCustomizationItem themeCustomizationItem)
+    public void EquipThemeEffectRoomItem(ThemeCustomizationItem themeCustomizationItem)
     {
         signalBus.Fire(new OnPlayerRoomThemeItemEquippedSignal()
         {
@@ -220,10 +221,14 @@ public class PlayerInventory : MonoBehaviour
         });
         signalBus.Fire(new OnPlayerEquippedItemChangedSignal()
         {
-            CustomizationItems = new List<ThemeCustomizationItem>(RoomItems){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
+            CustomizationItems = new List<ThemeCustomizationItem>(RoomThemeEffectItems){currentFace,currentFeet,currentHead,currentLegs,currentTorso}
         });
     }
 
+    public void EquipVideoQualityRoomItem(VideoQualityCustomizationItem videoQualityCustomizationItem)
+    {
+        
+    }
   
 }
 [System.Serializable]

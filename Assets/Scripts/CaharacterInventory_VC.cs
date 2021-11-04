@@ -37,11 +37,11 @@ public class CaharacterInventory_VC : MonoBehaviour
 
     private void OnEnable()
     { 
-         headBt.image.sprite = m_PlayerInventory.currentHead.logoSprite;
-         faceBt.image.sprite = m_PlayerInventory.currentFace.logoSprite;
-         torsoBt.image.sprite = m_PlayerInventory.currentTorso.logoSprite;
-         legsBt.image.sprite = m_PlayerInventory.currentLegs.logoSprite;
-         feetBt.image.sprite = m_PlayerInventory.currentFeet.logoSprite;
+         headBt.image.sprite = m_PlayerInventory?.currentHead.logoSprite;
+         faceBt.image.sprite = m_PlayerInventory?.currentFace.logoSprite;
+         torsoBt.image.sprite = m_PlayerInventory?.currentTorso.logoSprite;
+         legsBt.image.sprite = m_PlayerInventory?.currentLegs.logoSprite;
+         feetBt.image.sprite = m_PlayerInventory?.currentFeet.logoSprite;
     }
 
    
