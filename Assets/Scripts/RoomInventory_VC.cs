@@ -60,7 +60,7 @@ public class RoomInventory_VC : MonoBehaviour
             bt.SetButtonLogo(roomItem.logoSprite);
             bt.SetButtonAction(()=>
             {
-                
+                playerInventory.EquipThemeEffectRoomItem(roomItem);
             });
             
             roomInventoryButtons.Add(bt);

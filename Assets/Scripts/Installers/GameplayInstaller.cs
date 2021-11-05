@@ -18,12 +18,9 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
 
-        Container.DeclareSignal<OnFaceEquippedSignal>();
-        Container.DeclareSignal<OnHeadEquippedSignal>();
-        Container.DeclareSignal<OnTorsoEquippedSignal>();
-        Container.DeclareSignal<OnLegsEquippedSignal>();
-        Container.DeclareSignal<OnFeetEquippedSignal>();
-        Container.DeclareSignal<OnPlayerEquippedItemChangedSignal>();
+        Container.DeclareSignal<OnCharacterItemEquippedSignal>();
+
+        Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
         Container.DeclareSignal<OnPlayerRoomThemeItemEquippedSignal>();
         

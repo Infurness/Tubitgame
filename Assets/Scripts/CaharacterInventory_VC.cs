@@ -36,12 +36,24 @@ public class CaharacterInventory_VC : MonoBehaviour
     }
 
     private void OnEnable()
-    { 
-         headBt.image.sprite = m_PlayerInventory?.currentHead.logoSprite;
-         faceBt.image.sprite = m_PlayerInventory?.currentFace.logoSprite;
-         torsoBt.image.sprite = m_PlayerInventory?.currentTorso.logoSprite;
-         legsBt.image.sprite = m_PlayerInventory?.currentLegs.logoSprite;
-         feetBt.image.sprite = m_PlayerInventory?.currentFeet.logoSprite;
+    {
+        foreach (var characterItem in m_PlayerInventory.equippedCharacterItems)
+        {
+            switch (characterItem)
+            {
+                case  HeadItem headItem:headBt.image.sprite =headItem.logoSprite;
+                    break;
+                case  FaceItem faceItem: faceBt.image.sprite = faceItem.logoSprite;
+                    break;
+                case  TorsoItem torsoItem: torsoBt.image.sprite = torsoItem.torsoSprite;
+                    break;
+                case  LegsItem legsItem:legsBt.image.sprite = legsItem.logoSprite;
+                        break;
+                case FeetItem feetItem: feetBt.image.sprite = feetItem.logoSprite;
+                    break;
+            }
+        }
+       
     }
 
    
@@ -65,7 +77,6 @@ public class CaharacterInventory_VC : MonoBehaviour
         selectPanel.gameObject.SetActive(true);    }
     void ShowButtonsByItemType(string type)
     {
-        print("Filter clicked "+ type);
         foreach (var inventoryButton in inventoryButtons)
         {
             if (inventoryButton.Type==type||type=="All")
@@ -86,13 +97,18 @@ public class CaharacterInventory_VC : MonoBehaviour
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedHead = m_PlayerInventory.currentHead;
+        var equippedHead = m_PlayerInventory.GetEquippedItem<HeadItem>();
         SetEquippedPanelData(equippedHead.descriptionText, equippedHead.newStatsText, equippedHead.logoSprite,
             equippedHead.name, equippedHead.rareness.ToString() + " " +
                                equippedHead.HeadItemType.ToString());
 
-        foreach (var headItem in m_PlayerInventory.HeadItems)
+        foreach (var  item in m_PlayerInventory.characterItems)
         {
+            if(item.GetType()!=typeof(HeadItem))
+                continue;
+
+            HeadItem headItem = (HeadItem) item;
+            
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
@@ -105,7 +121,7 @@ public class CaharacterInventory_VC : MonoBehaviour
                 {
                     SetEquippedPanelData(headItem.descriptionText,headItem.newStatsText,headItem.logoSprite,headItem.name,headItem.rareness.ToString() + " " +
                         headItem.HeadItemType.ToString());
-                    m_PlayerInventory.EquipHead(headItem);
+                    m_PlayerInventory.EquipCharacterItem(headItem);
 
                 });
      
@@ -156,14 +172,17 @@ public class CaharacterInventory_VC : MonoBehaviour
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedFace = m_PlayerInventory.currentFace;
+        var equippedFace = m_PlayerInventory.GetEquippedItem<FaceItem>();
         SetEquippedPanelData(equippedFace.descriptionText, equippedFace.newStatsText, equippedFace.logoSprite,
             equippedFace.name, equippedFace.rareness.ToString() + " " +
                                equippedFace.FaceItemType.ToString());
 
-        foreach (var faceItem in m_PlayerInventory.FaceItems)
+        foreach (var item in m_PlayerInventory.characterItems)
         {
-            InventoryButton invBt =
+            if (item.GetType() != typeof(FaceItem))
+                continue;
+            FaceItem faceItem =(FaceItem)item;
+                InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
             invBt.Type = faceItem.FaceItemType.ToString();
@@ -173,7 +192,7 @@ public class CaharacterInventory_VC : MonoBehaviour
                 equipBt.onClick.RemoveAllListeners();
                 equipBt.onClick.AddListener(()=>
                 {
-                    m_PlayerInventory.EquipFace(faceItem);
+                    m_PlayerInventory.EquipCharacterItem(faceItem);
                     SetEquippedPanelData(faceItem.descriptionText,faceItem.newStatsText,faceItem.logoSprite,faceItem.name,faceItem.rareness.ToString() + " " +
                         faceItem.FaceItemType.ToString());
 
@@ -209,13 +228,16 @@ public class CaharacterInventory_VC : MonoBehaviour
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedTorso = m_PlayerInventory.currentTorso;
+        var equippedTorso = m_PlayerInventory.GetEquippedItem<TorsoItem>();
         SetEquippedPanelData(equippedTorso.descriptionText, equippedTorso.newStatsText, equippedTorso.logoSprite,
             equippedTorso.name, equippedTorso.rareness.ToString() + " " +
                                 equippedTorso.TorsoItemType.ToString());
 
-        foreach (var torsoItem in m_PlayerInventory.TorsoItems)
+        foreach (var item in m_PlayerInventory.characterItems)
         {
+            if(item.GetType()!=typeof(TorsoItem))
+                continue;
+            TorsoItem torsoItem =(TorsoItem) item;
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
@@ -226,7 +248,7 @@ public class CaharacterInventory_VC : MonoBehaviour
                 equipBt.onClick.RemoveAllListeners();
                 equipBt.onClick.AddListener(()=>
                 {
-                    m_PlayerInventory.EquipTorso(torsoItem);
+                    m_PlayerInventory.EquipCharacterItem(torsoItem);
                     SetEquippedPanelData(torsoItem.descriptionText,torsoItem.newStatsText,torsoItem.logoSprite,torsoItem.name,torsoItem.rareness.ToString() + " " +
                         torsoItem.TorsoItemType.ToString());
                 });
@@ -263,13 +285,17 @@ public class CaharacterInventory_VC : MonoBehaviour
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedLegs = m_PlayerInventory.currentLegs;
+        var equippedLegs = m_PlayerInventory.GetEquippedItem<LegsItem>();
         SetEquippedPanelData(equippedLegs.descriptionText, equippedLegs.newStatsText, equippedLegs.logoSprite,
             equippedLegs.name, equippedLegs.rareness.ToString() + " " +
                                equippedLegs.LegsType.ToString());
 
-        foreach (var legsItem in m_PlayerInventory.LegsItems)
+        foreach (var item in m_PlayerInventory.characterItems)
         {
+            if(item.GetType()!=typeof(LegsItem))
+                continue;
+            LegsItem legsItem = (LegsItem) item;
+            
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
@@ -280,7 +306,7 @@ public class CaharacterInventory_VC : MonoBehaviour
                 equipBt.onClick.RemoveAllListeners();
                 equipBt.onClick.AddListener(()=>
                 {
-                    m_PlayerInventory.EquipLegs(legsItem);
+                    m_PlayerInventory.EquipCharacterItem(legsItem);
                     SetEquippedPanelData(legsItem.descriptionText,legsItem.newStatsText,legsItem.logoSprite,legsItem.name,legsItem.rareness.ToString() + " " +
                         legsItem.LegsType.ToString());
                 });
@@ -318,13 +344,16 @@ public class CaharacterInventory_VC : MonoBehaviour
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedFeet = m_PlayerInventory.currentFeet;
+        var equippedFeet = m_PlayerInventory.GetEquippedItem<FeetItem>();
         SetEquippedPanelData(equippedFeet.descriptionText, equippedFeet.newStatsText, equippedFeet.logoSprite,
             equippedFeet.name, equippedFeet.rareness.ToString() + " " +
                                equippedFeet.FeetItemType.ToString());
 
-        foreach (var feetItem in m_PlayerInventory.FeetItems)
+        foreach (var  item in m_PlayerInventory.characterItems)
         {
+            if(item.GetType()!=typeof(FeetItem))
+                continue;
+            FeetItem feetItem = (FeetItem) item;
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
@@ -337,7 +366,7 @@ public class CaharacterInventory_VC : MonoBehaviour
                 {
                     SetEquippedPanelData(feetItem.descriptionText,feetItem.newStatsText,feetItem.logoSprite,feetItem.name,feetItem.rareness.ToString() + " " +
                         feetItem.FeetItemType.ToString());
-                    m_PlayerInventory.EquipFeet(feetItem);
+                    m_PlayerInventory.EquipCharacterItem(feetItem);
 
                 });
      
