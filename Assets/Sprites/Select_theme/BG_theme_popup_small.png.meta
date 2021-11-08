@@ -1,7 +1,19 @@
 fileFormatVersion: 2
-guid: efd634602425e3048af2b235731b1c12
+guid: 9b23c3306437fb44cb6dc5a9aa293964
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -7087771792789120245
+    second: BG_theme_popup_small_0
+  - first:
+      213: -8124046318560553598
+    second: BG_theme_popup_small_1
+  - first:
+      213: 8420028998228234339
+    second: BG_theme_popup_small_2
+  - first:
+      213: 1839543244225306335
+    second: BG_theme_popup_small_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -41,13 +53,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 9, y: 9, z: 9, w: 9}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -113,7 +125,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: BG_theme_popup_small_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 92
+        width: 66
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 23, y: 2, z: 23, w: 23}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0b55c96b1d23ad90800000000000000
+      internalID: -7087771792789120245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BG_theme_popup_small_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 73
+        width: 66
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 4, z: 4, w: 2}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 285d0639ae6914f80800000000000000
+      internalID: -8124046318560553598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BG_theme_popup_small_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 44
+        width: 66
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 3, z: 4, w: 6}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 360d1ed33c3f9d470800000000000000
+      internalID: 8420028998228234339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BG_theme_popup_small_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2
+        width: 66
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 23, y: 26, z: 22, w: 3}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fded40595de578910800000000000000
+      internalID: 1839543244225306335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
