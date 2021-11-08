@@ -28,6 +28,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
     private Dictionary<int, int> dragablesBeingUsedForSlots = new Dictionary<int, int>(); //Dictionary<"draggable index", "slot index">
     private Dictionary<int, UsedSlotInfo> usedSlotsInfo = new Dictionary<int, UsedSlotInfo> (); 
     [SerializeField] private GameObject[] themeSlots;
+    [SerializeField] Sprite emptySlotImage;
+    [SerializeField] Sprite usedSlotImage;
     private bool draggingTheme;
 
     [SerializeField] private Button confirmButton;
@@ -54,6 +56,10 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         foreach (GameObject draggable in draggableThemeObjects)
             draggable.SetActive (false);
         Debug.Log ("PopupCleared");
+        foreach(GameObject slot in themeSlots)
+        {
+            slot.GetComponent<Image> ().sprite = emptySlotImage;
+        }
     }
     void SetUpThemeButtons ()
     {
@@ -145,11 +151,13 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         dragablesBeingUsedForSlots.Remove (myKey);
         usedSlotsInfo[slotIndex].button.GetComponent<Button> ().interactable = true;
         usedSlotsInfo.Remove (slotIndex);
+        themeSlots[slotIndex].GetComponent<Image> ().sprite = usedSlotImage;
     }
     void EmptySlot (int slotIndex)
     {
         dragablesBeingUsedForSlots.Remove (draggableBeingUsed);
         usedSlotsInfo.Remove (slotIndex);
+        themeSlots[slotIndex].GetComponent<Image> ().sprite = emptySlotImage;
     }
     IEnumerator MoveObjectTo (GameObject objectToMove, Vector3 objective)
     {

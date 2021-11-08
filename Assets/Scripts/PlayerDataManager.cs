@@ -217,7 +217,7 @@ public class PlayerDataManager : MonoBehaviour
         video.videoSoftCurrency = 0;
         return videoMoney;
     }
-    public float GetPlayerTotalVideos ()
+    public int GetPlayerTotalVideos ()
     {
         return playerData.videos.Count;
     }
@@ -269,7 +269,7 @@ public class PlayerDataManager : MonoBehaviour
             playerData.subscribers = subscribersCount;
             playerData.videos = videos; 
         }));
-        
+        signalBus.Fire<ChangePlayerSubsSignal> (new ChangePlayerSubsSignal { subs=subscribersCount});
     }
 
      void AddHardCurrency(int amount,Action confirmPurchase=null)

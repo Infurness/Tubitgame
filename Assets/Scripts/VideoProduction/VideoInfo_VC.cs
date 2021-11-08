@@ -25,6 +25,7 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private TMP_Text commentsText;
     [SerializeField] private GameObject subscribersPanel;
     [SerializeField] private GameObject viralVisual;
+    [SerializeField] private TMP_Text qualityText;
 
     [SerializeField] GameObject[] themeHolders;
 
@@ -37,7 +38,7 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button skipButton;
     [SerializeField] private Button publishButton;
-    [SerializeField] private Button moneyButton;
+    [SerializeField] private GameObject moneyButtonPanel;
     // Start is called before the first frame update
     void Start ()
     {
@@ -60,7 +61,10 @@ public class VideoInfo_VC : MonoBehaviour
     {
         CheckVirality ();
         publishButton.gameObject.SetActive (false);
-        moneyButton.gameObject.SetActive (true);
+        skipButtonPanel.SetActive (false);
+        cancelButton.gameObject.SetActive (false);
+        publishButton.gameObject.SetActive (false);
+        moneyButtonPanel.SetActive (true);
         statsPanel.SetActive (true);
         subscribersPanel.SetActive (true);
         progressBarPanel.SetActive (false);
@@ -85,13 +89,15 @@ public class VideoInfo_VC : MonoBehaviour
         signalBus = _signalBus;
         youTubeVideoManager = _youTubeVideoManager;
     }
-    public void SetVideoInfoUp (string _name, float recordTime, ThemeType[] videoThemes)
+    public void SetVideoInfoUp (string _name, float recordTime, ThemeType[] videoThemes, VideoQuality quality)
     {
         videoRef = null;
         videoName = _name;
         nameText.text = videoName;
         themeTypes = videoThemes;
         internalRecordTime = recordTime;
+        qualityText.text =  string.Concat (Enum.GetName (quality.GetType (), quality).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
+
         SetThemes (themeTypes);
     }
     public void SetVideoInfoUp(Video video)
@@ -103,10 +109,10 @@ public class VideoInfo_VC : MonoBehaviour
         if(videoRef!=null)
         {
             moneyText.text = $"{videoRef.videoSoftCurrency}$";
-            viewsText.text = $"Views\n{videoRef.views}";
-            likesText.text = $"Likes\n{videoRef.likes}";
-            subscribersText.text = $"Subscribers gained: {videoRef.newSubscribers}"; 
-            commentsText.text = $"Comments\n{videoRef.comments}"; 
+            viewsText.text = $"{videoRef.views}";
+            likesText.text = $"{videoRef.likes}";
+            subscribersText.text = $"+{videoRef.newSubscribers}"; 
+            commentsText.text = $"{videoRef.comments}"; 
         }
         else
         {
@@ -116,13 +122,14 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void RecollectMoney ()
     {
-        moneyText.text = "0$";
+        moneyText.text = "0";
         signalBus.Fire<GetMoneyFromVideoSignal> (new GetMoneyFromVideoSignal () { videoName = videoName});
     } 
     void StartRecordingVideo ()
     {
         skipButtonPanel.SetActive (true);
         progressBarPanel.SetActive (true);
+        statsPanel.SetActive (false);
         cancelButton.gameObject.SetActive (true);
         StartCoroutine (FillTheRecordImage (internalRecordTime));  
     }

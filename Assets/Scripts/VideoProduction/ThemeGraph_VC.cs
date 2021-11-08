@@ -56,6 +56,7 @@ public class ThemeGraph_VC : MonoBehaviour
     }
     void UpdateGraph ()
     {
+        signalBus.Fire<UpdateThemesGraphSignal>();
         UpdateLineRenderers ();
         foreach (KeyValuePair<LineRenderer,ThemeData> dictSlot in lineRenderers)
         {

@@ -5,3 +5,7 @@ using UnityEngine;
 public class ChangeUsernameSignal
 {
 }
+public class ChangePlayerSubsSignal
+{
+    public ulong subs;
+}

@@ -81,3 +81,8 @@ public class CancelVideoRecordingSignal
 {
     public string name;
 }
+
+public class UpdateThemesGraphSignal
+{
+
+}

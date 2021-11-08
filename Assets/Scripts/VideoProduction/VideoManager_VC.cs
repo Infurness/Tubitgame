@@ -37,6 +37,7 @@ public class VideoManager_VC : MonoBehaviour
 
     private ThemeType lastThemePressed;
     private ThemeType[] selectedThemes;
+    private VideoQuality selectedQuality;
 
     [SerializeField] private Transform videoInfoHolder;
     [SerializeField] private GameObject videoInfoPrefab;
@@ -44,6 +45,16 @@ public class VideoManager_VC : MonoBehaviour
 
     [SerializeField] private GameObject skipRecodingPanelPopUp;
     [SerializeField] private Button skipRecodingPopUpCancelButton;
+
+    [SerializeField] private TMP_Text subsText;
+    [SerializeField] private TMP_Text uploadedVideosText;
+
+    [SerializeField] GameObject[] qualitiesTags;
+    [SerializeField] Slider qualitySelector;
+    [SerializeField] Sprite qualitySelected;
+    [SerializeField] Sprite qualityNonSelected;
+
+    [SerializeField] TMP_Text[] graphHourTexts;
 
     // Start is called before the first frame update
     void Start ()
@@ -54,10 +65,15 @@ public class VideoManager_VC : MonoBehaviour
         _signalBus.Subscribe<EndPublishVideoSignal> (ResetVideoCreationInfo);
         _signalBus.Subscribe<CancelVideoRecordingSignal> (ResetVideoCreationInfo);
         _signalBus.Subscribe<CancelVideoRecordingSignal> (CancelVideoRecording);
+        _signalBus.Subscribe<ChangePlayerSubsSignal> (UpdateGlobalSubsFromSignal);
+        _signalBus.Subscribe<UpdateThemesGraphSignal> (SetGraphHourTexts);
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
         recordVideoButton.onClick.AddListener (OnRecordButtonPressed);
+
+        qualitySelector.onValueChanged.AddListener (SetQualityTag);
+
         foreach(Button button in themeSelectionButtons)
         {
             button.onClick.AddListener (OpenThemeSelectorPopUp);
@@ -77,8 +93,24 @@ public class VideoManager_VC : MonoBehaviour
     {
         Array.Clear (selectedThemes, 0, selectedThemes.Length);
         foreach (Button button in themeSelectionButtons)
-            button.GetComponentInChildren<TMP_Text> ().text = "+";
+        {
+            button.GetComponentInChildren<TMP_Text> ().text = "";
+            button.transform.GetChild(1).GetComponentInChildren<Image> ().enabled = false;
+        }
+           
         recordVideoButton.interactable = false;
+    }
+    void UpdateGlobalSubsFromSignal (ChangePlayerSubsSignal signal)
+    {
+        subsText.text = $"{signal.subs}";
+    }
+    void UpdateGlobalSubs ()
+    {
+        subsText.text = $"{PlayerDataManager.Instance.GetSubscribers()}";
+    }
+    void UpdateGlobalVideos ()
+    {
+        uploadedVideosText.text = $"{PlayerDataManager.Instance.GetPlayerTotalVideos()}";
     }
     // Update is called once per frame
     void Update()
@@ -99,6 +131,9 @@ public class VideoManager_VC : MonoBehaviour
     void OpenManageVideosPanel ()
     {
         OpenPanel (VideoManagerPanels.ManageVideos);
+        UpdateGlobalSubs ();
+        UpdateGlobalVideos ();
+        SetGraphHourTexts ();
     }
     void OpenPanel (VideoManagerPanels _panel)
     {
@@ -138,6 +173,7 @@ public class VideoManager_VC : MonoBehaviour
         {
             recordedThemes = selectedThemes,
             videoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes)
+            //Dummy set quality selected for video here too
         });
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -30 });
         StartRecordingVideo ();
@@ -158,7 +194,8 @@ public class VideoManager_VC : MonoBehaviour
         vc.SetReferences (_signalBus, _youTubeVideoManager);
         vc.SetVideoInfoUp (newVideoName,
                             3f,
-                            selectedThemes
+                            selectedThemes,
+                            selectedQuality
                             );
         videosShown.Add (newVideoName, videoInfoObject);
     }
@@ -201,10 +238,12 @@ public class VideoManager_VC : MonoBehaviour
             {
                 ThemeType themeType = signal.selectedThemesSlots[i];
                 themeSelectionButtons[i].GetComponentInChildren<TMP_Text>().text = string.Concat (Enum.GetName (themeType.GetType (), themeType).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
+                themeSelectionButtons[i].transform.GetChild (1).GetComponentInChildren<Image> ().enabled = false;
             }
             else
             {
-                themeSelectionButtons[i].GetComponentInChildren<TMP_Text> ().text = "+";
+                themeSelectionButtons[i].GetComponentInChildren<TMP_Text> ().text = "";
+                themeSelectionButtons[i].transform.GetChild (1).GetComponentInChildren<Image> ().enabled = true;
             }
         }
         selectedThemes = signal.selectedThemesSlots.Values.ToArray();
@@ -218,5 +257,38 @@ public class VideoManager_VC : MonoBehaviour
     void CancelVideoRecording (CancelVideoRecordingSignal signal)
     {
         videosShown.Remove (signal.name);
+    }
+    void SetQualityTag (float value)
+    {
+        float qualityStep = 1f / Enum.GetValues (typeof(VideoQuality)).Length;
+        int qualityTagIndex = (int)(value / qualityStep);
+        selectedQuality = (VideoQuality)qualityTagIndex;
+        SetQualityTagVisual (qualityTagIndex);
+    }
+    void SetQualityTagVisual (int index)
+    {
+        Debug.Log (index);
+        int i = 0;
+        foreach(GameObject qualityTag in qualitiesTags)
+        {
+            if(i == index)
+                qualityTag.GetComponentInChildren<Image> ().sprite = qualitySelected;
+            else
+                qualityTag.GetComponentInChildren<Image> ().sprite = qualityNonSelected;
+            i++;
+        }
+    }
+
+    void SetGraphHourTexts ()
+    {
+        int hourPeriod = Math.DivRem (GameClock.Instance.Now.Hour-1, 6, out int remaindesr);
+        int i = 0;
+        Debug.Log (hourPeriod);
+        Debug.Log (GameClock.Instance.Now.Hour - 1);
+        foreach (TMP_Text text in graphHourTexts)
+        {
+            text.text = $"{i + hourPeriod*6}:00";
+            i++;
+        }
     }
 }
