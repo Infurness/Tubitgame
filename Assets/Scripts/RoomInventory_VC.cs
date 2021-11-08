@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Customizations;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -17,7 +18,11 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private GameObject buttonsTransform;
     [SerializeField] private Button backButton;
     public List<InventoryButton> roomInventoryButtons;
-    // Start is called before the first frame update
+
+    [SerializeField] private GameObject installPanel;
+    [SerializeField] private Button installButton;
+    [SerializeField] private TMP_Text itemName, itemRareness, itemDescription, itemNewStats;
+    [SerializeField] private Image itemLogo;
     public void PopulateInventoryButtons(string type)
     {
         
@@ -67,7 +72,15 @@ public class RoomInventory_VC : MonoBehaviour
             bt.SetButtonLogo(roomItem.logoSprite);
             bt.SetButtonAction(()=>
             {
-                playerInventory.TestThemeEffectRoomITem(roomItem);
+                installPanel.gameObject.SetActive(true);
+
+                installButton.onClick.RemoveAllListeners();
+                installButton.onClick.AddListener(() =>
+                {
+                    installPanel.gameObject.SetActive(false);
+                    playerInventory.TestThemeEffectRoomITem(roomItem);
+
+                });
             });
             
             roomInventoryButtons.Add(bt);
@@ -97,8 +110,14 @@ public class RoomInventory_VC : MonoBehaviour
             bt.SetButtonLogo(videoQualityRoomItem.logoSprite);
             bt.SetButtonAction(()=>
             {
-                playerInventory.TestVideoQualityRoomItem(videoQualityRoomItem);
+                installPanel.gameObject.SetActive(true);
+                installButton.onClick.RemoveAllListeners();
+                installButton.onClick.AddListener(() =>
+                {
+                    installPanel.gameObject.SetActive(false);
+                    playerInventory.TestVideoQualityRoomItem(videoQualityRoomItem);
 
+                });
             });
             
             roomInventoryButtons.Add(bt);
@@ -129,5 +148,12 @@ public class RoomInventory_VC : MonoBehaviour
         }
     }
 
-  
+ void SetSelectedPanelData(string _name,string _rareness,string _description,string _newStats,Sprite _logoSprite)
+ {
+     itemName.text = _name;
+     itemRareness.text = _rareness;
+     itemDescription.text = _description;
+     itemNewStats.text = _newStats;
+     itemLogo.sprite = _logoSprite;
+ }
 }
