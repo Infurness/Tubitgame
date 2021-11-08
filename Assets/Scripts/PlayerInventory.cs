@@ -14,11 +14,11 @@ public class PlayerInventory : MonoBehaviour
     public List<ThemeCustomizationItem> equippedCharacterItems;
     public List<ThemeCustomizationItem> defaultCharacterItems;
     public List<ThemeCustomizationItem> characterItems;
-    public List<ThemeCustomizationItem> RoomThemeEffectItems;
+    public List<ThemeCustomizationItem> roomThemeEffectItems;
     public List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
-    public List<RealEstateCustomizationItem> RealEstateItems;
     public List<VideoQualityCustomizationItem> videoQualityRoomItems;
     public List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
+    public List<RealEstateCustomizationItem> realEstateItems;
 
     void Start()
     {
@@ -98,8 +98,18 @@ public class PlayerInventory : MonoBehaviour
         });
         signalBus.Fire(new OnPlayerEquippedThemeItemChangedSignal()
         {
-            CustomizationItems = new List<ThemeCustomizationItem>(RoomThemeEffectItems)
+            CustomizationItems = new List<ThemeCustomizationItem>(roomThemeEffectItems)
         });
+    }
+
+    public void TestThemeEffectRoomITem(ThemeCustomizationItem themeCustomizationItem)
+    {
+        signalBus.Fire(new TestRoomThemeItemSignal(){ThemeCustomizationItem = themeCustomizationItem});
+    }
+
+    public void TestVideoQualityRoomItem(VideoQualityCustomizationItem videoQualityCustomizationItem)
+    {
+        signalBus.Fire(new TestRoomVideoQualityITemSignal(){VideoQualityCustomizationItem = videoQualityCustomizationItem});
     }
 
     public void EquipVideoQualityRoomItem(VideoQualityCustomizationItem videoQualityCustomizationItem)

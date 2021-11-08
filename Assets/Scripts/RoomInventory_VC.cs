@@ -14,18 +14,25 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private GameObject roomInventoryPanel;
     [SerializeField] private GameObject tabsButtonsTransform;
     [SerializeField] private InventoryButton inventoryButtonPrefab;
-
     [SerializeField] private GameObject buttonsTransform;
-
+    [SerializeField] private Button backButton;
     public List<InventoryButton> roomInventoryButtons;
     // Start is called before the first frame update
     public void PopulateInventoryButtons(string type)
     {
+        
         roomInventoryButtons.ForEach((bt)=>bt.gameObject.SetActive(true));
         roomInventoryButtons.FindAll((bt) => bt.Type != type).
             ForEach((bt) => bt.gameObject.SetActive(false));
         
         
+    }
+
+    private void OnEnable()
+    {
+        backButton.onClick.RemoveAllListeners();
+        backButton.onClick.AddListener((() => roomInventoryPanel.gameObject.SetActive(false)));
+
     }
 
     void Start()
@@ -41,7 +48,7 @@ public class RoomInventory_VC : MonoBehaviour
             Destroy(inventoryButton.gameObject);
         }
         roomInventoryButtons.Clear();
-        foreach (var roomItem in playerInventory.RoomThemeEffectItems)
+        foreach (var roomItem in playerInventory.roomThemeEffectItems)
         {
             string type;
             switch (roomItem)
@@ -60,7 +67,7 @@ public class RoomInventory_VC : MonoBehaviour
             bt.SetButtonLogo(roomItem.logoSprite);
             bt.SetButtonAction(()=>
             {
-                playerInventory.EquipThemeEffectRoomItem(roomItem);
+                playerInventory.TestThemeEffectRoomITem(roomItem);
             });
             
             roomInventoryButtons.Add(bt);
@@ -90,7 +97,8 @@ public class RoomInventory_VC : MonoBehaviour
             bt.SetButtonLogo(videoQualityRoomItem.logoSprite);
             bt.SetButtonAction(()=>
             {
-                
+                playerInventory.TestVideoQualityRoomItem(videoQualityRoomItem);
+
             });
             
             roomInventoryButtons.Add(bt);

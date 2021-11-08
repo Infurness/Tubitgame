@@ -23,6 +23,9 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
         Container.DeclareSignal<OnPlayerRoomThemeItemEquippedSignal>();
+        Container.DeclareSignal<OnPlayerRoomVideoQualityItemsEquippedSignal>();
+        Container.DeclareSignal<TestRoomThemeItemSignal>();
+        Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
         
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();

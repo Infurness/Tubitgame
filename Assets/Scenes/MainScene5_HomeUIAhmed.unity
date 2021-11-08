@@ -11270,12 +11270,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a32de50988729384e89e5711cd483cf1, type: 2}
   - {fileID: 11400000, guid: 4afe66d88cdf4b4489b42a319e9e12ab, type: 2}
   - {fileID: 11400000, guid: e515b26d96b78af4381713cdb9b670ba, type: 2}
-  RoomThemeEffectItems:
-  - {fileID: 11400000, guid: 194766a9acbc8db4ba9d007443500b53, type: 2}
-  - {fileID: 11400000, guid: ef3cd6217432f0244be92637db61ccf0, type: 2}
-  - {fileID: 11400000, guid: 6245cdc69675ad944aea0305754547ec, type: 2}
+  roomThemeEffectItems: []
   equippedThemeEffectRoomItems: []
-  RealEstateItems: []
   videoQualityRoomItems:
   - {fileID: 11400000, guid: b2cfe324f8397df4499face535e0af11, type: 2}
   - {fileID: 11400000, guid: 478f0d8d499e34346850d56e7766b231, type: 2}
@@ -11284,6 +11280,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 13fe4b5a1ea8ea144bf7ad68ed978838, type: 2}
   - {fileID: 11400000, guid: 1ff3f66041e5ee2408c278f93c70a73a, type: 2}
   equippedVideoQualityRoomItems: []
+  realEstateItems: []
 --- !u!4 &608033085
 Transform:
   m_ObjectHideFlags: 0
@@ -11514,6 +11511,7 @@ MonoBehaviour:
   tabsButtonsTransform: {fileID: 1851659938}
   inventoryButtonPrefab: {fileID: 2655847853247734938, guid: 47802b10e2e406c48afc169c5fd76456, type: 3}
   buttonsTransform: {fileID: 2075849918}
+  backButton: {fileID: 1817667295}
   roomInventoryButtons: []
 --- !u!1 &630693222
 GameObject:
@@ -26948,8 +26946,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -33045,18 +33043,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1265737622}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1258326341}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
