@@ -31,6 +31,7 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private TMP_Text softCurrencyText;
     [SerializeField] private TMP_Text clockTimeText;
     int timeMinutes;
+    [SerializeField] private GameObject backButtonsPanel;
 
     private void Awake ()
     {
@@ -103,12 +104,14 @@ public class HUD_VC : MonoBehaviour
             homePanel.SetActive (true);
             playerPanel.SetActive (true);
             leaderboardsPanel.SetActive (true);
+            backButtonsPanel.SetActive (false);
         }
         else
         {
             homePanel.SetActive (false);
             playerPanel.SetActive (false);
             leaderboardsPanel.SetActive (false);
+            backButtonsPanel.SetActive (true);
         }
 
 
