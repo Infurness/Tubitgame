@@ -137,6 +137,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
                 dragablesBeingUsedForSlots.Add (draggableBeingUsed, slotIndex);
                 UsedSlotInfo slotInfo = new UsedSlotInfo () { themeType = themeTypeBeingDragged, button = buttonBeingDragged};
                 usedSlotsInfo.Add (slotIndex, slotInfo);
+                slot.GetComponent<Image> ().sprite = usedSlotImage;
                 return;
             }
             slotIndex++;
@@ -151,7 +152,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         dragablesBeingUsedForSlots.Remove (myKey);
         usedSlotsInfo[slotIndex].button.GetComponent<Button> ().interactable = true;
         usedSlotsInfo.Remove (slotIndex);
-        themeSlots[slotIndex].GetComponent<Image> ().sprite = usedSlotImage;
+        themeSlots[slotIndex].GetComponent<Image> ().sprite = emptySlotImage;
     }
     void EmptySlot (int slotIndex)
     {

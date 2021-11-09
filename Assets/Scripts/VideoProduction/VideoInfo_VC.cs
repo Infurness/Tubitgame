@@ -34,6 +34,8 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private GameObject skipButtonPanel;
 
     [SerializeField] private Image videoProgressBar;
+    [SerializeField] private TMP_Text videoProgressBarCountText;
+    [SerializeField] private TMP_Text videoProgressText;
 
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button skipButton;
@@ -108,7 +110,7 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if(videoRef!=null)
         {
-            moneyText.text = $"{videoRef.videoSoftCurrency}$";
+            moneyText.text = $"CLAIM";
             viewsText.text = $"{videoRef.views}";
             likesText.text = $"{videoRef.likes}";
             subscribersText.text = $"+{videoRef.newSubscribers}"; 
@@ -135,6 +137,8 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void VideoReadyToPublish ()
     {
+        videoProgressBarCountText.text = $"Completed";
+        videoProgressText.text = $"This video is ready!";
         skipButtonPanel.SetActive (false);
         cancelButton.gameObject.SetActive (false);
         publishButton.gameObject.SetActive (true);
@@ -165,6 +169,8 @@ public class VideoInfo_VC : MonoBehaviour
         float tACC = 0;
         while (tACC < time)
         {
+            int secondsLeft = (int)(time - tACC);
+            videoProgressBarCountText.text =$"0{secondsLeft}s"; //Dummy
             yield return new WaitForEndOfFrame ();
             tACC += Time.deltaTime;
             videoProgressBar.fillAmount = tACC / time;

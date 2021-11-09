@@ -16,6 +16,8 @@ public class VideoManager_VC : MonoBehaviour
     [Inject] private ThemesManager _themesManager;
     [Inject] private EnergyManager _energyManager;
 
+    [SerializeField] private TMP_Text playerNameText;
+
     [SerializeField] private GameObject makeAVideoPanel;
     [SerializeField] private GameObject manageVideosPanel;
     [SerializeField] private Button makeAVideoButton;
@@ -49,12 +51,14 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private TMP_Text subsText;
     [SerializeField] private TMP_Text uploadedVideosText;
 
-    [SerializeField] GameObject[] qualitiesTags;
-    [SerializeField] Slider qualitySelector;
-    [SerializeField] Sprite qualitySelected;
-    [SerializeField] Sprite qualityNonSelected;
+    [SerializeField] private GameObject[] qualitiesTags;
+    [SerializeField] private Slider qualitySelector;
+    [SerializeField] private Color qualitySelectedColor;
+    [SerializeField] private Sprite qualitySelected;
+    [SerializeField] private Color qualityNonSelectedColor;
+    [SerializeField] private Sprite qualityNonSelected;
 
-    [SerializeField] TMP_Text[] graphHourTexts;
+    [SerializeField] private TMP_Text[] graphHourTexts;
 
     // Start is called before the first frame update
     void Start ()
@@ -67,6 +71,7 @@ public class VideoManager_VC : MonoBehaviour
         _signalBus.Subscribe<CancelVideoRecordingSignal> (CancelVideoRecording);
         _signalBus.Subscribe<ChangePlayerSubsSignal> (UpdateGlobalSubsFromSignal);
         _signalBus.Subscribe<UpdateThemesGraphSignal> (SetGraphHourTexts);
+        _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
@@ -88,6 +93,14 @@ public class VideoManager_VC : MonoBehaviour
         OpenManageVideosPanel ();
         recordVideoButton.interactable = false;
         skipRecodingPanelPopUp.SetActive (false);
+        UpdateUsername ();
+    }
+    void UpdateUsername ()
+    {
+        if (PlayerDataManager.Instance != null)
+        {
+            playerNameText.text = PlayerDataManager.Instance.GetPlayerName ().ToUpper ();
+        }
     }
     void ResetVideoCreationInfo ()
     {
@@ -272,9 +285,15 @@ public class VideoManager_VC : MonoBehaviour
         foreach(GameObject qualityTag in qualitiesTags)
         {
             if(i == index)
+            {
                 qualityTag.GetComponentInChildren<Image> ().sprite = qualitySelected;
+                qualityTag.GetComponentInChildren<TMP_Text> ().color = qualitySelectedColor;
+            }       
             else
+            {
                 qualityTag.GetComponentInChildren<Image> ().sprite = qualityNonSelected;
+                qualityTag.GetComponentInChildren<TMP_Text> ().color = qualityNonSelectedColor;
+            }
             i++;
         }
     }
