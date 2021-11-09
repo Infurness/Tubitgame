@@ -30,6 +30,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<CloseVideoCreationSignal> ();
         Container.DeclareSignal<ChangePlayerSubsSignal> ();
         Container.DeclareSignal<UpdateThemesGraphSignal> ();
+        Container.DeclareSignal<CloseSettingPanelSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();

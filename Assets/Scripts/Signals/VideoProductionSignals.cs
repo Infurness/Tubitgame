@@ -86,3 +86,8 @@ public class UpdateThemesGraphSignal
 {
 
 }
+
+public class CloseSettingPanelSignal
+{
+
+}
