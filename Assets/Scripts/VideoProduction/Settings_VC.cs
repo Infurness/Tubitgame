@@ -11,14 +11,14 @@ public class Settings_VC : MonoBehaviour
 
     [SerializeField] private Button editButton;
     [SerializeField] private TMP_InputField inputField;
-    [SerializeField] private Button closeButton;
+    [SerializeField] private Button deleteAccountButton;
     // Start is called before the first frame update
     void Start ()
     {
         inputField.onDeselect.AddListener (OnConfirm);
         inputField.onSubmit.AddListener (OnConfirm);
         editButton.onClick.AddListener (EditName);
-        closeButton.onClick.AddListener (ClosePanel);
+        deleteAccountButton.onClick.AddListener (OpenDeleteAccount);
 
         inputField.interactable = false;
         RefreshPlayerName ();
@@ -43,14 +43,14 @@ public class Settings_VC : MonoBehaviour
     {
         inputField.text = PlayerDataManager.Instance.GetPlayerName ();
     }
-    void ClosePanel ()
-    {
-        signalBus.Fire<CloseSettingPanelSignal> ();
-    }
     IEnumerator RefreshName ()
     {
         yield return new  WaitForSecondsRealtime (1);
         signalBus.Fire<ChangeUsernameSignal> ();
+    }
+    void OpenDeleteAccount ()
+    {
+        signalBus.Fire<OpenDeleteAccountSignal> ();
     }
 }
 

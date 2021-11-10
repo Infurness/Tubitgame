@@ -87,7 +87,12 @@ public class UpdateThemesGraphSignal
 
 }
 
-public class CloseSettingPanelSignal
+public class OpenSettingPanelSignal
+{
+
+}
+
+public class OpenDeleteAccountSignal
 {
 
 }
