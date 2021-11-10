@@ -175,13 +175,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4226027151391489346}
-  m_LocalRotation: {x: -0, y: -0, z: 0.037530366, w: 0.99929553}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -507.42886}
   m_LocalScale: {x: 0.00925926, y: 0.00925926, z: 0.009259259}
   m_Children: []
   m_Father: {fileID: 1340894237153007083}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.302}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1.8800049, y: -2.7899933}
@@ -503,47 +503,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8259d7f33b4ed4293666549ce8cfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  computer: {fileID: 6354409022355576394}
-  camera: {fileID: 6354409023462839502}
-  microphone: {fileID: 6354409023333278880}
+  computerSlot: {fileID: 0}
+  cameraSlot: {fileID: 0}
+  microphoneSlot: {fileID: 0}
+  greenScreenSlot: {fileID: 0}
   wallSlots:
   - Image: {fileID: 6354409022132699237}
     WallOrnamentType: 0
-    Empty: 0
+    Empty: 1
+    ItemName: 
   - Image: {fileID: 6354409022937467631}
     WallOrnamentType: 2
-    Empty: 0
+    Empty: 1
+    ItemName: 
   - Image: {fileID: 1113158912132649874}
     WallOrnamentType: 4
-    Empty: 0
+    Empty: 1
+    ItemName: 
   - Image: {fileID: 322958426190416318}
     WallOrnamentType: 1
-    Empty: 0
+    Empty: 1
+    ItemName: 
   - Image: {fileID: 1074913542326230760}
     WallOrnamentType: 3
-    Empty: 0
+    Empty: 1
+    ItemName: 
   floorSlots:
   - Image: {fileID: 1362476200157944602}
     FloorOrnamentType: 0
     Empty: 1
+    ItemName: 
   - Image: {fileID: 7233630736205192249}
     FloorOrnamentType: 1
     Empty: 1
+    ItemName: 
   - Image: {fileID: 2335195044780933280}
     FloorOrnamentType: 2
     Empty: 1
+    ItemName: 
   roomObjectSlots:
   - Image: {fileID: 0}
     RoomObjectType: 0
-    Empty: 0
+    Empty: 1
+    ItemName: 
   - Image: {fileID: 0}
     RoomObjectType: 0
-    Empty: 0
+    Empty: 1
+    ItemName: 
   - Image: {fileID: 0}
     RoomObjectType: 0
-    Empty: 0
+    Empty: 1
+    ItemName: 
   floorItems: []
   roomCanvas: {fileID: 0}
+  RoomLayout: {fileID: 11400000, guid: 5ca548993d90b6240ae08c39ad0cdbfb, type: 2}
 --- !u!1 &6354409022355576396
 GameObject:
   m_ObjectHideFlags: 0
@@ -974,13 +987,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9009319149672996980}
-  m_LocalRotation: {x: -0, y: -0, z: 0.037530366, w: 0.99929553}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -507.42886}
   m_LocalScale: {x: 0.00925926, y: 0.00925926, z: 0.009259259}
   m_Children: []
   m_Father: {fileID: 1340894237153007083}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.302}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -1.35, y: -3.42}
@@ -1049,13 +1062,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9054922202538173721}
-  m_LocalRotation: {x: -0, y: -0, z: 0.037530366, w: 0.99929553}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -507.42886}
   m_LocalScale: {x: 0.00925926, y: 0.00925926, z: 0.009259259}
   m_Children: []
   m_Father: {fileID: 1340894237153007083}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.302}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -2.93, y: -2.77}

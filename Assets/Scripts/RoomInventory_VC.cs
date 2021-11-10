@@ -12,6 +12,7 @@ using UniRx.Triggers;
 public class RoomInventory_VC : MonoBehaviour
 {
     [Inject] private PlayerInventory playerInventory;
+    [Inject] private SignalBus signalBus;
     [SerializeField] private GameObject roomInventoryPanel;
     [SerializeField] private GameObject tabsButtonsTransform;
     [SerializeField] private InventoryButton inventoryButtonPrefab;
@@ -23,14 +24,15 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private Button installButton;
     [SerializeField] private TMP_Text itemName, itemRareness, itemDescription, itemNewStats;
     [SerializeField] private Image itemLogo;
+    [SerializeField] private Button saveButton, discardButton;
+
     public void PopulateInventoryButtons(string type)
     {
-        
-        roomInventoryButtons.ForEach((bt)=>bt.gameObject.SetActive(true));
-        roomInventoryButtons.FindAll((bt) => bt.Type != type).
-            ForEach((bt) => bt.gameObject.SetActive(false));
-        
-        
+
+        roomInventoryButtons.ForEach((bt) => bt.gameObject.SetActive(true));
+        roomInventoryButtons.FindAll((bt) => bt.Type != type).ForEach((bt) => bt.gameObject.SetActive(false));
+
+
     }
 
     private void OnEnable()
@@ -43,8 +45,21 @@ public class RoomInventory_VC : MonoBehaviour
     void Start()
     {
         roomInventoryButtons = new List<InventoryButton>();
-        roomInventoryPanel.OnEnableAsObservable().Subscribe((s)=>CreateInventoryButtons());
+        roomInventoryPanel.OnEnableAsObservable().Subscribe((s) => CreateInventoryButtons());
+        saveButton.onClick.AddListener(SaveRoomLayout);
+        discardButton.onClick.AddListener(DiscardRoomLayout);
     }
+
+    public void SaveRoomLayout()
+    {
+        signalBus.Fire<SaveRoomLayoutSignal>();
+    }
+
+    public void DiscardRoomLayout()
+    {
+        signalBus.Fire<DiscardRoomLayoutSignal>();
+    }
+    
 
     void CreateInventoryButtons()
     {

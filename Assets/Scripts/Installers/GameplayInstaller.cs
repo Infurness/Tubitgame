@@ -22,11 +22,10 @@ public class GameplayInstaller : MonoInstaller
 
         Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
-        Container.DeclareSignal<OnPlayerRoomThemeItemEquippedSignal>();
-        Container.DeclareSignal<OnPlayerRoomVideoQualityItemsEquippedSignal>();
         Container.DeclareSignal<TestRoomThemeItemSignal>();
         Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
-        
+        Container.DeclareSignal<SaveRoomLayoutSignal>();
+        Container.DeclareSignal<DiscardRoomLayoutSignal>();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
         Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();

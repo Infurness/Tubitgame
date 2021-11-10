@@ -9879,7 +9879,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -960, y: 0}
+  m_AnchoredPosition: {x: -960.0001, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &484134888
@@ -11940,8 +11940,11 @@ MonoBehaviour:
     roomItemsNames: []
     videoQualityItemsNames: []
     equippedCharacterItemsNames: []
-    equippedRoomItemsNames: []
     equippedVideoQualityItemsNames: []
+    RoomLayout:
+      WallLayoutSlots: []
+      FloorLayoutSlots: []
+      ObjectsLayoutSlots: []
   equippedCharacterItems:
   - {fileID: 11400000, guid: 959702bc1263d6645890d8e1a44bacac, type: 2}
   - {fileID: 11400000, guid: b1e26c00b572ed146996233daca666c4, type: 2}
@@ -12209,6 +12212,8 @@ MonoBehaviour:
   itemDescription: {fileID: 1083704254}
   itemNewStats: {fileID: 1561743202}
   itemLogo: {fileID: 252382546}
+  saveButton: {fileID: 1990294701}
+  discardButton: {fileID: 1763387593}
 --- !u!1 &630693222
 GameObject:
   m_ObjectHideFlags: 0

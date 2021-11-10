@@ -18,10 +18,6 @@ public class OnPlayerEquippedThemeItemChangedSignal
     public List<ThemeCustomizationItem> CustomizationItems;
 }
 
-public class OnPlayerRoomThemeItemEquippedSignal
-{
-    public ThemeCustomizationItem ThemeCustomizationItem;
-}
 
 public class TestRoomThemeItemSignal
 {
@@ -32,7 +28,13 @@ public class TestRoomVideoQualityITemSignal
 {
     public VideoQualityCustomizationItem VideoQualityCustomizationItem;
 }
-public class OnPlayerRoomVideoQualityItemsEquippedSignal
+
+public class SaveRoomLayoutSignal
 {
-    public List<VideoQualityCustomizationItem> VideoQualityCustomizationItem;
+
+}
+
+public class DiscardRoomLayoutSignal
+{
+    
 }

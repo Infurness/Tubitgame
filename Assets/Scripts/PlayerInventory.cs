@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Customizations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -19,7 +20,6 @@ public class PlayerInventory : MonoBehaviour
     public List<VideoQualityCustomizationItem> videoQualityRoomItems;
     public List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
     public List<RealEstateCustomizationItem> realEstateItems;
-
     void Start()
     {
      //  signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
@@ -89,18 +89,43 @@ public class PlayerInventory : MonoBehaviour
 
 
     }
-   
-    public void EquipThemeEffectRoomItem(ThemeCustomizationItem themeCustomizationItem)
+
+    public void UpdateRoomData(RoomLayout roomLayout,List<VideoQualityCustomizationItem> vCItems)
     {
-        signalBus.Fire(new OnPlayerRoomThemeItemEquippedSignal()
-        {
-            ThemeCustomizationItem = themeCustomizationItem
-        });
+        
+        playerInventoryAddressedData.RoomLayout = roomLayout;
+        equippedThemeEffectRoomItems.Clear();
+        foreach (var floorItem in roomLayout.FloorLayoutSlots)
+        { 
+           equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == floorItem.ItemName));
+        }
+        foreach (var wallItem in roomLayout.WallLayoutSlots)
+        { 
+            equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == wallItem.ItemName));
+        }
+        foreach (var objectItem in roomLayout.ObjectsLayoutSlots)
+        { 
+            equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == objectItem.ItemName));
+        }
+        equippedVideoQualityRoomItems.Clear();
+        equippedVideoQualityRoomItems = vCItems;
+        playerInventoryAddressedData.equippedVideoQualityItemsNames.Clear();
+        equippedVideoQualityRoomItems.ForEach((vc) =>
+            playerInventoryAddressedData.equippedVideoQualityItemsNames.Add(vc.name));
+        var allThemItems = new List<ThemeCustomizationItem>();
+        allThemItems.AddRange(equippedCharacterItems);
+        allThemItems.AddRange(equippedThemeEffectRoomItems);
         signalBus.Fire(new OnPlayerEquippedThemeItemChangedSignal()
         {
-            CustomizationItems = new List<ThemeCustomizationItem>(roomThemeEffectItems)
+            CustomizationItems = allThemItems
         });
+        playerDataManager.UpdatePlayerQuality(equippedVideoQualityRoomItems.Sum((item => item.videoQualityBonus)));
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+        
+
     }
+
+    
 
     public void TestThemeEffectRoomITem(ThemeCustomizationItem themeCustomizationItem)
     {
@@ -112,9 +137,9 @@ public class PlayerInventory : MonoBehaviour
         signalBus.Fire(new TestRoomVideoQualityITemSignal(){VideoQualityCustomizationItem = videoQualityCustomizationItem});
     }
 
-    public void EquipVideoQualityRoomItem(VideoQualityCustomizationItem videoQualityCustomizationItem)
+    public RoomLayout GetRoomLayout()
     {
-        
+        return playerInventoryAddressedData.RoomLayout;
     }
 
     public T GetEquippedItem<T>() where T: ThemeCustomizationItem
@@ -139,18 +164,17 @@ public class PlayerInventory : MonoBehaviour
         public  List<string> characterItemsNames;
         public List<string> roomItemsNames;
         public List<string> videoQualityItemsNames;
-        
         public List<string> equippedCharacterItemsNames;
-        public List<string> equippedRoomItemsNames;
         public List<string> equippedVideoQualityItemsNames;
+        public RoomLayout RoomLayout;
       public  PlayerInventoryAddressedData()
         {
             characterItemsNames = new List<string>();
             roomItemsNames = new List<string>();
             videoQualityItemsNames = new List<string>();
             equippedCharacterItemsNames = new List<string>();
-            equippedRoomItemsNames = new List<string>();
             equippedVideoQualityItemsNames = new List<string>();
+            RoomLayout = new RoomLayout();
 
         }
         
