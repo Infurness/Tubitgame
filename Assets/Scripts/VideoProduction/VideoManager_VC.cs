@@ -54,9 +54,11 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private GameObject[] qualitiesTags;
     [SerializeField] private Slider qualitySelector;
     [SerializeField] private Color qualitySelectedColor;
-    [SerializeField] private Sprite qualitySelected;
+    [SerializeField] private Sprite qualitySelectedImage;
+    [SerializeField] private TMP_FontAsset qualitySelectedFont;
     [SerializeField] private Color qualityNonSelectedColor;
-    [SerializeField] private Sprite qualityNonSelected;
+    [SerializeField] private Sprite qualityNonSelectedImage;
+    [SerializeField] private TMP_FontAsset qualityNonSelectedFont;
 
     [SerializeField] private TMP_Text[] graphHourTexts;
 
@@ -286,13 +288,15 @@ public class VideoManager_VC : MonoBehaviour
         {
             if(i == index)
             {
-                qualityTag.GetComponentInChildren<Image> ().sprite = qualitySelected;
+                qualityTag.GetComponentInChildren<Image> ().sprite = qualitySelectedImage;
                 qualityTag.GetComponentInChildren<TMP_Text> ().color = qualitySelectedColor;
+                qualityTag.GetComponentInChildren<TMP_Text> ().font = qualitySelectedFont;
             }       
             else
             {
-                qualityTag.GetComponentInChildren<Image> ().sprite = qualityNonSelected;
+                qualityTag.GetComponentInChildren<Image> ().sprite = qualityNonSelectedImage;
                 qualityTag.GetComponentInChildren<TMP_Text> ().color = qualityNonSelectedColor;
+                qualityTag.GetComponentInChildren<TMP_Text> ().font = qualityNonSelectedFont;
             }
             i++;
         }
