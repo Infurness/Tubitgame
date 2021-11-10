@@ -16,7 +16,8 @@ public class AlgorithmManager : MonoBehaviour
     [SerializeField] public int baseNum=800;
     private void Start()
     {
-        StartCoroutine(UpdateTimer());
+        shouldUpdate = false;
+        StartCoroutine (UpdateTimer());
     }
 
     public ulong GetVideoViews (ulong _subscribers, ThemeType[] _themes, float _videoQuality, bool isViral)

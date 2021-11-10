@@ -207,14 +207,15 @@ public class PlayerDataManager : MonoBehaviour
         }
         return videoCounter;
     }
-    public ulong RecollectVideoMoney (string _name)
+    public ulong RecollectVideoMoney (string videoName)
     {
-        Video video = GetVideoByName (_name);
+        Video video = GetVideoByName (videoName);
         var videoMoney = video.videoSoftCurrency;
         video.collectedCurrencies += video.videoSoftCurrency;
         playerData.softCurrency += videoMoney;
         UpdateUserDatabase(new[] {"SoftCurrency","Videos"},new object[]{ playerData.softCurrency,playerData.videos});
         video.videoSoftCurrency = 0;
+        Debug.LogError ("collectedMoney");
         return videoMoney;
     }
     public int GetPlayerTotalVideos ()
@@ -269,7 +270,7 @@ public class PlayerDataManager : MonoBehaviour
             playerData.subscribers = subscribersCount;
             playerData.videos = videos; 
         }));
-        signalBus.Fire<ChangePlayerSubsSignal> (new ChangePlayerSubsSignal { subs=subscribersCount});
+        signalBus.TryFire (new ChangePlayerSubsSignal() { subs=subscribersCount});
     }
 
      void AddHardCurrency(int amount,Action confirmPurchase=null)

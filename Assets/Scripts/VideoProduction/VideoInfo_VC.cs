@@ -41,6 +41,7 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private Button skipButton;
     [SerializeField] private Button publishButton;
     [SerializeField] private GameObject moneyButtonPanel;
+    [SerializeField] private Button moneyButton;
     // Start is called before the first frame update
     void Start ()
     {
@@ -52,6 +53,7 @@ public class VideoInfo_VC : MonoBehaviour
 
         publishButton.onClick.AddListener (PublishVideo);
         cancelButton.onClick.AddListener (CancelVideo);
+        moneyButton.onClick.AddListener (RecollectMoney);
     }
 
     // Update is called once per frame
@@ -110,7 +112,7 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if(videoRef!=null)
         {
-            moneyText.text = $"CLAIM";
+            moneyText.text = $"{videoRef.videoSoftCurrency}";
             viewsText.text = $"{videoRef.views}";
             likesText.text = $"{videoRef.likes}";
             subscribersText.text = $"+{videoRef.newSubscribers}"; 

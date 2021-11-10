@@ -306,8 +306,6 @@ public class VideoManager_VC : MonoBehaviour
     {
         int hourPeriod = Math.DivRem (GameClock.Instance.Now.Hour-1, 6, out int remaindesr);
         int i = 0;
-        Debug.Log (hourPeriod);
-        Debug.Log (GameClock.Instance.Now.Hour - 1);
         foreach (TMP_Text text in graphHourTexts)
         {
             text.text = $"{i + hourPeriod*6}:00";

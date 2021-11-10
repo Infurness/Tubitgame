@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using  Zenject;
+using Zenject;
 public class GameplayInstaller : MonoInstaller
 {
     public override void InstallBindings()
@@ -17,6 +17,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
+        Container.DeclareSignal<UpdateSoftCurrency> ();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
         Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();
@@ -28,10 +29,10 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<ChangeUsernameSignal> ();
         Container.DeclareSignal<OpenVideoCreationSignal> ();
         Container.DeclareSignal<CloseVideoCreationSignal> ();
-        Container.DeclareSignal<ChangePlayerSubsSignal> ();
         Container.DeclareSignal<UpdateThemesGraphSignal> ();
         Container.DeclareSignal<OpenSettingPanelSignal> ();
         Container.DeclareSignal<OpenDeleteAccountSignal> ();
+        Container.DeclareSignal<ChangePlayerSubsSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
@@ -41,7 +42,5 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
-
-
     }
 }

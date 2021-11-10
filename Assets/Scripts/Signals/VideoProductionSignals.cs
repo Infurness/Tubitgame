@@ -46,6 +46,10 @@ public class GetMoneyFromVideoSignal
 {
     public string videoName;
 }
+public class UpdateSoftCurrency
+{
+
+}
 
 public class OpenVideoManagerSignal
 {
