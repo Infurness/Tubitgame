@@ -11,15 +11,31 @@ public class PlayerInventory : MonoBehaviour
 {
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private SignalBus signalBus;
-    [SerializeField] PlayerInventoryAddressedData playerInventoryAddressedData;
-    public List<ThemeCustomizationItem> equippedCharacterItems;
-    public List<ThemeCustomizationItem> defaultCharacterItems;
-    public List<ThemeCustomizationItem> characterItems;
-    public List<ThemeCustomizationItem> roomThemeEffectItems;
-    public List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
-    public List<VideoQualityCustomizationItem> videoQualityRoomItems;
-    public List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
-    public List<RealEstateCustomizationItem> realEstateItems;
+    [SerializeField] private PlayerInventoryAddressedData playerInventoryAddressedData;
+    [SerializeField] private List<ThemeCustomizationItem> equippedCharacterItems;
+    [SerializeField] private List<ThemeCustomizationItem> defaultCharacterItems;
+    [SerializeField] private List<ThemeCustomizationItem> characterItems;
+    [SerializeField] private List<ThemeCustomizationItem> roomThemeEffectItems;
+    [SerializeField] private List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
+    [SerializeField] private List<VideoQualityCustomizationItem> videoQualityRoomItems;
+    [SerializeField] private List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
+    [SerializeField] private List<RealEstateCustomizationItem> realEstateItems;
+    
+    public  List<ThemeCustomizationItem> EquippedCharacterItems => equippedCharacterItems.ToList();
+
+    public  List<ThemeCustomizationItem> DefaultCharacterItems => defaultCharacterItems.ToList();
+
+    public List<ThemeCustomizationItem> CharacterItems => characterItems.ToList();
+
+    public List<ThemeCustomizationItem> RoomThemeEffectItems => roomThemeEffectItems.ToList();
+
+    public List<ThemeCustomizationItem> EquippedThemeEffectRoomItems => equippedThemeEffectRoomItems.ToList();
+
+    public List<VideoQualityCustomizationItem> VideoQualityRoomItems => videoQualityRoomItems.ToList();
+
+    public List<VideoQualityCustomizationItem> EquippedVideoQualityRoomItems => equippedVideoQualityRoomItems.ToList();
+
+    public List<RealEstateCustomizationItem> RealEstateItems => realEstateItems.ToList();
     void Start()
     {
      //  signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
@@ -79,8 +95,8 @@ public class PlayerInventory : MonoBehaviour
         {
             ThemeCustomizationItem = themeCustomizationItem
         });
-        var totalThemeEquippedItems = new List<ThemeCustomizationItem>(equippedCharacterItems);
-        totalThemeEquippedItems.AddRange(equippedThemeEffectRoomItems);
+        var totalThemeEquippedItems = new List<ThemeCustomizationItem>(EquippedCharacterItems);
+        totalThemeEquippedItems.AddRange(EquippedThemeEffectRoomItems);
         signalBus.Fire(new OnPlayerEquippedThemeItemChangedSignal()
         {
             CustomizationItems =totalThemeEquippedItems
@@ -113,8 +129,8 @@ public class PlayerInventory : MonoBehaviour
         equippedVideoQualityRoomItems.ForEach((vc) =>
             playerInventoryAddressedData.equippedVideoQualityItemsNames.Add(vc.name));
         var allThemItems = new List<ThemeCustomizationItem>();
-        allThemItems.AddRange(equippedCharacterItems);
-        allThemItems.AddRange(equippedThemeEffectRoomItems);
+        allThemItems.AddRange(EquippedCharacterItems);
+        allThemItems.AddRange(EquippedThemeEffectRoomItems);
         signalBus.Fire(new OnPlayerEquippedThemeItemChangedSignal()
         {
             CustomizationItems = allThemItems

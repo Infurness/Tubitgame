@@ -37,7 +37,7 @@ public class CaharacterInventory_VC : MonoBehaviour
 
     private void OnEnable()
     {
-        foreach (var characterItem in m_PlayerInventory.equippedCharacterItems)
+        foreach (var characterItem in m_PlayerInventory.EquippedCharacterItems)
         {
             switch (characterItem)
             {
@@ -102,7 +102,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             equippedHead.name, equippedHead.rareness.ToString() + " " +
                                equippedHead.HeadItemType.ToString());
 
-        foreach (var  item in m_PlayerInventory.characterItems)
+        foreach (var  item in m_PlayerInventory.CharacterItems)
         {
             if(item.GetType()!=typeof(HeadItem))
                 continue;
@@ -177,7 +177,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             equippedFace.name, equippedFace.rareness.ToString() + " " +
                                equippedFace.FaceItemType.ToString());
 
-        foreach (var item in m_PlayerInventory.characterItems)
+        foreach (var item in m_PlayerInventory.CharacterItems)
         {
             if (item.GetType() != typeof(FaceItem))
                 continue;
@@ -233,7 +233,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             equippedTorso.name, equippedTorso.rareness.ToString() + " " +
                                 equippedTorso.TorsoItemType.ToString());
 
-        foreach (var item in m_PlayerInventory.characterItems)
+        foreach (var item in m_PlayerInventory.CharacterItems)
         {
             if(item.GetType()!=typeof(TorsoItem))
                 continue;
@@ -290,7 +290,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             equippedLegs.name, equippedLegs.rareness.ToString() + " " +
                                equippedLegs.LegsType.ToString());
 
-        foreach (var item in m_PlayerInventory.characterItems)
+        foreach (var item in m_PlayerInventory.CharacterItems)
         {
             if(item.GetType()!=typeof(LegsItem))
                 continue;
@@ -349,7 +349,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             equippedFeet.name, equippedFeet.rareness.ToString() + " " +
                                equippedFeet.FeetItemType.ToString());
 
-        foreach (var  item in m_PlayerInventory.characterItems)
+        foreach (var  item in m_PlayerInventory.CharacterItems)
         {
             if(item.GetType()!=typeof(FeetItem))
                 continue;

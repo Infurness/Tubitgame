@@ -22,7 +22,8 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OnPurchaseProductSignal>();
     Container.DeclareSignal<ProcessPurchaseSignal>();
     Container.DeclareSignal<ConfirmPendingPurchaseSignal>();
-    
+    Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
+
     //Dependencies
 
     Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);

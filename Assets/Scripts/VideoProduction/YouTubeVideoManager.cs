@@ -61,7 +61,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
         newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
         newVideo.videoMaxSoftCurrency = algorithmManager.GetVideoSoftCurrency(videoViews);
-        newVideo.lifeTimeHours = Random.Range(1, 2);
+        newVideo.lifeTimeDays = Random.Range(1, 2);
         newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
 

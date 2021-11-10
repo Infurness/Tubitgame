@@ -68,7 +68,7 @@ public class RoomInventory_VC : MonoBehaviour
             Destroy(inventoryButton.gameObject);
         }
         roomInventoryButtons.Clear();
-        foreach (var roomItem in playerInventory.roomThemeEffectItems)
+        foreach (var roomItem in playerInventory.RoomThemeEffectItems)
         {
             string type;
             switch (roomItem)
@@ -100,7 +100,7 @@ public class RoomInventory_VC : MonoBehaviour
             
             roomInventoryButtons.Add(bt);
         }
-        foreach (var videoQualityRoomItem in playerInventory.videoQualityRoomItems)
+        foreach (var videoQualityRoomItem in playerInventory.VideoQualityRoomItems)
         {
             string type;
             switch (videoQualityRoomItem.videoQualityItemType)

@@ -20,8 +20,8 @@ public class RoomRender : MonoBehaviour
     [SerializeField] private List<ObjectSlotData> roomObjectSlots;
     [SerializeField] private List<Image> floorItems;
     [SerializeField] private Canvas roomCanvas;
-    private List<VideoQualityCustomizationItem> currentVQItems;
-    private List<ThemeCustomizationItem> currentThemeItems;
+    [SerializeField]  List<VideoQualityCustomizationItem> currentVQItems;
+    [SerializeField]  List<ThemeCustomizationItem> currentThemeItems;
     [SerializeField] private RoomLayout DefalutRoomLayout;
     [SerializeField] private RoomLayout RoomLayout;
 
@@ -62,6 +62,8 @@ public class RoomRender : MonoBehaviour
         signalBus.Subscribe<SaveRoomLayoutSignal>((signal =>
         {
             OnSaveRoomLayout();
+            gameObject.SetActive(false);
+            gameObject.SetActive(true);
         }));
         signalBus.Subscribe<DiscardRoomLayoutSignal>((signal =>
         {
@@ -72,13 +74,14 @@ public class RoomRender : MonoBehaviour
 
     private void OnEnable()
     {
-        currentVQItems = PlayerInventory.equippedVideoQualityRoomItems;
-        currentThemeItems = PlayerInventory.equippedCharacterItems;
+        currentVQItems=PlayerInventory.EquippedVideoQualityRoomItems;
+        currentThemeItems = PlayerInventory.EquippedCharacterItems;
         RoomLayout = PlayerInventory.GetRoomLayout();
         if (RoomLayout.FloorLayoutSlots.Count==0)
         {
             RoomLayout = DefalutRoomLayout;
         }
+        print("Room Enabled");
         ProcessCurrentVCItems();
             ProcessCurrentThemeItems();
     }
