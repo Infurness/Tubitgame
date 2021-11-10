@@ -112,6 +112,8 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if(videoRef!=null)
         {
+            videoName = videoRef.name;
+            nameText.text = videoName;
             moneyText.text = $"{videoRef.videoSoftCurrency}";
             viewsText.text = $"{videoRef.views}";
             likesText.text = $"{videoRef.likes}";
