@@ -100,3 +100,8 @@ public class OpenDeleteAccountSignal
 {
 
 }
+
+public class OpenLeaderboardsSignal
+{
+
+}
