@@ -138,6 +138,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
                 UsedSlotInfo slotInfo = new UsedSlotInfo () { themeType = themeTypeBeingDragged, button = buttonBeingDragged};
                 usedSlotsInfo.Add (slotIndex, slotInfo);
                 slot.GetComponent<Image> ().sprite = usedSlotImage;
+                slot.transform.GetChild (0).gameObject.SetActive (false);
                 return;
             }
             slotIndex++;
@@ -153,12 +154,14 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         usedSlotsInfo[slotIndex].button.GetComponent<Button> ().interactable = true;
         usedSlotsInfo.Remove (slotIndex);
         themeSlots[slotIndex].GetComponent<Image> ().sprite = emptySlotImage;
+        themeSlots[slotIndex].transform.GetChild (0).gameObject.SetActive (true);
     }
     void EmptySlot (int slotIndex)
     {
         dragablesBeingUsedForSlots.Remove (draggableBeingUsed);
         usedSlotsInfo.Remove (slotIndex);
         themeSlots[slotIndex].GetComponent<Image> ().sprite = emptySlotImage;
+        themeSlots[slotIndex].transform.GetChild (0).gameObject.SetActive (true);
     }
     IEnumerator MoveObjectTo (GameObject objectToMove, Vector3 objective)
     {
