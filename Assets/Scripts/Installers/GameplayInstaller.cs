@@ -21,6 +21,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<ChangePlayerSubsSignal> ();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
+        Container.DeclareSignal<RecieveTop10Leaderboard> ();
         Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();
         Container.DeclareSignal<OnVideosStatsUpdatedSignal> ();
         Container.DeclareSignal<OpenThemeSelectorPopUpSignal> ();
@@ -34,7 +35,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<OpenSettingPanelSignal> ();
         Container.DeclareSignal<OpenDeleteAccountSignal> ();
         Container.DeclareSignal<OpenLeaderboardsSignal> ();
-        
+        Container.DeclareSignal<LevelUpSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();

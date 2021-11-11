@@ -10,8 +10,9 @@ public class LeaderboardManager : MonoBehaviour
     void Start()
     {
         //UpdateLeaderboard (100);
-        GetLeaderboardPosition ();
-        publicGetBest3Leaderboard ();
+        //GetLeaderboardPosition ();
+        GetBest3Leaderboard ();
+        GetTop10InLeaderboard ();
     }
 
     // Update is called once per frame
@@ -23,9 +24,13 @@ public class LeaderboardManager : MonoBehaviour
     {
         leaderboardBackEnd.SendLeaderboard (subscribers);
     }
-    void publicGetBest3Leaderboard ()
+    void GetBest3Leaderboard ()
     {
         leaderboardBackEnd.GetBest3InLeaderboard ();
+    }
+    void GetTop10InLeaderboard ()
+    {
+        leaderboardBackEnd.GetTop10InLeaderboard ();
     }
     void GetLeaderboardPosition ()
     {

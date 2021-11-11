@@ -104,4 +104,5 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         return GameClock.Instance.Now.Hour;
     }
+    
 }

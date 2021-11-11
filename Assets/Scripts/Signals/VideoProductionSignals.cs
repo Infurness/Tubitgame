@@ -105,3 +105,8 @@ public class OpenLeaderboardsSignal
 {
 
 }
+
+public class LevelUpSignal
+{
+    public int level;
+}

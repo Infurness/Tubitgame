@@ -78,11 +78,19 @@ public class AlgorithmManager : MonoBehaviour
                     
                     double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeHours*60.0f)), 1.0f);
                     print("Complete percentage "+ completePercentage);
+
+                    ulong previousViews = video.views;
                     video.views=(ulong)(video.maxViews*completePercentage);
+                    PlayerDataManager.Instance.AddViews (video.views - previousViews);//Add the views gained this step for experience points calculation
+
                     video.likes = (ulong)(video.maxLikes*completePercentage);
                     video.comments =(ulong) (video.maxComments*completePercentage);
                     video.videoSoftCurrency =((ulong)(video.videoMaxSoftCurrency*completePercentage))-video.collectedCurrencies;
+
+                    ulong previousSubs = video.newSubscribers;
                     video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
+                    PlayerDataManager.Instance.AddSubs (video.newSubscribers - previousSubs);//Add the subs gained this step for experience points calculation
+
                     subscribers += video.newSubscribers;
                     video.lastUpdateTime = GameClock.Instance.Now;
                     if (completePercentage==1.0)

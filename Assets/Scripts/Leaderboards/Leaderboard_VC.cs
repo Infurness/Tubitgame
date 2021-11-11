@@ -35,7 +35,7 @@ public class Leaderboard_VC : MonoBehaviour
     void RecieveBestLeaderboardPositions (Recieve3BestLeaderboard signal)
     {
         int i = 0;
-        foreach (KeyValuePair<string, int> pair in signal.players)
+        foreach (KeyValuePair<string, ulong> pair in signal.players)
         {
             SetBestPlayers (i, pair.Key);
             //Debug.Log ($"Position {i + 1} : Player {pair.Key} : Subscribers {pair.Value}");
