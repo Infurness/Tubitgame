@@ -70,10 +70,7 @@ public class PlayerInventory : MonoBehaviour
     void OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
         playerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
-
         LoadAddressedData();
-        
-       
     }
     public void AddCharacterItem(ThemeCustomizationItem themeCustomizationItem)
     {
@@ -81,7 +78,6 @@ public class PlayerInventory : MonoBehaviour
             return;
         playerInventoryAddressedData.characterItemsNames.Add(themeCustomizationItem.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
-        
     }
    
 
