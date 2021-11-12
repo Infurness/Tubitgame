@@ -90,6 +90,13 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.videos = JsonConvert.DeserializeObject<List<Video>>(videosJson);
 
             }
+            if (result.Data.TryGetValue ("XpData", out datarecord))
+            {
+
+                var xpDataJson = datarecord.Value;
+                playerData.xpData = JsonConvert.DeserializeObject<ExperienceData> (xpDataJson);
+
+            }
 
             if (result.Data.TryGetValue("PlayerName",out datarecord))
             {
@@ -338,34 +345,45 @@ public class PlayerDataManager : MonoBehaviour
     }
     public void AddExperiencePoints (ulong experience)
     {
-        playerData.experiencePoints += experience;
+        playerData.xpData.experiencePoints += experience;
+        UpdateXpData ();
     }
     public ulong GetExperiencePoints ()
     {
-        return playerData.experiencePoints;
+        return playerData.xpData.experiencePoints;
     }
     public int GetSubsThreshold ()
     {
-        return playerData.subscribersThresholdCounter;
+        return playerData.xpData.subscribersThresholdCounter;
     }
     public void SetSubsThreshold (int value)
     {
-        playerData.subscribersThresholdCounter = value;
+        playerData.xpData.subscribersThresholdCounter = value;
+        UpdateXpData ();
     }
     public int GetViewsThreshold ()
     {
-        return playerData.viewsThresholdCounter;
+        return playerData.xpData.viewsThresholdCounter;
     }
     public void SetViewsThreshold (int value)
     {
-        playerData.viewsThresholdCounter = value;
+        playerData.xpData.viewsThresholdCounter = value;
+        UpdateXpData ();
     }
     public int GetSoftCurrencyThreshold ()
     {
-        return playerData.softCurrencyThresholdCounter;
+        return playerData.xpData.softCurrencyThresholdCounter;
     }
     public void SetSoftCurrencyThreshold (int value)
     {
-        playerData.softCurrencyThresholdCounter = value;
+        playerData.xpData.softCurrencyThresholdCounter = value;
+        UpdateXpData ();
+    }
+    void UpdateXpData ()
+    {
+        UpdateUserDatabase (new[] { "XpData" }, new object[]
+        {
+            playerData.xpData
+        });
     }
 }

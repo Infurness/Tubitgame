@@ -10,6 +10,11 @@ public class PlayerData
     public ulong softCurrency;
     public ulong hardCurrency;
     //Leveling System 
+    public ExperienceData xpData;
+}
+[System.Serializable]
+public struct ExperienceData
+{
     public ulong experiencePoints;
     public int subscribersThresholdCounter;
     public int viewsThresholdCounter;
