@@ -11,7 +11,7 @@ using Zenject;
 public class CaharacterInventory_VC : MonoBehaviour
 {
     [Inject] private PlayerInventory m_PlayerInventory;
-    [SerializeField] private Button headBt, faceBt, torsoBt, legsBt, feetBt;
+    [SerializeField] private CharacterCustomizationsSlot  headBSlot, faceSlot, torsoSlot, legsSlot, feetSlot;
     [SerializeField] private InventoryButton inventoryButtonPrefab;
     [SerializeField] private TabView_VC inventoryTabView;
     private List<InventoryButton> inventoryButtons;
@@ -25,13 +25,14 @@ public class CaharacterInventory_VC : MonoBehaviour
     [SerializeField] private GameObject characterSlotsPanel,roomSlotsPanel,buttonsPanel;
     [SerializeField] private Canvas inventoryCanvas;
     [SerializeField] private GameObject characterPreview;
+    [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
     void Start()
     {
-        headBt.onClick.AddListener(OnHeadButtonClicked);
-        faceBt.onClick.AddListener(OnFaceButtonClicked);
-        torsoBt.onClick.AddListener(OnTorsoButtonClicked);
-        legsBt.onClick.AddListener(OnLegsButtonClicked);
-        feetBt.onClick.AddListener(OnFeetButtonClicked);
+        headBSlot.SetButtonAction(OnHeadButtonClicked);
+        faceSlot.SetButtonAction(OnFaceButtonClicked);
+        torsoSlot.SetButtonAction(OnTorsoButtonClicked);
+        legsSlot.SetButtonAction(OnLegsButtonClicked);
+        feetSlot.SetButtonAction(OnFeetButtonClicked);
         inventoryButtons = new List<InventoryButton>();
     }
 
@@ -39,17 +40,38 @@ public class CaharacterInventory_VC : MonoBehaviour
     {
         foreach (var characterItem in m_PlayerInventory.EquippedCharacterItems)
         {
+            Sprite rarenessSprite;
+            switch (characterItem.rareness)
+            {
+                case Rareness.Common:
+                    rarenessSprite = commonSprite;
+                    break;
+                case Rareness.Uncommon:
+                    rarenessSprite = uncommonSprite;
+                    break;
+                case Rareness.Rare:
+                    rarenessSprite = rareSprite;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             switch (characterItem)
             {
-                case  HeadItem headItem:headBt.image.sprite =headItem.logoSprite;
+                case  HeadItem headItem:headBSlot.SetIconSprite(headItem.logoSprite);
+                    headBSlot.SetRarenessSprite(rarenessSprite);
                     break;
-                case  FaceItem faceItem: faceBt.image.sprite = faceItem.logoSprite;
+                case  FaceItem faceItem: faceSlot.SetIconSprite(faceItem.logoSprite);
+                    faceSlot.SetIconSprite(rarenessSprite);
                     break;
-                case  TorsoItem torsoItem: torsoBt.image.sprite = torsoItem.torsoSprite;
+                case  TorsoItem torsoItem: headBSlot.SetIconSprite(torsoItem.torsoSprite);
+                    torsoSlot.SetIconSprite(rarenessSprite);
                     break;
-                case  LegsItem legsItem:legsBt.image.sprite = legsItem.logoSprite;
-                        break;
-                case FeetItem feetItem: feetBt.image.sprite = feetItem.logoSprite;
+                case  LegsItem legsItem:legsSlot.SetIconSprite(legsItem.logoSprite);
+                    legsSlot.SetIconSprite(rarenessSprite);
+                    break;
+                case FeetItem feetItem: feetSlot.SetIconSprite (feetItem.logoSprite);              
+                    feetSlot.SetIconSprite(rarenessSprite);
+
                     break;
             }
         }

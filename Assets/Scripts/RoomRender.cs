@@ -11,10 +11,10 @@ public class RoomRender : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory PlayerInventory;
-    [SerializeField] private Image computerSlot;
-    [SerializeField] private Image cameraSlot;
-    [SerializeField] private Image microphoneSlot;
-    [SerializeField] private Image greenScreenSlot;
+    [SerializeField] private SpriteRenderer computerSlot;
+    [SerializeField] private SpriteRenderer cameraSlot;
+    [SerializeField] private SpriteRenderer microphoneSlot;
+    [SerializeField] private SpriteRenderer greenScreenSlot;
     [SerializeField] private List<WallSlotData> wallSlots;
     [SerializeField] private List<FloorSlotData> floorSlots;
     [SerializeField] private List<ObjectSlotData> roomObjectSlots;
@@ -282,7 +282,7 @@ public class RoomRender : MonoBehaviour
 [System.Serializable]
 public class WallSlotData
 {
-    public Image Image;
+    public SpriteRenderer Image;
     public WallOrnamentType WallOrnamentType;
     public bool Empty=true;
     public RoomLayoutThemeSlot roomLayoutThemeSlot;
@@ -292,7 +292,7 @@ public class WallSlotData
 [System.Serializable]
 public class FloorSlotData
 {
-    public Image Image;
+    public SpriteRenderer Image;
     public FloorOrnamentType FloorOrnamentType;
     public bool Empty=true;
     public RoomLayoutThemeSlot roomLayoutThemeSlot;
@@ -303,7 +303,7 @@ public class FloorSlotData
 [System.Serializable]
 public class ObjectSlotData
 {
-    public Image Image;
+    public SpriteRenderer Image;
     public RoomObjectType RoomObjectType;
     public bool Empty=true;
     public RoomLayoutThemeSlot roomLayoutThemeSlot;

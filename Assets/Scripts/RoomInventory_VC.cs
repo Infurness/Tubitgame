@@ -19,7 +19,6 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private GameObject buttonsTransform;
     [SerializeField] private Button backButton;
     public List<InventoryButton> roomInventoryButtons;
-
     [SerializeField] private GameObject installPanel;
     [SerializeField] private Button installButton;
     [SerializeField] private TMP_Text itemName, itemRareness, itemDescription, itemNewStats;
@@ -94,6 +93,8 @@ public class RoomInventory_VC : MonoBehaviour
                 {
                     installPanel.gameObject.SetActive(false);
                     playerInventory.TestThemeEffectRoomITem(roomItem);
+                    SetSelectedPanelData(roomItem.name, roomItem.rareness.ToString(), roomItem.descriptionText,
+                        roomItem.newStatsText, roomItem.logoSprite);
 
                 });
             });
@@ -131,7 +132,9 @@ public class RoomInventory_VC : MonoBehaviour
                 {
                     installPanel.gameObject.SetActive(false);
                     playerInventory.TestVideoQualityRoomItem(videoQualityRoomItem);
-
+                    SetSelectedPanelData(videoQualityRoomItem.name, videoQualityRoomItem.rareness.ToString(),
+                        videoQualityRoomItem.descriptionText, videoQualityRoomItem.newStatsText,
+                        videoQualityRoomItem.logoSprite);
                 });
             });
             

@@ -10,7 +10,7 @@ public class HomePanel_VC : MonoBehaviour
     [Inject] private YouTubeVideoManager youTubeVideoManager;
 
     //[SerializeField] private Button publishButton;
-    [SerializeField] private ScrollRect viewsScroll;
+   // [SerializeField] private ScrollRect viewsScroll;
     [SerializeField] private Button playerIconButton;
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Button closeSettingsButton;
@@ -22,7 +22,7 @@ public class HomePanel_VC : MonoBehaviour
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
 
        // publishButton.onClick.AddListener (OnPublishVideoPressed);
-        viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+     //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (() => { OpenSettingsPanel (true); });
         closeSettingsButton.onClick.AddListener (() => { OpenSettingsPanel (false); });
 
