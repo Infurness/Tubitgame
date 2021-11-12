@@ -110,3 +110,16 @@ public class LevelUpSignal
 {
     public int level;
 }
+
+public class AddSubsForExperienceSignal
+{
+    public ulong subs;
+}
+public class AddViewsForExperienceSignal
+{
+    public ulong views;
+}
+public class AddSoftCurrencyForExperienceSignal
+{
+    public ulong softCurrency;
+}

@@ -81,7 +81,7 @@ public class AlgorithmManager : MonoBehaviour
 
                     ulong previousViews = video.views;
                     video.views=(ulong)(video.maxViews*completePercentage);
-                    PlayerDataManager.Instance.AddViews (video.views - previousViews);//Add the views gained this step for experience points calculation
+                    signalBus.Fire<AddViewsForExperienceSignal> (new AddViewsForExperienceSignal () { views = video.views - previousViews });//Add the views gained this step for experience points calculation
 
                     video.likes = (ulong)(video.maxLikes*completePercentage);
                     video.comments =(ulong) (video.maxComments*completePercentage);
@@ -89,7 +89,7 @@ public class AlgorithmManager : MonoBehaviour
 
                     ulong previousSubs = video.newSubscribers;
                     video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
-                    PlayerDataManager.Instance.AddSubs (video.newSubscribers - previousSubs);//Add the subs gained this step for experience points calculation
+                    signalBus.Fire<AddSubsForExperienceSignal> (new AddSubsForExperienceSignal () { subs = video.newSubscribers - previousSubs });//Add the subs gained this step for experience points calculation
 
                     subscribers += video.newSubscribers;
                     video.lastUpdateTime = GameClock.Instance.Now;

@@ -228,7 +228,7 @@ public class PlayerDataManager : MonoBehaviour
         video.collectedCurrencies += video.videoSoftCurrency;
         playerData.softCurrency += videoMoney;
         UpdateUserDatabase(new[] {"SoftCurrency","Videos"},new object[]{ playerData.softCurrency,playerData.videos});
-        AddSoftCurrency (video.videoSoftCurrency); //Add the soft currency gained for experience points calculation
+        signalBus.Fire<AddSoftCurrencyForExperienceSignal> (new AddSoftCurrencyForExperienceSignal () { softCurrency = video.videoSoftCurrency });//Add the soft currency gained for experience points calculation
         video.videoSoftCurrency = 0;
         Debug.LogError ("collectedMoney");
         return videoMoney;
@@ -275,7 +275,8 @@ public class PlayerDataManager : MonoBehaviour
 
     }
     public void UpdatePlayerData(ulong subscribersCount,List<Video> videos)
-    { 
+    {
+        ulong lastSubs = playerData.subscribers;
         UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[]
         {
             subscribersCount,
@@ -285,7 +286,7 @@ public class PlayerDataManager : MonoBehaviour
             playerData.subscribers = subscribersCount;
             playerData.videos = videos; 
         }));
-        signalBus.TryFire (new ChangePlayerSubsSignal() { subs=subscribersCount});
+        signalBus.Fire (new ChangePlayerSubsSignal() { previousSubs= lastSubs, subs =subscribersCount});
     }
 
      void AddHardCurrency(int amount,Action confirmPurchase=null)
@@ -335,70 +336,36 @@ public class PlayerDataManager : MonoBehaviour
             onRedeemed?.Invoke();
         }));
     }
-    void AddExperience (ulong experience)
+    public void AddExperiencePoints (ulong experience)
     {
-        //Set new experience
-        int previousLevel = GetPlayerLevel ();
         playerData.experiencePoints += experience;
-
-        //Check level up
-        int currentLevel = GetPlayerLevel ();
-        if (previousLevel < currentLevel)
-        {
-            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel });
-        }
     }
-    public int GetPlayerLevel()
+    public ulong GetExperiencePoints ()
     {
-        ulong[] xpLevels =  {
-                            0,
-                            10,
-                            50,
-                            250,
-                            1250,
-                            6000,
-                            30510,
-                            152550,
-                            762750,
-                            3813000 };
-        int level = 0;
-        foreach(ulong levelXp in xpLevels)
-        {
-            if(playerData.experiencePoints >= levelXp)
-            {
-                level++;
-            }
-            else
-            {
-                break;
-            }
-        }
-        return level;
+        return playerData.experiencePoints;
     }
-    public void AddSubs(ulong subs)
+    public int GetSubsThreshold ()
     {
-        ulong totalSubs = subs + (ulong)playerData.subscribersThresholdCounter;
-        long remainder;
-        long experiencePoints = Math.DivRem ((long)totalSubs, 100, out remainder);
-
-        playerData.subscribersThresholdCounter = (int)remainder;
-        AddExperience ((ulong)experiencePoints);
+        return playerData.subscribersThresholdCounter;
     }
-    public void AddViews (ulong views)
+    public void SetSubsThreshold (int value)
     {
-        ulong totalviews = views + (ulong)playerData.viewsThresholdCounter;
-        long remainder;
-        long experiencePoints = Math.DivRem ((long)totalviews, 1000, out remainder);
-        playerData.viewsThresholdCounter = (int)remainder;
-        AddExperience ((ulong)experiencePoints);
+        playerData.subscribersThresholdCounter = value;
     }
-    public void AddSoftCurrency (ulong softCurrency)
+    public int GetViewsThreshold ()
     {
-        ulong totalSoftCurrency = softCurrency + (ulong)playerData.softCurrencyThresholdCounter;
-        long remainder;
-        long experiencePoints = Math.DivRem ((long)totalSoftCurrency, 100, out remainder);
-
-        playerData.softCurrencyThresholdCounter = (int)remainder;
-        AddExperience ((ulong)experiencePoints);
+        return playerData.viewsThresholdCounter;
+    }
+    public void SetViewsThreshold (int value)
+    {
+        playerData.viewsThresholdCounter = value;
+    }
+    public int GetSoftCurrencyThreshold ()
+    {
+        return playerData.softCurrencyThresholdCounter;
+    }
+    public void SetSoftCurrencyThreshold (int value)
+    {
+        playerData.softCurrencyThresholdCounter = value;
     }
 }
