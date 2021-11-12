@@ -293,6 +293,7 @@ public class PlayerDataManager : MonoBehaviour
             playerData.subscribers = subscribersCount;
             playerData.videos = videos; 
         }));
+        LeaderboardManager.Instance.UpdateLeaderboard ("SubscribersCount", (int)subscribersCount);
         signalBus.Fire (new ChangePlayerSubsSignal() { previousSubs= lastSubs, subs =subscribersCount});
     }
 

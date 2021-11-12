@@ -6,7 +6,17 @@ using Zenject;
 public class LeaderboardManager : MonoBehaviour
 {
     [Inject] private PlayfabLeaderboard leaderboardBackEnd;
+
+    public static LeaderboardManager Instance;
     // Start is called before the first frame update
+
+    private void Awake ()
+    {
+        if (!Instance)
+            Instance = this;
+        else
+            Destroy (this);
+    }
     void Start()
     {
         //UpdateLeaderboard (100);
@@ -20,9 +30,9 @@ public class LeaderboardManager : MonoBehaviour
     {
         
     }
-    public void UpdateLeaderboard(int subscribers)
+    public void UpdateLeaderboard(string leaderboardName, int subscribers)
     {
-        leaderboardBackEnd.SendLeaderboard (subscribers);
+        leaderboardBackEnd.SendLeaderboard (leaderboardName, subscribers);
     }
     void GetBest3Leaderboard ()
     {

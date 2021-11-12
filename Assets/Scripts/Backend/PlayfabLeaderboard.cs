@@ -21,7 +21,7 @@ public class PlayfabLeaderboard : MonoBehaviour
         
     }
 
-    public void SendLeaderboard(int score)
+    public void SendLeaderboard(string leaderboardName, int score)
     {
         var request = new UpdatePlayerStatisticsRequest
         {
@@ -29,7 +29,7 @@ public class PlayfabLeaderboard : MonoBehaviour
             {
                 new StatisticUpdate
                 {
-                    StatisticName = "SubscribersCount",
+                    StatisticName = leaderboardName,
                     Value = score
                 }
             }
