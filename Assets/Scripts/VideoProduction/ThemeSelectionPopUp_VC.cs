@@ -125,7 +125,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         draggingTheme = false;
         scrollList.enabled = true;
         int slotIndex = 0;
-        foreach(GameObject slot in themeSlots)
+        draggableThemeObjects[draggableBeingUsed].GetComponent<Image> ().enabled = false;
+        foreach (GameObject slot in themeSlots)
         {
             if (RectTransformUtility.RectangleContainsScreenPoint (slot.GetComponent<RectTransform> (), Input.mousePosition))
             {
@@ -181,7 +182,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         while (draggingTheme)
         {
             draggableThemeObjects[draggableBeingUsed].transform.position = Input.mousePosition - offset;
-            if(!Input.anyKey)//Not being hold anymore
+            draggableThemeObjects[draggableBeingUsed].GetComponent<Image> ().enabled = true;
+            if (!Input.anyKey)//Not being hold anymore
             {
                 StopDraggingTheme ();
             }
