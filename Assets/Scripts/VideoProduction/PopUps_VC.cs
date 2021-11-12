@@ -19,6 +19,9 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private GameObject deleteAccountPanel;
     [SerializeField] private Button[] deleteAccountPanelCloseButtons;
 
+    [SerializeField] private GameObject leaderboardsPanel;
+    [SerializeField] private Button leaderboardsPanelCloseButton;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,7 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Subscribe<ConfirmThemesSignal> (CloseThemeSelector);
         signalBus.Subscribe<OpenSettingPanelSignal> (OpenSettings);
         signalBus.Subscribe<OpenDeleteAccountSignal> (OpenDeleteAccount);
+        signalBus.Subscribe<OpenLeaderboardsSignal> (OpenLeaderboards);
 
         themeSelectionPanelCloseButton.onClick.AddListener (CloseThemeSelector);
         settingsPanelCloseButton.onClick.AddListener (CloseSettings);
@@ -33,6 +37,7 @@ public class PopUps_VC : MonoBehaviour
         {
             button.onClick.AddListener (CloseDeleteAccount);
         }
+        leaderboardsPanelCloseButton.onClick.AddListener (CloseLeaderboards);
 
         InitialState ();
     }
@@ -41,6 +46,7 @@ public class PopUps_VC : MonoBehaviour
         CloseThemeSelector ();
         CloseSettings ();
         CloseDeleteAccount ();
+        CloseLeaderboards ();
     }
     void OpenThemeSelector ()
     {
@@ -74,5 +80,17 @@ public class PopUps_VC : MonoBehaviour
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         deleteAccountPanel.SetActive (false);
+    }
+
+    void OpenLeaderboards ()
+    {
+        CloseSettings ();
+        popUpsBlockBackgroundPanel.SetActive (true);
+        leaderboardsPanel.SetActive (true);
+    }
+    void CloseLeaderboards ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (false);
+        leaderboardsPanel.SetActive (false);
     }
 }

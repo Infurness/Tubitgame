@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Zenject;
 
@@ -15,11 +16,15 @@ public class Leaderboard_VC : MonoBehaviour
 
     [SerializeField] private TMP_Text currentPlayerPosition;
     [SerializeField] private TMP_Text currentPlayerName;
+
+    [SerializeField] private Button moreButton;
     // Start is called before the first frame update
     void Start()
     {
         signalBus.Subscribe<RecievePlayerLeaderboardPosition> (RecieveMyLeaderboardPosition);
         signalBus.Subscribe<Recieve3BestLeaderboard> (RecieveBestLeaderboardPositions);
+
+        moreButton.onClick.AddListener (OpenLeaderboards);
     }
 
     // Update is called once per frame
@@ -30,7 +35,7 @@ public class Leaderboard_VC : MonoBehaviour
     void RecieveBestLeaderboardPositions (Recieve3BestLeaderboard signal)
     {
         int i = 0;
-        foreach (KeyValuePair<string, int> pair in signal.players)
+        foreach (KeyValuePair<string, ulong> pair in signal.players)
         {
             SetBestPlayers (i, pair.Key);
             //Debug.Log ($"Position {i + 1} : Player {pair.Key} : Subscribers {pair.Value}");
@@ -63,5 +68,9 @@ public class Leaderboard_VC : MonoBehaviour
     {
         currentPlayerPosition.text = _position.ToString ();
         currentPlayerName.text = playerDataManager.GetPlayerName ();
+    }
+    void OpenLeaderboards ()
+    {
+        signalBus.Fire<OpenLeaderboardsSignal> ();
     }
 }

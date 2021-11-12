@@ -161,6 +161,20 @@ public class PlayerDataManager : MonoBehaviour
             playerData.playerName = playerName;
  
         }));
+
+        UpdateUserTitleDisplayNameRequest request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = playerName
+        };
+        PlayFabClientAPI.UpdateUserTitleDisplayName (request, OnDisplayNameSetSuccess, OnDisplayNameSetError);
+    }
+    void OnDisplayNameSetSuccess (UpdateUserTitleDisplayNameResult result)
+    {
+        Debug.Log ($"The player's display name is now: {result.DisplayName}");
+    }
+    void OnDisplayNameSetError (PlayFabError error)
+    {
+        Debug.LogError (error.GenerateErrorReport ());
     }
 
     public void AddVideo (Video _video)
@@ -214,6 +228,7 @@ public class PlayerDataManager : MonoBehaviour
         video.collectedCurrencies += video.videoSoftCurrency;
         playerData.softCurrency += videoMoney;
         UpdateUserDatabase(new[] {"SoftCurrency","Videos"},new object[]{ playerData.softCurrency,playerData.videos});
+        AddSoftCurrency (video.videoSoftCurrency); //Add the soft currency gained for experience points calculation
         video.videoSoftCurrency = 0;
         Debug.LogError ("collectedMoney");
         return videoMoney;
@@ -320,5 +335,70 @@ public class PlayerDataManager : MonoBehaviour
             onRedeemed?.Invoke();
         }));
     }
+    void AddExperience (ulong experience)
+    {
+        //Set new experience
+        int previousLevel = GetPlayerLevel ();
+        playerData.experiencePoints += experience;
 
+        //Check level up
+        int currentLevel = GetPlayerLevel ();
+        if (previousLevel < currentLevel)
+        {
+            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel });
+        }
+    }
+    public int GetPlayerLevel()
+    {
+        ulong[] xpLevels =  {
+                            0,
+                            10,
+                            50,
+                            250,
+                            1250,
+                            6000,
+                            30510,
+                            152550,
+                            762750,
+                            3813000 };
+        int level = 0;
+        foreach(ulong levelXp in xpLevels)
+        {
+            if(playerData.experiencePoints >= levelXp)
+            {
+                level++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return level;
+    }
+    public void AddSubs(ulong subs)
+    {
+        ulong totalSubs = subs + (ulong)playerData.subscribersThresholdCounter;
+        long remainder;
+        long experiencePoints = Math.DivRem ((long)totalSubs, 100, out remainder);
+
+        playerData.subscribersThresholdCounter = (int)remainder;
+        AddExperience ((ulong)experiencePoints);
+    }
+    public void AddViews (ulong views)
+    {
+        ulong totalviews = views + (ulong)playerData.viewsThresholdCounter;
+        long remainder;
+        long experiencePoints = Math.DivRem ((long)totalviews, 1000, out remainder);
+        playerData.viewsThresholdCounter = (int)remainder;
+        AddExperience ((ulong)experiencePoints);
+    }
+    public void AddSoftCurrency (ulong softCurrency)
+    {
+        ulong totalSoftCurrency = softCurrency + (ulong)playerData.softCurrencyThresholdCounter;
+        long remainder;
+        long experiencePoints = Math.DivRem ((long)totalSoftCurrency, 100, out remainder);
+
+        playerData.softCurrencyThresholdCounter = (int)remainder;
+        AddExperience ((ulong)experiencePoints);
+    }
 }
