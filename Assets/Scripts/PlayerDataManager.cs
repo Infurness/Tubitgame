@@ -203,7 +203,6 @@ public class PlayerDataManager : MonoBehaviour
     void OnDisplayNameSetError (PlayFabError error)
     {
         Debug.LogError (error.GenerateErrorReport ());
-        UpdateUserDatabase(new[] {"PlayerName"}, new[] {playerName}, (() => { playerData.playerName = playerName; }));
     }
 
     public void AddVideo(Video _video)

@@ -104,7 +104,7 @@ public class AlgorithmManager : MonoBehaviour
                 }
             }
             signalBus.TryFire<OnVideosStatsUpdatedSignal>();
-            PlayerDataManager.Instance.UpdatePlayerVideosSubscribersData(subscribers,videos);
+            PlayerDataManager.Instance.UpdatePlayerData(subscribers,videos);
             StartCoroutine(UpdateTimer());
 
         }
