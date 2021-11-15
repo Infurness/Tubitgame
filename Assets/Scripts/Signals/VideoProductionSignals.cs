@@ -109,6 +109,7 @@ public class OpenLeaderboardsSignal
 public class LevelUpSignal
 {
     public int level;
+    public RewardsData reward;
 }
 
 public class AddSubsForExperienceSignal

@@ -9,6 +9,9 @@ public class ExperienceManager : MonoBehaviour
     [Inject] private SignalBus signalBus;
 
     private PlayerDataManager playerDataManager;
+
+    [SerializeField] private ulong[] xpForEachLevel;
+    [SerializeField] private RewardsData[] rewardsForEachLevel;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +35,7 @@ public class ExperienceManager : MonoBehaviour
         int currentLevel = GetPlayerLevel ();
         if (previousLevel < currentLevel)
         {
-            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel });
+            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward=rewardsForEachLevel[currentLevel-1] });
         }
     }
     public int GetPlayerLevel ()
