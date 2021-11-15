@@ -40,19 +40,8 @@ public class ExperienceManager : MonoBehaviour
     }
     public int GetPlayerLevel ()
     {
-        ulong[] xpLevels =  {
-                            0,
-                            10,
-                            50,
-                            250,
-                            1250,
-                            6000,
-                            30510,
-                            152550,
-                            762750,
-                            3813000 };
         int level = 0;
-        foreach (ulong levelXp in xpLevels)
+        foreach (ulong levelXp in xpForEachLevel)
         {
             if (playerDataManager.GetExperiencePoints () >= levelXp)
             {
