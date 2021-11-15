@@ -71,7 +71,7 @@ public class HUD_VC : MonoBehaviour
     void InitialState ()
     {
         UpdateUsername ();
-        playerSubscribers.text = PlayerDataManager.Instance.GetSubscribers ().ToString ();
+        UpdateSubs ();
         OpenHomePanel ();
     }
     void UpdateUsername ()
@@ -81,9 +81,14 @@ public class HUD_VC : MonoBehaviour
             playerName.text = PlayerDataManager.Instance.GetPlayerName ().ToUpper ();
         }
     }
+    void UpdateSubs ()
+    {
+        playerSubscribers.text = PlayerDataManager.Instance.GetSubscribers ().ToString ();
+    }
     void OpenHomePanel ()
     {
         OpenScreenPanel (HUDScreen.Home);
+        UpdateSubs ();
     }
     void OpenVideoManagerPanel ()
     {

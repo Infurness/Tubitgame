@@ -38,7 +38,7 @@ public class LeaderboardManager : MonoBehaviour
     {
         leaderboardBackEnd.GetBest3InLeaderboard ();
     }
-    void GetTop10InLeaderboard ()
+    public void GetTop10InLeaderboard ()
     {
         leaderboardBackEnd.GetTop10InLeaderboard ();
     }
