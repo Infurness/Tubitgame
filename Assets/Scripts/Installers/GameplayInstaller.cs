@@ -17,10 +17,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
-
         Container.DeclareSignal<UpdateSoftCurrency> ();
-
-
         Container.DeclareSignal<OnFaceEquippedSignal>();
         Container.DeclareSignal<OnHeadEquippedSignal>();
         Container.DeclareSignal<OnTorsoEquippedSignal>();
@@ -28,8 +25,6 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<OnFeetEquippedSignal>();
         Container.DeclareSignal<OnPlayerEquippedItemChangedSignal>();
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
-
-
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
         Container.DeclareSignal<RecieveTop10Leaderboard> ();

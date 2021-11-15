@@ -85,6 +85,7 @@ public class PopUps_VC : MonoBehaviour
     void OpenLeaderboards ()
     {
         CloseSettings ();
+        LeaderboardManager.Instance.GetTop10InLeaderboard ();
         popUpsBlockBackgroundPanel.SetActive (true);
         leaderboardsPanel.SetActive (true);
     }
