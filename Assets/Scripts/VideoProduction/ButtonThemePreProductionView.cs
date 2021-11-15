@@ -43,7 +43,7 @@ public class ButtonThemePreProductionView : MonoBehaviour, IPointerDownHandler, 
 
     IEnumerator WaitForMoving ()
     {
-        yield return new WaitForSeconds (0.3f);
+        yield return new WaitForSeconds (0);
         signalBus.Fire<ThemeHeldSignal>( new ThemeHeldSignal(){ themeBox = gameObject, themeType = themeType, buttonText = buttonText.text });
         GetComponent<Button> ().interactable = false;
     }

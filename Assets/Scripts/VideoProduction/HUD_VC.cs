@@ -31,13 +31,14 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private TMP_Text softCurrencyText;
     [SerializeField] private TMP_Text clockTimeText;
     int timeMinutes;
+    [SerializeField] private GameObject backButtonsPanel;
 
     private void Awake ()
     {
         _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
         //_signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenVideoManagerPanel);
-        _signalBus.Subscribe<GetMoneyFromVideoSignal> (AddSoftCurrency);
+        _signalBus.Subscribe<UpdateSoftCurrency> (AddSoftCurrency);
         _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
 
         gameClock = GameClock.Instance;
@@ -103,12 +104,14 @@ public class HUD_VC : MonoBehaviour
             homePanel.SetActive (true);
             playerPanel.SetActive (true);
             leaderboardsPanel.SetActive (true);
+            backButtonsPanel.SetActive (false);
         }
         else
         {
             homePanel.SetActive (false);
             playerPanel.SetActive (false);
             leaderboardsPanel.SetActive (false);
+            backButtonsPanel.SetActive (true);
         }
 
 
@@ -146,9 +149,9 @@ public class HUD_VC : MonoBehaviour
         energyText.text = $"{(int)_signal.energy}";
         energyFillBar.fillAmount = _signal.energy / 100; //Dummy : to be replaced by max energy amount
     }
-    void AddSoftCurrency (GetMoneyFromVideoSignal _signal) //Dummy This should be in player manager, will be here until currency is set in player data
+    void AddSoftCurrency () //Dummy This should be in player manager, will be here until currency is set in player data
     {
         softCurrency =PlayerDataManager.Instance.GetSoftCurrency();
-        softCurrencyText.text = $"{softCurrency}$";
+        softCurrencyText.text = $"{softCurrency}";
     }
 }

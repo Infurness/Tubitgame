@@ -5,16 +5,24 @@ using Zenject;
 
 public class LeaderboardManager : MonoBehaviour
 {
-    [Inject] private SignalBus signalBus;
     [Inject] private PlayfabLeaderboard leaderboardBackEnd;
+
+    public static LeaderboardManager Instance;
     // Start is called before the first frame update
+
+    private void Awake ()
+    {
+        if (!Instance)
+            Instance = this;
+        else
+            Destroy (this);
+    }
     void Start()
     {
         //UpdateLeaderboard (100);
-        signalBus.Subscribe<RecievePlayerLeaderboardPosition> (RecieveMyLeaderboardPosition);
-        signalBus.Subscribe<Recieve3BestLeaderboard> (RecieveBestLeaderboardPositions);
-        GetLeaderboardPosition ();
-        publicGetBest3Leaderboard ();
+        //GetLeaderboardPosition ();
+        GetBest3Leaderboard ();
+        GetTop10InLeaderboard ();
     }
 
     // Update is called once per frame
@@ -22,30 +30,21 @@ public class LeaderboardManager : MonoBehaviour
     {
         
     }
-    public void UpdateLeaderboard(int subscribers)
+    public void UpdateLeaderboard(string leaderboardName, int subscribers)
     {
-        leaderboardBackEnd.SendLeaderboard (subscribers);
+        leaderboardBackEnd.SendLeaderboard (leaderboardName, subscribers);
     }
-    void publicGetBest3Leaderboard ()
+    void GetBest3Leaderboard ()
     {
         leaderboardBackEnd.GetBest3InLeaderboard ();
+    }
+    void GetTop10InLeaderboard ()
+    {
+        leaderboardBackEnd.GetTop10InLeaderboard ();
     }
     void GetLeaderboardPosition ()
     {
         leaderboardBackEnd.GetPlayerPositionInLeaderboard ();
     }
 
-    void RecieveMyLeaderboardPosition (RecievePlayerLeaderboardPosition signal)
-    {
-        Debug.Log ($"Player pos: {signal.position+1}");
-    }
-    void RecieveBestLeaderboardPositions(Recieve3BestLeaderboard signal)
-    {
-        int i = 0;
-        foreach(KeyValuePair<string, int> pair in signal.players)
-        {
-            Debug.Log ($"Position {i+1} : Player {pair.Key} : Subscribers {pair.Value}");
-            i++;
-        }
-    }
 }

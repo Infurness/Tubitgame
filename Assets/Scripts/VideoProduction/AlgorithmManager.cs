@@ -16,7 +16,8 @@ public class AlgorithmManager : MonoBehaviour
     [SerializeField] public int baseNum=800;
     private void Start()
     {
-        StartCoroutine(UpdateTimer());
+        shouldUpdate = false;
+        StartCoroutine (UpdateTimer());
     }
 
     public ulong GetVideoViews (ulong _subscribers, ThemeType[] _themes, float _videoQuality, bool isViral)
@@ -24,7 +25,7 @@ public class AlgorithmManager : MonoBehaviour
         float themesPopularity = 0;
         foreach (var theme in _themes)
         {
-            themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now.Hour);
+            themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now);
         }
         ulong viewers = (ulong)(((ulong)baseNum + _subscribers) + (((ulong)baseNum + _subscribers) * themesPopularity * _videoQuality));
         if(isViral)
@@ -77,11 +78,19 @@ public class AlgorithmManager : MonoBehaviour
                     
                     double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeHours*60.0f)), 1.0f);
                     print("Complete percentage "+ completePercentage);
+
+                    ulong previousViews = video.views;
                     video.views=(ulong)(video.maxViews*completePercentage);
+                    signalBus.Fire<AddViewsForExperienceSignal> (new AddViewsForExperienceSignal () { views = video.views - previousViews });//Add the views gained this step for experience points calculation
+
                     video.likes = (ulong)(video.maxLikes*completePercentage);
                     video.comments =(ulong) (video.maxComments*completePercentage);
                     video.videoSoftCurrency =((ulong)(video.videoMaxSoftCurrency*completePercentage))-video.collectedCurrencies;
+
+                    ulong previousSubs = video.newSubscribers;
                     video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
+                    signalBus.Fire<AddSubsForExperienceSignal> (new AddSubsForExperienceSignal () { subs = video.newSubscribers - previousSubs });//Add the subs gained this step for experience points calculation
+
                     subscribers += video.newSubscribers;
                     video.lastUpdateTime = GameClock.Instance.Now;
                     if (completePercentage==1.0)
@@ -95,7 +104,7 @@ public class AlgorithmManager : MonoBehaviour
                 }
             }
             signalBus.TryFire<OnVideosStatsUpdatedSignal>();
-            PlayerDataManager.Instance.UpdatePlayerVideosSubscribersData(subscribers,videos);
+            PlayerDataManager.Instance.UpdatePlayerData(subscribers,videos);
             StartCoroutine(UpdateTimer());
 
         }

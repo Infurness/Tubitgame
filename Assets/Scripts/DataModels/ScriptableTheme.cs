@@ -16,8 +16,21 @@ public class ScriptableTheme : ScriptableObject
                 ThemeType themeType = (ThemeType)i;
                 if (!CheckIfThemeExistsInList (themeType))
                 {
-                    ThemeData theme = new ThemeData ();
+                    ThemeData theme;
                     theme.themeType = themeType;
+                    
+                    theme.themeAlgorithm0to6WeekDays = AnimationCurve.EaseInOut (0, UnityEngine.Random.Range (0f, 2f), 1, UnityEngine.Random.Range (0f, 2f));
+                    theme.themeAlgorithm6to12WeekDays = AnimationCurve.EaseInOut (0, UnityEngine.Random.Range (0f, 2f), 1, UnityEngine.Random.Range (0f, 2f));
+                    theme.themeAlgorithm12to18WeekDays = AnimationCurve.EaseInOut (0, UnityEngine.Random.Range (0f, 2f), 1, UnityEngine.Random.Range (0f, 2f));
+                    theme.themeAlgorithm18to24WeekDays = AnimationCurve.EaseInOut (0, UnityEngine.Random.Range (0f, 2f), 1, UnityEngine.Random.Range (0f, 2f));
+                                                        
+                    theme.themeAlgorithm0to6WeekEnd = AnimationCurve.EaseInOut (0, UnityEngine.Random.Range (0f, 2f), 1, UnityEngine.Random.Range (0f, 2f));
+                    theme.themeAlgorithm6to12WeekEnd = AnimationCurve.EaseInOut (0, UnityEngine.Random.Range (0f, 2f), 1, UnityEngine.Random.Range (0f, 2f));
+                    theme.themeAlgorithm12to18WeekEnd = AnimationCurve.EaseInOut (0, UnityEngine.Random.Range (0f, 2f), 1, UnityEngine.Random.Range (0f, 2f));
+                    theme.themeAlgorithm18to24WeekEnd = AnimationCurve.EaseInOut (0, UnityEngine.Random.Range (0f, 2f), 1, UnityEngine.Random.Range (0f, 2f));
+
+                    theme.graphLineColor = new Color (UnityEngine.Random.Range (0f, 1f), UnityEngine.Random.Range (0f, 1f), UnityEngine.Random.Range (0f, 1f), 1);
+
                     themesData.Add (theme);
                 }
             }
@@ -49,5 +62,16 @@ public enum ThemeType
 public struct ThemeData
 {
     public ThemeType themeType;
-    public AnimationCurve themeAlgorithm;
+
+    public AnimationCurve themeAlgorithm0to6WeekDays;
+    public AnimationCurve themeAlgorithm6to12WeekDays;
+    public AnimationCurve themeAlgorithm12to18WeekDays;
+    public AnimationCurve themeAlgorithm18to24WeekDays;
+
+    public AnimationCurve themeAlgorithm0to6WeekEnd;
+    public AnimationCurve themeAlgorithm6to12WeekEnd;
+    public AnimationCurve themeAlgorithm12to18WeekEnd;
+    public AnimationCurve themeAlgorithm18to24WeekEnd;
+
+    public Color graphLineColor;
 }

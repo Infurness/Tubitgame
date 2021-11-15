@@ -13,22 +13,40 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private GameObject themeSelectionPanel;
     [SerializeField] private Button themeSelectionPanelCloseButton;
 
-    [SerializeField] private GameObject skipRecordPanel;
-    [SerializeField] private Button skipRecordPanelCloseButton;
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private Button settingsPanelCloseButton;
+
+    [SerializeField] private GameObject deleteAccountPanel;
+    [SerializeField] private Button[] deleteAccountPanelCloseButtons;
+
+    [SerializeField] private GameObject leaderboardsPanel;
+    [SerializeField] private Button leaderboardsPanelCloseButton;
 
     // Start is called before the first frame update
     void Start()
     {
-        signalBus.Subscribe<OpenThemeSelectorPopUpSignal> (OpenThemeSelector);        
+        signalBus.Subscribe<OpenThemeSelectorPopUpSignal> (OpenThemeSelector);
+        signalBus.Subscribe<ConfirmThemesSignal> (CloseThemeSelector);
+        signalBus.Subscribe<OpenSettingPanelSignal> (OpenSettings);
+        signalBus.Subscribe<OpenDeleteAccountSignal> (OpenDeleteAccount);
+        signalBus.Subscribe<OpenLeaderboardsSignal> (OpenLeaderboards);
 
         themeSelectionPanelCloseButton.onClick.AddListener (CloseThemeSelector);
-        signalBus.Subscribe<ConfirmThemesSignal> (CloseThemeSelector);
+        settingsPanelCloseButton.onClick.AddListener (CloseSettings);
+        foreach(Button button in deleteAccountPanelCloseButtons)
+        {
+            button.onClick.AddListener (CloseDeleteAccount);
+        }
+        leaderboardsPanelCloseButton.onClick.AddListener (CloseLeaderboards);
 
         InitialState ();
     }
     void InitialState ()
     {
         CloseThemeSelector ();
+        CloseSettings ();
+        CloseDeleteAccount ();
+        CloseLeaderboards ();
     }
     void OpenThemeSelector ()
     {
@@ -39,5 +57,40 @@ public class PopUps_VC : MonoBehaviour
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         themeSelectionPanel.SetActive (false);
+    }
+
+    void OpenSettings ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (true);
+        settingsPanel.SetActive (true);
+    }
+    void CloseSettings ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (false);
+        settingsPanel.SetActive (false);
+    }
+
+    void OpenDeleteAccount ()
+    {
+        CloseSettings ();
+        popUpsBlockBackgroundPanel.SetActive (true);
+        deleteAccountPanel.SetActive (true);
+    }
+    void CloseDeleteAccount ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (false);
+        deleteAccountPanel.SetActive (false);
+    }
+
+    void OpenLeaderboards ()
+    {
+        CloseSettings ();
+        popUpsBlockBackgroundPanel.SetActive (true);
+        leaderboardsPanel.SetActive (true);
+    }
+    void CloseLeaderboards ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (false);
+        leaderboardsPanel.SetActive (false);
     }
 }
