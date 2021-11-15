@@ -75,14 +75,14 @@ public class RoomRender : MonoBehaviour
     private void OnEnable()
     {
         currentVQItems=PlayerInventory.EquippedVideoQualityRoomItems;
-        currentThemeItems = PlayerInventory.EquippedCharacterItems;
+        currentThemeItems = PlayerInventory.EquippedThemeEffectRoomItems;
         RoomLayout = PlayerInventory.GetRoomLayout();
         if (RoomLayout.FloorLayoutSlots.Count==0)
         {
             RoomLayout = DefalutRoomLayout;
         }
         print("Room Enabled");
-        ProcessCurrentVCItems();
+            ProcessCurrentVCItems();
             ProcessCurrentThemeItems();
     }
 
@@ -99,9 +99,17 @@ public class RoomRender : MonoBehaviour
         {
             var item= currentThemeItems.Find((it)=>it.name==floorLayoutSlot.ItemName);
 
-            floorSlots[floorLayoutSlot.SlotID].Image.sprite =
+            if (item!=null)
+            {
+                floorSlots[floorLayoutSlot.SlotID].Image.sprite =
 
-                ((FloorOrnament) item).floorOrnamentSprite;
+                    ((FloorOrnament) item).floorOrnamentSprite;
+            }
+            else
+            {
+                print("Floor ITem " + floorLayoutSlot.ItemName +"Not Found");
+            }
+           
         }
 
         foreach (var objectLayoutSlot in RoomLayout.ObjectsLayoutSlots)

@@ -1,7 +1,7 @@
 ﻿
 public enum Rareness
 {
-    Common=1,
+    Common=0,
     Uncommon ,
     Rare
 }

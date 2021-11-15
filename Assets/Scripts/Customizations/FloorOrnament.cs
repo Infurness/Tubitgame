@@ -12,7 +12,16 @@ namespace Customizations
     public enum FloorOrnamentType
     {
         Table,
+        Chair,
+        Sofa,
         Statues,
-        CatTree
+        Bed,
+        Carpet,
+        Bin,
+        FlowerPot,
+        Box0,
+        Box1,
+        Box2,
+        Box3
     }
 }

@@ -24,7 +24,12 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private TMP_Text itemName, itemRareness, itemDescription, itemNewStats;
     [SerializeField] private Image itemLogo;
     [SerializeField] private Button saveButton, discardButton;
-
+    [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
+    private List<Sprite> rarenessSprites;
+    Sprite GetRarenessSpriteByIndex(Rareness rareness)
+    {
+        return rarenessSprites[(int) rareness];
+    }
     public void PopulateInventoryButtons(string type)
     {
 
@@ -41,12 +46,13 @@ public class RoomInventory_VC : MonoBehaviour
 
     }
 
-    void Start()
+    void Awake()
     {
         roomInventoryButtons = new List<InventoryButton>();
         roomInventoryPanel.OnEnableAsObservable().Subscribe((s) => CreateInventoryButtons());
         saveButton.onClick.AddListener(SaveRoomLayout);
         discardButton.onClick.AddListener(DiscardRoomLayout);
+        rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
     }
 
     public void SaveRoomLayout()
@@ -83,7 +89,8 @@ public class RoomInventory_VC : MonoBehaviour
             }
             var bt = Instantiate(inventoryButtonPrefab, buttonsTransform.transform);
             bt.Type = type;
-            bt.SetButtonLogo(roomItem.logoSprite);
+            print("Item Name" + roomItem.name);
+            bt.SetButtonSprites(roomItem.logoSprite,GetRarenessSpriteByIndex(roomItem.rareness));
             bt.SetButtonAction(()=>
             {
                 installPanel.gameObject.SetActive(true);
@@ -123,7 +130,7 @@ public class RoomInventory_VC : MonoBehaviour
             }
             var bt = Instantiate(inventoryButtonPrefab, buttonsTransform.transform);
             bt.Type = type;
-            bt.SetButtonLogo(videoQualityRoomItem.logoSprite);
+            bt.SetButtonSprites(videoQualityRoomItem.logoSprite,GetRarenessSpriteByIndex(videoQualityRoomItem.rareness));
             bt.SetButtonAction(()=>
             {
                 installPanel.gameObject.SetActive(true);
