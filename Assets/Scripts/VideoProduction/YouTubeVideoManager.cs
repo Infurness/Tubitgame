@@ -99,7 +99,7 @@ public class YouTubeVideoManager : MonoBehaviour
     void RecollectVideoMoney (GetMoneyFromVideoSignal signal)
     {
         playerDataManger.RecollectVideoMoney (signal.videoName);
-        _signalBus.Fire<UpdateSoftCurrency> ();
+        _signalBus.Fire<UpdateSoftCurrencySignal> ();
     }
     int GetTimeHour () //Dummy Not being used
     {

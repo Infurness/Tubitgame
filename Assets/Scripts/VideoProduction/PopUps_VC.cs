@@ -111,5 +111,7 @@ public class PopUps_VC : MonoBehaviour
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         LevelUpPanel.SetActive (false);
+        signalBus.Fire<UpdateSoftCurrencySignal> ();
+        signalBus.Fire<UpdateHardCurrencySignal> ();
     }
 }

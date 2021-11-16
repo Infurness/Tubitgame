@@ -54,6 +54,10 @@ public class UpdateHardCurrencySignal
 {
 
 }
+public class UpdateExperienceSignal
+{
+
+}
 public class OpenVideoManagerSignal
 {
 }

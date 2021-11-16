@@ -11,6 +11,7 @@ public class HUD_VC : MonoBehaviour
 {
     [Inject] SignalBus _signalBus;
     [Inject] YouTubeVideoManager youTubeVideoManager;
+    [Inject] private ExperienceManager xpManager;
     GameClock gameClock;
 
     [SerializeField] private TMP_Text energyText;
@@ -27,18 +28,23 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private Button videoManagerButton;
     [SerializeField] private Button eventsButton;
     [SerializeField] private Button[] storeButtons;
-    private ulong softCurrency = 0; //Dummy Here until player data has this field
     [SerializeField] private TMP_Text softCurrencyText;
+    [SerializeField] private TMP_Text hardCurrencyText;
     [SerializeField] private TMP_Text clockTimeText;
     int timeMinutes;
     [SerializeField] private GameObject backButtonsPanel;
+    [SerializeField] private GameObject xpBarPanel;
+    [SerializeField] private TMP_Text levelText;
+    [SerializeField] private Image xpFillBar;
 
     private void Awake ()
     {
         _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
         //_signalBus.Subscribe<StartRecordingSignal> (OpenHomePanel);
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenVideoManagerPanel);
-        _signalBus.Subscribe<UpdateSoftCurrency> (AddSoftCurrency);
+        _signalBus.Subscribe<UpdateSoftCurrencySignal> (UpdateSoftCurrency);
+        _signalBus.Subscribe<UpdateHardCurrencySignal> (UpdateHardCurrency);
+        _signalBus.Subscribe<UpdateExperienceSignal> (UpdateExperienceBar);
         _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
 
         gameClock = GameClock.Instance;
@@ -73,6 +79,8 @@ public class HUD_VC : MonoBehaviour
         UpdateUsername ();
         UpdateSubs ();
         OpenHomePanel ();
+        _signalBus.Fire<UpdateSoftCurrencySignal> ();
+        _signalBus.Fire<UpdateHardCurrencySignal> ();
     }
     void UpdateUsername ()
     {
@@ -109,13 +117,16 @@ public class HUD_VC : MonoBehaviour
             homePanel.SetActive (true);
             playerPanel.SetActive (true);
             leaderboardsPanel.SetActive (true);
+            xpBarPanel.SetActive (true);
             backButtonsPanel.SetActive (false);
+            _signalBus.Fire<UpdateExperienceSignal> ();
         }
         else
         {
             homePanel.SetActive (false);
             playerPanel.SetActive (false);
             leaderboardsPanel.SetActive (false);
+            xpBarPanel.SetActive (false);
             backButtonsPanel.SetActive (true);
         }
 
@@ -154,9 +165,18 @@ public class HUD_VC : MonoBehaviour
         energyText.text = $"{(int)_signal.energy}";
         energyFillBar.fillAmount = _signal.energy / 100; //Dummy : to be replaced by max energy amount
     }
-    void AddSoftCurrency () //Dummy This should be in player manager, will be here until currency is set in player data
+    void UpdateSoftCurrency ()
     {
-        softCurrency =PlayerDataManager.Instance.GetSoftCurrency();
-        softCurrencyText.text = $"{softCurrency}";
+        softCurrencyText.text = $"{PlayerDataManager.Instance.GetSoftCurrency ()}";
+    }
+    void UpdateHardCurrency ()
+    {
+        hardCurrencyText.text = $"{PlayerDataManager.Instance.GetHardCurrency ()}";
+    }
+    void UpdateExperienceBar ()
+    {
+        int level = xpManager.GetPlayerLevel ();
+        levelText.text = level.ToString();
+        xpFillBar.fillAmount =(float)xpManager.GetPlayerXp() / (float)xpManager.GetXpThreshold (level);
     }
 }
