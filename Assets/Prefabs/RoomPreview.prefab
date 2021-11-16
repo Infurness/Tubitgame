@@ -1469,6 +1469,9 @@ MonoBehaviour:
     WallLayoutSlots: []
     FloorLayoutSlots: []
     ObjectsLayoutSlots: []
+  renderCamera: {fileID: 1480678566045378399}
+  zoomInValue: 5.2
+  ZoomOutValue: 8
 --- !u!1 &6354409022355576396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1924,7 +1927,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.25
+  orthographic size: 8
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2

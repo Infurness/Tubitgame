@@ -24,7 +24,8 @@ public class RoomRender : MonoBehaviour
     [SerializeField]  List<ThemeCustomizationItem> currentThemeItems;
     [SerializeField] private RoomLayout DefalutRoomLayout;
     [SerializeField] private RoomLayout RoomLayout;
-
+    [SerializeField] private Camera renderCamera;
+    [SerializeField] private float zoomInValue, ZoomOutValue;
     private void Awake()
     {
         currentVQItems = new List<VideoQualityCustomizationItem>();
@@ -32,6 +33,16 @@ public class RoomRender : MonoBehaviour
 
     }
 
+    public void ZoomInRoomRender()
+    {
+        renderCamera.orthographicSize = zoomInValue;
+    }
+
+    public void ZoomOutRoomRender()
+    {
+        renderCamera.orthographicSize = ZoomOutValue;
+
+    }
     void Start()
     {
         signalBus.Subscribe<TestRoomThemeItemSignal>(OnTestRoomThemeItem);
@@ -70,6 +81,7 @@ public class RoomRender : MonoBehaviour
             gameObject.SetActive(false);
             gameObject.SetActive(true);
         } ));
+        ZoomInRoomRender();
     }
 
     private void OnEnable()
