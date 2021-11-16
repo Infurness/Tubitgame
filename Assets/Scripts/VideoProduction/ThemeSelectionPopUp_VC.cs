@@ -28,6 +28,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
     private Dictionary<int, int> dragablesBeingUsedForSlots = new Dictionary<int, int>(); //Dictionary<"draggable index", "slot index">
     private Dictionary<int, UsedSlotInfo> usedSlotsInfo = new Dictionary<int, UsedSlotInfo> (); 
     [SerializeField] private GameObject[] themeSlots;
+    [SerializeField] Sprite emptySlotImage;
+    [SerializeField] Sprite usedSlotImage;
     private bool draggingTheme;
 
     [SerializeField] private Button confirmButton;
@@ -54,6 +56,10 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         foreach (GameObject draggable in draggableThemeObjects)
             draggable.SetActive (false);
         Debug.Log ("PopupCleared");
+        foreach(GameObject slot in themeSlots)
+        {
+            slot.GetComponent<Image> ().sprite = emptySlotImage;
+        }
     }
     void SetUpThemeButtons ()
     {
@@ -119,7 +125,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         draggingTheme = false;
         scrollList.enabled = true;
         int slotIndex = 0;
-        foreach(GameObject slot in themeSlots)
+        draggableThemeObjects[draggableBeingUsed].GetComponent<Image> ().enabled = false;
+        foreach (GameObject slot in themeSlots)
         {
             if (RectTransformUtility.RectangleContainsScreenPoint (slot.GetComponent<RectTransform> (), Input.mousePosition))
             {
@@ -131,6 +138,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
                 dragablesBeingUsedForSlots.Add (draggableBeingUsed, slotIndex);
                 UsedSlotInfo slotInfo = new UsedSlotInfo () { themeType = themeTypeBeingDragged, button = buttonBeingDragged};
                 usedSlotsInfo.Add (slotIndex, slotInfo);
+                slot.GetComponent<Image> ().sprite = usedSlotImage;
+                slot.transform.GetChild (0).gameObject.SetActive (false);
                 return;
             }
             slotIndex++;
@@ -145,11 +154,15 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         dragablesBeingUsedForSlots.Remove (myKey);
         usedSlotsInfo[slotIndex].button.GetComponent<Button> ().interactable = true;
         usedSlotsInfo.Remove (slotIndex);
+        themeSlots[slotIndex].GetComponent<Image> ().sprite = emptySlotImage;
+        themeSlots[slotIndex].transform.GetChild (0).gameObject.SetActive (true);
     }
     void EmptySlot (int slotIndex)
     {
         dragablesBeingUsedForSlots.Remove (draggableBeingUsed);
         usedSlotsInfo.Remove (slotIndex);
+        themeSlots[slotIndex].GetComponent<Image> ().sprite = emptySlotImage;
+        themeSlots[slotIndex].transform.GetChild (0).gameObject.SetActive (true);
     }
     IEnumerator MoveObjectTo (GameObject objectToMove, Vector3 objective)
     {
@@ -169,7 +182,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         while (draggingTheme)
         {
             draggableThemeObjects[draggableBeingUsed].transform.position = Input.mousePosition - offset;
-            if(!Input.anyKey)//Not being hold anymore
+            draggableThemeObjects[draggableBeingUsed].GetComponent<Image> ().enabled = true;
+            if (!Input.anyKey)//Not being hold anymore
             {
                 StopDraggingTheme ();
             }

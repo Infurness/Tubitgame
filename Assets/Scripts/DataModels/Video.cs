@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine.Serialization;
 
+
+public enum VideoQuality {Lowest, UltraLow, MegaLow, VeryLow, Low, Medium, High, VeryHigh, Mega, Ultra, Extreme}
 [System.Serializable]
 public class Video
 {
