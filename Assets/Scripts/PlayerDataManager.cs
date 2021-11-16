@@ -47,6 +47,8 @@ public class PlayerDataManager : MonoBehaviour
         {
             signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
         });
+
+        
     }
 
 
@@ -419,6 +421,11 @@ public class PlayerDataManager : MonoBehaviour
         UpdateUserDatabase(new string[] {"Inventory"}, new object[] {playerInventoryAddressedData});
     }
 
- 
+    public void GetLevelUpRewards (LevelUpSignal signal) //Subscribed to signal in YouTubeVideomanager
+    {
+        playerData.softCurrency += (ulong)signal.reward.softCurrency;
+        UpdateUserDatabase (new[] { "SoftCurrency", "Videos" }, new object[] { playerData.softCurrency, playerData.videos });
+        AddHardCurrency (signal.reward.hardCurrency);
+    }
 
 }

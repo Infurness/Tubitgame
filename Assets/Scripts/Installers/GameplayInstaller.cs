@@ -45,6 +45,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddViewsForExperienceSignal> ();
         Container.DeclareSignal<LevelUpSignal> ();
         Container.DeclareSignal<UpdateRankSignal> ();
+        Container.DeclareSignal<OpenLevelUpPanelSignal> ();
 
 
         //Dependencies
@@ -58,5 +59,7 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
+
+        Container.Bind<ExperienceManager> ().FromComponentInHierarchy ().AsSingle ();
     }
 }

@@ -20,6 +20,7 @@ public class YouTubeVideoManager : MonoBehaviour
         _signalBus.Subscribe<StartRecordingSignal> (() => SetIsRecording (true));
         _signalBus.Subscribe<CancelVideoRecordingSignal> (() => SetIsRecording (false));
         _signalBus.Subscribe<GetMoneyFromVideoSignal> (RecollectVideoMoney);
+        _signalBus.Subscribe<LevelUpSignal> (playerDataManger.GetLevelUpRewards);
     }
 
     void Update()

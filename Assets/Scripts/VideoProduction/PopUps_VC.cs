@@ -22,6 +22,9 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private GameObject leaderboardsPanel;
     [SerializeField] private Button leaderboardsPanelCloseButton;
 
+    [SerializeField] private GameObject LevelUpPanel;
+    [SerializeField] private Button levelUpPanelCloseButton;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,7 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Subscribe<OpenSettingPanelSignal> (OpenSettings);
         signalBus.Subscribe<OpenDeleteAccountSignal> (OpenDeleteAccount);
         signalBus.Subscribe<OpenLeaderboardsSignal> (OpenLeaderboards);
+        signalBus.Subscribe<LevelUpSignal> (OpenLevelUp);
 
         themeSelectionPanelCloseButton.onClick.AddListener (CloseThemeSelector);
         settingsPanelCloseButton.onClick.AddListener (CloseSettings);
@@ -38,7 +42,8 @@ public class PopUps_VC : MonoBehaviour
             button.onClick.AddListener (CloseDeleteAccount);
         }
         leaderboardsPanelCloseButton.onClick.AddListener (CloseLeaderboards);
-
+        levelUpPanelCloseButton.onClick.AddListener (CloseLevelUp);
+        
         InitialState ();
     }
     void InitialState ()
@@ -47,6 +52,7 @@ public class PopUps_VC : MonoBehaviour
         CloseSettings ();
         CloseDeleteAccount ();
         CloseLeaderboards ();
+        CloseLevelUp ();
     }
     void OpenThemeSelector ()
     {
@@ -84,7 +90,6 @@ public class PopUps_VC : MonoBehaviour
 
     void OpenLeaderboards ()
     {
-        CloseSettings ();
         LeaderboardManager.Instance.GetTop10InLeaderboard ();
         popUpsBlockBackgroundPanel.SetActive (true);
         leaderboardsPanel.SetActive (true);
@@ -93,5 +98,18 @@ public class PopUps_VC : MonoBehaviour
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         leaderboardsPanel.SetActive (false);
+    }
+
+
+    void OpenLevelUp ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (true);
+        LevelUpPanel.SetActive (true);
+        signalBus.Fire<OpenLevelUpPanelSignal> ();
+    }
+    void CloseLevelUp ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (false);
+        LevelUpPanel.SetActive (false);
     }
 }

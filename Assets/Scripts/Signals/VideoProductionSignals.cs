@@ -124,3 +124,8 @@ public class AddSoftCurrencyForExperienceSignal
 {
     public ulong softCurrency;
 }
+
+public class OpenLevelUpPanelSignal
+{
+
+}

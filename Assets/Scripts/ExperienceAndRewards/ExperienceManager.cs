@@ -19,12 +19,17 @@ public class ExperienceManager : MonoBehaviour
         signalBus.Subscribe<AddSubsForExperienceSignal> (AddSubs);
         signalBus.Subscribe<AddViewsForExperienceSignal> (AddViews);
         signalBus.Subscribe<AddSoftCurrencyForExperienceSignal> (AddSoftCurrency);
+
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown (KeyCode.L))
+        {
+            Add1LevelCheat ();
+        }
     }
     public void AddExperiencePoints (ulong experience)
     {
@@ -38,6 +43,20 @@ public class ExperienceManager : MonoBehaviour
             signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward=rewardsForEachLevel[currentLevel-1] });
         }
     }
+
+    public void Add1LevelCheat ()
+    {
+        int currentLevel = GetPlayerLevel ();
+        if (currentLevel < rewardsForEachLevel.Length-1)
+        {
+            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel + 1, reward = rewardsForEachLevel[currentLevel] });
+        }
+        else
+        {
+            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward = rewardsForEachLevel[currentLevel - 1] });
+        }
+    }
+
     public int GetPlayerLevel ()
     {
         int level = 0;
@@ -83,5 +102,15 @@ public class ExperienceManager : MonoBehaviour
 
         playerDataManager.SetSoftCurrencyThreshold ((int)remainder);
         AddExperiencePoints ((ulong)experiencePoints);
+    }
+
+    public ulong GetXpThreshold(int level)
+    {
+        return xpForEachLevel[level];
+    }
+
+    public RewardsData GetRewardData (int level)
+    {
+       return rewardsForEachLevel[level];
     }
 }
