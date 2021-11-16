@@ -241,29 +241,39 @@ public class RoomRender : MonoBehaviour
 
     void AddWallOrnament(WallOrnament wallOrnament)
     {
+        print("Item Received "+wallOrnament.name);
+
         var slot = wallSlots.Find((item =>(item.WallOrnamentType == wallOrnament.WallOrnamentType)&&item.Empty));
         
         if (slot==null)
         {
+            print("Slot Not founded");
+
             return;
         }
+        
         slot.Image.sprite = wallOrnament.wallOrnamentSprite;
         slot.Empty = false;
         slot.roomLayoutThemeSlot.ItemName = wallOrnament.name;
+        slot.Image.gameObject.SetActive(true);
         DefalutRoomLayout.WallLayoutSlots[slot.roomLayoutThemeSlot.SlotID].ItemName = wallOrnament.name;
 
     }
 
     void AddFloorOrnament(FloorOrnament floorOrnament)
     {
+        print("Item Received "+floorOrnament.name);
        var slot=floorSlots.Find((item =>(item.FloorOrnamentType == floorOrnament.floorOrnamentType)&&item.Empty));
        if (slot==null)
        {
+           print("Slot Not founded");
            return;
        }
        slot.Image.sprite = floorOrnament.floorOrnamentSprite;
        slot.Empty = false;
        slot.roomLayoutThemeSlot.ItemName = floorOrnament.name;
+       slot.Image.gameObject.SetActive(true);
+
        DefalutRoomLayout.FloorLayoutSlots[slot.roomLayoutThemeSlot.SlotID].ItemName = floorOrnament.name;
 
     }
@@ -273,11 +283,15 @@ public class RoomRender : MonoBehaviour
         var slot=roomObjectSlots.Find((item =>(item.RoomObjectType == roomObject.roomObjectType)&&item.Empty));
         if (slot==null)
         {
+            print("Slot Not founded");
+
             return;
         }
         slot.Image.sprite = roomObject.roomObjectSprite;
         slot.Empty = false;
         slot.roomLayoutThemeSlot.ItemName = roomObject.name;
+        slot.Image.gameObject.SetActive(true);
+
         DefalutRoomLayout.ObjectsLayoutSlots[slot.roomLayoutThemeSlot.SlotID].ItemName = roomObject.name;
     }
 
