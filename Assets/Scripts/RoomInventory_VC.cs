@@ -36,26 +36,16 @@ public class RoomInventory_VC : MonoBehaviour
         roomInventoryButtons.ForEach((bt) => bt.gameObject.SetActive(true));
         roomInventoryButtons.FindAll((bt) => bt.Type != type).ForEach((bt) => bt.gameObject.SetActive(false));
 
-
     }
 
     private void OnEnable()
     {
         backButton.onClick.RemoveAllListeners();
         backButton.onClick.AddListener((() => roomInventoryPanel.gameObject.SetActive(false)));
-        signalBus.Fire(new RoomZoomStateChangedSignal()
-        {
-            ZoomIn = false
-        });
+        
     }
 
-    private void OnDisable()
-    {
-        signalBus.Fire(new RoomZoomStateChangedSignal()
-        {
-            ZoomIn = true
-        });
-    }
+    
 
     void Awake()
     {
@@ -64,6 +54,22 @@ public class RoomInventory_VC : MonoBehaviour
         saveButton.onClick.AddListener(SaveRoomLayout);
         discardButton.onClick.AddListener(DiscardRoomLayout);
         rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
+        roomInventoryPanel.OnEnableAsObservable().Subscribe((unit =>
+        {
+            signalBus.Fire(new RoomZoomStateChangedSignal()
+            {
+                ZoomIn = false
+            });
+        }));
+
+        roomInventoryPanel.OnDisableAsObservable().Subscribe((unit =>
+        {
+            signalBus.Fire(new RoomZoomStateChangedSignal()
+            {
+                ZoomIn = true
+            });
+        }));
+
     }
 
     public void SaveRoomLayout()

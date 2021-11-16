@@ -35,8 +35,7 @@ public class RoomRender : MonoBehaviour
             if (signal.ZoomIn)
             {
                 ZoomInRoomRender();
-            }
-
+            }else
             {
                 ZoomOutRoomRender();
             }
@@ -46,11 +45,14 @@ public class RoomRender : MonoBehaviour
      void ZoomInRoomRender()
     {
         renderCamera.orthographicSize = zoomInValue;
+        print("ZOOM IN");
+
     }
 
      void ZoomOutRoomRender()
     {
         renderCamera.orthographicSize = ZoomOutValue;
+        print("ZOOM OUT");
 
     }
     void Start()
