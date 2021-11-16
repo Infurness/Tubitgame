@@ -46,8 +46,18 @@ public class GetMoneyFromVideoSignal
 {
     public string videoName;
 }
+public class UpdateSoftCurrency
+{
+
+}
 
 public class OpenVideoManagerSignal
+{
+}
+public class OpenVideoCreationSignal
+{
+}
+public class CloseVideoCreationSignal
 {
 }
 public class OnVideosStatsUpdatedSignal
@@ -74,4 +84,42 @@ public class ConfirmThemesSignal
 public class CancelVideoRecordingSignal
 {
     public string name;
+}
+
+public class UpdateThemesGraphSignal
+{
+
+}
+
+public class OpenSettingPanelSignal
+{
+
+}
+
+public class OpenDeleteAccountSignal
+{
+
+}
+
+public class OpenLeaderboardsSignal
+{
+
+}
+
+public class LevelUpSignal
+{
+    public int level;
+}
+
+public class AddSubsForExperienceSignal
+{
+    public ulong subs;
+}
+public class AddViewsForExperienceSignal
+{
+    public ulong views;
+}
+public class AddSoftCurrencyForExperienceSignal
+{
+    public ulong softCurrency;
 }

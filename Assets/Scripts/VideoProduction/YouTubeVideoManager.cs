@@ -19,6 +19,7 @@ public class YouTubeVideoManager : MonoBehaviour
         _signalBus.Subscribe<PublishVideoSignal> (CreateVideo);
         _signalBus.Subscribe<StartRecordingSignal> (() => SetIsRecording (true));
         _signalBus.Subscribe<CancelVideoRecordingSignal> (() => SetIsRecording (false));
+        _signalBus.Subscribe<GetMoneyFromVideoSignal> (RecollectVideoMoney);
     }
 
     void Update()
@@ -94,12 +95,14 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         return GetVideoByName (_name).videoSoftCurrency;
     }
-    public ulong RecollectVideoMoney (string _name)
+    void RecollectVideoMoney (GetMoneyFromVideoSignal signal)
     {
-        return playerDataManger.RecollectVideoMoney (_name);
+        playerDataManger.RecollectVideoMoney (signal.videoName);
+        _signalBus.Fire<UpdateSoftCurrency> ();
     }
-    int GetTimeHour ()
+    int GetTimeHour () //Dummy Not being used
     {
         return GameClock.Instance.Now.Hour;
     }
+    
 }

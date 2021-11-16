@@ -21,7 +21,7 @@ public class PlayfabLeaderboard : MonoBehaviour
         
     }
 
-    public void SendLeaderboard(int score)
+    public void SendLeaderboard(string leaderboardName, int score)
     {
         var request = new UpdatePlayerStatisticsRequest
         {
@@ -29,7 +29,7 @@ public class PlayfabLeaderboard : MonoBehaviour
             {
                 new StatisticUpdate
                 {
-                    StatisticName = "SubscribersCount",
+                    StatisticName = leaderboardName,
                     Value = score
                 }
             }
@@ -57,17 +57,39 @@ public class PlayfabLeaderboard : MonoBehaviour
         PlayFabClientAPI.GetLeaderboard (request, OnLeaderboardGet, OnLeaderboardError);
     }
 
+    public void GetTop10InLeaderboard ()
+    {
+        var request = new GetLeaderboardRequest
+        {
+            StatisticName = "SubscribersCount",
+            StartPosition = 0,
+            MaxResultsCount = 10
+        };
+        PlayFabClientAPI.GetLeaderboard (request, OnLeaderboardGet, OnLeaderboardError);
+    }
+
     void OnLeaderboardGet(GetLeaderboardResult result)
     {
-        Dictionary<string, int> best3Players = new Dictionary<string, int> ();
+        Dictionary<string, ulong> bestPlayers = new Dictionary<string, ulong> ();
         foreach(var item in result.Leaderboard)
         {
-            best3Players.Add (item.DisplayName, item.StatValue);
+            bestPlayers.Add (item.DisplayName, (ulong)item.StatValue);
         }
-        signalBus.Fire<Recieve3BestLeaderboard> (new Recieve3BestLeaderboard ()
+        if(bestPlayers.Count == 3)
         {
-            players = best3Players
-        });    
+            signalBus.Fire<Recieve3BestLeaderboard> (new Recieve3BestLeaderboard ()
+            {
+                players = bestPlayers
+            });
+        }
+        else
+        {
+            signalBus.Fire<RecieveTop10Leaderboard> (new RecieveTop10Leaderboard ()
+            {
+                players = bestPlayers
+            });
+        }
+         
     }
 
     public void GetPlayerPositionInLeaderboard ()
