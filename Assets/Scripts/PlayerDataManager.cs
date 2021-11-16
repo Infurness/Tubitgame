@@ -127,6 +127,15 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.softCurrency = 0;
             }
 
+            if (result.Data.TryGetValue ("HardCurrency", out datarecord))
+            {
+                playerData.hardCurrency = JsonConvert.DeserializeObject<ulong> (datarecord.Value);
+            }
+            else
+            {
+                playerData.hardCurrency = 0;
+            }
+
             if (result.Data.TryGetValue("Inventory",out datarecord))
             {
                 var inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
@@ -303,6 +312,11 @@ public class PlayerDataManager : MonoBehaviour
     public ulong GetSoftCurrency()
     {
         return playerData.softCurrency;
+
+    }
+    public ulong GetHardCurrency ()
+    {
+        return playerData.hardCurrency;
 
     }
     public void UpdatePlayerData(ulong subscribersCount,List<Video> videos)

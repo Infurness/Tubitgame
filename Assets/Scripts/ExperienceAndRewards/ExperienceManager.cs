@@ -42,6 +42,7 @@ public class ExperienceManager : MonoBehaviour
         {
             signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward=rewardsForEachLevel[currentLevel-1] });
         }
+        signalBus.Fire<UpdateExperienceSignal> ();
     }
 
     public void Add1LevelCheat ()
@@ -56,7 +57,10 @@ public class ExperienceManager : MonoBehaviour
             signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward = rewardsForEachLevel[currentLevel - 1] });
         }
     }
-
+    public ulong GetPlayerXp ()
+    {
+        return playerDataManager.GetExperiencePoints ();
+    }
     public int GetPlayerLevel ()
     {
         int level = 0;
