@@ -277,7 +277,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         float qualityStep = 1f / Enum.GetValues (typeof(VideoQuality)).Length;
         int qualityTagIndex = (int)(value / qualityStep);
-        selectedQuality = (VideoQuality)qualityTagIndex;
+        selectedQuality = (VideoQuality)qualityTagIndex+1;
         SetQualityTagVisual (qualityTagIndex);
     }
     void SetQualityTagVisual (int index)

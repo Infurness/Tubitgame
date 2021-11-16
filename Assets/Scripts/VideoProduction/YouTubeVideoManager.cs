@@ -42,7 +42,8 @@ public class YouTubeVideoManager : MonoBehaviour
         Video newVideo = new Video (GameClock.Instance.Now);
         newVideo.name = videoName;
         newVideo.themes = (ThemeType[]) videoThemes.Clone();
-        newVideo.quality = playerDataManger.GetQuality();
+        newVideo.selectedQuality = signal.videoSelectedQuality;
+        newVideo.quality = playerDataManger.GetQuality(); //Dummy not yet implement lacks of themes quality and selected quality
         if (Random.Range (0, 101) >= 95) //5% chance of being viral
         {
             newVideo.isViral = true;
@@ -63,7 +64,8 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
         newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
         newVideo.videoMaxSoftCurrency = algorithmManager.GetVideoSoftCurrency(videoViews);
-        newVideo.lifeTimeHours = Random.Range(1, 2);
+        float qualityNumber = (float)newVideo.selectedQuality / (float) Enum.GetValues (typeof(VideoQuality)).Length * 2;
+        newVideo.lifeTimeHours = (float)(algorithmManager.GetVideoLifetime (videoViews, qualityNumber, 1))/3600f; //Fromseconds to hours
         newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
 
@@ -105,5 +107,4 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         return GameClock.Instance.Now.Hour;
     }
-    
 }
