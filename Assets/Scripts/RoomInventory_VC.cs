@@ -43,7 +43,18 @@ public class RoomInventory_VC : MonoBehaviour
     {
         backButton.onClick.RemoveAllListeners();
         backButton.onClick.AddListener((() => roomInventoryPanel.gameObject.SetActive(false)));
+        signalBus.Fire(new RoomZoomStateChangedSignal()
+        {
+            ZoomIn = false
+        });
+    }
 
+    private void OnDisable()
+    {
+        signalBus.Fire(new RoomZoomStateChangedSignal()
+        {
+            ZoomIn = true
+        });
     }
 
     void Awake()

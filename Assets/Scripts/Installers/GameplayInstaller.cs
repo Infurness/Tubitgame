@@ -26,7 +26,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<SaveRoomLayoutSignal>();
         Container.DeclareSignal<DiscardRoomLayoutSignal>();
         Container.DeclareSignal<UpdateSoftCurrency> ();
-
+        Container.DeclareSignal<RoomZoomStateChangedSignal>();
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();

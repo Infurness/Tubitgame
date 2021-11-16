@@ -30,15 +30,25 @@ public class RoomRender : MonoBehaviour
     {
         currentVQItems = new List<VideoQualityCustomizationItem>();
         currentThemeItems = new List<ThemeCustomizationItem>();
+        signalBus.Subscribe<RoomZoomStateChangedSignal>((signal =>
+        {
+            if (signal.ZoomIn)
+            {
+                ZoomInRoomRender();
+            }
 
-    }
+            {
+                ZoomOutRoomRender();
+            }
+        }));
+            }
 
-    public void ZoomInRoomRender()
+     void ZoomInRoomRender()
     {
         renderCamera.orthographicSize = zoomInValue;
     }
 
-    public void ZoomOutRoomRender()
+     void ZoomOutRoomRender()
     {
         renderCamera.orthographicSize = ZoomOutValue;
 

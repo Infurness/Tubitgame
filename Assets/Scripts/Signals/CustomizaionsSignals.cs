@@ -38,3 +38,8 @@ public class DiscardRoomLayoutSignal
 {
     
 }
+
+public class RoomZoomStateChangedSignal
+{
+    public bool ZoomIn = false;
+}
