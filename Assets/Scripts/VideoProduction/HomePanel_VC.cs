@@ -21,8 +21,13 @@ public class HomePanel_VC : MonoBehaviour
        // publishButton.onClick.AddListener (OnPublishVideoPressed);
      //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
+<<<<<<< HEAD
        // closeSettingsButton.onClick.AddListener (OpenSettingsPanel );
    //     viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+=======
+       // closeSettingsButton.onClick.AddListener (() => { OpenSettingsPanel (false); });
+        //viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+>>>>>>> 2e36ce1daf816edb42e05b7e6e244a28b40d1495
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
 
         InitialScreenState ();
