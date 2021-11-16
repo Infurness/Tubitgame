@@ -20,17 +20,17 @@ public class ThemesManager : MonoBehaviour
         {
             bounsEffect.Add(new CustomizationThemeEffect(){ThemeType = themeData.themeType,themePopularityFactor = 0});
         }
-        signBus.Subscribe<OnPlayerEquippedItemChangedSignal>(OnPlayerEquipmentsChanged);
+        signBus.Subscribe<OnPlayerEquippedThemeItemChangedSignal>(OnPlayerEquipmentsChanged);
         
     }
 
-    void OnPlayerEquipmentsChanged(OnPlayerEquippedItemChangedSignal playerEquippedItemChangedSignal)
+    void OnPlayerEquipmentsChanged(OnPlayerEquippedThemeItemChangedSignal playerEquippedThemeItemChangedSignal)
     {
         foreach (var themeEffect in bounsEffect)
         {
             themeEffect.themePopularityFactor = 0;
         }
-        foreach (var item in playerEquippedItemChangedSignal.CustomizationItems)
+        foreach (var item in playerEquippedThemeItemChangedSignal.CustomizationItems)
         {
             foreach (var themeEffect in item.affectedTheme)
             {

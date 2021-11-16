@@ -76,7 +76,7 @@ public class AlgorithmManager : MonoBehaviour
                     double  dt =(double) (video.lastUpdateTime.Subtract(video.CreateDateTime)).TotalMinutes;
                     print("dt mins = "+dt);
                     
-                    double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeHours*60.0f)), 1.0f);
+                    double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeDays*60.0f)), 1.0f);
                     print("Complete percentage "+ completePercentage);
 
                     ulong previousViews = video.views;

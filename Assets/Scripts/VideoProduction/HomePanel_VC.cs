@@ -10,7 +10,7 @@ public class HomePanel_VC : MonoBehaviour
     [Inject] private YouTubeVideoManager youTubeVideoManager;
 
     //[SerializeField] private Button publishButton;
-    [SerializeField] private ScrollRect viewsScroll;
+   // [SerializeField] private ScrollRect viewsScroll;
     [SerializeField] private Button playerIconButton;
 
     ThemeType[] selectedThemeTypes; //Dummy unused code
@@ -19,7 +19,10 @@ public class HomePanel_VC : MonoBehaviour
     {
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
        // publishButton.onClick.AddListener (OnPublishVideoPressed);
-        viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+     //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+        playerIconButton.onClick.AddListener (OpenSettingsPanel);
+       // closeSettingsButton.onClick.AddListener (OpenSettingsPanel );
+   //     viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
 
         InitialScreenState ();

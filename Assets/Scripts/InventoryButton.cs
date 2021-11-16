@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,14 +9,16 @@ using UnityEngine.UI;
 public class InventoryButton : MonoBehaviour
 {
     private Button itemButton;
-    private Image itemLogo;
+    [SerializeField] Image itemLogo;
     public string Type;
 
-    [SerializeField] private Image equippedLabel;
+    [SerializeField] private TMP_Text LabelText;
 
-    public void SetButtonLogo(Sprite sprite)
+    public void SetButtonSprites(Sprite logoSprite,Sprite rarenessSprite)
     {
-        itemButton.image.sprite = sprite;
+        itemLogo.sprite = logoSprite;
+        itemButton.image.sprite = rarenessSprite;
+        itemLogo.preserveAspect = true;
     }
     void Awake()
     {

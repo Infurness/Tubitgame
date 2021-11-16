@@ -18,7 +18,7 @@ public class Video
     public ulong videoSoftCurrency;
     public ulong videoMaxSoftCurrency;
     public ulong collectedCurrencies;
-    public int lifeTimeHours;
+    public int lifeTimeDays;
     public bool IsMiningCompleted=false;
     public DateTime lastUpdateTime;
     

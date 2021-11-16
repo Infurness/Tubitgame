@@ -17,13 +17,16 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
+
+        Container.DeclareSignal<OnCharacterItemEquippedSignal>();
+
+        Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
+        Container.DeclareSignal<TestRoomThemeItemSignal>();
+        Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
+        Container.DeclareSignal<SaveRoomLayoutSignal>();
+        Container.DeclareSignal<DiscardRoomLayoutSignal>();
         Container.DeclareSignal<UpdateSoftCurrency> ();
-        Container.DeclareSignal<OnFaceEquippedSignal>();
-        Container.DeclareSignal<OnHeadEquippedSignal>();
-        Container.DeclareSignal<OnTorsoEquippedSignal>();
-        Container.DeclareSignal<OnLegsEquippedSignal>();
-        Container.DeclareSignal<OnFeetEquippedSignal>();
-        Container.DeclareSignal<OnPlayerEquippedItemChangedSignal>();
+
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();

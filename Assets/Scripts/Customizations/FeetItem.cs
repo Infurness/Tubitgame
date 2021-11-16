@@ -3,7 +3,7 @@
 namespace Customizations
 {
     [CreateAssetMenu(fileName = "FeetItem", menuName = "Customizations/FeetItem", order = 4)]
-    public class FeetItem : CustomizationItem
+    public class FeetItem : ThemeCustomizationItem
     {
         public FeetItemType FeetItemType;
         public Sprite feetSprite;
