@@ -174,6 +174,8 @@ public class VideoManager_VC : MonoBehaviour
         if (_panel == VideoManagerPanels.ManageVideos)
         {
             manageVideosPanel.SetActive (true);
+            if (videosShown.Count == 0)
+                UpdateVideoList ();
             _signalBus.TryUnsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             _signalBus.Subscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
         }
@@ -228,6 +230,7 @@ public class VideoManager_VC : MonoBehaviour
         vc.SetReferences (_signalBus, _youTubeVideoManager);
         vc.SetVideoInfoUp (video);
         videosShown.Add (video.name, videoInfoObject);
+        vc.UpdateVideoInfo ();
     }
 
     void UpdateVideoList ()
