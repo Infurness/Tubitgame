@@ -429,7 +429,13 @@ public class PlayerDataManager : MonoBehaviour
             playerData.xpData
         });
     }
-
+    public void UpdateEnergyData ( EnergyData energyData)
+    {
+        UpdateUserDatabase (new[] { "Energy" }, new object[]
+       {
+            energyData
+       });
+    }
     public void UpdatePlayerInventoryData(PlayerInventoryAddressedData playerInventoryAddressedData)
     {
         UpdateUserDatabase(new string[] {"Inventory"}, new object[] {playerInventoryAddressedData});
