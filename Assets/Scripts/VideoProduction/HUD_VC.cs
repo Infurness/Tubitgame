@@ -12,6 +12,7 @@ public class HUD_VC : MonoBehaviour
     [Inject] SignalBus _signalBus;
     [Inject] YouTubeVideoManager youTubeVideoManager;
     [Inject] private ExperienceManager xpManager;
+    [Inject] private EnergyManager energyManager;
     GameClock gameClock;
 
     [SerializeField] private TMP_Text energyText;
@@ -163,7 +164,7 @@ public class HUD_VC : MonoBehaviour
     void SetEnergy (EnergyValueSignal _signal)
     {
         energyText.text = $"{(int)_signal.energy}";
-        energyFillBar.fillAmount = _signal.energy / 100; //Dummy : to be replaced by max energy amount
+        energyFillBar.fillAmount = _signal.energy / energyManager.GetMaxEnergy();
     }
     void UpdateSoftCurrency ()
     {

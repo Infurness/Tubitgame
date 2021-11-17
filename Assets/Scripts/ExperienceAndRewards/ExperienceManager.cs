@@ -18,9 +18,7 @@ public class ExperienceManager : MonoBehaviour
         playerDataManager = PlayerDataManager.Instance;
         signalBus.Subscribe<AddSubsForExperienceSignal> (AddSubs);
         signalBus.Subscribe<AddViewsForExperienceSignal> (AddViews);
-        signalBus.Subscribe<AddSoftCurrencyForExperienceSignal> (AddSoftCurrency);
-
-       
+        signalBus.Subscribe<AddSoftCurrencyForExperienceSignal> (AddSoftCurrency);       
     }
 
     // Update is called once per frame
@@ -63,6 +61,8 @@ public class ExperienceManager : MonoBehaviour
     }
     public int GetPlayerLevel ()
     {
+        if (playerDataManager == null)
+            playerDataManager = PlayerDataManager.Instance;
         int level = 0;
         foreach (ulong levelXp in xpForEachLevel)
         {
