@@ -162,6 +162,7 @@ public class VideoManager_VC : MonoBehaviour
         {
             makeAVideoPanel.SetActive (true);
             _signalBus.Fire<OpenVideoCreationSignal> ();
+            ForceQualityTagSelectionSliderPosition (0);
         }
         else
         {
@@ -285,6 +286,11 @@ public class VideoManager_VC : MonoBehaviour
     void CancelVideoRecording (CancelVideoRecordingSignal signal)
     {
         videosShown.Remove (signal.name);
+    }
+    void ForceQualityTagSelectionSliderPosition (float value)
+    {
+        SetQualityTag (value);
+        qualitySelector.value = value;
     }
     void SetQualityTag (float value)
     {
