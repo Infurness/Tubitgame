@@ -19,13 +19,13 @@ public class RoomRender : MonoBehaviour
     [SerializeField] private List<FloorSlotData> floorSlots;
     [SerializeField] private List<ObjectSlotData> roomObjectSlots;
     [SerializeField] private List<Image> floorItems;
-    [SerializeField] private Canvas roomCanvas;
     [SerializeField]  List<VideoQualityCustomizationItem> currentVQItems;
     [SerializeField]  List<ThemeCustomizationItem> currentThemeItems;
-    [SerializeField] private RoomLayout DefalutRoomLayout;
+    [SerializeField] private RoomLayout DefaultRoomLayout;
     [SerializeField] private RoomLayout RoomLayout;
     [SerializeField] private Camera renderCamera;
     [SerializeField] private float zoomInValue, ZoomOutValue;
+    [SerializeField] private Vector3 zoomInPosition, zoomOutPosition;
     private void Awake()
     {
         currentVQItems = new List<VideoQualityCustomizationItem>();
@@ -45,6 +45,7 @@ public class RoomRender : MonoBehaviour
      void ZoomInRoomRender()
     {
         renderCamera.orthographicSize = zoomInValue;
+        renderCamera.transform.localPosition = zoomInPosition;
         print("ZOOM IN");
 
     }
@@ -52,6 +53,8 @@ public class RoomRender : MonoBehaviour
      void ZoomOutRoomRender()
     {
         renderCamera.orthographicSize = ZoomOutValue;
+        renderCamera.transform.localPosition = zoomOutPosition;
+
         print("ZOOM OUT");
 
     }
@@ -60,36 +63,36 @@ public class RoomRender : MonoBehaviour
         signalBus.Subscribe<TestRoomThemeItemSignal>(OnTestRoomThemeItem);
         signalBus.Subscribe<TestRoomVideoQualityITemSignal>(OnTestVideoQualityItem);
         
-        foreach (var wallSlot in wallSlots)
-        {
-            if (wallSlot.Empty)
-            {
-                wallSlot.Image.gameObject.SetActive(false);
-            }
-        }
-        foreach (var floorSlot in floorSlots)    
-        {
-            if (floorSlot.Empty)
-            {
-                floorSlot.Image.gameObject.SetActive(false);
-            }
-        }
-
-        foreach (var objectSlot in roomObjectSlots)
-        {
-            if (objectSlot.Empty)
-            {
-                objectSlot.Image.gameObject.SetActive(false);
-            }
-        }
+        // foreach (var wallSlot in wallSlots)
+        // {
+        //     if (wallSlot.Empty)
+        //     {
+        //         wallSlot.Image.gameObject.SetActive(false);
+        //     }
+        // }
+        // foreach (var floorSlot in floorSlots)    
+        // {
+        //     if (floorSlot.Empty)
+        //     {
+        //         floorSlot.Image.gameObject.SetActive(false);
+        //     }
+        // }
+        //
+        // foreach (var objectSlot in roomObjectSlots)
+        // {
+        //     if (objectSlot.Empty)
+        //     {
+        //         objectSlot.Image.gameObject.SetActive(false);
+        //     }
+        // }
         signalBus.Subscribe<SaveRoomLayoutSignal>((signal =>
         {
             OnSaveRoomLayout();
-            gameObject.SetActive(false);
-            gameObject.SetActive(true);
+            
         }));
         signalBus.Subscribe<DiscardRoomLayoutSignal>((signal =>
         {
+            RoomLayout = new RoomLayout(PlayerInventory.GetRoomLayout());
             gameObject.SetActive(false);
             gameObject.SetActive(true);
         } ));
@@ -100,11 +103,14 @@ public class RoomRender : MonoBehaviour
     {
         currentVQItems=PlayerInventory.EquippedVideoQualityRoomItems;
         currentThemeItems = PlayerInventory.EquippedThemeEffectRoomItems;
-        RoomLayout = PlayerInventory.GetRoomLayout();
+        RoomLayout = new RoomLayout(PlayerInventory.GetRoomLayout());
         if (RoomLayout.FloorLayoutSlots.Count==0)
         {
-            RoomLayout = DefalutRoomLayout;
+            RoomLayout = DefaultRoomLayout;
+            print("Using Default Layout");
         }
+
+       
         print("Room Enabled");
             ProcessCurrentVCItems();
             ProcessCurrentThemeItems();
@@ -117,6 +123,7 @@ public class RoomRender : MonoBehaviour
            var item= currentThemeItems.Find((it)=>it.name==wallSlot.ItemName);
             wallSlots[wallSlot.SlotID].Image.sprite =
                 ((WallOrnament) item).wallOrnamentSprite;
+            wallSlots[wallSlot.SlotID].Image.gameObject.SetActive(true);
         }
 
         foreach (var floorLayoutSlot in RoomLayout.FloorLayoutSlots)
@@ -128,6 +135,10 @@ public class RoomRender : MonoBehaviour
                 floorSlots[floorLayoutSlot.SlotID].Image.sprite =
 
                     ((FloorOrnament) item).floorOrnamentSprite;
+                floorSlots[floorLayoutSlot.SlotID].Image.gameObject.SetActive(true);
+                print("Floor ITem " + floorLayoutSlot.ItemName +" Found");
+
+
             }
             else
             {
@@ -142,6 +153,7 @@ public class RoomRender : MonoBehaviour
 
             roomObjectSlots[objectLayoutSlot.SlotID].Image.sprite =
                 ((RoomObject) item).roomObjectSprite;
+            roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.SetActive(true);
         }
     }
 
@@ -243,7 +255,7 @@ public class RoomRender : MonoBehaviour
     {
         print("Item Received "+wallOrnament.name);
 
-        var slot = wallSlots.Find((item =>(item.WallOrnamentType == wallOrnament.WallOrnamentType)&&item.Empty));
+        var slot = wallSlots.Find((item =>(item.WallOrnamentType == wallOrnament.WallOrnamentType)));
         
         if (slot==null)
         {
@@ -256,14 +268,14 @@ public class RoomRender : MonoBehaviour
         slot.Empty = false;
         slot.roomLayoutThemeSlot.ItemName = wallOrnament.name;
         slot.Image.gameObject.SetActive(true);
-        DefalutRoomLayout.WallLayoutSlots[slot.roomLayoutThemeSlot.SlotID].ItemName = wallOrnament.name;
+        RoomLayout.WallLayoutSlots[slot.roomLayoutThemeSlot.SlotID] = new RoomLayoutThemeSlot(wallOrnament.name, slot.roomLayoutThemeSlot.SlotID);
 
     }
 
     void AddFloorOrnament(FloorOrnament floorOrnament)
     {
         print("Item Received "+floorOrnament.name);
-       var slot=floorSlots.Find((item =>(item.FloorOrnamentType == floorOrnament.floorOrnamentType)&&item.Empty));
+       var slot=floorSlots.Find((item =>(item.FloorOrnamentType == floorOrnament.floorOrnamentType)));
        if (slot==null)
        {
            print("Slot Not founded");
@@ -274,13 +286,13 @@ public class RoomRender : MonoBehaviour
        slot.roomLayoutThemeSlot.ItemName = floorOrnament.name;
        slot.Image.gameObject.SetActive(true);
 
-       DefalutRoomLayout.FloorLayoutSlots[slot.roomLayoutThemeSlot.SlotID].ItemName = floorOrnament.name;
+       RoomLayout.FloorLayoutSlots[slot.roomLayoutThemeSlot.SlotID] =new RoomLayoutThemeSlot(floorOrnament.name,slot.roomLayoutThemeSlot.SlotID);
 
     }
 
     void AddRoomObject(RoomObject roomObject)
     {
-        var slot=roomObjectSlots.Find((item =>(item.RoomObjectType == roomObject.roomObjectType)&&item.Empty));
+        var slot=roomObjectSlots.Find((item =>(item.RoomObjectType == roomObject.roomObjectType)));
         if (slot==null)
         {
             print("Slot Not founded");
@@ -292,34 +304,36 @@ public class RoomRender : MonoBehaviour
         slot.roomLayoutThemeSlot.ItemName = roomObject.name;
         slot.Image.gameObject.SetActive(true);
 
-        DefalutRoomLayout.ObjectsLayoutSlots[slot.roomLayoutThemeSlot.SlotID].ItemName = roomObject.name;
+        RoomLayout.ObjectsLayoutSlots[slot.roomLayoutThemeSlot.SlotID] = new RoomLayoutThemeSlot(roomObject.name,slot.roomLayoutThemeSlot.SlotID);
     }
 
-    public void OnSaveRoomLayout()
+    public  void OnSaveRoomLayout()
     {
-      PlayerInventory.UpdateRoomData(RoomLayout,currentVQItems);
+       PlayerInventory.UpdateRoomData(RoomLayout,currentVQItems);
+      gameObject.SetActive(false);
+      gameObject.SetActive(true);
     }
 
     public void PopulateDataSlots()
     {
-        DefalutRoomLayout.FloorLayoutSlots.Clear();
-        DefalutRoomLayout.WallLayoutSlots.Clear();
-        DefalutRoomLayout.ObjectsLayoutSlots.Clear();
+        DefaultRoomLayout.FloorLayoutSlots.Clear();
+        DefaultRoomLayout.WallLayoutSlots.Clear();
+        DefaultRoomLayout.ObjectsLayoutSlots.Clear();
 
         for (int i = 0; i < wallSlots.Count; i++)
         {
             wallSlots[i].roomLayoutThemeSlot.SlotID =  i;
-            DefalutRoomLayout.WallLayoutSlots.Add(wallSlots[i].roomLayoutThemeSlot);
+            DefaultRoomLayout.WallLayoutSlots.Add(wallSlots[i].roomLayoutThemeSlot);
         }
         for (int i = 0; i < floorSlots.Count; i++)
         {
             floorSlots[i].roomLayoutThemeSlot.SlotID = i;
-            DefalutRoomLayout.FloorLayoutSlots.Add(floorSlots[i].roomLayoutThemeSlot);
+            DefaultRoomLayout.FloorLayoutSlots.Add(floorSlots[i].roomLayoutThemeSlot);
         }
         for (int i = 0; i < roomObjectSlots.Count; i++)
         {
             roomObjectSlots[i].roomLayoutThemeSlot.SlotID = i;
-            DefalutRoomLayout.ObjectsLayoutSlots.Add(roomObjectSlots[i].roomLayoutThemeSlot);
+            DefaultRoomLayout.ObjectsLayoutSlots.Add(roomObjectSlots[i].roomLayoutThemeSlot);
         }
         
     }

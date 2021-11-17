@@ -11,7 +11,7 @@ public class SceneManager : MonoBehaviour
 
     private void Start()
     {
-        signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal =>
+        signalBus.Subscribe<AssetsLoadedSignal>((signal =>
         {
             StartCoroutine(LoadSceneAsync(1));
         } ));

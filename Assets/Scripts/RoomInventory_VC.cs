@@ -49,11 +49,6 @@ public class RoomInventory_VC : MonoBehaviour
 
     void Awake()
     {
-        roomInventoryButtons = new List<InventoryButton>();
-        roomInventoryPanel.OnEnableAsObservable().Subscribe((s) => CreateInventoryButtons());
-        saveButton.onClick.AddListener(SaveRoomLayout);
-        discardButton.onClick.AddListener(DiscardRoomLayout);
-        rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
         roomInventoryPanel.OnEnableAsObservable().Subscribe((unit =>
         {
             signalBus.Fire(new RoomZoomStateChangedSignal()
@@ -69,6 +64,12 @@ public class RoomInventory_VC : MonoBehaviour
                 ZoomIn = true
             });
         }));
+        roomInventoryButtons = new List<InventoryButton>();
+        roomInventoryPanel.OnEnableAsObservable().Subscribe((s) => CreateInventoryButtons());
+        saveButton.onClick.AddListener(SaveRoomLayout);
+        discardButton.onClick.AddListener(DiscardRoomLayout);
+        rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
+    
 
     }
 

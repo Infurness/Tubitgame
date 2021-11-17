@@ -43,3 +43,8 @@ public class RoomZoomStateChangedSignal
 {
     public bool ZoomIn = false;
 }
+
+public class AssetsLoadedSignal
+{
+    
+}

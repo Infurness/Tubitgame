@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Customizations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -9,6 +10,7 @@ using Zenject;
 
 public class PlayerInventory : MonoBehaviour
 {
+    public static PlayerInventory Instance;
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private SignalBus signalBus;
     [SerializeField] private PlayerInventoryAddressedData playerInventoryAddressedData;
@@ -36,44 +38,104 @@ public class PlayerInventory : MonoBehaviour
     public List<VideoQualityCustomizationItem> EquippedVideoQualityRoomItems => equippedVideoQualityRoomItems.ToList();
 
     public List<RealEstateCustomizationItem> RealEstateItems => realEstateItems.ToList();
-    void Start()
+
+    private void Awake()
     {
-     //  signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
-     LoadAddressedData();
+        if (Instance==null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+        
     }
 
-     async void LoadAddressedData()
+    void Start()
     {
-        var assets= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("default", null);
-        await assets.Task;
-        if (assets.Status == AsyncOperationStatus.Succeeded)
+      signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
+      playerDataManager = PlayerDataManager.Instance;
+
+    }
+
+     async Task LoadThemeEffectAddressedAssets()
+    {
+        var themeEffectAssets= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("default", null);
+        await themeEffectAssets.Task;
+        if (themeEffectAssets.Status == AsyncOperationStatus.Succeeded)
         {
-            var items= (List<ThemeCustomizationItem>) assets.Result;
-
-            foreach (var characterItemName in playerInventoryAddressedData.characterItemsNames)
-            {
-                characterItems.Add(items.Find((item => item.name == characterItemName)));
+            var themeEffectItems= (List<ThemeCustomizationItem>) themeEffectAssets.Result;
+            roomThemeEffectItems = themeEffectItems;
+            // foreach (var characterItemName in playerInventoryAddressedData.characterItemsNames)
+            // {
+            //     characterItems.Add(themeEffectItems.Find((item => item.name == characterItemName)));      //todo uncomment when shop implemented
+            // }
+            var roomLayout = playerInventoryAddressedData.RoomLayout;
+            foreach (var floorItem in roomLayout.FloorLayoutSlots)
+            { 
+                equippedThemeEffectRoomItems.Add(themeEffectItems.Find((it) => it.name == floorItem.ItemName));
+      
             }
-
-            foreach (var equippedCharacterItemName in playerInventoryAddressedData.equippedCharacterItemsNames)
-            {
-                equippedCharacterItems.Add(characterItems.Find((item => item.name==equippedCharacterItemName)));
+            foreach (var wallItem in roomLayout.WallLayoutSlots)
+            { 
+                equippedThemeEffectRoomItems.Add(themeEffectItems.Find((it) => it.name == wallItem.ItemName));
             }
+            foreach (var objectItem in roomLayout.ObjectsLayoutSlots)
+            { 
+                equippedThemeEffectRoomItems.Add(themeEffectItems.Find((it) => it.name == objectItem.ItemName));
+            }
+           
+            
 
         }
         else
         {
             print("Failed to load Assets ");
         }
+        
+     
 
     }
-    void OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
+
+     async Task LoadVideoQualityAddressedAssets()
+     {
+         var videoQualityItems= Addressables.LoadAssetsAsync<VideoQualityCustomizationItem>("default", null);
+         await videoQualityItems.Task;
+         if (videoQualityItems.Status == AsyncOperationStatus.Succeeded)
+         {
+             var vcItems= (List<VideoQualityCustomizationItem>) videoQualityItems.Result;
+
+             videoQualityRoomItems = vcItems;
+
+             // foreach (var videoQualityItemName in playerInventoryAddressedData.videoQualityItemsNames)
+             // {
+             //     videoQualityRoomItems.Add(vcItems.Find((item => item.name==videoQualityItemName)));     //todo uncomment when shop implemented
+             // }
+             
+             
+
+             foreach (var qualityItemsName in playerInventoryAddressedData.equippedVideoQualityItemsNames)
+             {
+                 equippedVideoQualityRoomItems.Add(videoQualityRoomItems.Find((item => item.name==qualityItemsName)));
+             }
+
+         }
+         else
+         {
+             print("Failed to load Assets ");
+         }
+     }
+      async  void  OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
         playerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
 
-        LoadAddressedData();
-        
-       
+      await  LoadThemeEffectAddressedAssets();
+      await  LoadVideoQualityAddressedAssets();
+
+      signalBus.Fire<AssetsLoadedSignal>();
+
     }
     public void AddCharacterItem(ThemeCustomizationItem themeCustomizationItem)
     {
@@ -106,7 +168,7 @@ public class PlayerInventory : MonoBehaviour
 
     }
 
-    public void UpdateRoomData(RoomLayout roomLayout,List<VideoQualityCustomizationItem> vCItems)
+    public  void UpdateRoomData(RoomLayout roomLayout,List<VideoQualityCustomizationItem> vCItems)
     {
         
         playerInventoryAddressedData.RoomLayout = roomLayout;
@@ -114,6 +176,7 @@ public class PlayerInventory : MonoBehaviour
         foreach (var floorItem in roomLayout.FloorLayoutSlots)
         { 
            equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == floorItem.ItemName));
+      
         }
         foreach (var wallItem in roomLayout.WallLayoutSlots)
         { 
@@ -137,7 +200,6 @@ public class PlayerInventory : MonoBehaviour
         });
         playerDataManager.UpdatePlayerQuality(equippedVideoQualityRoomItems.Sum((item => item.videoQualityBonus)));
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
-        
 
     }
 
@@ -155,7 +217,7 @@ public class PlayerInventory : MonoBehaviour
 
     public RoomLayout GetRoomLayout()
     {
-        return playerInventoryAddressedData.RoomLayout;
+        return  new RoomLayout( playerInventoryAddressedData.RoomLayout);
     }
 
     public T GetEquippedItem<T>() where T: ThemeCustomizationItem
@@ -190,7 +252,7 @@ public class PlayerInventory : MonoBehaviour
             videoQualityItemsNames = new List<string>();
             equippedCharacterItemsNames = new List<string>();
             equippedVideoQualityItemsNames = new List<string>();
-            RoomLayout = new RoomLayout();
+           // RoomLayout = new RoomLayout();
 
         }
         

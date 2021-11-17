@@ -14,3 +14,4 @@ public class UpdateRankSignal
 {
     public PartnershipTiers newTier;
 }
+

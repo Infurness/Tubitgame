@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8784818459770028967
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8784818459770028965}
+  - component: {fileID: 8784818459770028964}
+  m_Layer: 0
+  m_Name: PlayerInventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8784818459770028965
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8784818459770028967}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1613.3934, y: 1987.8757, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8784818459770028964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8784818459770028967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f760d19dc5b45a046ae2f7619101623c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInventoryAddressedData:
+    characterItemsNames: []
+    roomItemsNames: []
+    videoQualityItemsNames: []
+    equippedCharacterItemsNames: []
+    equippedVideoQualityItemsNames: []
+    RoomLayout:
+      WallLayoutSlots: []
+      FloorLayoutSlots: []
+      ObjectsLayoutSlots: []
+  equippedCharacterItems:
+  - {fileID: 11400000, guid: 959702bc1263d6645890d8e1a44bacac, type: 2}
+  - {fileID: 11400000, guid: b1e26c00b572ed146996233daca666c4, type: 2}
+  - {fileID: 11400000, guid: 3f17d3b0cba1a034e9764c1aaf63c9c2, type: 2}
+  - {fileID: 11400000, guid: 1ea11c7143a0fe9409c7445ef2124760, type: 2}
+  - {fileID: 11400000, guid: 4afe66d88cdf4b4489b42a319e9e12ab, type: 2}
+  defaultCharacterItems:
+  - {fileID: 11400000, guid: deb4da5bbf3c341468b0243045914d57, type: 2}
+  - {fileID: 11400000, guid: e515b26d96b78af4381713cdb9b670ba, type: 2}
+  - {fileID: 11400000, guid: 3f17d3b0cba1a034e9764c1aaf63c9c2, type: 2}
+  - {fileID: 11400000, guid: 959702bc1263d6645890d8e1a44bacac, type: 2}
+  - {fileID: 11400000, guid: 1ea11c7143a0fe9409c7445ef2124760, type: 2}
+  characterItems:
+  - {fileID: 11400000, guid: 959702bc1263d6645890d8e1a44bacac, type: 2}
+  - {fileID: 11400000, guid: 052afb2d563a2a5489ab1c08aed83add, type: 2}
+  - {fileID: 11400000, guid: b1e26c00b572ed146996233daca666c4, type: 2}
+  - {fileID: 11400000, guid: 3f17d3b0cba1a034e9764c1aaf63c9c2, type: 2}
+  - {fileID: 11400000, guid: b1e26c00b572ed146996233daca666c4, type: 2}
+  - {fileID: 11400000, guid: 1ea11c7143a0fe9409c7445ef2124760, type: 2}
+  - {fileID: 11400000, guid: a32de50988729384e89e5711cd483cf1, type: 2}
+  - {fileID: 11400000, guid: 4afe66d88cdf4b4489b42a319e9e12ab, type: 2}
+  - {fileID: 11400000, guid: e515b26d96b78af4381713cdb9b670ba, type: 2}
+  roomThemeEffectItems:
+  - {fileID: 11400000, guid: 0d7cfeccb5b2f994fada9aa208654dc7, type: 2}
+  - {fileID: 11400000, guid: 73e0a8cfce675c245a5d4bd762d72cd2, type: 2}
+  - {fileID: 11400000, guid: c1ef61ee97b378c4cad5348281578dad, type: 2}
+  - {fileID: 11400000, guid: bf695748c988a464280551ee1855af92, type: 2}
+  - {fileID: 11400000, guid: b6f1079bde5eb1b47a075f479b951a2c, type: 2}
+  - {fileID: 11400000, guid: cfdf3c128dbef6a48b237a9de01cf0ed, type: 2}
+  - {fileID: 11400000, guid: 3f7591e3863c65245b77ccff78ea2b49, type: 2}
+  - {fileID: 11400000, guid: 6245cdc69675ad944aea0305754547ec, type: 2}
+  - {fileID: 11400000, guid: 194766a9acbc8db4ba9d007443500b53, type: 2}
+  - {fileID: 11400000, guid: 9a8971eec9fb3e84f863673092ec7fd6, type: 2}
+  - {fileID: 11400000, guid: 43645b44e07b8394382a5a926aca0f6e, type: 2}
+  equippedThemeEffectRoomItems:
+  - {fileID: 11400000, guid: 0d7cfeccb5b2f994fada9aa208654dc7, type: 2}
+  - {fileID: 11400000, guid: 73e0a8cfce675c245a5d4bd762d72cd2, type: 2}
+  - {fileID: 11400000, guid: c1ef61ee97b378c4cad5348281578dad, type: 2}
+  - {fileID: 11400000, guid: bf695748c988a464280551ee1855af92, type: 2}
+  - {fileID: 11400000, guid: b6f1079bde5eb1b47a075f479b951a2c, type: 2}
+  - {fileID: 11400000, guid: cfdf3c128dbef6a48b237a9de01cf0ed, type: 2}
+  - {fileID: 11400000, guid: 3f7591e3863c65245b77ccff78ea2b49, type: 2}
+  - {fileID: 11400000, guid: 6245cdc69675ad944aea0305754547ec, type: 2}
+  - {fileID: 11400000, guid: 194766a9acbc8db4ba9d007443500b53, type: 2}
+  - {fileID: 11400000, guid: 9a8971eec9fb3e84f863673092ec7fd6, type: 2}
+  - {fileID: 11400000, guid: 43645b44e07b8394382a5a926aca0f6e, type: 2}
+  videoQualityRoomItems:
+  - {fileID: 11400000, guid: b2cfe324f8397df4499face535e0af11, type: 2}
+  - {fileID: 11400000, guid: 03840a4c0dfae91429e28537f1a9a754, type: 2}
+  - {fileID: 11400000, guid: c99ed8a86b54b7d44b5ef988e6ffb155, type: 2}
+  - {fileID: 11400000, guid: c1dca488dcda89742a4d7a05c09bd553, type: 2}
+  - {fileID: 11400000, guid: 016097c736bc6a04daf2938b8085b3b5, type: 2}
+  - {fileID: 11400000, guid: 13fe4b5a1ea8ea144bf7ad68ed978838, type: 2}
+  - {fileID: 11400000, guid: 1ff3f66041e5ee2408c278f93c70a73a, type: 2}
+  - {fileID: 11400000, guid: 1d0787ecb37b60246897435bdc42c853, type: 2}
+  - {fileID: 11400000, guid: 478f0d8d499e34346850d56e7766b231, type: 2}
+  - {fileID: 11400000, guid: fcc7dd33126744a4ea99c67e953b7050, type: 2}
+  - {fileID: 11400000, guid: 86d88c58c53a25b4ca213c3be41fcf61, type: 2}
+  - {fileID: 11400000, guid: 848c5cb63b8b4c94ea878a1657091b11, type: 2}
+  equippedVideoQualityRoomItems:
+  - {fileID: 11400000, guid: b2cfe324f8397df4499face535e0af11, type: 2}
+  - {fileID: 11400000, guid: 478f0d8d499e34346850d56e7766b231, type: 2}
+  - {fileID: 11400000, guid: 016097c736bc6a04daf2938b8085b3b5, type: 2}
+  realEstateItems: []
