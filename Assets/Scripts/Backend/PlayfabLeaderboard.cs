@@ -73,7 +73,8 @@ public class PlayfabLeaderboard : MonoBehaviour
         Dictionary<string, ulong> bestPlayers = new Dictionary<string, ulong> ();
         foreach(var item in result.Leaderboard)
         {
-            bestPlayers.Add (item.DisplayName, (ulong)item.StatValue);
+            if(item.DisplayName!=null)
+                bestPlayers.Add (item.DisplayName, (ulong)item.StatValue);
         }
         if(bestPlayers.Count == 3)
         {

@@ -15,6 +15,7 @@ public class VideoInfo_VC : MonoBehaviour
     private Video videoRef;
     private string videoName;
     private ThemeType[] themeTypes;
+    private VideoQuality selectedQuality;
     private float internalRecordTime;
     
     [SerializeField] private TMP_Text nameText;
@@ -99,6 +100,7 @@ public class VideoInfo_VC : MonoBehaviour
         videoName = _name;
         nameText.text = videoName;
         themeTypes = videoThemes;
+        selectedQuality = quality;
         internalRecordTime = recordTime;
         qualityText.text =  string.Concat (Enum.GetName (quality.GetType (), quality).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
 
@@ -149,7 +151,7 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void PublishVideo ()
     {
-        signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes });
+        signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality });
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
         InitialState ();
 

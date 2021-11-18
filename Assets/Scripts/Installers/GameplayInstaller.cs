@@ -17,6 +17,9 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
+        Container.DeclareSignal<UpdateSoftCurrencySignal> ();
+        Container.DeclareSignal<UpdateHardCurrencySignal> ();
+        Container.DeclareSignal<UpdateExperienceSignal> ();
 
         Container.DeclareSignal<OnCharacterItemEquippedSignal>();
 
@@ -25,7 +28,6 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
         Container.DeclareSignal<SaveRoomLayoutSignal>();
         Container.DeclareSignal<DiscardRoomLayoutSignal>();
-        Container.DeclareSignal<UpdateSoftCurrency> ();
 
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
@@ -48,6 +50,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddViewsForExperienceSignal> ();
         Container.DeclareSignal<LevelUpSignal> ();
         Container.DeclareSignal<UpdateRankSignal> ();
+        Container.DeclareSignal<OpenLevelUpPanelSignal> ();
 
 
         //Dependencies
@@ -61,5 +64,9 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
+
+        Container.Bind<ExperienceManager> ().FromComponentInHierarchy ().AsSingle ();
+
+        Container.Bind<CheatsManager> ().FromComponentInHierarchy ().AsSingle ();
     }
 }

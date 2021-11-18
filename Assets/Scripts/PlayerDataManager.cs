@@ -47,6 +47,8 @@ public class PlayerDataManager : MonoBehaviour
         {
             signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
         });
+
+        
     }
 
 
@@ -123,6 +125,15 @@ public class PlayerDataManager : MonoBehaviour
             else
             {
                 playerData.softCurrency = 0;
+            }
+
+            if (result.Data.TryGetValue ("HardCurrency", out datarecord))
+            {
+                playerData.hardCurrency = JsonConvert.DeserializeObject<ulong> (datarecord.Value);
+            }
+            else
+            {
+                playerData.hardCurrency = 0;
             }
 
             if (result.Data.TryGetValue("Inventory",out datarecord))
@@ -303,6 +314,11 @@ public class PlayerDataManager : MonoBehaviour
         return playerData.softCurrency;
 
     }
+    public ulong GetHardCurrency ()
+    {
+        return playerData.hardCurrency;
+
+    }
     public void UpdatePlayerData(ulong subscribersCount,List<Video> videos)
     {
         ulong lastSubs = playerData.subscribers;
@@ -375,6 +391,11 @@ public class PlayerDataManager : MonoBehaviour
         playerData.xpData.experiencePoints += experience;
         UpdateXpData ();
     }
+    public void CheatResetXp ()
+    {
+        playerData.xpData.experiencePoints = 0;
+        UpdateXpData ();
+    }
     public ulong GetExperiencePoints ()
     {
         return playerData.xpData.experiencePoints;
@@ -413,12 +434,23 @@ public class PlayerDataManager : MonoBehaviour
             playerData.xpData
         });
     }
-
+    public void UpdateEnergyData ( EnergyData energyData)
+    {
+        UpdateUserDatabase (new[] { "Energy" }, new object[]
+       {
+            energyData
+       });
+    }
     public void UpdatePlayerInventoryData(PlayerInventoryAddressedData playerInventoryAddressedData)
     {
         UpdateUserDatabase(new string[] {"Inventory"}, new object[] {playerInventoryAddressedData});
     }
 
- 
+    public void GetLevelUpRewards (LevelUpSignal signal) //Subscribed to signal in YouTubeVideomanager
+    {
+        playerData.softCurrency += (ulong)signal.reward.softCurrency;
+        UpdateUserDatabase (new[] { "SoftCurrency", "Videos" }, new object[] { playerData.softCurrency, playerData.videos });
+        AddHardCurrency (signal.reward.hardCurrency);
+    }
 
 }

@@ -53,7 +53,12 @@ public class AlgorithmManager : MonoBehaviour
     {
         return Random.Range (25, 101);
     }
-
+    public int GetVideoLifetime (ulong totalViews, float videoQuality, float balanceFactor)
+    {
+        int seconds = (int)Math.Pow ((totalViews * videoQuality), balanceFactor);
+        Debug.Log ($"Seconds to mine the video: {seconds}");
+        return seconds;
+    }
     IEnumerator UpdateTimer()
     {
         yield return new WaitForSecondsRealtime(updateTime);
@@ -69,15 +74,15 @@ public class AlgorithmManager : MonoBehaviour
             ulong softCurrency=0;
             foreach (var video in videos)
             {
-                print("Video Completeness" + video.IsMiningCompleted);
+                //print("Video Completeness" + video.IsMiningCompleted);
                 if (!video.IsMiningCompleted)
                 {
                    
                     double  dt =(double) (video.lastUpdateTime.Subtract(video.CreateDateTime)).TotalMinutes;
-                    print("dt mins = "+dt);
+                    //print("dt mins = "+dt);
                     
-                    double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeDays*60.0f)), 1.0f);
-                    print("Complete percentage "+ completePercentage);
+                    double completePercentage =Mathf.Min(((float)dt / (video.lifeTimeHours*60.0f)), 1.0f);
+                    //print("Complete percentage "+ completePercentage);
 
                     ulong previousViews = video.views;
                     video.views=(ulong)(video.maxViews*completePercentage);

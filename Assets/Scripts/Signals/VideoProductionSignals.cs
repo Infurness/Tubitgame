@@ -23,6 +23,7 @@ public class PublishVideoSignal
 {
     public string videoName;
     public ThemeType[] videoThemes;
+    public VideoQuality videoSelectedQuality;
 }
 public class EndPublishVideoSignal
 {
@@ -46,11 +47,18 @@ public class GetMoneyFromVideoSignal
 {
     public string videoName;
 }
-public class UpdateSoftCurrency
+public class UpdateSoftCurrencySignal
 {
 
 }
+public class UpdateHardCurrencySignal
+{
 
+}
+public class UpdateExperienceSignal
+{
+
+}
 public class OpenVideoManagerSignal
 {
 }
@@ -109,6 +117,7 @@ public class OpenLeaderboardsSignal
 public class LevelUpSignal
 {
     public int level;
+    public RewardsData reward;
 }
 
 public class AddSubsForExperienceSignal
@@ -122,4 +131,9 @@ public class AddViewsForExperienceSignal
 public class AddSoftCurrencyForExperienceSignal
 {
     public ulong softCurrency;
+}
+
+public class OpenLevelUpPanelSignal
+{
+
 }
