@@ -34,6 +34,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
 
     [SerializeField] private Button confirmButton;
 
+    private Camera mainCam;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,13 +44,14 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         signalBus.Subscribe<CancelVideoRecordingSignal> (InitialState);
 
         confirmButton.onClick.AddListener (ConfirmThemes);
-
+        mainCam = Camera.main;
         SetUpThemeButtons ();
         InitialState ();
     }
 
     void InitialState ()
     {
+
         dragablesBeingUsedForSlots.Clear ();
         foreach (UsedSlotInfo slotInfo in usedSlotsInfo.Values)
             slotInfo.button.GetComponent<Button> ().interactable = true;
@@ -106,7 +109,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         int slotIndex = 0;
         foreach (GameObject slot in themeSlots)
         {
-            if (RectTransformUtility.RectangleContainsScreenPoint (slot.GetComponent<RectTransform> (), Input.mousePosition))
+            if (RectTransformUtility.RectangleContainsScreenPoint (slot.GetComponent<RectTransform> (), mainCam.ScreenToWorldPoint (Input.mousePosition)))
             {
                 break;
             }
@@ -128,7 +131,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         draggableThemeObjects[draggableBeingUsed].GetComponent<Image> ().enabled = false;
         foreach (GameObject slot in themeSlots)
         {
-            if (RectTransformUtility.RectangleContainsScreenPoint (slot.GetComponent<RectTransform> (), Input.mousePosition))
+            if (RectTransformUtility.RectangleContainsScreenPoint (slot.GetComponent<RectTransform> (), mainCam.ScreenToWorldPoint(Input.mousePosition)))
             {
                 StartCoroutine( MoveObjectTo (draggableThemeObjects[draggableBeingUsed], slot.transform.position));
                 if (dragablesBeingUsedForSlots.ContainsValue (slotIndex)) //slotBeingUse
@@ -177,11 +180,13 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
     }
         
     IEnumerator DragTheme ()
-    { 
-        Vector3 offset = Input.mousePosition - draggableThemeObjects[draggableBeingUsed].transform.position;
+    {
+        Vector3 offset = mainCam.ScreenToWorldPoint (Input.mousePosition) - draggableThemeObjects[draggableBeingUsed].transform.position;
         while (draggingTheme)
         {
-            draggableThemeObjects[draggableBeingUsed].transform.position = Input.mousePosition - offset;
+            Vector3 themeNewPos = mainCam.ScreenToWorldPoint (Input.mousePosition) - offset;
+            themeNewPos.z = 0;
+            draggableThemeObjects[draggableBeingUsed].transform.position = themeNewPos;
             draggableThemeObjects[draggableBeingUsed].GetComponent<Image> ().enabled = true;
             if (!Input.anyKey)//Not being hold anymore
             {
