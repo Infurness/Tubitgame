@@ -17,8 +17,20 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
-        Container.DeclareSignal<UpdateSoftCurrency> ();
         Container.DeclareSignal<RoomZoomStateChangedSignal>();
+        Container.DeclareSignal<UpdateSoftCurrencySignal> ();
+        Container.DeclareSignal<UpdateHardCurrencySignal> ();
+        Container.DeclareSignal<UpdateExperienceSignal> ();
+
+        Container.DeclareSignal<OnCharacterItemEquippedSignal>();
+
+        Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
+        Container.DeclareSignal<TestRoomThemeItemSignal>();
+        Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
+        Container.DeclareSignal<SaveRoomLayoutSignal>();
+        Container.DeclareSignal<DiscardRoomLayoutSignal>();
+
+        Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
         Container.DeclareSignal<RecieveTop10Leaderboard> ();
@@ -39,6 +51,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddViewsForExperienceSignal> ();
         Container.DeclareSignal<LevelUpSignal> ();
         Container.DeclareSignal<UpdateRankSignal> ();
+        Container.DeclareSignal<OpenLevelUpPanelSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
@@ -51,5 +64,9 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
+
+        Container.Bind<ExperienceManager> ().FromComponentInHierarchy ().AsSingle ();
+
+        Container.Bind<CheatsManager> ().FromComponentInHierarchy ().AsSingle ();
     }
 }

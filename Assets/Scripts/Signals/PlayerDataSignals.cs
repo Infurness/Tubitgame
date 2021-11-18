@@ -13,5 +13,6 @@ public class ChangePlayerSubsSignal
 public class UpdateRankSignal
 {
     public PartnershipTiers newTier;
-}
 
+    public RewardsData rewardsData;
+}

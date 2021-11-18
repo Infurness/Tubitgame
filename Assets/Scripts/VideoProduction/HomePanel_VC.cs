@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Zenject;
 
 public class HomePanel_VC : MonoBehaviour
 {
     [Inject] private SignalBus _signalBus;
     [Inject] private YouTubeVideoManager youTubeVideoManager;
+    [Inject] private EnergyManager energyManager;
 
     //[SerializeField] private Button publishButton;
    // [SerializeField] private ScrollRect viewsScroll;
     [SerializeField] private Button playerIconButton;
+
+    [SerializeField] private Button restButton;
 
     ThemeType[] selectedThemeTypes; //Dummy unused code
     // Start is called before the first frame update
@@ -24,6 +28,7 @@ public class HomePanel_VC : MonoBehaviour
        // closeSettingsButton.onClick.AddListener (OpenSettingsPanel );
    //     viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
+        restButton.onClick.AddListener (RestButtonBehaviour);
 
         InitialScreenState ();
     }
@@ -69,5 +74,17 @@ public class HomePanel_VC : MonoBehaviour
     void OpenSettingsPanel ()
     {
         _signalBus.Fire<OpenSettingPanelSignal> ();
+    }
+
+    void RestButtonBehaviour ()
+    {
+        bool isResting = energyManager.GetPlayerIsResting ();
+
+        if (isResting)
+            restButton.GetComponentInChildren<TMP_Text> ().text = "Rest";
+        else
+            restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";
+
+        energyManager.SetPlayerIsResting (!isResting);
     }
 }

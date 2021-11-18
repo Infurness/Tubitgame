@@ -9,20 +9,18 @@ public class ExperienceManager : MonoBehaviour
     [Inject] private SignalBus signalBus;
 
     private PlayerDataManager playerDataManager;
+
+    [SerializeField] private ulong[] xpForEachLevel;
+    [SerializeField] private RewardsData[] rewardsForEachLevel;
     // Start is called before the first frame update
     void Start()
     {
         playerDataManager = PlayerDataManager.Instance;
         signalBus.Subscribe<AddSubsForExperienceSignal> (AddSubs);
         signalBus.Subscribe<AddViewsForExperienceSignal> (AddViews);
-        signalBus.Subscribe<AddSoftCurrencyForExperienceSignal> (AddSoftCurrency);
+        signalBus.Subscribe<AddSoftCurrencyForExperienceSignal> (AddSoftCurrency);       
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void AddExperiencePoints (ulong experience)
     {
         //Set new experience
@@ -30,28 +28,25 @@ public class ExperienceManager : MonoBehaviour
         playerDataManager.AddExperiencePoints (experience);
         //Check level up
         int currentLevel = GetPlayerLevel ();
-        if (previousLevel < currentLevel)
+        if (currentLevel<xpForEachLevel.Length && previousLevel < currentLevel)
         {
-            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel });
+            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward=rewardsForEachLevel[currentLevel-1] });
         }
+        signalBus.Fire<UpdateExperienceSignal> ();
+    }
+
+    public ulong GetPlayerXp ()
+    {
+        return playerDataManager.GetExperiencePoints ();
     }
     public int GetPlayerLevel ()
     {
-        ulong[] xpLevels =  {
-                            0,
-                            10,
-                            50,
-                            250,
-                            1250,
-                            6000,
-                            30510,
-                            152550,
-                            762750,
-                            3813000 };
+        if (playerDataManager == null)
+            playerDataManager = PlayerDataManager.Instance;
         int level = 0;
-        foreach (ulong levelXp in xpLevels)
+        foreach (ulong levelXp in xpForEachLevel)
         {
-            if (playerDataManager.GetExperiencePoints () >= levelXp)
+            if (playerDataManager.GetExperiencePoints () > levelXp)
             {
                 level++;
             }
@@ -91,5 +86,24 @@ public class ExperienceManager : MonoBehaviour
 
         playerDataManager.SetSoftCurrencyThreshold ((int)remainder);
         AddExperiencePoints ((ulong)experiencePoints);
+    }
+
+    public ulong GetXpThreshold(int level)
+    {
+        if (level < xpForEachLevel.Length)
+            return xpForEachLevel[level];
+        else
+            return xpForEachLevel[xpForEachLevel.Length-1];
+    }
+
+    public RewardsData GetRewardData (int level)
+    {
+       return rewardsForEachLevel[level];
+    }
+
+    public void CheatResetXp ()
+    {
+        playerDataManager.CheatResetXp ();
+        signalBus.Fire<UpdateExperienceSignal> ();
     }
 }

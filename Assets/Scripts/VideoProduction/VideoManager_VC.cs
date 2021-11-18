@@ -10,7 +10,6 @@ using Zenject;
 enum VideoManagerPanels {MakeAVideo, ManageVideos }
 public class VideoManager_VC : MonoBehaviour
 {
-
     [Inject] private SignalBus _signalBus;
     [Inject] private YouTubeVideoManager _youTubeVideoManager;
     [Inject] private ThemesManager _themesManager;
@@ -62,6 +61,10 @@ public class VideoManager_VC : MonoBehaviour
 
     [SerializeField] private TMP_Text[] graphHourTexts;
 
+    private int videoCreationEnergyCost;
+    [SerializeField] private GameObject energyCostPanel;
+    [SerializeField] private TMP_Text energyCostText;
+
     // Start is called before the first frame update
     void Start ()
     {
@@ -94,7 +97,9 @@ public class VideoManager_VC : MonoBehaviour
     {
         OpenManageVideosPanel ();
         recordVideoButton.interactable = false;
+        energyCostPanel.SetActive (false);
         skipRecodingPanelPopUp.SetActive (false);
+        SetQualityTagVisual (0);
         UpdateUsername ();
     }
     void UpdateUsername ()
@@ -114,6 +119,7 @@ public class VideoManager_VC : MonoBehaviour
         }
            
         recordVideoButton.interactable = false;
+        energyCostPanel.SetActive (false);
     }
     void UpdateGlobalSubsFromSignal (ChangePlayerSubsSignal signal)
     {
@@ -156,6 +162,7 @@ public class VideoManager_VC : MonoBehaviour
         {
             makeAVideoPanel.SetActive (true);
             _signalBus.Fire<OpenVideoCreationSignal> ();
+            ForceQualityTagSelectionSliderPosition (0);
         }
         else
         {
@@ -167,6 +174,8 @@ public class VideoManager_VC : MonoBehaviour
         if (_panel == VideoManagerPanels.ManageVideos)
         {
             manageVideosPanel.SetActive (true);
+            if (videosShown.Count == 0)
+                UpdateVideoList ();
             _signalBus.TryUnsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             _signalBus.Subscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
         }
@@ -181,7 +190,7 @@ public class VideoManager_VC : MonoBehaviour
 
     void OnRecordButtonPressed ()
     {
-        if (_energyManager.GetEnergy () < 30 || selectedThemes.Length==0)
+        if (_energyManager.GetEnergy () <= videoCreationEnergyCost || selectedThemes.Length==0)
             return;
 
         _signalBus.Fire<StartRecordingSignal> (new StartRecordingSignal ()
@@ -190,7 +199,7 @@ public class VideoManager_VC : MonoBehaviour
             videoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes)
             //Dummy set quality selected for video here too
         });
-        _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -30 });
+        _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -videoCreationEnergyCost });
         StartRecordingVideo ();
     }
     
@@ -221,6 +230,7 @@ public class VideoManager_VC : MonoBehaviour
         vc.SetReferences (_signalBus, _youTubeVideoManager);
         vc.SetVideoInfoUp (video);
         videosShown.Add (video.name, videoInfoObject);
+        vc.UpdateVideoInfo ();
     }
 
     void UpdateVideoList ()
@@ -264,21 +274,35 @@ public class VideoManager_VC : MonoBehaviour
         selectedThemes = signal.selectedThemesSlots.Values.ToArray();
 
         if(selectedThemes.Length > 0)
+        {
             recordVideoButton.interactable = true;
+            energyCostPanel.SetActive (true);
+        } 
         else
+        {
             recordVideoButton.interactable = false;
+            energyCostPanel.SetActive (false);
+        }
+            
     }
 
     void CancelVideoRecording (CancelVideoRecordingSignal signal)
     {
         videosShown.Remove (signal.name);
     }
+    void ForceQualityTagSelectionSliderPosition (float value)
+    {
+        SetQualityTag (value);
+        qualitySelector.value = value;
+    }
     void SetQualityTag (float value)
     {
         float qualityStep = 1f / Enum.GetValues (typeof(VideoQuality)).Length;
         int qualityTagIndex = (int)(value / qualityStep);
-        selectedQuality = (VideoQuality)qualityTagIndex;
+        selectedQuality = (VideoQuality)qualityTagIndex+1;
         SetQualityTagVisual (qualityTagIndex);
+        videoCreationEnergyCost = _energyManager.GetVideoEnergyCost (selectedQuality);
+        energyCostText.text = videoCreationEnergyCost.ToString();
     }
     void SetQualityTagVisual (int index)
     {

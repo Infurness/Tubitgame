@@ -4,9 +4,20 @@ using UnityEngine;
 using Zenject;
 
 public enum PartnershipTiers {NonPartnership, Silver, Gold, Diamond, Ruby, RedDiamond };
+[System.Serializable]
+public struct RewardsData
+{
+    public int softCurrency;
+    public int hardCurrency;
+    //public List<InventoryItem> items; //Dummy: redo this when inventory is finished
+}
 public class RewardsManager : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
+
+    [SerializeField] private ulong[] subsForEachPartnershipLevel;
+    [SerializeField] private RewardsData[] rewardsForEachPartnershipLevel;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -24,22 +35,12 @@ public class RewardsManager : MonoBehaviour
         int lastRank = CheckRank (signal.previousSubs);
         int actualRank = CheckRank (signal.subs);
         if (lastRank < actualRank)
-            signalBus.Fire<UpdateRankSignal> (new UpdateRankSignal () { newTier=(PartnershipTiers)actualRank}); //Dummy this is not being called yet, the player should recieve a reward and some VC should make that appear on screen
+            signalBus.Fire<UpdateRankSignal> (new UpdateRankSignal () { newTier=(PartnershipTiers)actualRank, rewardsData= rewardsForEachPartnershipLevel[actualRank-1]}); //Dummy this is not being called yet, the player should recieve a reward and some VC should make that appear on screen
     }
     int CheckRank(ulong subs)
     {
-        ulong[] partnershipLevels = 
-                                {
-                                0,
-                                100000,
-                                1000000,
-                                10000000,
-                                50000000,
-                                100000000,
-                                };
-
         int rank = 0;
-        foreach (ulong levelXp in partnershipLevels)
+        foreach (ulong levelXp in subsForEachPartnershipLevel)
         {
             if (subs >= levelXp)
             {
