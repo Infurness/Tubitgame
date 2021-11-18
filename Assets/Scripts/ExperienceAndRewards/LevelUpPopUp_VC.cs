@@ -62,8 +62,8 @@ public class LevelUpPopUp_VC : MonoBehaviour
         levelReachedPanel.SetActive (true);
 
         int playerLevel = xpManager.GetPlayerLevel ();
-        reachedLevel.text = $"Level {playerLevel}";
-        reachedLevel2.text = $"Level {playerLevel}";
+        reachedLevel.text = $"Level {playerLevel+1}";
+        reachedLevel2.text = $"Level {playerLevel+1}";
         float fontSize = reachedLevel.fontSize;
         float lerpValue = 0;
         while (lerpValue < 1)

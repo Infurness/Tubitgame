@@ -391,6 +391,11 @@ public class PlayerDataManager : MonoBehaviour
         playerData.xpData.experiencePoints += experience;
         UpdateXpData ();
     }
+    public void CheatResetXp ()
+    {
+        playerData.xpData.experiencePoints = 0;
+        UpdateXpData ();
+    }
     public ulong GetExperiencePoints ()
     {
         return playerData.xpData.experiencePoints;

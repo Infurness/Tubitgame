@@ -176,7 +176,7 @@ public class HUD_VC : MonoBehaviour
     }
     void UpdateExperienceBar ()
     {
-        int level = xpManager.GetPlayerLevel ();
+        int level = xpManager.GetPlayerLevel ()+1;
         levelText.text = level.ToString();
         xpFillBar.fillAmount =(float)xpManager.GetPlayerXp() / (float)xpManager.GetXpThreshold (level);
     }

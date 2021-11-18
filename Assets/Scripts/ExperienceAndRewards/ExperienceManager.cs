@@ -21,14 +21,6 @@ public class ExperienceManager : MonoBehaviour
         signalBus.Subscribe<AddSoftCurrencyForExperienceSignal> (AddSoftCurrency);       
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown (KeyCode.L))
-        {
-            Add1LevelCheat ();
-        }
-    }
     public void AddExperiencePoints (ulong experience)
     {
         //Set new experience
@@ -36,25 +28,13 @@ public class ExperienceManager : MonoBehaviour
         playerDataManager.AddExperiencePoints (experience);
         //Check level up
         int currentLevel = GetPlayerLevel ();
-        if (previousLevel < currentLevel)
+        if (currentLevel<xpForEachLevel.Length && previousLevel < currentLevel)
         {
             signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward=rewardsForEachLevel[currentLevel-1] });
         }
         signalBus.Fire<UpdateExperienceSignal> ();
     }
 
-    public void Add1LevelCheat ()
-    {
-        int currentLevel = GetPlayerLevel ();
-        if (currentLevel < rewardsForEachLevel.Length-1)
-        {
-            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel + 1, reward = rewardsForEachLevel[currentLevel] });
-        }
-        else
-        {
-            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward = rewardsForEachLevel[currentLevel - 1] });
-        }
-    }
     public ulong GetPlayerXp ()
     {
         return playerDataManager.GetExperiencePoints ();
@@ -66,7 +46,7 @@ public class ExperienceManager : MonoBehaviour
         int level = 0;
         foreach (ulong levelXp in xpForEachLevel)
         {
-            if (playerDataManager.GetExperiencePoints () >= levelXp)
+            if (playerDataManager.GetExperiencePoints () > levelXp)
             {
                 level++;
             }
@@ -110,11 +90,20 @@ public class ExperienceManager : MonoBehaviour
 
     public ulong GetXpThreshold(int level)
     {
-        return xpForEachLevel[level];
+        if (level < xpForEachLevel.Length)
+            return xpForEachLevel[level];
+        else
+            return xpForEachLevel[xpForEachLevel.Length-1];
     }
 
     public RewardsData GetRewardData (int level)
     {
        return rewardsForEachLevel[level];
+    }
+
+    public void CheatResetXp ()
+    {
+        playerDataManager.CheatResetXp ();
+        signalBus.Fire<UpdateExperienceSignal> ();
     }
 }

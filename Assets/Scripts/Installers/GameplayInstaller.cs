@@ -66,5 +66,7 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
 
         Container.Bind<ExperienceManager> ().FromComponentInHierarchy ().AsSingle ();
+
+        Container.Bind<CheatsManager> ().FromComponentInHierarchy ().AsSingle ();
     }
 }
