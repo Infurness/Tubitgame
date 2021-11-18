@@ -17,7 +17,6 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private GameObject tabsButtonsTransform;
     [SerializeField] private InventoryButton inventoryButtonPrefab;
     [SerializeField] private GameObject buttonsTransform;
-    [SerializeField] private Button backButton;
     public List<InventoryButton> roomInventoryButtons;
     [SerializeField] private GameObject installPanel;
     [SerializeField] private Button installButton;
@@ -40,8 +39,8 @@ public class RoomInventory_VC : MonoBehaviour
 
     private void OnEnable()
     {
-        backButton.onClick.RemoveAllListeners();
-        backButton.onClick.AddListener((() => roomInventoryPanel.gameObject.SetActive(false)));
+       // backButton.onClick.RemoveAllListeners();
+        //backButton.onClick.AddListener((() => roomInventoryPanel.gameObject.SetActive(false)));
         
     }
 
