@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 [CustomEditor(typeof(RoomRender))]
 public class RoomRenderEditor : Editor
@@ -20,7 +22,11 @@ public class RoomRenderEditor : Editor
         {
 
             roomRender.PopulateDataSlots();
-
+            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            if (prefabStage != null)
+            {
+                EditorSceneManager.MarkSceneDirty(prefabStage.scene);
+            }
           
         }
     }

@@ -17,6 +17,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<AddEnergySignal> ();
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
+        Container.DeclareSignal<RoomZoomStateChangedSignal>();
         Container.DeclareSignal<UpdateSoftCurrencySignal> ();
         Container.DeclareSignal<UpdateHardCurrencySignal> ();
         Container.DeclareSignal<UpdateExperienceSignal> ();
@@ -52,14 +53,13 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<UpdateRankSignal> ();
         Container.DeclareSignal<OpenLevelUpPanelSignal> ();
 
-
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
         Container.Bind<YouTubeVideoManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<AlgorithmManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<ThemesManager> ().FromComponentInHierarchy ().AsSingle ();
 
-        Container.Bind<PlayerInventory>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<PlayerInventory>().FromInstance(PlayerInventory.Instance);
         
         Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();

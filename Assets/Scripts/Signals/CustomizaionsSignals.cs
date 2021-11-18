@@ -38,3 +38,18 @@ public class DiscardRoomLayoutSignal
 {
     
 }
+
+public class RoomZoomStateChangedSignal
+{
+    public bool ZoomIn = false;
+}
+
+public class AssetsLoadedSignal
+{
+    
+}
+
+public class RemoteAssetsCheckSignal
+{
+    
+}

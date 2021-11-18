@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
-  m_DefaultGroup: f0dce758580037641a1eca7c6f57ea33
+  m_DefaultGroup: ce801c6f321e75b45bd358896f731401
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
@@ -30,20 +30,17 @@ MonoBehaviour:
   m_MonoScriptBundleNaming: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 153f58b3f3a9f7a46ae230d21cf0880d
   m_RemoteCatalogLoadPath:
-    m_Id: 
+    m_Id: 7facb622f41ebd342bdd5be4a5fca799
   m_ContentStateBuildPath: 
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: a543c357f9482744fbf65c166ee7164d, type: 2}
-  - {fileID: 11400000, guid: 1969efaa17e6b9d47ac259773379fec5, type: 2}
-  - {fileID: 11400000, guid: dc592f43e9f471e47a852bac8319720b, type: 2}
-  - {fileID: 11400000, guid: d8b4c163a91875e498cabf8500d412fe, type: 2}
-  - {fileID: 11400000, guid: a090cec63bd9efd40b16bcfee97e5112, type: 2}
-  - {fileID: 11400000, guid: c80d23476d801554eb288400c28d7be5, type: 2}
-  - {fileID: 11400000, guid: db60c71c61ad43448b5860e436dd5962, type: 2}
-  - {fileID: 11400000, guid: c7ac086a573d92344a6a1aaf3c3bff21, type: 2}
+  - {fileID: 11400000, guid: 586a19d245edec44e89e5c2a3180b2e9, type: 2}
+  - {fileID: 11400000, guid: e5648d55ca26a404f99a393bc8302564, type: 2}
+  - {fileID: 11400000, guid: 1177aea2920b77c489accf6eaa80e850, type: 2}
+  - {fileID: 11400000, guid: ebfdda67aa2ec7f409e0ae98e59e3642, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -99,11 +96,10 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
-    - head
-    - face
-    - torso
-    - legs
-    - feet
+    - remote
+    - roomtheme
+    - character
+    - roomvc
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 723b68469c1b1ad4aab0fcef18b79d88, type: 2}

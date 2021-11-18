@@ -22,7 +22,7 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private GameObject installPanel;
     [SerializeField] private Button installButton;
     [SerializeField] private TMP_Text itemName, itemRareness, itemDescription, itemNewStats;
-    [SerializeField] private Image itemLogo;
+    [SerializeField] private Image itemLogo,rarenessImage;
     [SerializeField] private Button saveButton, discardButton;
     [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
     private List<Sprite> rarenessSprites;
@@ -36,23 +36,41 @@ public class RoomInventory_VC : MonoBehaviour
         roomInventoryButtons.ForEach((bt) => bt.gameObject.SetActive(true));
         roomInventoryButtons.FindAll((bt) => bt.Type != type).ForEach((bt) => bt.gameObject.SetActive(false));
 
-
     }
 
     private void OnEnable()
     {
         backButton.onClick.RemoveAllListeners();
         backButton.onClick.AddListener((() => roomInventoryPanel.gameObject.SetActive(false)));
-
+        
     }
+
+    
 
     void Awake()
     {
+        roomInventoryPanel.OnEnableAsObservable().Subscribe((unit =>
+        {
+            signalBus.Fire(new RoomZoomStateChangedSignal()
+            {
+                ZoomIn = false
+            });
+        }));
+
+        roomInventoryPanel.OnDisableAsObservable().Subscribe((unit =>
+        {
+            signalBus.Fire(new RoomZoomStateChangedSignal()
+            {
+                ZoomIn = true
+            });
+        }));
         roomInventoryButtons = new List<InventoryButton>();
         roomInventoryPanel.OnEnableAsObservable().Subscribe((s) => CreateInventoryButtons());
         saveButton.onClick.AddListener(SaveRoomLayout);
         discardButton.onClick.AddListener(DiscardRoomLayout);
         rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
+    
+
     }
 
     public void SaveRoomLayout()
@@ -96,12 +114,13 @@ public class RoomInventory_VC : MonoBehaviour
                 installPanel.gameObject.SetActive(true);
 
                 installButton.onClick.RemoveAllListeners();
+                SetSelectedPanelData(roomItem.name, roomItem.rareness.ToString(), roomItem.descriptionText,
+                    roomItem.newStatsText, roomItem.logoSprite,GetRarenessSpriteByIndex(roomItem.rareness));
                 installButton.onClick.AddListener(() =>
                 {
                     installPanel.gameObject.SetActive(false);
                     playerInventory.TestThemeEffectRoomITem(roomItem);
-                    SetSelectedPanelData(roomItem.name, roomItem.rareness.ToString(), roomItem.descriptionText,
-                        roomItem.newStatsText, roomItem.logoSprite);
+                   
 
                 });
             });
@@ -134,21 +153,22 @@ public class RoomInventory_VC : MonoBehaviour
             bt.SetButtonAction(()=>
             {
                 installPanel.gameObject.SetActive(true);
+                SetSelectedPanelData(videoQualityRoomItem.name, videoQualityRoomItem.rareness.ToString(),
+                    videoQualityRoomItem.descriptionText, videoQualityRoomItem.newStatsText,
+                    videoQualityRoomItem.logoSprite,GetRarenessSpriteByIndex(videoQualityRoomItem.rareness));
                 installButton.onClick.RemoveAllListeners();
                 installButton.onClick.AddListener(() =>
                 {
                     installPanel.gameObject.SetActive(false);
                     playerInventory.TestVideoQualityRoomItem(videoQualityRoomItem);
-                    SetSelectedPanelData(videoQualityRoomItem.name, videoQualityRoomItem.rareness.ToString(),
-                        videoQualityRoomItem.descriptionText, videoQualityRoomItem.newStatsText,
-                        videoQualityRoomItem.logoSprite);
+                    
                 });
             });
             
             roomInventoryButtons.Add(bt);
         }
         
-        PopulateInventoryButtons("floor");
+        PopulateInventoryButtons("wall");
         HighLightCurrentTab(0);
     }
 
@@ -161,24 +181,25 @@ public class RoomInventory_VC : MonoBehaviour
             if (i!=tabIndex)
             {
                 
-                bt.image.color = new Color(color.r, color.g, color.b, 0.5f);
+                bt.image.color = new Color(color.r, color.g, color.b, 0);
              
             }
             else
             {
                 bt.Select();
-                bt.image.color = new Color(color.r, color.g, color.b, 255);
+                bt.image.color = new Color(color.r, color.g, color.b, 1f);
 
             }
         }
     }
 
- void SetSelectedPanelData(string _name,string _rareness,string _description,string _newStats,Sprite _logoSprite)
+ void SetSelectedPanelData(string _name,string _rareness,string _description,string _newStats,Sprite _logoSprite,Sprite rarenessSprite)
  {
      itemName.text = _name;
      itemRareness.text = _rareness;
      itemDescription.text = _description;
      itemNewStats.text = _newStats;
      itemLogo.sprite = _logoSprite;
+     rarenessImage.sprite = rarenessSprite;
  }
 }
