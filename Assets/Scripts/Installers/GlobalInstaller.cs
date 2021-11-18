@@ -33,6 +33,7 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<AddSoftCurrencyForExperienceSignal> ();
     Container.DeclareSignal<ChangePlayerSubsSignal> ();
     Container.DeclareSignal<AssetsLoadedSignal>();
+    Container.DeclareSignal<RemoteAssetsCheckSignal>();
     //Dependencies
     Container.Bind<PlayerInventory>().FromInstance(PlayerInventory.Instance);
 

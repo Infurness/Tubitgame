@@ -56,13 +56,15 @@ public class PlayerInventory : MonoBehaviour
     void Start()
     {
       signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
+      
       playerDataManager = PlayerDataManager.Instance;
 
     }
 
      async Task LoadThemeEffectAddressedAssets()
     {
-        var themeEffectAssets= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("default", null);
+        
+        var themeEffectAssets= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("roomtheme", null);
         await themeEffectAssets.Task;
         if (themeEffectAssets.Status == AsyncOperationStatus.Succeeded)
         {

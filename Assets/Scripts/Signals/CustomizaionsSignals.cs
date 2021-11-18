@@ -48,3 +48,8 @@ public class AssetsLoadedSignal
 {
     
 }
+
+public class RemoteAssetsCheckSignal
+{
+    
+}

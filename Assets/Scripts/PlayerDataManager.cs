@@ -47,6 +47,7 @@ public class PlayerDataManager : MonoBehaviour
         {
             signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
         });
+        signalBus.Subscribe<RemoteAssetsCheckSignal>(GetPlayerInventory);
     }
 
 
@@ -71,6 +72,34 @@ public class PlayerDataManager : MonoBehaviour
                 break;
 
         }
+    }
+
+   private void GetPlayerInventory()
+    {
+          GetUserDataRequest dataRequest = new GetUserDataRequest();
+        dataRequest.Keys = new List<string>() { "Inventory"};
+        PlayFabClientAPI.GetUserData(dataRequest, (result =>
+        {
+            UserDataRecord datarecord;
+            if (result.Data.TryGetValue("Inventory",out datarecord))
+            {
+                var inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
+                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
+                {
+                    PlayerInventoryAddressedData = inventorydata
+                });
+            }
+            else
+            {
+                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
+                {
+                    PlayerInventoryAddressedData = new PlayerInventoryAddressedData()
+                });
+            }
+
+
+
+        }), (error => { print("Cant Retrieve Inventorey data"); }));
     }
 
     private void GetUserData()
@@ -124,25 +153,6 @@ public class PlayerDataManager : MonoBehaviour
             {
                 playerData.softCurrency = 0;
             }
-
-            if (result.Data.TryGetValue("Inventory",out datarecord))
-            {
-                var inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
-                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
-                {
-                    PlayerInventoryAddressedData = inventorydata
-                });
-            }
-            else
-            {
-                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
-                {
-                    PlayerInventoryAddressedData = new PlayerInventoryAddressedData()
-                });
-            }
-
-
-
         }), (error => { print("Cant Retrieve User data"); }));
     }
 
