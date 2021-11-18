@@ -19,7 +19,6 @@ public class LevelUpPopUp_VC : MonoBehaviour
     [SerializeField] private Image fillBarImage;
 
     [SerializeField] private TMP_Text reachedLevel;
-    [SerializeField] private TMP_Text reachedLevel2;
     [SerializeField] private TMP_Text oldXpLimit;
     [SerializeField] private TMP_Text newXpLimit;
 
@@ -62,16 +61,7 @@ public class LevelUpPopUp_VC : MonoBehaviour
         levelReachedPanel.SetActive (true);
 
         int playerLevel = xpManager.GetPlayerLevel ();
-        reachedLevel.text = $"Level {playerLevel+1}";
         reachedLevel2.text = $"Level {playerLevel+1}";
-        float fontSize = reachedLevel.fontSize;
-        float lerpValue = 0;
-        while (lerpValue < 1)
-        {
-            lerpValue += Time.deltaTime*2;
-            reachedLevel.fontSizeMax = Mathf.Lerp(0,fontSize,lerpValue);
-            yield return null;
-        }
 
         yield return new WaitForSeconds (0.5f);
 
