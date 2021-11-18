@@ -28,7 +28,6 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
         Container.DeclareSignal<SaveRoomLayoutSignal>();
         Container.DeclareSignal<DiscardRoomLayoutSignal>();
-        Container.DeclareSignal<UpdateSoftCurrency> ();
 
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
