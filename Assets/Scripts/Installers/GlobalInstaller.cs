@@ -22,18 +22,21 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OnPurchaseProductSignal>();
     Container.DeclareSignal<ProcessPurchaseSignal>();
     Container.DeclareSignal<ConfirmPendingPurchaseSignal>();
-    Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
-    Container.DeclareSignal<TestRoomThemeItemSignal>();
-    Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
-    Container.DeclareSignal<OnCharacterItemEquippedSignal>();
-    Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
+
     Container.DeclareSignal<SaveRoomLayoutSignal>();
     Container.DeclareSignal<DiscardRoomLayoutSignal>();
-    Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
     Container.DeclareSignal<AddSoftCurrencyForExperienceSignal> ();
     Container.DeclareSignal<ChangePlayerSubsSignal> ();
     Container.DeclareSignal<AssetsLoadedSignal>();
     Container.DeclareSignal<RemoteAssetsCheckSignal>();
+  
+    //Customizations signals 
+    Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
+    Container.DeclareSignal<TestRoomThemeItemSignal>();
+    Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
+    Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
+    Container.DeclareSignal<OnCharacterItemEquippedSignal>();
+    Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
     //Dependencies
     Container.Bind<PlayerInventory>().FromInstance(PlayerInventory.Instance);
 
