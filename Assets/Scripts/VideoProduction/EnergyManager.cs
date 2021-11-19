@@ -98,19 +98,22 @@ public class EnergyManager : MonoBehaviour
     {
         return maxEnergyByLevel[xpManager.GetPlayerLevel () - 1];
     }
+    void AddEnergy (AddEnergySignal _signal)
+    {
+        Debug.Log ("AddEnergy");
+        energyData.energy += _signal.energyAddition;
+        StartChargingEnergy ();
+    }
+
     void StartChargingEnergy ()
     {
         StopAllCoroutines ();
         StartCoroutine (UpdateEnergy ());
     }
-    void AddEnergy (AddEnergySignal _signal)
-    {
-        energyData.energy += _signal.energyAddition;
-        StartChargingEnergy ();
-    }
-
+   
     IEnumerator UpdateEnergy ()
     {
+        _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
         while (energyData.energy < maxEnergyByLevel[xpManager.GetPlayerLevel()-1])
         {
             if(!youTubeVideoManager.IsRecording()) //Dont charge energy if there is a video recording
@@ -142,9 +145,9 @@ public class EnergyManager : MonoBehaviour
     {
         return energyCostForEachQuality.Single (x => x.quality == quality).energyCost;
     }
-    public void SetPlayerIsResting (bool resting)
+    public void ChangePlayerRestingState ()
     {
-        isResting = resting;
+        isResting = !isResting;
     }
     public bool GetPlayerIsResting ()
     {

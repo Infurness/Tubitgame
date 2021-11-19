@@ -142,7 +142,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         if (_youTubeVideoManager.IsRecording ())
             OpenSkipRecordginPopUp (true);
-        else
+        else if (!_energyManager.GetPlayerIsResting())
             OpenPanel (VideoManagerPanels.MakeAVideo);
     }
     void OpenSkipRecordginPopUp (bool open)

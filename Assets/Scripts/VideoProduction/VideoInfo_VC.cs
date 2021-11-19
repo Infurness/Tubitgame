@@ -152,6 +152,8 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void PublishVideo ()
     {
+        if (youTubeVideoManager.IsPlayerResting ())
+            return;
         signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality });
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
         InitialState ();
