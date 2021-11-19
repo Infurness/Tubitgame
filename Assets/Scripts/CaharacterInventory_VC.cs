@@ -22,13 +22,13 @@ public class CaharacterInventory_VC : MonoBehaviour
     [SerializeField] private TMP_Text equippedText, selectedText;
     [SerializeField] private TMP_Text equippedStatsText, selectedStatsText;
     [SerializeField] private Image equippedLogoImage,equippedRarenessImage, selectedLogoImage,selectedRarenessImgae;
+    [SerializeField] private Button backButton;
     [SerializeField] private GameObject characterSlotsPanel,roomSlotsPanel,buttonsPanel;
     [SerializeField] private Canvas inventoryCanvas;
     [SerializeField] private GameObject characterPreview;
     [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
     [SerializeField] private GameObject infoPanel,themeEffectPanel;
     private List<Sprite> rarenessSprites;
-    [SerializeField] private TMP_Text playerName, SubsNum;
     void Start()
     {
         headBSlot.SetButtonAction(OnHeadButtonClicked);
@@ -65,10 +65,7 @@ public class CaharacterInventory_VC : MonoBehaviour
                     break;
             }
         }
-
-        playerName.text = PlayerDataManager.Instance.GetPlayerName().ToUpper();
-        SubsNum.text = PlayerDataManager.Instance.GetSubscribers().ToString();
-
+       
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -169,24 +166,24 @@ public class CaharacterInventory_VC : MonoBehaviour
 
     private void SetBackButtonBehaviour()
     {
-        // backButton.onClick.RemoveAllListeners();
-        //
-        // backButton.onClick.AddListener((() =>
-        // {
-        //     infoPanel.SetActive(true);
-        //     characterPreview.SetActive(true);
-        //     themeEffectPanel.SetActive(true);
-        //
-        //     inventoryTabView.gameObject.SetActive(false);
-        //     equipPanel.SetActive(false);
-        //     selectPanel.SetActive(false);
-        //     backButton.onClick.AddListener(() =>
-        //     {
-        //         backButton.onClick.RemoveAllListeners();
-        //
-        //         inventoryCanvas.gameObject.SetActive(false);
-        //     });
-        // }));
+        backButton.onClick.RemoveAllListeners();
+
+        backButton.onClick.AddListener((() =>
+        {
+            infoPanel.SetActive(true);
+            characterPreview.SetActive(true);
+            themeEffectPanel.SetActive(true);
+
+            inventoryTabView.gameObject.SetActive(false);
+            equipPanel.SetActive(false);
+            selectPanel.SetActive(false);
+            backButton.onClick.AddListener(() =>
+            {
+                backButton.onClick.RemoveAllListeners();
+
+                inventoryCanvas.gameObject.SetActive(false);
+            });
+        }));
     }
 
      void OnFaceButtonClicked()
