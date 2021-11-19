@@ -98,19 +98,22 @@ public class EnergyManager : MonoBehaviour
     {
         return maxEnergyByLevel[xpManager.GetPlayerLevel () - 1];
     }
+    void AddEnergy (AddEnergySignal _signal)
+    {
+        Debug.Log ("AddEnergy");
+        energyData.energy += _signal.energyAddition;
+        StartChargingEnergy ();
+    }
+
     void StartChargingEnergy ()
     {
         StopAllCoroutines ();
         StartCoroutine (UpdateEnergy ());
     }
-    void AddEnergy (AddEnergySignal _signal)
-    {
-        energyData.energy += _signal.energyAddition;
-        StartChargingEnergy ();
-    }
-
+   
     IEnumerator UpdateEnergy ()
     {
+        _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
         while (energyData.energy < maxEnergyByLevel[xpManager.GetPlayerLevel()-1])
         {
             if(!youTubeVideoManager.IsRecording()) //Dont charge energy if there is a video recording
