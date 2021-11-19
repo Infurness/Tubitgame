@@ -31,7 +31,7 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         return isRecording;
     }
-    void SetIsRecording (bool recording)
+    public void SetIsRecording (bool recording)
     {
         isRecording = recording;
     }
@@ -69,7 +69,6 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
 
-        isRecording = false;
         _signalBus.Fire<EndPublishVideoSignal> ();
     }
     public string GetVideoNameByTheme (ThemeType[] _themeTypes)
