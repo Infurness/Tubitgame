@@ -7,11 +7,11 @@ using Zenject;
 using  UnityEngine.UI;
 public class CharacterRender : MonoBehaviour
 {
-    [SerializeField] private Image headRender;
-    [SerializeField] private Image faceRender;
-    [SerializeField] private Image torsoRender;
-    [SerializeField] private Image legsRender;
-    [SerializeField] private Image feetRender;
+    [SerializeField] private SpriteRenderer headRender;
+    [SerializeField] private SpriteRenderer faceRender;
+    [SerializeField] private SpriteRenderer torsoRender;
+    [SerializeField] private SpriteRenderer legsRender;
+    [SerializeField] private SpriteRenderer feetRender;
     [Inject] private SignalBus signalBus;
     private void Start()
     {
