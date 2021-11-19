@@ -47,9 +47,11 @@ public class HUD_VC : MonoBehaviour
         _signalBus.Subscribe<UpdateHardCurrencySignal> (UpdateHardCurrency);
         _signalBus.Subscribe<UpdateExperienceSignal> (UpdateExperienceBar);
         _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
+        _signalBus.Subscribe<LevelUpSignal> (LevelUpUpdateHUD);
 
         gameClock = GameClock.Instance;
     }
+   
     // Start is called before the first frame update
     void Start()
     {     
@@ -179,5 +181,9 @@ public class HUD_VC : MonoBehaviour
         int level = xpManager.GetPlayerLevel ()+1;
         levelText.text = level.ToString();
         xpFillBar.fillAmount =(float)xpManager.GetPlayerXp() / (float)xpManager.GetXpThreshold (level);
+    }
+    void LevelUpUpdateHUD ()
+    {
+        _signalBus.Fire<AddEnergySignal> (new AddEnergySignal { energyAddition = energyManager.GetMaxEnergy ()}); ; //To refresh energy
     }
 }

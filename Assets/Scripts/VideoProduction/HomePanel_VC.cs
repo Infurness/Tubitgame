@@ -78,13 +78,13 @@ public class HomePanel_VC : MonoBehaviour
 
     void RestButtonBehaviour ()
     {
-        bool isResting = energyManager.GetPlayerIsResting ();
+        energyManager.ChangePlayerRestingState ();
 
-        if (isResting)
+        if (!energyManager.GetPlayerIsResting ())
             restButton.GetComponentInChildren<TMP_Text> ().text = "Rest";
         else
             restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";
 
-        energyManager.SetPlayerIsResting (!isResting);
+        
     }
 }

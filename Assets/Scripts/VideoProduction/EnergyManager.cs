@@ -142,9 +142,9 @@ public class EnergyManager : MonoBehaviour
     {
         return energyCostForEachQuality.Single (x => x.quality == quality).energyCost;
     }
-    public void SetPlayerIsResting (bool resting)
+    public void ChangePlayerRestingState ()
     {
-        isResting = resting;
+        isResting = !isResting;
     }
     public bool GetPlayerIsResting ()
     {

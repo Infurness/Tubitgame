@@ -11,6 +11,7 @@ public class YouTubeVideoManager : MonoBehaviour
     [Inject] private PlayerDataManager playerDataManger;
     [Inject] private AlgorithmManager algorithmManager;
     [Inject] private ThemesManager themesManager;
+    [Inject] private EnergyManager energyManager;
 
     bool isRecording;
 
@@ -105,5 +106,9 @@ public class YouTubeVideoManager : MonoBehaviour
     int GetTimeHour () //Dummy Not being used
     {
         return GameClock.Instance.Now.Hour;
+    }
+    public bool IsPlayerResting ()
+    {
+        return energyManager.GetPlayerIsResting ();
     }
 }
