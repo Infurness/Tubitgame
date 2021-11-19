@@ -131,6 +131,16 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.xpData = JsonConvert.DeserializeObject<ExperienceData> (xpDataJson);
 
             }
+            else
+            {
+                playerData.xpData = new ExperienceData
+                {
+                    experiencePoints = 0,
+                    softCurrencyThresholdCounter = 0,
+                    subscribersThresholdCounter = 0,
+                    viewsThresholdCounter = 0
+                };
+            }
 
             if (result.Data.TryGetValue("PlayerName", out datarecord))
             {
