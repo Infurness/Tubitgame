@@ -148,6 +148,7 @@ public class VideoInfo_VC : MonoBehaviour
         skipButtonPanel.SetActive (false);
         cancelButton.gameObject.SetActive (false);
         publishButton.gameObject.SetActive (true);
+        youTubeVideoManager.SetIsRecording (false);
     }
     void PublishVideo ()
     {
