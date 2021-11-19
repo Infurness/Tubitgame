@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +19,7 @@ public class LevelUpPopUp_VC : MonoBehaviour
     [SerializeField] private Image fillBarImage;
 
     [SerializeField] private TMP_Text reachedLevel;
+    [SerializeField] private TMP_Text reachedLevel2;
     [SerializeField] private TMP_Text oldXpLimit;
     [SerializeField] private TMP_Text newXpLimit;
 
@@ -38,7 +38,7 @@ public class LevelUpPopUp_VC : MonoBehaviour
     void StartPopUpOpenAnimation ()
     {
         experienceBarPanel.SetActive(true);
-        levelReachedPanel.SetActive (true);
+        levelReachedPanel.SetActive (false);
         experienceChangePanel.SetActive (false);
         rewardsPanel.SetActive (false);
         closeButtonPanel.SetActive (false);
@@ -59,20 +59,31 @@ public class LevelUpPopUp_VC : MonoBehaviour
 
         yield return new WaitForSeconds (0.5f);
         experienceBarPanel.SetActive (false);
-        levelReachedPanel.SetActive (false);
+        levelReachedPanel.SetActive (true);
 
         int playerLevel = xpManager.GetPlayerLevel ();
         reachedLevel.text = $"Level {playerLevel+1}";
+        reachedLevel2.text = $"Level {playerLevel+1}";
+        float fontSize = reachedLevel.fontSize;
+        float lerpValue = 0;
+        while (lerpValue < 1)
+        {
+            lerpValue += Time.deltaTime*2;
+            reachedLevel.fontSizeMax = Mathf.Lerp(0,fontSize,lerpValue);
+            yield return null;
+        }
 
-        experienceChangePanel.SetActive (true);
+        yield return new WaitForSeconds (0.5f);
 
-        if (playerLevel>0)
+        if(playerLevel>0)
         {
             foreach(GameObject reward in rewardsSpawned)
             {
                 Destroy (reward);
             }
             rewardsSpawned.Clear ();
+            levelReachedPanel.SetActive (false);
+            experienceChangePanel.SetActive (true);
             rewardsPanel.SetActive (true);
 
             oldXpLimit.text = $"{xpManager.GetXpThreshold (playerLevel - 1)}";
@@ -83,17 +94,15 @@ public class LevelUpPopUp_VC : MonoBehaviour
             if (rewards.softCurrency > 0)
             {
                 GameObject softReward = Instantiate (rewardPrefab, rewardsHolder.transform);
-                Image[] allImages = softReward.GetComponentsInChildren<Image> ();
-                allImages.Where (k => k.gameObject.name == "Icon").FirstOrDefault ().sprite = softCurrencyImage;
-                softReward.GetComponentInChildren<TMP_Text> ().text = $"x{rewards.softCurrency}";
+                softReward.GetComponentInChildren<Image> ().sprite = softCurrencyImage;
+                softReward.GetComponentInChildren<TMP_Text> ().text = $"{rewards.softCurrency}";
                 rewardsSpawned.Add (softReward);
             }
             if (rewards.hardCurrency > 0)
             {
                 GameObject softReward = Instantiate (rewardPrefab, rewardsHolder.transform);
-                Image[] allImages = softReward.GetComponentsInChildren<Image> ();
-                allImages.Where (k => k.gameObject.name == "Icon").FirstOrDefault ().sprite = hardCurrencyImage;
-                softReward.GetComponentInChildren<TMP_Text> ().text = $"x{rewards.hardCurrency}";
+                softReward.GetComponentInChildren<Image> ().sprite = hardCurrencyImage;
+                softReward.GetComponentInChildren<TMP_Text> ().text = $"{rewards.hardCurrency}";
                 rewardsSpawned.Add (softReward);
             }
             //Dummy still need to instantiate the items earned by the reward
