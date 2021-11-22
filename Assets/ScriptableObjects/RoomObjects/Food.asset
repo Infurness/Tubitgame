@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Food
   m_EditorClassIdentifier: 
   logoSprite: {fileID: -5304080849581729374, guid: ce0a398630a76044fa757441f3e6f3ec, type: 3}
-  affectedTheme: []
+  affectedTheme:
+  - ThemeType: 7
+    themePopularityFactor: 0.015
   rareness: 1
   descriptionText: 
   newStatsText: 

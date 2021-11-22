@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Customizations;
 using TMPro;
 using UniRx.Triggers;
@@ -12,6 +13,7 @@ using Zenject;
 public class CaharacterInventory_VC : MonoBehaviour
 {
     [Inject] private PlayerInventory m_PlayerInventory;
+    [Inject] private SignalBus signalBus;
     [SerializeField] private CharacterCustomizationsSlot  headBSlot, faceSlot, torsoSlot, legsSlot, feetSlot;
     [SerializeField] private InventoryButton inventoryButtonPrefab;
     [SerializeField] private TabView_VC inventoryTabView;
@@ -27,8 +29,10 @@ public class CaharacterInventory_VC : MonoBehaviour
     [SerializeField] private GameObject characterPreview;
     [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
     [SerializeField] private GameObject infoPanel,themeEffectPanel;
-    private List<Sprite> rarenessSprites;
     [SerializeField] private TMP_Text playerName, SubsNum;
+    [SerializeField] private TMP_Text equippedItemsEffect;
+    private List<Sprite> rarenessSprites;
+
     void Start()
     {
         headBSlot.SetButtonAction(OnHeadButtonClicked);
@@ -38,10 +42,14 @@ public class CaharacterInventory_VC : MonoBehaviour
         feetSlot.SetButtonAction(OnFeetButtonClicked);
         inventoryButtons = new List<InventoryButton>();
         rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
+        signalBus.Subscribe<OnCharacterItemEquippedSignal>(UpdateItemsEffectText );
+        
+   ;
     }
 
     private void OnEnable()
     {
+
         foreach (var characterItem in m_PlayerInventory.EquippedCharacterItems)
         {
          
@@ -68,6 +76,8 @@ public class CaharacterInventory_VC : MonoBehaviour
 
         playerName.text = PlayerDataManager.Instance.GetPlayerName().ToUpper();
         SubsNum.text = PlayerDataManager.Instance.GetSubscribers().ToString();
+        UpdateItemsEffectText();
+
 
     }
 
@@ -75,7 +85,31 @@ public class CaharacterInventory_VC : MonoBehaviour
     {
         return rarenessSprites[(int) rareness];
     }
-   
+
+    void UpdateItemsEffectText()
+    {
+        var themesNames = Enum.GetNames(typeof(ThemeType));
+        var themesBounses= themesNames.ToDictionary(s=>s,k=>0f);
+        
+        var equippedItems = m_PlayerInventory.EquippedCharacterItems;
+        foreach (var equippedItem in equippedItems)
+        {
+            foreach (var themeEffect in equippedItem.affectedTheme)
+            {
+                themesBounses[themeEffect.ThemeType.ToString()] += themeEffect.themePopularityFactor;
+            }            
+        }
+
+        equippedItemsEffect.text = null;
+        foreach (var themeBouns in themesBounses)
+        {
+            if (themeBouns.Value==0)
+            {
+                continue;
+            }
+            equippedItemsEffect.text += themeBouns.Key + "  : " + themeBouns.Value * 100 + "%" + "\n";
+        }
+    }
 
     private void SetEquippedPanelData(string description,string newStats,Sprite logoSprite,string itemName,string rarenessText,Sprite rarenessSprite)
     {

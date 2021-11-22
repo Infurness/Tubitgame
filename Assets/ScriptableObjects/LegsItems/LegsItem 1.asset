@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: LegsItem 1
   m_EditorClassIdentifier: 
   logoSprite: {fileID: 0}
-  affectedTheme: 00000000
-  themePopularityFactor: 0.1
+  affectedTheme:
+  - ThemeType: 10
+    themePopularityFactor: 0.2
+  - ThemeType: 11
+    themePopularityFactor: 0.3
   rareness: 1
+  descriptionText: 
+  newStatsText: 
   LegsType: 0
   legSprite: {fileID: 0}

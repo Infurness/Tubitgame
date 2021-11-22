@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Customizations;
 using TMPro;
 using UnityEngine;
@@ -24,7 +25,17 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private Image itemLogo,rarenessImage;
     [SerializeField] private Button saveButton, discardButton;
     [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
+    [SerializeField] private TMP_Text equippedThemeItemsEffect;
+    [SerializeField] private TMP_Text equippedVideoQualityItemsEffect;
     private List<Sprite> rarenessSprites;
+
+    private void Start()
+    {
+        UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
+        UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
+      
+    }
+
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
     {
         return rarenessSprites[(int) rareness];
@@ -44,7 +55,43 @@ public class RoomInventory_VC : MonoBehaviour
         
     }
 
-    
+    void UpdateThemeEffectItemsText(List<ThemeCustomizationItem> themeCustomizationItems)
+    {
+        var themesNames = Enum.GetNames(typeof(ThemeType));
+        themesNames.ToList().ForEach((s)=>print(s));   
+        var themesBounses= themesNames.ToDictionary(s=>s,k=>0f);
+        
+       
+        foreach (var equippedItem in themeCustomizationItems)
+        {
+            foreach (var themeEffect in equippedItem.affectedTheme)
+            {
+                print("Theme name = " +themeEffect.ThemeType.ToString());
+                themesBounses[themeEffect.ThemeType.ToString()] += themeEffect.themePopularityFactor;
+            }            
+        }
+
+        equippedThemeItemsEffect.text = null;
+        foreach (var themeBouns in themesBounses)
+        {
+            if (themeBouns.Value==0)
+            {
+                continue;
+            }
+            equippedThemeItemsEffect.text += themeBouns.Key + "  : " + themeBouns.Value * 100 + "%" + "\n";
+        }
+    }
+
+    void UpdateVideoQualityItemsText(List<VideoQualityCustomizationItem> videoQualityCustomizationItems)
+    {
+        float sum = 0;
+        foreach (var vCItem in videoQualityCustomizationItems)
+        {
+            sum += vCItem.videoQualityBonus;
+        }
+
+        equippedVideoQualityItemsEffect.text ="Video Quality +% "+sum*100;
+    }
 
     void Awake()
     {
@@ -72,9 +119,12 @@ public class RoomInventory_VC : MonoBehaviour
 
     }
 
+  
     public void SaveRoomLayout()
     {
         signalBus.Fire<SaveRoomLayoutSignal>();
+        UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
+        UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
     }
 
     public void DiscardRoomLayout()
