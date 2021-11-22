@@ -30,7 +30,7 @@ public class GlobalAudioManager : MonoBehaviour
 
     public void SetMusicVolumeModifier (float value)
     {
-        effectsVolumeModifier = value;
+        musicVolumeModifier = value;
     }
     public void SetEffectsVolumeModifier (float value)
     {
