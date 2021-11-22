@@ -215,7 +215,7 @@ public class VideoManager_VC : MonoBehaviour
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         string newVideoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
-        vc.SetReferences (_signalBus, _youTubeVideoManager);
+        vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
         vc.SetVideoInfoUp (newVideoName,
                             3f,
                             selectedThemes,
@@ -227,7 +227,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
-        vc.SetReferences (_signalBus, _youTubeVideoManager);
+        vc.SetReferences (_signalBus, _youTubeVideoManager,_energyManager);
         vc.SetVideoInfoUp (video);
         videosShown.Add (video.name, videoInfoObject);
         vc.UpdateVideoInfo ();

@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ public class HUD_VC : MonoBehaviour
     GameClock gameClock;
 
     [SerializeField] private TMP_Text energyText;
+    [SerializeField] private TMP_Text energyTimeText;
+    private float energyTimeSecondsCount;
     [SerializeField] private Image energyFillBar;
     [SerializeField] private GameObject homePanel;
     [SerializeField] private GameObject playerPanel;
@@ -62,9 +65,11 @@ public class HUD_VC : MonoBehaviour
         foreach(Button button in storeButtons)
             button.onClick.AddListener (OpenStorePanel);
 
-        
+        InvokeRepeating ("UpdateEnergyTimeCount", 0, 1);
 
         InitialState ();
+        //StopAllCoroutines ();
+        //StartCoroutine (DecreaseSeconds());
     }
 
     // Update is called once per frame
@@ -167,6 +172,10 @@ public class HUD_VC : MonoBehaviour
     {
         energyText.text = $"{(int)_signal.energy}";
         energyFillBar.fillAmount = _signal.energy / energyManager.GetMaxEnergy();
+        energyTimeSecondsCount = (energyManager.GetEnergy()-energyManager.GetMaxEnergy())/ energyManager.GetEnergyGainedPerSecond ();
+        TimeSpan time = TimeSpan.FromSeconds (energyTimeSecondsCount);
+        string timeStr = time.ToString (@"hh\:mm\:ss");
+        energyTimeText.text = timeStr;
     }
     void UpdateSoftCurrency ()
     {
@@ -186,4 +195,14 @@ public class HUD_VC : MonoBehaviour
     {
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal { energyAddition = energyManager.GetMaxEnergy ()}); ; //To refresh energy
     }
+
+    ////IEnumerator DecreaseSeconds ()
+    ////{
+    ////    while (energyManager.GetEnergy () < energyManager.GetMaxEnergy ())
+    ////    {
+            
+    ////        yield return null;
+    ////    }
+    ////    energyTimeText.text = "00:00:00";
+    ////}
 }
