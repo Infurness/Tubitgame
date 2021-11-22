@@ -11,6 +11,7 @@ public class YouTubeVideoManager : MonoBehaviour
     [Inject] private PlayerDataManager playerDataManger;
     [Inject] private AlgorithmManager algorithmManager;
     [Inject] private ThemesManager themesManager;
+    [Inject] private EnergyManager energyManager;
 
     bool isRecording;
 
@@ -31,7 +32,7 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         return isRecording;
     }
-    void SetIsRecording (bool recording)
+    public void SetIsRecording (bool recording)
     {
         isRecording = recording;
     }
@@ -69,7 +70,6 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
 
-        isRecording = false;
         _signalBus.Fire<EndPublishVideoSignal> ();
     }
     public string GetVideoNameByTheme (ThemeType[] _themeTypes)
@@ -106,5 +106,9 @@ public class YouTubeVideoManager : MonoBehaviour
     int GetTimeHour () //Dummy Not being used
     {
         return GameClock.Instance.Now.Hour;
+    }
+    public bool IsPlayerResting ()
+    {
+        return energyManager.GetPlayerIsResting ();
     }
 }

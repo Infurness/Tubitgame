@@ -30,7 +30,7 @@ public class ExperienceManager : MonoBehaviour
         int currentLevel = GetPlayerLevel ();
         if (currentLevel<xpForEachLevel.Length && previousLevel < currentLevel)
         {
-            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward=rewardsForEachLevel[currentLevel-1] });
+            signalBus.Fire<LevelUpSignal> (new LevelUpSignal () { level = currentLevel, reward=rewardsForEachLevel[currentLevel] });    
         }
         signalBus.Fire<UpdateExperienceSignal> ();
     }

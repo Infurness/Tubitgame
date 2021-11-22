@@ -254,7 +254,7 @@ public class PlayerInventory : MonoBehaviour
             videoQualityItemsNames = new List<string>();
             equippedCharacterItemsNames = new List<string>();
             equippedVideoQualityItemsNames = new List<string>();
-           // RoomLayout = new RoomLayout();
+             RoomLayout = new RoomLayout();
 
         }
         

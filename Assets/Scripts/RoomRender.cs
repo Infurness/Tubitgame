@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Customizations;
+using ModestTree;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -19,13 +20,14 @@ public class RoomRender : MonoBehaviour
     [SerializeField] private List<FloorSlotData> floorSlots;
     [SerializeField] private List<ObjectSlotData> roomObjectSlots;
     [SerializeField] private List<Image> floorItems;
-    [SerializeField]  List<VideoQualityCustomizationItem> currentVQItems;
-    [SerializeField]  List<ThemeCustomizationItem> currentThemeItems;
+    [SerializeField] List<VideoQualityCustomizationItem> currentVQItems;
+    [SerializeField] List<ThemeCustomizationItem> currentThemeItems;
     [SerializeField] private RoomLayout DefaultRoomLayout;
     [SerializeField] private RoomLayout RoomLayout;
     [SerializeField] private Camera renderCamera;
     [SerializeField] private float zoomInValue, ZoomOutValue;
     [SerializeField] private Vector3 zoomInPosition, zoomOutPosition;
+
     private void Awake()
     {
         currentVQItems = new List<VideoQualityCustomizationItem>();
@@ -35,14 +37,15 @@ public class RoomRender : MonoBehaviour
             if (signal.ZoomIn)
             {
                 ZoomInRoomRender();
-            }else
+            }
+            else
             {
                 ZoomOutRoomRender();
             }
         }));
-            }
+    }
 
-     void ZoomInRoomRender()
+    void ZoomInRoomRender()
     {
         renderCamera.orthographicSize = zoomInValue;
         renderCamera.transform.localPosition = zoomInPosition;
@@ -50,7 +53,7 @@ public class RoomRender : MonoBehaviour
 
     }
 
-     void ZoomOutRoomRender()
+    void ZoomOutRoomRender()
     {
         renderCamera.orthographicSize = ZoomOutValue;
         renderCamera.transform.localPosition = zoomOutPosition;
@@ -58,59 +61,39 @@ public class RoomRender : MonoBehaviour
         print("ZOOM OUT");
 
     }
+
     void Start()
     {
         signalBus.Subscribe<TestRoomThemeItemSignal>(OnTestRoomThemeItem);
         signalBus.Subscribe<TestRoomVideoQualityITemSignal>(OnTestVideoQualityItem);
-        
-        // foreach (var wallSlot in wallSlots)
-        // {
-        //     if (wallSlot.Empty)
-        //     {
-        //         wallSlot.Image.gameObject.SetActive(false);
-        //     }
-        // }
-        // foreach (var floorSlot in floorSlots)    
-        // {
-        //     if (floorSlot.Empty)
-        //     {
-        //         floorSlot.Image.gameObject.SetActive(false);
-        //     }
-        // }
-        //
-        // foreach (var objectSlot in roomObjectSlots)
-        // {
-        //     if (objectSlot.Empty)
-        //     {
-        //         objectSlot.Image.gameObject.SetActive(false);
-        //     }
-        // }
-        signalBus.Subscribe<SaveRoomLayoutSignal>((signal =>
-        {
-            OnSaveRoomLayout();
-            
-        }));
+
+
+        signalBus.Subscribe<SaveRoomLayoutSignal>((signal => { OnSaveRoomLayout(); }));
         signalBus.Subscribe<DiscardRoomLayoutSignal>((signal =>
         {
             RoomLayout = new RoomLayout(PlayerInventory.GetRoomLayout());
             gameObject.SetActive(false);
             gameObject.SetActive(true);
-        } ));
+        }));
         ZoomInRoomRender();
     }
 
     private void OnEnable()
     {
-        currentVQItems=PlayerInventory.EquippedVideoQualityRoomItems;
-        currentThemeItems = PlayerInventory.EquippedThemeEffectRoomItems;
         RoomLayout = new RoomLayout(PlayerInventory.GetRoomLayout());
-        if (RoomLayout.FloorLayoutSlots.Count==0)
+        if (RoomLayout.FloorLayoutSlots.IsEmpty() && RoomLayout.WallLayoutSlots.IsEmpty())
         {
-            RoomLayout = DefaultRoomLayout;
+            currentVQItems = PlayerInventory.VideoQualityRoomItems;
+            currentThemeItems = PlayerInventory.RoomThemeEffectItems;
+            RoomLayout = new RoomLayout(DefaultRoomLayout);
             print("Using Default Layout");
         }
-
-       
+        else
+        {
+            currentVQItems = PlayerInventory.EquippedVideoQualityRoomItems;
+            currentThemeItems = PlayerInventory.EquippedThemeEffectRoomItems;
+           
+        }
         print("Room Enabled");
             ProcessCurrentVCItems();
             ProcessCurrentThemeItems();
