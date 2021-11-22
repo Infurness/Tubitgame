@@ -1478,7 +1478,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1600, y: 720, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1153739978}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15396,7 +15397,7 @@ MonoBehaviour:
   - {fileID: 2016300978}
   - {fileID: 1389806573}
   videoManagerButton: {fileID: 1769488973}
-  eventsButton: {fileID: 1165841569}
+  eventsButton: {fileID: 0}
   storeButtons:
   - {fileID: 172462061}
   - {fileID: 929602604}
@@ -15408,6 +15409,7 @@ MonoBehaviour:
   xpBarPanel: {fileID: 1234598149}
   levelText: {fileID: 1515635973}
   xpFillBar: {fileID: 1943837821}
+  pushButtonAudioClip: {fileID: 8300000, guid: 3403bb82ffe373f4f83400d60c16cc68, type: 3}
 --- !u!1 &536742447
 GameObject:
   m_ObjectHideFlags: 0
@@ -30489,6 +30491,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1149818426}
   m_CullTransparentMesh: 1
+--- !u!1 &1153739977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1153739978}
+  - component: {fileID: 1153739979}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1153739978
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153739977}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 70403867}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1153739979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153739977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c555ce95cac47764caeecd3650f02303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfAudioSourcesForPool: 5
 --- !u!1 &1157550221
 GameObject:
   m_ObjectHideFlags: 0
