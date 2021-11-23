@@ -114,6 +114,11 @@ public class OpenLeaderboardsSignal
 
 }
 
+public class OpenEnergyInventorySignal
+{
+
+}
+
 public class LevelUpSignal
 {
     public int level;
@@ -141,4 +146,10 @@ public class OpenLevelUpPanelSignal
 public class ChangeBackButtonSignal
 {
     public bool changeToHome;
+}
+
+public class UseEnergyItemSignal
+{
+    public string label;
+    public float energy;
 }

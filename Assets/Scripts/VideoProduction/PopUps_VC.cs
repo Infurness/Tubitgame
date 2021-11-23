@@ -25,6 +25,9 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private GameObject LevelUpPanel;
     [SerializeField] private Button levelUpPanelCloseButton;
 
+    [SerializeField] private GameObject energyInventoryPanel;
+    [SerializeField] private Button energyInventoryPanelCloseButton;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +46,8 @@ public class PopUps_VC : MonoBehaviour
         }
         leaderboardsPanelCloseButton.onClick.AddListener (CloseLeaderboards);
         levelUpPanelCloseButton.onClick.AddListener (CloseLevelUp);
-        
+        energyInventoryPanelCloseButton.onClick.AddListener (OpenEnergyInventroy);
+
         InitialState ();
     }
     void InitialState ()
@@ -53,6 +57,7 @@ public class PopUps_VC : MonoBehaviour
         CloseDeleteAccount ();
         CloseLeaderboards ();
         CloseLevelUp ();
+        energyInventoryPanel.SetActive (false);
     }
     void OpenThemeSelector ()
     {
@@ -113,5 +118,19 @@ public class PopUps_VC : MonoBehaviour
         LevelUpPanel.SetActive (false);
         signalBus.Fire<UpdateSoftCurrencySignal> ();
         signalBus.Fire<UpdateHardCurrencySignal> ();
+    }
+
+    void OpenEnergyInventroy ()
+    {
+        if (energyInventoryPanel.activeSelf)
+        {
+            energyInventoryPanel.SetActive (false);
+        }
+        else
+        {
+            energyInventoryPanel.SetActive (true);
+            signalBus.Fire<OpenEnergyInventorySignal> ();
+        }
+        
     }
 }
