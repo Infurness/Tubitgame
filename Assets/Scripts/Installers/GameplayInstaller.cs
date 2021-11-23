@@ -42,6 +42,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<LevelUpSignal> ();
         Container.DeclareSignal<UpdateRankSignal> ();
         Container.DeclareSignal<OpenLevelUpPanelSignal> ();
+        Container.DeclareSignal<ChangeBackButtonSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();

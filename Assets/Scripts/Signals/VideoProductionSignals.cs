@@ -137,3 +137,8 @@ public class OpenLevelUpPanelSignal
 {
 
 }
+
+public class ChangeBackButtonSignal
+{
+    public bool changeToHome;
+}

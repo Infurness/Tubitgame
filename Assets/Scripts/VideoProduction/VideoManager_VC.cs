@@ -162,6 +162,7 @@ public class VideoManager_VC : MonoBehaviour
         {
             makeAVideoPanel.SetActive (true);
             _signalBus.Fire<OpenVideoCreationSignal> ();
+            _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = false });
             ForceQualityTagSelectionSliderPosition (0);
         }
         else
@@ -178,6 +179,7 @@ public class VideoManager_VC : MonoBehaviour
                 UpdateVideoList ();
             _signalBus.TryUnsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             _signalBus.Subscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
+            _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = true });
         }
         else
         {

@@ -29,7 +29,9 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private GameObject videoManagerPanel;
     [SerializeField] private GameObject eventsPanel;
     [SerializeField] private GameObject storePanel;
-    [SerializeField] private Button[] homeButtons;
+    [SerializeField] private Button backButton;
+    [SerializeField] private GameObject backButtonIcon;
+    [SerializeField] private GameObject homeButtonIcon;
     [SerializeField] private Button videoManagerButton;
     [SerializeField] private Button eventsButton;
     [SerializeField] private Button[] storeButtons;
@@ -54,15 +56,14 @@ public class HUD_VC : MonoBehaviour
         _signalBus.Subscribe<UpdateExperienceSignal> (UpdateExperienceBar);
         _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
         _signalBus.Subscribe<LevelUpSignal> (LevelUpUpdateHUD);
+        _signalBus.Subscribe<ChangeBackButtonSignal> (ChangeBackButton);
 
         gameClock = GameClock.Instance;
     }
    
     // Start is called before the first frame update
     void Start()
-    {     
-        foreach(Button button in homeButtons)
-            button.onClick.AddListener (OpenHomePanel);
+    {
         videoManagerButton.onClick.AddListener (OpenVideoManagerPanel);
         if(eventsButton)
             eventsButton.onClick.AddListener (OpenEventsPanel);
@@ -141,6 +142,7 @@ public class HUD_VC : MonoBehaviour
             leaderboardsPanel.SetActive (false);
             xpBarPanel.SetActive (false);
             backButtonsPanel.SetActive (true);
+            _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = true });
         }
 
 
@@ -210,4 +212,22 @@ public class HUD_VC : MonoBehaviour
     ////    }
     ////    energyTimeText.text = "00:00:00";
     ////}
+    
+    void ChangeBackButton (ChangeBackButtonSignal signal)
+    {
+        backButton.onClick.RemoveAllListeners ();
+        if (signal.changeToHome)
+        {
+            backButtonIcon.SetActive (false);
+            homeButtonIcon.SetActive (true);
+            backButton.onClick.AddListener (OpenHomePanel);
+        }
+        else
+        {
+            backButtonIcon.SetActive (true);
+            homeButtonIcon.SetActive (false);
+            backButton.onClick.AddListener (OpenVideoManagerPanel);
+        }
+            
+    }
 }
