@@ -128,18 +128,23 @@ public class EnergyManager : MonoBehaviour
             energyData.energy = maxEnergyByLevel[xpManager.GetPlayerLevel () - 1];
         _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
     }
-    float GetEnergyGainedPerSecond ()
+    public float GetEnergyGainedPerSecond ()
     {
         //Algorithm = maxEnergy / baseRegenerationValue
         //Resting algoritm = maxEnergy / (baseRegenerationValue * restFactorValue)
 
+        float energyGainPerSecond = GetMaxEnergy () / SecondsToFillEnergy ();
+
+        return energyGainPerSecond;
+    }
+    float SecondsToFillEnergy ()
+    {
         float divisor = baseRegenerationValue;
         if (isResting)
             divisor *= restFactorValue;
         float secondsToFillAllTheEnergy = (GetMaxEnergy () / divisor); //Parenthesis for readability
-        float energyGainPerSecond = GetMaxEnergy () / secondsToFillAllTheEnergy;
 
-        return energyGainPerSecond;
+        return secondsToFillAllTheEnergy;
     }
     public int GetVideoEnergyCost(VideoQuality quality)
     {

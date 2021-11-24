@@ -62,7 +62,7 @@ public class LevelUpPopUp_VC : MonoBehaviour
         levelReachedPanel.SetActive (false);
 
         int playerLevel = xpManager.GetPlayerLevel ();
-        reachedLevel.text = $"Level {playerLevel+1}";
+        reachedLevel.text = $"Rank {playerLevel+1}";
 
         experienceChangePanel.SetActive (true);
 
