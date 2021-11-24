@@ -7,42 +7,60 @@ using UnityEngine;
 [System.Serializable]
 public class RoomLayout
 {
-    public List<RoomLayoutThemeSlot> WallLayoutSlots;
+    public List<RoomLayoutSerializedSlot> WallLayoutSlots;
 
 
-    public List<RoomLayoutThemeSlot> FloorLayoutSlots;
+    public List<RoomLayoutSerializedSlot> FloorLayoutSlots;
 
-    public List<RoomLayoutThemeSlot> ObjectsLayoutSlots;
+    public List<RoomLayoutSerializedSlot> ObjectsLayoutSlots;
+
+    public RoomLayoutSerializedSlot ComputerSlot;
+    public RoomLayoutSerializedSlot CameraSlot;
+    public RoomLayoutSerializedSlot MicrophoeSlot;
+    public RoomLayoutSerializedSlot GreenScreenSlot;
 
 
- public RoomLayout(RoomLayout roomLayout)
+
+    public RoomLayout(RoomLayout roomLayout)
  {
-     WallLayoutSlots = new List<RoomLayoutThemeSlot>(roomLayout.WallLayoutSlots);
-     FloorLayoutSlots = new List<RoomLayoutThemeSlot>(roomLayout.FloorLayoutSlots);
-     ObjectsLayoutSlots = new List<RoomLayoutThemeSlot>(roomLayout.ObjectsLayoutSlots);
+     WallLayoutSlots = new List<RoomLayoutSerializedSlot>(roomLayout.WallLayoutSlots);
+     FloorLayoutSlots = new List<RoomLayoutSerializedSlot>(roomLayout.FloorLayoutSlots);
+     ObjectsLayoutSlots = new List<RoomLayoutSerializedSlot>(roomLayout.ObjectsLayoutSlots);
+     ComputerSlot = roomLayout.ComputerSlot;
+     CameraSlot = roomLayout.CameraSlot;
+     MicrophoeSlot = roomLayout.MicrophoeSlot;
+     GreenScreenSlot = roomLayout.GreenScreenSlot;
+
  }
 
- public RoomLayout()
- {
-     WallLayoutSlots = new List<RoomLayoutThemeSlot>();
+    public RoomLayout()
+    {
+        WallLayoutSlots = new List<RoomLayoutSerializedSlot>();
+        FloorLayoutSlots = new List<RoomLayoutSerializedSlot>();
+        ObjectsLayoutSlots = new List<RoomLayoutSerializedSlot>();
+        ComputerSlot = new RoomLayoutSerializedSlot();
+        CameraSlot =new RoomLayoutSerializedSlot();
+        MicrophoeSlot =new RoomLayoutSerializedSlot();
+        GreenScreenSlot =new RoomLayoutSerializedSlot();
 
-
-     FloorLayoutSlots = new List<RoomLayoutThemeSlot>();
-
-     ObjectsLayoutSlots = new List<RoomLayoutThemeSlot>();
- }
+    }
 }
 [System.Serializable]
-public struct RoomLayoutThemeSlot
+public struct RoomLayoutSerializedSlot
 {
-    public RoomLayoutThemeSlot(string itemName, int slotID)
+    public RoomLayoutSerializedSlot(string itemName, int slotID,Vector3 position,Vector3 scale,int rotaionId)
     {
         ItemName = itemName;
         SlotID = slotID;
-    }
-
+        Scale = scale;
+        Position = position;
+        RotaionId = rotaionId;
+    } 
     public string ItemName;
-   public int SlotID;
+    public int SlotID; 
+    public Vector3 Position;
+    public Vector3 Scale;
+    public int RotaionId;
 
-   
+
 }

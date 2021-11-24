@@ -10,9 +10,9 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
     [Inject] private SignalBus signalBus;
     private bool pointerDown;
     [SerializeField] private Vector2 maxPos, minPos;
-   [SerializeField] private float speed=1;
+   [SerializeField] private float speed=0.5f;
    private Vector3 mospos;
-   private bool editMode=false;
+[SerializeField]   private bool editMode=false;
 
    private void Awake()
    {
@@ -44,17 +44,19 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
                 transform.localPosition = new Vector3(Mathf.Clamp(newPos.x, minPos.x, maxPos.x),
                     Mathf.Clamp(newPos.y, minPos.y, maxPos.y), newPos.z);
 
+                mospos = Input.mousePosition;
 
             }
 
-            mospos = Input.mousePosition;
         }
+
     }
 
 
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        mospos = Input.mousePosition;
         pointerDown = true;
 
     }

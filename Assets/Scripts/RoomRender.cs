@@ -19,6 +19,7 @@ public class RoomRender : MonoBehaviour
     [SerializeField] private List<WallSlotData> wallSlots;
     [SerializeField] private List<FloorSlotData> floorSlots;
     [SerializeField] private List<ObjectSlotData> roomObjectSlots;
+
     [SerializeField] private List<Image> floorItems;
     [SerializeField] List<VideoQualityCustomizationItem> currentVQItems;
     [SerializeField] List<ThemeCustomizationItem> currentThemeItems;
@@ -114,6 +115,8 @@ public class RoomRender : MonoBehaviour
             wallSlots[wallSlot.SlotID].Image.sprite =
                 ((WallOrnament) item).wallOrnamentSprite;
             wallSlots[wallSlot.SlotID].Image.gameObject.SetActive(true);
+            wallSlots[wallSlot.SlotID].Image.gameObject.transform.localPosition = wallSlot.Position;
+         //   wallSlots[wallSlot.SlotID].Image.gameObject.transform.localScale = wallSlot.Scale;
             wallSlots[wallSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
         }
 
@@ -127,6 +130,7 @@ public class RoomRender : MonoBehaviour
 
                     ((FloorOrnament) item).floorOrnamentSprite;
                 floorSlots[floorLayoutSlot.SlotID].Image.gameObject.SetActive(true);
+                floorSlots[floorLayoutSlot.SlotID].Image.gameObject.transform.localPosition = floorLayoutSlot.Position;
                floorSlots[floorLayoutSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
                 print("Floor ITem " + floorLayoutSlot.ItemName +" Found");
 
@@ -145,10 +149,42 @@ public class RoomRender : MonoBehaviour
 
             roomObjectSlots[objectLayoutSlot.SlotID].Image.sprite =
                 ((RoomObject) item).roomObjectSprite;
-            roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.SetActive(true);
             
+            roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.SetActive(true);
+            roomObjectSlots[objectLayoutSlot.SlotID].Image.transform.localPosition = objectLayoutSlot.Position;
             roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
         }
+    }
+
+    void SetRoomLayoutPositions()
+    {
+        RoomLayout.ComputerSlot.Position= computerSlot.transform.localPosition;
+        RoomLayout.CameraSlot.Position = cameraSlot.transform.localPosition;
+        RoomLayout.MicrophoeSlot.Position = microphoneSlot.transform.localPosition;
+        RoomLayout.GreenScreenSlot.Position = greenScreenSlot.transform.localPosition;
+
+        for (int i = 0; i < RoomLayout.WallLayoutSlots.Count; i++)
+        {
+            RoomLayout.WallLayoutSlots[i]=new RoomLayoutSerializedSlot( RoomLayout.WallLayoutSlots[i].ItemName, RoomLayout.WallLayoutSlots[i].SlotID,
+                wallSlots[ RoomLayout.WallLayoutSlots[i].SlotID].Image.transform.localPosition,Vector3.one, 0);
+
+        }
+      
+        for (int i = 0; i < RoomLayout.FloorLayoutSlots.Count; i++)
+        {
+            RoomLayout.FloorLayoutSlots[i]=new RoomLayoutSerializedSlot( RoomLayout.FloorLayoutSlots[i].ItemName, RoomLayout.FloorLayoutSlots[i].SlotID,
+                floorSlots[ RoomLayout.FloorLayoutSlots[i].SlotID].Image.transform.localPosition,Vector3.one, 0);
+
+        }
+        for (int i = 0; i < RoomLayout.ObjectsLayoutSlots.Count; i++)
+        {
+            RoomLayout.ObjectsLayoutSlots[i]=new RoomLayoutSerializedSlot( RoomLayout.ObjectsLayoutSlots[i].ItemName, RoomLayout.ObjectsLayoutSlots[i].SlotID,
+                roomObjectSlots[ RoomLayout.WallLayoutSlots[i].SlotID].Image.transform.localPosition,Vector3.one, 0);
+
+        }
+
+       
+
     }
 
     public void ProcessCurrentVCItems()
@@ -161,21 +197,24 @@ public class RoomRender : MonoBehaviour
                 case VideoQualityItemType.Computer:
                     computerSlot.gameObject.SetActive(true);
                     computerSlot.sprite = vqItem.itemSprite;
+                    computerSlot.transform.localPosition = RoomLayout.ComputerSlot.Position;
                     
                     break;
                 case VideoQualityItemType.Camera:
                     cameraSlot.gameObject.SetActive(true);
                     cameraSlot.sprite = vqItem.itemSprite;
-                  
+                    cameraSlot.transform.localPosition = RoomLayout.ComputerSlot.Position;
                     break;
                 case VideoQualityItemType.Microphone:
                     microphoneSlot.gameObject.SetActive(true);
                     microphoneSlot.sprite = vqItem.itemSprite;
+                    microphoneSlot.transform.localPosition = RoomLayout.MicrophoeSlot.Position;
                   
                     break;
                 case VideoQualityItemType.GreenScreen:
                     greenScreenSlot.gameObject.SetActive(true);
                     greenScreenSlot.sprite = vqItem.itemSprite;
+                    greenScreenSlot.transform.localPosition = RoomLayout.GreenScreenSlot.Position;
                 
                     break;
                 default:
@@ -260,9 +299,10 @@ public class RoomRender : MonoBehaviour
         
         slot.Image.sprite = wallOrnament.wallOrnamentSprite;
         slot.Empty = false;
-        slot.roomLayoutThemeSlot.ItemName = wallOrnament.name;
+        slot.roomLayoutSerializedSlot.ItemName = wallOrnament.name;
         slot.Image.gameObject.SetActive(true);
-        RoomLayout.WallLayoutSlots[slot.roomLayoutThemeSlot.SlotID] = new RoomLayoutThemeSlot(wallOrnament.name, slot.roomLayoutThemeSlot.SlotID);
+        var trans = slot.Image.gameObject.transform;
+        RoomLayout.WallLayoutSlots[slot.roomLayoutSerializedSlot.SlotID] = new RoomLayoutSerializedSlot(wallOrnament.name, slot.roomLayoutSerializedSlot.SlotID,transform.position,trans.lossyScale,0);
 
     }
 
@@ -277,10 +317,12 @@ public class RoomRender : MonoBehaviour
        }
        slot.Image.sprite = floorOrnament.floorOrnamentSprite;
        slot.Empty = false;
-       slot.roomLayoutThemeSlot.ItemName = floorOrnament.name;
+       slot.roomLayoutSerializedSlot.ItemName = floorOrnament.name;
        slot.Image.gameObject.SetActive(true);
-
-       RoomLayout.FloorLayoutSlots[slot.roomLayoutThemeSlot.SlotID] =new RoomLayoutThemeSlot(floorOrnament.name,slot.roomLayoutThemeSlot.SlotID);
+       var trans = slot.Image.gameObject.transform;
+       RoomLayout.FloorLayoutSlots[slot.roomLayoutSerializedSlot.SlotID] =
+           new RoomLayoutSerializedSlot(floorOrnament.name, slot.roomLayoutSerializedSlot.SlotID, trans.position,
+               trans.lossyScale,0);
 
     }
 
@@ -295,14 +337,17 @@ public class RoomRender : MonoBehaviour
         }
         slot.Image.sprite = roomObject.roomObjectSprite;
         slot.Empty = false;
-        slot.roomLayoutThemeSlot.ItemName = roomObject.name;
+        slot.roomLayoutSerializedSlot.ItemName = roomObject.name;
         slot.Image.gameObject.SetActive(true);
+        var trans = slot.Image.gameObject.transform;
 
-        RoomLayout.ObjectsLayoutSlots[slot.roomLayoutThemeSlot.SlotID] = new RoomLayoutThemeSlot(roomObject.name,slot.roomLayoutThemeSlot.SlotID);
+        RoomLayout.ObjectsLayoutSlots[slot.roomLayoutSerializedSlot.SlotID] = new RoomLayoutSerializedSlot(roomObject.name,slot.roomLayoutSerializedSlot.SlotID,trans.position,trans.lossyScale,0);
     }
 
     public  void OnSaveRoomLayout()
     {
+
+        SetRoomLayoutPositions();
        PlayerInventory.UpdateRoomData(RoomLayout,currentVQItems);
       gameObject.SetActive(false);
       gameObject.SetActive(true);
@@ -316,19 +361,57 @@ public class RoomRender : MonoBehaviour
 
         for (int i = 0; i < wallSlots.Count; i++)
         {
-            wallSlots[i].roomLayoutThemeSlot.SlotID =  i;
-            DefaultRoomLayout.WallLayoutSlots.Add(wallSlots[i].roomLayoutThemeSlot);
+            RoomLayoutSerializedSlot serializedSlot = new RoomLayoutSerializedSlot();
+            serializedSlot.ItemName = wallSlots[i].WallOrnamentType.ToString();
+            serializedSlot.SlotID =  i;
+            var imgTransform = wallSlots[i].Image.transform;
+            serializedSlot.Position = imgTransform.localPosition;
+            serializedSlot.Scale = imgTransform.lossyScale;
+            DefaultRoomLayout.WallLayoutSlots.Add(serializedSlot);
+            
         }
         for (int i = 0; i < floorSlots.Count; i++)
         {
-            floorSlots[i].roomLayoutThemeSlot.SlotID = i;
-            DefaultRoomLayout.FloorLayoutSlots.Add(floorSlots[i].roomLayoutThemeSlot);
+            RoomLayoutSerializedSlot serializedSlot = new RoomLayoutSerializedSlot();
+            serializedSlot.ItemName = floorSlots[i].FloorOrnamentType.ToString();
+            serializedSlot.SlotID =  i;
+            var imgTransform = floorSlots[i].Image.transform;
+            serializedSlot.Position = imgTransform.localPosition;
+            serializedSlot.Scale = imgTransform.lossyScale;
+            DefaultRoomLayout.FloorLayoutSlots.Add(serializedSlot);
         }
         for (int i = 0; i < roomObjectSlots.Count; i++)
         {
-            roomObjectSlots[i].roomLayoutThemeSlot.SlotID = i;
-            DefaultRoomLayout.ObjectsLayoutSlots.Add(roomObjectSlots[i].roomLayoutThemeSlot);
+            RoomLayoutSerializedSlot serializedSlot = new RoomLayoutSerializedSlot();
+            serializedSlot.ItemName = roomObjectSlots[i].RoomObjectType.ToString();
+            serializedSlot.SlotID =  i;
+            var imgTransform = roomObjectSlots[i].Image.transform;
+            serializedSlot.Position = imgTransform.localPosition;
+            serializedSlot.Scale = imgTransform.lossyScale;
+            DefaultRoomLayout.ObjectsLayoutSlots.Add(serializedSlot);
         }
+
+        RoomLayoutSerializedSlot pcSlot = new RoomLayoutSerializedSlot();
+        pcSlot.Position = computerSlot.transform.localPosition;
+        pcSlot.Scale = cameraSlot.transform.lossyScale;
+        pcSlot.RotaionId = 0;
+        DefaultRoomLayout.ComputerSlot = pcSlot;
+
+        RoomLayoutSerializedSlot camSlot = new RoomLayoutSerializedSlot();
+
+        camSlot.Position = cameraSlot.transform.localPosition;
+        camSlot.Scale = cameraSlot.transform.lossyScale;
+        camSlot.RotaionId = 0;
+        DefaultRoomLayout.CameraSlot = camSlot;
+
+        RoomLayoutSerializedSlot micSlot = new RoomLayoutSerializedSlot();
+
+        micSlot.Position = microphoneSlot.transform.localPosition;
+        micSlot.Scale = microphoneSlot.transform.lossyScale;
+        micSlot.RotaionId = 0;
+        DefaultRoomLayout.MicrophoeSlot = micSlot;
+        DefaultRoomLayout.GreenScreenSlot= new RoomLayoutSerializedSlot(" 0",0,greenScreenSlot.transform.localPosition,
+            greenScreenSlot.transform.lossyScale,0);
         
     }
 }
@@ -339,7 +422,7 @@ public class WallSlotData
     public SpriteRenderer Image;
     public WallOrnamentType WallOrnamentType;
     public bool Empty=true;
-    public RoomLayoutThemeSlot roomLayoutThemeSlot;
+    public RoomLayoutSerializedSlot roomLayoutSerializedSlot;
 
 
 }
@@ -349,7 +432,7 @@ public class FloorSlotData
     public SpriteRenderer Image;
     public FloorOrnamentType FloorOrnamentType;
     public bool Empty=true;
-    public RoomLayoutThemeSlot roomLayoutThemeSlot;
+    public RoomLayoutSerializedSlot roomLayoutSerializedSlot;
 
 
 
@@ -360,7 +443,7 @@ public class ObjectSlotData
     public SpriteRenderer Image;
     public RoomObjectType RoomObjectType;
     public bool Empty=true;
-    public RoomLayoutThemeSlot roomLayoutThemeSlot;
+    public RoomLayoutSerializedSlot roomLayoutSerializedSlot;
 
 }
 

@@ -191,7 +191,11 @@ public class PlayerDataManager : MonoBehaviour
         dataRequest.Data = new Dictionary<string, string>();
         for (int i = 0; i < keys.Length; i++)
         {
-            var dataJson = JsonConvert.SerializeObject(data[i], Formatting.Indented);
+            var dataJson = JsonConvert.SerializeObject(data[i],new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            });
             dataRequest.Data.Add(keys[i], dataJson);
         }
 
