@@ -143,6 +143,11 @@ public class OpenLevelUpPanelSignal
 
 }
 
+public class OpenDefaultMessagePopUpSignal
+{
+    public string message;
+}
+
 public class ChangeBackButtonSignal
 {
     public bool changeToHome;

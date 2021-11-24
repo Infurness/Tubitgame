@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using TMPro;
 
 public class PopUps_VC : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
 
     [SerializeField] private GameObject popUpsBlockBackgroundPanel;
+
+    [SerializeField] private GameObject defaultDisclaimerPanelPopUp;
+    [SerializeField] private TMP_Text defaultDisclaimerText;
+    [SerializeField] private Button defaultDisclaimerPanelCloseButton;
 
     [SerializeField] private GameObject themeSelectionPanel;
     [SerializeField] private Button themeSelectionPanelCloseButton;
@@ -31,6 +36,7 @@ public class PopUps_VC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        signalBus.Subscribe<OpenDefaultMessagePopUpSignal> (OpenDefaultDisclaimer);
         signalBus.Subscribe<OpenThemeSelectorPopUpSignal> (OpenThemeSelector);
         signalBus.Subscribe<ConfirmThemesSignal> (CloseThemeSelector);
         signalBus.Subscribe<OpenSettingPanelSignal> (OpenSettings);
@@ -38,6 +44,7 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Subscribe<OpenLeaderboardsSignal> (OpenLeaderboards);
         signalBus.Subscribe<LevelUpSignal> (OpenLevelUp);
 
+        defaultDisclaimerPanelCloseButton.onClick.AddListener (CloseDefaultDisclaimer);
         themeSelectionPanelCloseButton.onClick.AddListener (CloseThemeSelector);
         settingsPanelCloseButton.onClick.AddListener (CloseSettings);
         foreach(Button button in deleteAccountPanelCloseButtons)
@@ -57,7 +64,35 @@ public class PopUps_VC : MonoBehaviour
         CloseDeleteAccount ();
         CloseLeaderboards ();
         CloseLevelUp ();
+        CloseDefaultDisclaimer ();
         energyInventoryPanel.SetActive (false);
+    }
+
+    void OpenDefaultDisclaimer(OpenDefaultMessagePopUpSignal signal)
+    {
+        popUpsBlockBackgroundPanel.SetActive (true);
+        defaultDisclaimerPanelPopUp.SetActive (true);
+        StartCoroutine(OpenPanelAnimation (defaultDisclaimerPanelPopUp));
+        defaultDisclaimerText.text = signal.message;
+    }
+    IEnumerator OpenPanelAnimation (GameObject panel)
+    {
+        RectTransform rect = panel.GetComponent<RectTransform> ();
+        Vector3 panelScale = rect.localScale;
+        rect.localScale = Vector3.zero;
+        float i = 0;
+        while (i < 1)
+        {
+            rect.localScale = Vector3.Lerp (rect.localScale, panelScale, i);
+            i += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    void CloseDefaultDisclaimer()
+    {
+        popUpsBlockBackgroundPanel.SetActive (false);
+        defaultDisclaimerPanelPopUp.SetActive(false);
     }
     void OpenThemeSelector ()
     {

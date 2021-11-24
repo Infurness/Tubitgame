@@ -142,8 +142,15 @@ public class VideoManager_VC : MonoBehaviour
     {
         if (_youTubeVideoManager.IsRecording ())
             OpenSkipRecordginPopUp (true);
-        else if (!_energyManager.GetPlayerIsResting())
+        else if (!_energyManager.GetPlayerIsResting ())
+        {
             OpenPanel (VideoManagerPanels.MakeAVideo);
+        }
+        else
+        {
+            _signalBus.Fire<OpenDefaultMessagePopUpSignal> (new OpenDefaultMessagePopUpSignal { message = "Video creation is no available when resting" });
+        }
+           
     }
     void OpenSkipRecordginPopUp (bool open)
     {

@@ -8,13 +8,19 @@ using PlayFab.ClientModels;
 using Newtonsoft.Json;
 public struct EnergyInventoryData
 {
-    public ScriptableEnergyItem[] items;
+    public EnergyItemData[] items;
+}
+public struct EnergyItemData
+{
+    public string label;
+    public float energy;
 }
 public class EnergyInventoryManager : MonoBehaviour
 {
     [Inject] SignalBus signalBus;
     PlayerDataManager playerDataManager;
 
+    [SerializeField]ScriptableEnergyItem[] allEnergyItems;
     EnergyInventoryData inventoryData;
     // Start is called before the first frame update
     void Start()
@@ -22,7 +28,7 @@ public class EnergyInventoryManager : MonoBehaviour
         signalBus.Subscribe<UseEnergyItemSignal> (UseEnergyItem);
 
         playerDataManager = PlayerDataManager.Instance;
-        inventoryData = new EnergyInventoryData { items = new ScriptableEnergyItem[0] };
+        inventoryData = new EnergyInventoryData { items = new EnergyItemData[0] };
         GetItemsData ();
     }
 
@@ -46,7 +52,7 @@ public class EnergyInventoryManager : MonoBehaviour
         }), (error => { print ("Cant Retrieve Energy Inventory data"); }));
 
     }
-    public ScriptableEnergyItem[] GetEnergyItems ()
+    public EnergyItemData[] GetEnergyItems ()
     {
         return inventoryData.items;
     }
@@ -58,19 +64,20 @@ public class EnergyInventoryManager : MonoBehaviour
 
     public void AddItem(ScriptableEnergyItem item)
     {
-        List<ScriptableEnergyItem> energyitems = GetEnergyItems ().ToList ();
-        energyitems.Add (item);
+        List<EnergyItemData> energyitems = GetEnergyItems ().ToList ();
+        EnergyItemData itemToAdd = new EnergyItemData { label = item.IDLable, energy = item.energyRecover };
+        energyitems.Add (itemToAdd);
         inventoryData.items = energyitems.ToArray ();
         SaveEnergyInventoryData ();
     }
     bool RemoveItem (string label)
     {
-        List<ScriptableEnergyItem> energyitems = GetEnergyItems ().ToList ();
+        List<EnergyItemData> energyitems = GetEnergyItems ().ToList ();
         bool exists = false;
         int index = 0;
-        foreach (ScriptableEnergyItem item in energyitems)
+        foreach (EnergyItemData item in energyitems)
         {
-            if (item.IDLable == label)
+            if (item.label == label)
             {
                 exists = true;
                 break;
@@ -87,5 +94,19 @@ public class EnergyInventoryManager : MonoBehaviour
         SaveEnergyInventoryData ();
 
         return true;
+    }
+
+    public Sprite GetIcon (string label)
+    {
+        foreach(ScriptableEnergyItem item in allEnergyItems)
+        {
+            if(item.IDLable == label)
+            {
+                return item.ObjectIcon;
+            }
+        }
+        Debug.LogError ($"No item with label: {label}");
+        return null;
+
     }
 }

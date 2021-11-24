@@ -6,6 +6,6 @@ using UnityEngine;
 public class ScriptableEnergyItem : ScriptableObject
 {
     public string IDLable;
-    //public Sprite ObjectIcon;
+    public Sprite ObjectIcon;
     public float energyRecover;
 }

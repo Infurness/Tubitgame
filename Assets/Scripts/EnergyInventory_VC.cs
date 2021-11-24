@@ -28,12 +28,12 @@ public class EnergyInventory_VC : MonoBehaviour
             }
         }
         energyItemsSpawned.Clear ();
-        ScriptableEnergyItem[] items = energyInventoryManager.GetEnergyItems ();
+        EnergyItemData[] items = energyInventoryManager.GetEnergyItems ();
         Debug.Log ($"items{items.Length}");
-        foreach(ScriptableEnergyItem item in items)
+        foreach(EnergyItemData item in items)
         {
             GameObject itemSpawned = Instantiate (energyItemPrefab, itemsHolder.transform);
-            itemSpawned.GetComponent<EnergyInventoryItem_VC> ().SetUpItem (signalBus, item);
+            itemSpawned.GetComponent<EnergyInventoryItem_VC> ().SetUpItem (signalBus, energyInventoryManager, item);
             energyItemsSpawned.Add (itemSpawned);
         }
     }
