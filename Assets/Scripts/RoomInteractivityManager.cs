@@ -21,7 +21,6 @@ public class RoomInteractivityManager : MonoBehaviour
 
     public Vector3 GetItemPositionInScreen (GameObject itemOnRenderCamera)
     {
-        //Vector3 pos = renderCamera.WorldToViewportPoint (testItem.transform.position);
         Vector3 pos = roomDisplayImage.transform.position + (itemOnRenderCamera.transform.position - renderCamera.transform.position);
         pos.z = 0;
         return pos;
