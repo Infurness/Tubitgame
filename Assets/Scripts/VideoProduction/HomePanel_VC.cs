@@ -22,6 +22,7 @@ public class HomePanel_VC : MonoBehaviour
     void Start ()
     {
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
+        _signalBus.Subscribe<ChangeRestStateSignal> (RestButtonBehaviour);
        // publishButton.onClick.AddListener (OnPublishVideoPressed);
      //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);

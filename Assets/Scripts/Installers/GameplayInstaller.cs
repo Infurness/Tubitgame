@@ -46,6 +46,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<ChangeBackButtonSignal> ();
         Container.DeclareSignal<OpenEnergyInventorySignal> ();
         Container.DeclareSignal<UseEnergyItemSignal> ();
+        Container.DeclareSignal<ChangeRestStateSignal> ();
 
         //Dependencies
         Container.Bind<PlayerData> ().AsSingle();
@@ -62,6 +63,7 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<ExperienceManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<GlobalAudioManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<EnergyInventoryManager> ().FromComponentInHierarchy ().AsSingle ();
+        Container.Bind<RoomInteractivityManager> ().FromComponentInHierarchy ().AsSingle (); 
 
         Container.Bind<CheatsManager> ().FromComponentInHierarchy ().AsSingle ();
         
