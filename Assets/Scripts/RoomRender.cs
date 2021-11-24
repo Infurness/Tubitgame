@@ -24,12 +24,13 @@ public class RoomRender : MonoBehaviour
     [SerializeField] List<ThemeCustomizationItem> currentThemeItems;
     [SerializeField] private RoomLayout DefaultRoomLayout;
     [SerializeField] private RoomLayout RoomLayout;
-    [SerializeField] private Camera renderCamera;
+    private Camera renderCamera;
     [SerializeField] private float zoomInValue, ZoomOutValue;
     [SerializeField] private Vector3 zoomInPosition, zoomOutPosition;
 
     private void Awake()
     {
+        renderCamera=Camera.main;
         currentVQItems = new List<VideoQualityCustomizationItem>();
         currentThemeItems = new List<ThemeCustomizationItem>();
         signalBus.Subscribe<RoomZoomStateChangedSignal>((signal =>
@@ -48,7 +49,7 @@ public class RoomRender : MonoBehaviour
     void ZoomInRoomRender()
     {
         renderCamera.orthographicSize = zoomInValue;
-        renderCamera.transform.localPosition = zoomInPosition;
+        transform.localPosition = zoomInPosition;
         print("ZOOM IN");
 
     }
@@ -56,7 +57,7 @@ public class RoomRender : MonoBehaviour
     void ZoomOutRoomRender()
     {
         renderCamera.orthographicSize = ZoomOutValue;
-        renderCamera.transform.localPosition = zoomOutPosition;
+        transform.localPosition = zoomOutPosition;
 
         print("ZOOM OUT");
 
@@ -64,6 +65,7 @@ public class RoomRender : MonoBehaviour
 
     void Start()
     {
+        
         signalBus.Subscribe<TestRoomThemeItemSignal>(OnTestRoomThemeItem);
         signalBus.Subscribe<TestRoomVideoQualityITemSignal>(OnTestVideoQualityItem);
 
@@ -101,12 +103,18 @@ public class RoomRender : MonoBehaviour
 
     public void ProcessCurrentThemeItems()
     {
+        var colliders = GetComponentsInChildren<PolygonCollider2D>();
+        foreach (var collider in colliders)
+        {
+            Destroy(collider);
+        }
         foreach (var wallSlot in RoomLayout.WallLayoutSlots)
         {
            var item= currentThemeItems.Find((it)=>it.name==wallSlot.ItemName);
             wallSlots[wallSlot.SlotID].Image.sprite =
                 ((WallOrnament) item).wallOrnamentSprite;
             wallSlots[wallSlot.SlotID].Image.gameObject.SetActive(true);
+            wallSlots[wallSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
         }
 
         foreach (var floorLayoutSlot in RoomLayout.FloorLayoutSlots)
@@ -119,6 +127,7 @@ public class RoomRender : MonoBehaviour
 
                     ((FloorOrnament) item).floorOrnamentSprite;
                 floorSlots[floorLayoutSlot.SlotID].Image.gameObject.SetActive(true);
+               floorSlots[floorLayoutSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
                 print("Floor ITem " + floorLayoutSlot.ItemName +" Found");
 
 
@@ -137,6 +146,8 @@ public class RoomRender : MonoBehaviour
             roomObjectSlots[objectLayoutSlot.SlotID].Image.sprite =
                 ((RoomObject) item).roomObjectSprite;
             roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.SetActive(true);
+            
+            roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
         }
     }
 
