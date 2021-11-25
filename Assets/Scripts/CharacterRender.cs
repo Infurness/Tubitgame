@@ -25,7 +25,7 @@ public class CharacterRender : MonoBehaviour
         {
             case  HeadItem headItem:headRender.sprite =headItem.sprite;
                 break;
-            case  FaceItem faceItem:faceRender.sprite = faceItem.sprite;
+            case  HairItem faceItem:faceRender.sprite = faceItem.sprite;
                 break;
             case  TorsoItem torsoItem: torsoRender.sprite = torsoItem.sprite;
                 break;
