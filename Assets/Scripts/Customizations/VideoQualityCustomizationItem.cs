@@ -6,7 +6,6 @@ namespace Customizations
 
     public class VideoQualityCustomizationItem : ScriptableObject
     {
-        public Sprite logoSprite;
         public Sprite itemSprite;
         public VideoQualityItemType videoQualityItemType;
         [Range(0.1f,0.3f)]

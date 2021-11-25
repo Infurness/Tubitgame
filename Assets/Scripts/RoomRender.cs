@@ -113,7 +113,7 @@ public class RoomRender : MonoBehaviour
         {
            var item= currentThemeItems.Find((it)=>it.name==wallSlot.ItemName);
             wallSlots[wallSlot.SlotID].Image.sprite =
-                ((WallOrnament) item).wallOrnamentSprite;
+                ((WallOrnament) item).sprite;
             wallSlots[wallSlot.SlotID].Image.gameObject.SetActive(true);
             wallSlots[wallSlot.SlotID].Image.gameObject.transform.localPosition = wallSlot.Position;
          //   wallSlots[wallSlot.SlotID].Image.gameObject.transform.localScale = wallSlot.Scale;
@@ -128,7 +128,7 @@ public class RoomRender : MonoBehaviour
             {
                 floorSlots[floorLayoutSlot.SlotID].Image.sprite =
 
-                    ((FloorOrnament) item).floorOrnamentSprite;
+                    ((FloorOrnament) item).sprite;
                 floorSlots[floorLayoutSlot.SlotID].Image.gameObject.SetActive(true);
                 floorSlots[floorLayoutSlot.SlotID].Image.gameObject.transform.localPosition = floorLayoutSlot.Position;
                floorSlots[floorLayoutSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
@@ -148,7 +148,7 @@ public class RoomRender : MonoBehaviour
             var item= currentThemeItems.Find((it)=>it.name==objectLayoutSlot.ItemName);
 
             roomObjectSlots[objectLayoutSlot.SlotID].Image.sprite =
-                ((RoomObject) item).roomObjectSprite;
+                ((RoomObject) item).sprite;
             
             roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.SetActive(true);
             roomObjectSlots[objectLayoutSlot.SlotID].Image.transform.localPosition = objectLayoutSlot.Position;
@@ -297,7 +297,7 @@ public class RoomRender : MonoBehaviour
             return;
         }
         
-        slot.Image.sprite = wallOrnament.wallOrnamentSprite;
+        slot.Image.sprite = wallOrnament.sprite;
         slot.Empty = false;
         slot.roomLayoutSerializedSlot.ItemName = wallOrnament.name;
         slot.Image.gameObject.SetActive(true);
@@ -315,7 +315,7 @@ public class RoomRender : MonoBehaviour
            print("Slot Not founded");
            return;
        }
-       slot.Image.sprite = floorOrnament.floorOrnamentSprite;
+       slot.Image.sprite = floorOrnament.sprite;
        slot.Empty = false;
        slot.roomLayoutSerializedSlot.ItemName = floorOrnament.name;
        slot.Image.gameObject.SetActive(true);
@@ -335,7 +335,7 @@ public class RoomRender : MonoBehaviour
 
             return;
         }
-        slot.Image.sprite = roomObject.roomObjectSprite;
+        slot.Image.sprite = roomObject.sprite;
         slot.Empty = false;
         slot.roomLayoutSerializedSlot.ItemName = roomObject.name;
         slot.Image.gameObject.SetActive(true);

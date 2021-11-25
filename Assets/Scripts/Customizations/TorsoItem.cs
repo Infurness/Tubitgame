@@ -7,7 +7,6 @@ namespace Customizations
     {
         public TorsoItemType TorsoItemType;
 
-        public Sprite torsoSprite;
     }
 
     public enum TorsoItemType

@@ -6,7 +6,6 @@ namespace Customizations
     public class FaceItem : ThemeCustomizationItem
     {
         public FaceItemType FaceItemType;
-        public Sprite faceSprite;
         
     }
 

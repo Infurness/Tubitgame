@@ -11,7 +11,6 @@ namespace Customizations
     {
         public HeadItemType HeadItemType;
 
-        public Sprite headSprite;
     }
 
     public enum HeadItemType

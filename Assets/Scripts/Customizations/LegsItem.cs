@@ -6,7 +6,6 @@ namespace Customizations
     public class LegsItem : ThemeCustomizationItem
     {
         public LegsItemType LegsType;
-        public Sprite legSprite;
     
     }
     public enum LegsItemType

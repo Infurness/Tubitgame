@@ -157,14 +157,14 @@ public class RoomInventory_VC : MonoBehaviour
             var bt = Instantiate(inventoryButtonPrefab, buttonsTransform.transform);
             bt.Type = type;
             print("Item Name" + roomItem.name);
-            bt.SetButtonSprites(roomItem.logoSprite,GetRarenessSpriteByIndex(roomItem.rareness));
+            bt.SetButtonSprites(roomItem.sprite,GetRarenessSpriteByIndex(roomItem.rareness));
             bt.SetButtonAction(()=>
             {
                 installPanel.gameObject.SetActive(true);
 
                 installButton.onClick.RemoveAllListeners();
                 SetSelectedPanelData(roomItem.name, roomItem.rareness.ToString(), roomItem.descriptionText,
-                    roomItem.newStatsText, roomItem.logoSprite,GetRarenessSpriteByIndex(roomItem.rareness));
+                    roomItem.newStatsText, roomItem.sprite,GetRarenessSpriteByIndex(roomItem.rareness));
                 installButton.onClick.AddListener(() =>
                 {
                     installPanel.gameObject.SetActive(false);
@@ -198,13 +198,13 @@ public class RoomInventory_VC : MonoBehaviour
             }
             var bt = Instantiate(inventoryButtonPrefab, buttonsTransform.transform);
             bt.Type = type;
-            bt.SetButtonSprites(videoQualityRoomItem.logoSprite,GetRarenessSpriteByIndex(videoQualityRoomItem.rareness));
+            bt.SetButtonSprites(videoQualityRoomItem.itemSprite,GetRarenessSpriteByIndex(videoQualityRoomItem.rareness));
             bt.SetButtonAction(()=>
             {
                 installPanel.gameObject.SetActive(true);
                 SetSelectedPanelData(videoQualityRoomItem.name, videoQualityRoomItem.rareness.ToString(),
                     videoQualityRoomItem.descriptionText, videoQualityRoomItem.newStatsText,
-                    videoQualityRoomItem.logoSprite,GetRarenessSpriteByIndex(videoQualityRoomItem.rareness));
+                    videoQualityRoomItem.itemSprite,GetRarenessSpriteByIndex(videoQualityRoomItem.rareness));
                 installButton.onClick.RemoveAllListeners();
                 installButton.onClick.AddListener(() =>
                 {

@@ -23,15 +23,15 @@ public class CharacterRender : MonoBehaviour
     {
         switch (characterItemEquippedSignal.ThemeCustomizationItem)
         {
-            case  HeadItem headItem:headRender.sprite =headItem.logoSprite;
+            case  HeadItem headItem:headRender.sprite =headItem.sprite;
                 break;
-            case  FaceItem faceItem:faceRender.sprite = faceItem.logoSprite;
+            case  FaceItem faceItem:faceRender.sprite = faceItem.sprite;
                 break;
-            case  TorsoItem torsoItem: torsoRender.sprite = torsoItem.torsoSprite;
+            case  TorsoItem torsoItem: torsoRender.sprite = torsoItem.sprite;
                 break;
-            case  LegsItem legsItem:legsRender.sprite = legsItem.logoSprite;
+            case  LegsItem legsItem:legsRender.sprite = legsItem.sprite;
                 break;
-            case FeetItem feetItem: feetRender.sprite = feetItem.logoSprite;
+            case FeetItem feetItem: feetRender.sprite = feetItem.sprite;
                 break;
         }
     }

@@ -6,7 +6,6 @@ namespace Customizations
     public class FeetItem : ThemeCustomizationItem
     {
         public FeetItemType FeetItemType;
-        public Sprite feetSprite;
 
     }
     public enum FeetItemType
