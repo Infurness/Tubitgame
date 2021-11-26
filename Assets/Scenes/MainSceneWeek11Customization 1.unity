@@ -1568,6 +1568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d54fd7543f8d404f8827fd4d03b1b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  energyItemToAdd: {fileID: 0}
 --- !u!1 &70696920
 GameObject:
   m_ObjectHideFlags: 0
@@ -3359,18 +3360,6 @@ PrefabInstance:
       value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.200672
-      objectReference: {fileID: 0}
-    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.200672
-      objectReference: {fileID: 0}
-    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.200672
-      objectReference: {fileID: 0}
-    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.8208333
       objectReference: {fileID: 0}
@@ -3382,61 +3371,37 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 99.90417
       objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 164
-      objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -21
-      objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -9
-      objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435978, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+    - target: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3835313006967435980, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
       propertyPath: m_Name
       value: PLayerCharacter
-      objectReference: {fileID: 0}
-    - target: {fileID: 3835313006967435980, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265908870823800925, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
@@ -4569,6 +4534,8 @@ MonoBehaviour:
   editButton: {fileID: 509482986}
   inputField: {fileID: 693623471}
   deleteAccountButton: {fileID: 207980834}
+  musicVolumeSlider: {fileID: 0}
+  effectsVolumeSlider: {fileID: 0}
 --- !u!1 &182695390
 GameObject:
   m_ObjectHideFlags: 0
@@ -15287,6 +15254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyText: {fileID: 486541125}
+  energyTimeText: {fileID: 0}
   energyFillBar: {fileID: 1015051881}
   homePanel: {fileID: 1993492102}
   playerPanel: {fileID: 792834277}
@@ -15296,9 +15264,9 @@ MonoBehaviour:
   videoManagerPanel: {fileID: 1881887507}
   eventsPanel: {fileID: 191028577}
   storePanel: {fileID: 1027633535}
-  homeButtons:
-  - {fileID: 2016300978}
-  - {fileID: 1389806573}
+  backButton: {fileID: 0}
+  backButtonIcon: {fileID: 0}
+  homeButtonIcon: {fileID: 0}
   videoManagerButton: {fileID: 1769488973}
   eventsButton: {fileID: 1165841569}
   storeButtons:
@@ -15312,6 +15280,7 @@ MonoBehaviour:
   xpBarPanel: {fileID: 1234598149}
   levelText: {fileID: 1515635973}
   xpFillBar: {fileID: 1943837821}
+  pushButtonAudioClip: {fileID: 0}
 --- !u!1 &536742447
 GameObject:
   m_ObjectHideFlags: 0
@@ -38114,41 +38083,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1272191863148565438, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
-      propertyPath: m_SortingOrder
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 6354409022341217934, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
       propertyPath: m_Name
       value: RoomPreview
-      objectReference: {fileID: 0}
-    - target: {fileID: 6354409022341217934, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7225933359428588066, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.93
-      objectReference: {fileID: 0}
-    - target: {fileID: 7225933359428588066, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 7729350385013172239, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
-      propertyPath: m_Size.x
-      value: 3.2905645
-      objectReference: {fileID: 0}
-    - target: {fileID: 7729350385013172239, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
-      propertyPath: m_Size.y
-      value: 3.1939998
-      objectReference: {fileID: 0}
-    - target: {fileID: 7729350385013172239, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -2247931332636082085, guid: 78be52ee30ff5df479f14172875a565e, type: 3}
-    - target: {fileID: 7729350385013172239, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6800a7673d44e8f4d90399fdec035a74, type: 3}
@@ -38694,6 +38631,7 @@ MonoBehaviour:
   add100EnergyButton: {fileID: 398631870}
   levelUpButton: {fileID: 567673184}
   resetXp: {fileID: 1209919567}
+  AddEnergyItem: {fileID: 0}
 --- !u!1 &1498021263
 GameObject:
   m_ObjectHideFlags: 0
@@ -43189,6 +43127,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpsBlockBackgroundPanel: {fileID: 955312194}
+  defaultDisclaimerPanelPopUp: {fileID: 0}
+  defaultDisclaimerText: {fileID: 0}
+  defaultDisclaimerPanelCloseButton: {fileID: 0}
   themeSelectionPanel: {fileID: 1541067258}
   themeSelectionPanelCloseButton: {fileID: 2098599950}
   settingsPanel: {fileID: 879263182}
@@ -43201,6 +43142,8 @@ MonoBehaviour:
   leaderboardsPanelCloseButton: {fileID: 777533654}
   LevelUpPanel: {fileID: 1512013387}
   levelUpPanelCloseButton: {fileID: 1107113776}
+  energyInventoryPanel: {fileID: 0}
+  energyInventoryPanelCloseButton: {fileID: 0}
 --- !u!1 &1656068006
 GameObject:
   m_ObjectHideFlags: 0
