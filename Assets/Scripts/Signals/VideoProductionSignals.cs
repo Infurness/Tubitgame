@@ -152,7 +152,6 @@ public class ChangeBackButtonSignal
 {
     public bool changeToHome;
 }
-
 public class UseEnergyItemSignal
 {
     public string label;
