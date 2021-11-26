@@ -18,15 +18,16 @@ public class TabView_VC : MonoBehaviour
     }
 
   
-    public void InitTabView(string[] tabsNames,Action<string>  filterAction)
+    public void InitTabView(List<string> tabsNames,Action<string>  filterAction)
     {
+        tabsNames.Insert(0,"All");
         foreach (var tabsButton in tabsButtons)
         {
             Destroy(tabsButton);
         }
         tabsButtons.Clear();
 
-        for (int i = 0; i < tabsNames.Length; i++)
+        for (int i = 0; i < tabsNames.Count; i++)
         {
             var filterName = tabsNames[i];
             var tb= Instantiate(tabButtonPrefab, TabsButtonsPanel.transform);

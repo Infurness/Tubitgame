@@ -10,13 +10,13 @@ namespace Customizations
     public class HeadItem : ThemeCustomizationItem
     {
         public HeadItemType HeadItemType;
+        public GenderItemType GenderItemType;
+        public Sprite[] HeadVariants;
 
-        public Sprite headSprite;
     }
 
     public enum HeadItemType
     {
-        Hats,
-        Hair_Style
+      
     }
 }
