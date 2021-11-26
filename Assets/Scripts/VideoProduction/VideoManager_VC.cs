@@ -14,6 +14,7 @@ public class VideoManager_VC : MonoBehaviour
     [Inject] private YouTubeVideoManager _youTubeVideoManager;
     [Inject] private ThemesManager _themesManager;
     [Inject] private EnergyManager _energyManager;
+    [Inject] private AlgorithmManager _algorithmManager;
 
     [SerializeField] private TMP_Text playerNameText;
 
@@ -225,8 +226,8 @@ public class VideoManager_VC : MonoBehaviour
         string newVideoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
-        vc.SetVideoInfoUp (newVideoName,
-                            3f,
+        vc.SetVideoInfoUp ( newVideoName,
+                            _algorithmManager.GetVideoSecondsToProduce(qualitySelector.value,selectedThemes.Length),
                             selectedThemes,
                             selectedQuality
                             );

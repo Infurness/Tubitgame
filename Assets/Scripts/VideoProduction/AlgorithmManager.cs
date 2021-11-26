@@ -14,6 +14,8 @@ public class AlgorithmManager : MonoBehaviour
     private bool shouldUpdate=true;
     [SerializeField] private float updateTime = 15;
     [SerializeField] public int baseNum=800;
+    private float themeBonus = 0;
+    private int viewsBonus = 1;
     private void Start()
     {
         shouldUpdate = false;
@@ -27,10 +29,10 @@ public class AlgorithmManager : MonoBehaviour
         {
             themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now);
         }
-        ulong viewers = (ulong)(((ulong)baseNum + _subscribers) + (((ulong)baseNum + _subscribers) * themesPopularity * _videoQuality));
+        ulong viewers = (ulong)(((ulong)baseNum + _subscribers) + (((ulong)baseNum + _subscribers) * (themesPopularity + UseThemeBonus()) * _videoQuality));
         if(isViral)
             viewers *= (ulong)GetVirality ();
-        return viewers;
+        return viewers * (ulong)UseViewsBonus ();
     }
 
     public ulong GetVideoLikes (ulong _views, float _videoQuality)
@@ -58,6 +60,43 @@ public class AlgorithmManager : MonoBehaviour
         int seconds = (int)Math.Pow ((totalViews * videoQuality), balanceFactor);
         Debug.Log ($"Seconds to mine the video: {seconds}");
         return seconds;
+    }
+    public float GetVideoSecondsToProduce (float videoQualitySelected, int numberOfThemes)
+    {
+        int[] baseTimes = {60,110,165,190,225,290,345,400,450,590,680,720,800,900,1000,1060,1200,1400,1600,1800};
+        int selectedBaseTime = 0;
+        float qualityLoop = 0.1f;
+        foreach(int time in baseTimes)
+        {
+            if (qualityLoop >= videoQualitySelected)
+            {
+                selectedBaseTime = time;
+                break;
+            }
+            qualityLoop += 0.1f;
+        }
+
+        return selectedBaseTime * ((numberOfThemes * 0.1f) + 1);
+    }
+    public void SetThemeBonus ( float bonus)
+    {
+        themeBonus = bonus;
+    }
+    float UseThemeBonus ()
+    {
+        float returnValue = themeBonus;
+        themeBonus = 0;
+        return returnValue;
+    }
+    public void SetViewsBonus (int bonus)
+    {
+        viewsBonus = bonus;
+    }
+    int UseViewsBonus ()
+    {
+        int returnValue = viewsBonus;
+        viewsBonus = 1;
+        return returnValue;
     }
     IEnumerator UpdateTimer()
     {

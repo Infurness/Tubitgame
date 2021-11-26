@@ -1,8 +1,11 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
+using Zenject;
 
 public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 {
+    [Inject] SignalBus signalBus;
+
     [SerializeField] string _androidGameId;
     [SerializeField] string _iOsGameId;
     [SerializeField] bool _testMode = true;
@@ -26,6 +29,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
     public void OnInitializationComplete ()
     {
         Debug.Log ("Unity Ads initialization complete.");
+        signalBus.Fire<AdsInitializedSignal> ();
     }
 
     public void OnInitializationFailed (UnityAdsInitializationError error, string message)

@@ -70,8 +70,6 @@ public class HUD_VC : MonoBehaviour
         foreach(Button button in storeButtons)
             button.onClick.AddListener (OpenStorePanel);
 
-        InvokeRepeating ("UpdateEnergyTimeCount", 0, 1);
-
         InitialState ();
         //StopAllCoroutines ();
         //StartCoroutine (DecreaseSeconds());
