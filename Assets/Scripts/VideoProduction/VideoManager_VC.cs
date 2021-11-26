@@ -142,8 +142,15 @@ public class VideoManager_VC : MonoBehaviour
     {
         if (_youTubeVideoManager.IsRecording ())
             OpenSkipRecordginPopUp (true);
-        else if (!_energyManager.GetPlayerIsResting())
+        else if (!_energyManager.GetPlayerIsResting ())
+        {
             OpenPanel (VideoManagerPanels.MakeAVideo);
+        }
+        else
+        {
+            _signalBus.Fire<OpenDefaultMessagePopUpSignal> (new OpenDefaultMessagePopUpSignal { message = "Video creation is no available when resting" });
+        }
+           
     }
     void OpenSkipRecordginPopUp (bool open)
     {
@@ -162,6 +169,7 @@ public class VideoManager_VC : MonoBehaviour
         {
             makeAVideoPanel.SetActive (true);
             _signalBus.Fire<OpenVideoCreationSignal> ();
+            _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = false });
             ForceQualityTagSelectionSliderPosition (0);
         }
         else
@@ -178,6 +186,7 @@ public class VideoManager_VC : MonoBehaviour
                 UpdateVideoList ();
             _signalBus.TryUnsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             _signalBus.Subscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
+            _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = true });
         }
         else
         {
@@ -215,7 +224,7 @@ public class VideoManager_VC : MonoBehaviour
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         string newVideoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
-        vc.SetReferences (_signalBus, _youTubeVideoManager);
+        vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
         vc.SetVideoInfoUp (newVideoName,
                             3f,
                             selectedThemes,
@@ -227,7 +236,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
-        vc.SetReferences (_signalBus, _youTubeVideoManager);
+        vc.SetReferences (_signalBus, _youTubeVideoManager,_energyManager);
         vc.SetVideoInfoUp (video);
         videosShown.Add (video.name, videoInfoObject);
         vc.UpdateVideoInfo ();

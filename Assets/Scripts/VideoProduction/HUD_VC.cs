@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,9 +14,12 @@ public class HUD_VC : MonoBehaviour
     [Inject] YouTubeVideoManager youTubeVideoManager;
     [Inject] private ExperienceManager xpManager;
     [Inject] private EnergyManager energyManager;
+    [Inject] private GlobalAudioManager audioManager;
     GameClock gameClock;
 
     [SerializeField] private TMP_Text energyText;
+    [SerializeField] private TMP_Text energyTimeText;
+    private float energyTimeSecondsCount;
     [SerializeField] private Image energyFillBar;
     [SerializeField] private GameObject homePanel;
     [SerializeField] private GameObject playerPanel;
@@ -25,7 +29,9 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private GameObject videoManagerPanel;
     [SerializeField] private GameObject eventsPanel;
     [SerializeField] private GameObject storePanel;
-    [SerializeField] private Button[] homeButtons;
+    [SerializeField] private Button backButton;
+    [SerializeField] private GameObject backButtonIcon;
+    [SerializeField] private GameObject homeButtonIcon;
     [SerializeField] private Button videoManagerButton;
     [SerializeField] private Button eventsButton;
     [SerializeField] private Button[] storeButtons;
@@ -38,6 +44,8 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private Image xpFillBar;
 
+    [SerializeField] AudioClip pushButtonAudioClip;
+
     private void Awake ()
     {
         _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
@@ -48,23 +56,25 @@ public class HUD_VC : MonoBehaviour
         _signalBus.Subscribe<UpdateExperienceSignal> (UpdateExperienceBar);
         _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
         _signalBus.Subscribe<LevelUpSignal> (LevelUpUpdateHUD);
+        _signalBus.Subscribe<ChangeBackButtonSignal> (ChangeBackButton);
 
         gameClock = GameClock.Instance;
     }
    
     // Start is called before the first frame update
     void Start()
-    {     
-        foreach(Button button in homeButtons)
-            button.onClick.AddListener (OpenHomePanel);
+    {
         videoManagerButton.onClick.AddListener (OpenVideoManagerPanel);
-        eventsButton.onClick.AddListener (OpenEventsPanel);
+        if(eventsButton)
+            eventsButton.onClick.AddListener (OpenEventsPanel);
         foreach(Button button in storeButtons)
             button.onClick.AddListener (OpenStorePanel);
 
-        
+        InvokeRepeating ("UpdateEnergyTimeCount", 0, 1);
 
         InitialState ();
+        //StopAllCoroutines ();
+        //StartCoroutine (DecreaseSeconds());
     }
 
     // Update is called once per frame
@@ -115,6 +125,7 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenScreenPanel (HUDScreen _screenToOpen)
     {
+        audioManager.PlaySound (pushButtonAudioClip, AudioType.Effect);
         if (_screenToOpen == HUDScreen.Home)
         {
             homePanel.SetActive (true);
@@ -131,6 +142,7 @@ public class HUD_VC : MonoBehaviour
             leaderboardsPanel.SetActive (false);
             xpBarPanel.SetActive (false);
             backButtonsPanel.SetActive (true);
+            _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = true });
         }
 
 
@@ -167,6 +179,10 @@ public class HUD_VC : MonoBehaviour
     {
         energyText.text = $"{(int)_signal.energy}";
         energyFillBar.fillAmount = _signal.energy / energyManager.GetMaxEnergy();
+        energyTimeSecondsCount = (energyManager.GetEnergy()-energyManager.GetMaxEnergy())/ energyManager.GetEnergyGainedPerSecond ();
+        TimeSpan time = TimeSpan.FromSeconds (energyTimeSecondsCount);
+        string timeStr = time.ToString (@"hh\:mm\:ss");
+        energyTimeText.text = timeStr;
     }
     void UpdateSoftCurrency ()
     {
@@ -185,5 +201,33 @@ public class HUD_VC : MonoBehaviour
     void LevelUpUpdateHUD ()
     {
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal { energyAddition = energyManager.GetMaxEnergy ()}); ; //To refresh energy
+    }
+
+    ////IEnumerator DecreaseSeconds ()
+    ////{
+    ////    while (energyManager.GetEnergy () < energyManager.GetMaxEnergy ())
+    ////    {
+            
+    ////        yield return null;
+    ////    }
+    ////    energyTimeText.text = "00:00:00";
+    ////}
+    
+    void ChangeBackButton (ChangeBackButtonSignal signal)
+    {
+        backButton.onClick.RemoveAllListeners ();
+        if (signal.changeToHome)
+        {
+            backButtonIcon.SetActive (false);
+            homeButtonIcon.SetActive (true);
+            backButton.onClick.AddListener (OpenHomePanel);
+        }
+        else
+        {
+            backButtonIcon.SetActive (true);
+            homeButtonIcon.SetActive (false);
+            backButton.onClick.AddListener (OpenVideoManagerPanel);
+        }
+            
     }
 }

@@ -114,6 +114,11 @@ public class OpenLeaderboardsSignal
 
 }
 
+public class OpenEnergyInventorySignal
+{
+
+}
+
 public class LevelUpSignal
 {
     public int level;
@@ -134,6 +139,26 @@ public class AddSoftCurrencyForExperienceSignal
 }
 
 public class OpenLevelUpPanelSignal
+{
+
+}
+
+public class OpenDefaultMessagePopUpSignal
+{
+    public string message;
+}
+
+public class ChangeBackButtonSignal
+{
+    public bool changeToHome;
+}
+
+public class UseEnergyItemSignal
+{
+    public string label;
+    public float energy;
+}
+public class ChangeRestStateSignal
 {
 
 }

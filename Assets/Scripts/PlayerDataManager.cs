@@ -175,14 +175,8 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.hardCurrency = 0;
             }
 
-          
-
-
-
         }), (error => { print("Cant Retrieve User data"); }));
     }
-
-
 
     private void UpdateUserDatabase(string[] keys, object[] data, Action onsuccess = null, Action onFailed = null)
     {
@@ -465,9 +459,16 @@ public class PlayerDataManager : MonoBehaviour
     }
     public void UpdateEnergyData ( EnergyData energyData)
     {
-        UpdateUserDatabase (new[] { "Energy" }, new object[]
+       UpdateUserDatabase (new[] { "Energy" }, new object[]
        {
             energyData
+       });
+    }
+    public void UpdateEnergyInventoryData (EnergyInventoryData energyInventoryData)
+    {
+       UpdateUserDatabase (new[] { "EnergyItems" }, new object[]
+       {
+            energyInventoryData
        });
     }
     public void UpdatePlayerInventoryData(PlayerInventoryAddressedData playerInventoryAddressedData)

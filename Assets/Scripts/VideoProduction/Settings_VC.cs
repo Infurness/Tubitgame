@@ -8,10 +8,14 @@ using Zenject;
 public class Settings_VC : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
+    [Inject] private GlobalAudioManager audioManager;
 
     [SerializeField] private Button editButton;
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private Button deleteAccountButton;
+
+    [SerializeField] Slider musicVolumeSlider;
+    [SerializeField] Slider effectsVolumeSlider;
     // Start is called before the first frame update
     void Start ()
     {
@@ -19,6 +23,12 @@ public class Settings_VC : MonoBehaviour
         inputField.onSubmit.AddListener (OnConfirm);
         editButton.onClick.AddListener (EditName);
         deleteAccountButton.onClick.AddListener (OpenDeleteAccount);
+
+        musicVolumeSlider.onValueChanged.AddListener ((value) =>  audioManager.SetMusicVolumeModifier (value));
+        effectsVolumeSlider.onValueChanged.AddListener ((value) => audioManager.SetEffectsVolumeModifier (value));
+
+        audioManager.SetMusicVolumeModifier (musicVolumeSlider.value);
+        audioManager.SetEffectsVolumeModifier (effectsVolumeSlider.value);
 
         inputField.interactable = false;
         RefreshPlayerName ();

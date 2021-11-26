@@ -11,6 +11,7 @@ public class VideoInfo_VC : MonoBehaviour
 {
     private SignalBus signalBus;
     private YouTubeVideoManager youTubeVideoManager;
+    private EnergyManager energyManger;
 
     private Video videoRef;
     private string videoName;
@@ -27,6 +28,7 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private GameObject subscribersPanel;
     [SerializeField] private GameObject viralVisual;
     [SerializeField] private TMP_Text qualityText;
+    [SerializeField] private TMP_Text energyCostText;
 
     [SerializeField] GameObject[] themeHolders;
 
@@ -89,10 +91,11 @@ public class VideoInfo_VC : MonoBehaviour
             }
         }
     }
-    public void SetReferences (SignalBus _signalBus, YouTubeVideoManager _youTubeVideoManager)
+    public void SetReferences (SignalBus _signalBus, YouTubeVideoManager _youTubeVideoManager, EnergyManager _energyManager)
     {
         signalBus = _signalBus;
         youTubeVideoManager = _youTubeVideoManager;
+        energyManger = _energyManager;
     }
     public void SetVideoInfoUp (string _name, float recordTime, ThemeType[] videoThemes, VideoQuality quality)
     {
@@ -103,6 +106,7 @@ public class VideoInfo_VC : MonoBehaviour
         selectedQuality = quality;
         internalRecordTime = recordTime;
         qualityText.text =  string.Concat (Enum.GetName (quality.GetType (), quality).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
+        energyCostText.text =$"{energyManger.GetVideoEnergyCost (quality)}";
 
         SetThemes (themeTypes);
     }
