@@ -12,8 +12,9 @@ namespace Customizations
 
     public enum TorsoItemType
     {
-        Tshirts,
-        Jackets
+        TShirts,
+        Jackets,
+        Hoodies
     }
     
 }

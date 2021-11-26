@@ -3,9 +3,9 @@
 using System.Collections.Generic;
 using Customizations;
 
-public class OnCharacterItemEquippedSignal
+public class OnCharacterAvatarChanged
 {
-    public ThemeCustomizationItem ThemeCustomizationItem;
+    public CharacterAvatar NewAvatar;
 }
 
 public class OnPlayerInventoryFetchedSignal

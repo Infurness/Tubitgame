@@ -2,15 +2,16 @@
 
 namespace Customizations
 {
-    [CreateAssetMenu(fileName = "BodyItem", menuName = "Customizations/BodyItem", order = 0)]
+    [CreateAssetMenu(fileName = "BodyItem", menuName = "Customizations/BodyItem")]
     public class BodyItem : ThemeCustomizationItem
     {
         public GenderItemType GenderItemType;
-
+        public int BodyIndex;
     }
 
     public enum GenderItemType
     {
-        Male,Female,Unisex
+        Male,Female
     }
+    
 }

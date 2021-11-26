@@ -9,13 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95d6869323ea45dfb8f8dba246454fee, type: 3}
-  m_Name: FaceItem 1
+  m_Script: {fileID: 11500000, guid: adf118a713974afb82cae10ec6ba7de5, type: 3}
+  m_Name: BodyItem
   m_EditorClassIdentifier: 
-  logoSprite: {fileID: 21300000, guid: ae9011010916bc043aa16f427a233993, type: 3}
-  affectedTheme: []
+  sprite: {fileID: 21300000, guid: 74b41c29b87c8444da9532cbc7bd8657, type: 3}
+  affectedTheme:
+  - ThemeType: 0
+    themePopularityFactor: 0
+  - ThemeType: 0
+    themePopularityFactor: 0
   rareness: 1
   descriptionText: 
   newStatsText: 
-  FaceItemType: 0
-  faceSprite: {fileID: 21300000, guid: 55221cd852b009c479fc8cb5e4eb8782, type: 3}
+  GenderItemType: 0
+  BodyIndex: 0
