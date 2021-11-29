@@ -14,6 +14,7 @@ public class AlgorithmManager : MonoBehaviour
     private bool shouldUpdate=true;
     [SerializeField] private float updateTime = 15;
     [SerializeField] public int baseNum=800;
+    [SerializeField] Dictionary<float, int> baseTimeToBeProduced = new Dictionary<float, int>();
     private void Start()
     {
         shouldUpdate = false;
@@ -52,6 +53,10 @@ public class AlgorithmManager : MonoBehaviour
     int GetVirality ()
     {
         return Random.Range (25, 101);
+    }
+    public int GetVideoSecondsToBeProduced (float qualityValue, int numberOfThemes)
+    {
+        return (int)(baseTimeToBeProduced[qualityValue]*((numberOfThemes * 0.1)+1));
     }
     public int GetVideoLifetime (ulong totalViews, float videoQuality, float balanceFactor)
     {
