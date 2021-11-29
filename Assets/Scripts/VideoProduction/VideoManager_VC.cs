@@ -66,6 +66,8 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private GameObject energyCostPanel;
     [SerializeField] private TMP_Text energyCostText;
 
+    private List<VideoInfo_VC> unpublishedVideosVC = new List<VideoInfo_VC>();
+
     // Start is called before the first frame update
     void Start ()
     {
@@ -112,7 +114,8 @@ public class VideoManager_VC : MonoBehaviour
     }
     void ResetVideoCreationInfo ()
     {
-        Array.Clear (selectedThemes, 0, selectedThemes.Length);
+        if(selectedThemes!=null)
+            Array.Clear (selectedThemes, 0, selectedThemes.Length);
         foreach (Button button in themeSelectionButtons)
         {
             button.GetComponentInChildren<TMP_Text> ().text = "";
@@ -227,14 +230,32 @@ public class VideoManager_VC : MonoBehaviour
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
         float qualityNumber = (float)selectedQuality / (float)Enum.GetValues (typeof (VideoQuality)).Length * 2;
+        int secondsToProduce = algorithmManager.GetVideoSecondsToBeProduced (qualityNumber, selectedThemes.Length);
         vc.SetVideoInfoUp (newVideoName,
-                            algorithmManager.GetVideoSecondsToBeProduced(qualityNumber, selectedThemes.Length),
+                            secondsToProduce,
                             selectedThemes,
                             selectedQuality
                             );
         videosShown.Add (newVideoName, videoInfoObject);
-        UnpublishedVideo unpublishedVideo = new UnpublishedVideo (newVideoName,selectedThemes,selectedQuality,3,GameClock.Instance.Now);
+        UnpublishedVideo unpublishedVideo = new UnpublishedVideo (newVideoName,selectedThemes,selectedQuality, secondsToProduce, GameClock.Instance.Now);
         PlayerDataManager.Instance.SetUnpublishedVideo (unpublishedVideo);
+    }
+    void CreateUnpublishedVideos ()
+    {
+        UnpublishedVideo[] videos = PlayerDataManager.Instance.GetUnpublishedVideos ().ToArray ();
+        foreach(UnpublishedVideo video in videos)
+        {
+            GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);          
+            VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
+            unpublishedVideosVC.Add (vc);
+            vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
+            vc.SetVideoInfoUp (video.videoName,
+                                video.secondsToBeProduced,
+                                video.videoThemes,
+                                video.videoQuality
+                                );
+            vc.SetTimeLeftToPublish (video.createdTime);
+        }
     }
     void CreateVideo (Video video)
     {
@@ -259,6 +280,29 @@ public class VideoManager_VC : MonoBehaviour
             else
             {
                 CreateVideo (video);
+            }
+        }
+        if (unpublishedVideosVC.Count==0)
+        {
+            CreateUnpublishedVideos ();
+        }
+        else
+        {
+            List<int> indexToDelete = new List<int>();
+            int index=0;
+            unpublishedVideosVC.RemoveAll (item => item == null);
+            foreach (VideoInfo_VC infoVC in unpublishedVideosVC)
+            {
+                if(videosShown.ContainsKey (infoVC.GetVideoName ()))
+                {
+                    indexToDelete.Add (index);
+                }
+                else { infoVC.RestartProductionBar (); }
+                index++;
+            }
+            foreach(int videoindex in indexToDelete)
+            {
+                Destroy(unpublishedVideosVC[videoindex].gameObject);
             }
         }
     }
@@ -319,7 +363,6 @@ public class VideoManager_VC : MonoBehaviour
     }
     void SetQualityTagVisual (int index)
     {
-        Debug.Log (index);
         int i = 0;
         foreach(GameObject qualityTag in qualitiesTags)
         {

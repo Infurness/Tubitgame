@@ -17,7 +17,9 @@ public class VideoInfo_VC : MonoBehaviour
     private string videoName;
     private ThemeType[] themeTypes;
     private VideoQuality selectedQuality;
+    private float maxInternalRecordTime;
     private float internalRecordTime;
+    private DateTime createdTime;
     
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text moneyText;
@@ -77,6 +79,10 @@ public class VideoInfo_VC : MonoBehaviour
         progressBarPanel.SetActive (false);
         SetThemes (videoRef.themes);
     }
+    public string GetVideoName ()
+    {
+        return videoName;
+    }
     void SetThemes (ThemeType[] themesRef)
     {
         for (int i = 0; i < themeHolders.Length; i++)
@@ -104,11 +110,18 @@ public class VideoInfo_VC : MonoBehaviour
         nameText.text = videoName;
         themeTypes = videoThemes;
         selectedQuality = quality;
-        internalRecordTime = recordTime;
+        maxInternalRecordTime = recordTime;
+        internalRecordTime = maxInternalRecordTime;
         qualityText.text =  string.Concat (Enum.GetName (quality.GetType (), quality).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
         energyCostText.text =$"{energyManger.GetVideoEnergyCost (quality)}";
 
         SetThemes (themeTypes);
+    }
+    public void SetTimeLeftToPublish (DateTime videoCreationTime)
+    {
+        createdTime = videoCreationTime;
+        float seconds = (float)(GameClock.Instance.Now - createdTime).TotalSeconds;
+        internalRecordTime = Mathf.Max(maxInternalRecordTime - seconds, 0);
     }
     public void SetVideoInfoUp(Video video)
     {
@@ -143,12 +156,13 @@ public class VideoInfo_VC : MonoBehaviour
         progressBarPanel.SetActive (true);
         statsPanel.SetActive (false);
         cancelButton.gameObject.SetActive (true);
-        StartCoroutine (FillTheRecordImage (internalRecordTime));  
+        StartCoroutine (FillTheRecordImage (maxInternalRecordTime,internalRecordTime));  
     }
     void VideoReadyToPublish ()
     {
         videoProgressBarCountText.text = $"Completed";
         videoProgressText.text = $"This video is ready!";
+        videoProgressBar.fillAmount = 1;
         skipButtonPanel.SetActive (false);
         cancelButton.gameObject.SetActive (false);
         publishButton.gameObject.SetActive (true);
@@ -176,17 +190,22 @@ public class VideoInfo_VC : MonoBehaviour
         if (videoRef.isViral)
             viralVisual.SetActive (true);
     }
-
-    IEnumerator FillTheRecordImage (float time)
+    public void RestartProductionBar ()
+    {
+        float seconds = (float)(GameClock.Instance.Now - createdTime).TotalSeconds;
+        internalRecordTime = Mathf.Max (maxInternalRecordTime - seconds, 0);
+        StartRecordingVideo ();
+    }
+    IEnumerator FillTheRecordImage (float maxTime, float internalTime)
     {  
-        float tACC = 0;
-        while (tACC < time)
+        float tACC = maxTime - internalTime;
+        while (tACC < maxTime)
         {
-            int secondsLeft = (int)(time - tACC);
-            videoProgressBarCountText.text =$"0{secondsLeft}s"; //Dummy
+            int secondsLeft = (int)(maxTime - tACC);
+            videoProgressBarCountText.text =$"{secondsLeft}s"; //Dummy
             yield return new WaitForEndOfFrame ();
             tACC += Time.deltaTime;
-            videoProgressBar.fillAmount = tACC / time;
+            videoProgressBar.fillAmount = tACC / maxTime;
         }
         VideoReadyToPublish ();
     }

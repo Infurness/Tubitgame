@@ -124,12 +124,10 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.videos = JsonConvert.DeserializeObject<List<Video>>(videosJson);
 
             }
-            if (result.Data.TryGetValue ("UnpublishedVideo", out datarecord))
+            if (result.Data.TryGetValue ("UnpublishedVideos", out datarecord))
             {
-
-                var unùblishedVideosJson = datarecord.Value;
-                playerData.unpublishedVideo = JsonConvert.DeserializeObject<UnpublishedVideo> (unùblishedVideosJson);
-
+                var unpublishedVideosJson = datarecord.Value;
+                playerData.unpublishedVideos = JsonConvert.DeserializeObject<List<UnpublishedVideo>> (unpublishedVideosJson);
             }
             if (result.Data.TryGetValue ("XpData", out datarecord))
             {
@@ -255,9 +253,23 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SetUnpublishedVideo(UnpublishedVideo unpublishedvideo)
     {
-        UpdateUserDatabase (new[] { "UnpublishedVideo" }, new[] { unpublishedvideo }, (() => { playerData.unpublishedVideo = unpublishedvideo; }));
+        var unpublishedvideos = playerData.unpublishedVideos;
+        unpublishedvideos.Add (unpublishedvideo);
+        UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
     }
-
+    public void DeleteUnpublishVideo(string name)
+    {
+        var unpublishedvideos = playerData.unpublishedVideos;
+        int index = 0;
+        foreach(UnpublishedVideo video in unpublishedvideos)
+        {
+            if (video.videoName == name)
+                break;
+            index++;
+        }        
+        unpublishedvideos.RemoveAt(index);
+        UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
+    }
     public Video GetVideoByName(string _name)
     {
         foreach (Video video in playerData.videos)
@@ -295,6 +307,10 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         return videoCounter;
+    }
+    public List<UnpublishedVideo> GetUnpublishedVideos ()
+    {
+        return playerData.unpublishedVideos;
     }
     public ulong RecollectVideoMoney (string videoName)
     {
