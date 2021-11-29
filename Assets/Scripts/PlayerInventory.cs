@@ -14,18 +14,14 @@ public class PlayerInventory : MonoBehaviour
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private SignalBus signalBus;
     [SerializeField] private PlayerInventoryAddressedData playerInventoryAddressedData;
-    [SerializeField] private List<ThemeCustomizationItem> equippedCharacterItems;
-    [SerializeField] private List<ThemeCustomizationItem> defaultCharacterItems;
+    [SerializeField] private CharacterAvatar equippedCharacterAvatar;
+    [SerializeField] private CharacterAvatar defaultAvatar;
     [SerializeField] private List<ThemeCustomizationItem> characterItems;
     [SerializeField] private List<ThemeCustomizationItem> roomThemeEffectItems;
     [SerializeField] private List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> videoQualityRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
     [SerializeField] private List<RealEstateCustomizationItem> realEstateItems;
-    
-    public  List<ThemeCustomizationItem> EquippedCharacterItems => equippedCharacterItems.ToList();
-
-    public  List<ThemeCustomizationItem> DefaultCharacterItems => defaultCharacterItems.ToList();
 
     public List<ThemeCustomizationItem> CharacterItems => characterItems.ToList();
 
@@ -39,6 +35,17 @@ public class PlayerInventory : MonoBehaviour
 
     public List<RealEstateCustomizationItem> RealEstateItems => realEstateItems.ToList();
 
+    public CharacterAvatar EquippedAvatar()
+    {
+        if (equippedCharacterAvatar==null)
+        {
+            return defaultAvatar;
+        }
+        else
+        {
+            return equippedCharacterAvatar;
+        }
+    }
     private void Awake()
     {
         if (Instance==null)
@@ -61,7 +68,51 @@ public class PlayerInventory : MonoBehaviour
 
     }
 
-     async Task LoadThemeEffectAddressedAssets()
+    async Task LoadCharacterData()
+    {
+        var caharacterItemsLoadOp= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("character", null);
+        await caharacterItemsLoadOp.Task;
+        if (caharacterItemsLoadOp.Status == AsyncOperationStatus.Succeeded)
+        {
+            var chItems = caharacterItemsLoadOp.Result;
+            characterItems =(List<ThemeCustomizationItem>) chItems;
+
+            if (playerInventoryAddressedData.equippedCharacterItemsNames.Count==0)
+            {
+                equippedCharacterAvatar = defaultAvatar;
+                return;
+            }
+            foreach (var itemName in playerInventoryAddressedData.equippedCharacterItemsNames)
+            {
+              var thItem=  characterItems.Find((it) => it.name == itemName);
+              switch (thItem)
+              {
+                      case BodyItem bodyItem :
+                          equippedCharacterAvatar.bodyItem = bodyItem;
+                          break;
+                      case HeadItem headItem :
+                          equippedCharacterAvatar.headItem = headItem;
+                          break;    
+                      case HairItem hairItem:
+                          equippedCharacterAvatar.hairItem = hairItem;
+                              break;
+                      case TorsoItem torsoItem:
+                          equippedCharacterAvatar.torsoItem = torsoItem;
+                          break;
+                      case LegsItem legsItem :
+                          equippedCharacterAvatar.legsItem = legsItem;
+                          break;
+                      case  FeetItem feetItem:
+                          equippedCharacterAvatar.feetItem = feetItem;
+                      break;    
+                      
+              }
+            }
+
+         
+        }
+    }
+    async Task LoadThemeEffectAddressedAssets()
     {
         
         var themeEffectAssets= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("roomtheme", null);
@@ -135,6 +186,7 @@ public class PlayerInventory : MonoBehaviour
 
       await  LoadThemeEffectAddressedAssets();
       await  LoadVideoQualityAddressedAssets();
+      await LoadCharacterData();
 
       signalBus.Fire<AssetsLoadedSignal>();
 
@@ -149,23 +201,25 @@ public class PlayerInventory : MonoBehaviour
     }
    
 
-    public void EquipCharacterItem(ThemeCustomizationItem themeCustomizationItem)
+    public void ChangeAvatar(CharacterAvatar avatar)
     {
-       var oldItem =characterItems.Find((item => item.GetType() == themeCustomizationItem.GetType()));
+        equippedCharacterAvatar = avatar;
+        List<string> itemNames = new List<string>();
+        var items = avatar.GetThemesEffectItems();
+        items.ForEach((it) => itemNames.Add(it.name));
 
-       playerInventoryAddressedData.equippedCharacterItemsNames.Remove(oldItem.name);
-       characterItems.Remove(oldItem);
-        signalBus.Fire(new OnCharacterItemEquippedSignal()
+        playerInventoryAddressedData.equippedCharacterItemsNames = itemNames;
+        signalBus.Fire(new OnCharacterAvatarChanged()
         {
-            ThemeCustomizationItem = themeCustomizationItem
+            NewAvatar = avatar
         });
-        var totalThemeEquippedItems = new List<ThemeCustomizationItem>(EquippedCharacterItems);
+        var totalThemeEquippedItems = new List<ThemeCustomizationItem>(items);
         totalThemeEquippedItems.AddRange(EquippedThemeEffectRoomItems);
         signalBus.Fire(new OnPlayerEquippedThemeItemChangedSignal()
         {
             CustomizationItems =totalThemeEquippedItems
         });
-//        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+       playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
 
 
     }
@@ -194,7 +248,7 @@ public class PlayerInventory : MonoBehaviour
         equippedVideoQualityRoomItems.ForEach((vc) =>
             playerInventoryAddressedData.equippedVideoQualityItemsNames.Add(vc.name));
         var allThemItems = new List<ThemeCustomizationItem>();
-        allThemItems.AddRange(EquippedCharacterItems);
+        allThemItems.AddRange(equippedCharacterAvatar.GetThemesEffectItems());
         allThemItems.AddRange(EquippedThemeEffectRoomItems);
         signalBus.Fire(new OnPlayerEquippedThemeItemChangedSignal()
         {
@@ -222,19 +276,7 @@ public class PlayerInventory : MonoBehaviour
         return  new RoomLayout( playerInventoryAddressedData.RoomLayout);
     }
 
-    public T GetEquippedItem<T>() where T: ThemeCustomizationItem
-    {
-        foreach (var characterItem in equippedCharacterItems)
-        {
-            if (characterItem.GetType() == typeof(T))
-            {
-                return (T) characterItem;
-
-            }
-        }
-
-        return null;
-    }
+   
   
 }
 [System.Serializable]

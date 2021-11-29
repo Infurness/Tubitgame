@@ -35,7 +35,7 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<TestRoomThemeItemSignal>();
     Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
     Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
-    Container.DeclareSignal<OnCharacterItemEquippedSignal>();
+    Container.DeclareSignal<OnCharacterAvatarChanged>();
     Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
     //Dependencies
     Container.Bind<PlayerInventory>().FromInstance(PlayerInventory.Instance);

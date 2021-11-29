@@ -12,10 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8814ae8fea24a1b9314e4eaf3061680, type: 3}
   m_Name: TorsoItem
   m_EditorClassIdentifier: 
-  logoSprite: {fileID: 0}
+  sprite: {fileID: 0}
   affectedTheme:
   - ThemeType: 1
-    themePopularityFactor: 0.1
-  rareness: 1
+    themePopularityFactor: 0.285
+  rareness: 0
+  descriptionText: 
+  newStatsText: '10 % likes
+
+'
   TorsoItemType: 0
-  torsoSprite: {fileID: 0}
+  GenderItemType: 0
+  TorsoVariants:
+  - {fileID: 21300000, guid: 931497efa7afcdd4d86683c23c89389c, type: 3}
+  - {fileID: 21300000, guid: abdf88c1de5a6d04aa7f955cd78081d7, type: 3}
+  - {fileID: 21300000, guid: bb2d4a2d7ebd31c4599c6e05b7e07185, type: 3}

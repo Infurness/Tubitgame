@@ -6,14 +6,15 @@ namespace Customizations
     public class TorsoItem : ThemeCustomizationItem
     {
         public TorsoItemType TorsoItemType;
-
-        public Sprite torsoSprite;
+        public GenderItemType GenderItemType;
+        public Sprite[] TorsoVariants;
     }
 
     public enum TorsoItemType
     {
-        Tshirts,
-        Jackets
+        TShirts,
+        Jackets,
+        Hoodies
     }
     
 }
