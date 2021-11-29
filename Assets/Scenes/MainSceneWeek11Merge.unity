@@ -1642,6 +1642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateTime: 15
   baseNum: 800
+  baseTimeToBeProduced: 3c0000006e000000a5000000be000000e1000000220100005901000090010000c20100004e020000a8020000d00200002003000084030000e803000024040000b0040000780500004006000008070000
 --- !u!4 &70403867
 Transform:
   m_ObjectHideFlags: 0
@@ -3754,9 +3755,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
---- !u!224 &142583983 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4265908870823800925, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+--- !u!4 &142583983 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
   m_PrefabInstance: {fileID: 142583982}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &142583984 stripped
@@ -6233,6 +6234,8 @@ MonoBehaviour:
   commonSprite: {fileID: 21300000, guid: 9da79ea00f383f74e84b2e94414f57e6, type: 3}
   uncommonSprite: {fileID: 21300000, guid: 506bd82d7fcb4e945887273a43b6526f, type: 3}
   rareSprite: {fileID: 21300000, guid: c4170edcd9f47c24797705a877bf4249, type: 3}
+  equippedThemeItemsEffect: {fileID: 0}
+  equippedVideoQualityItemsEffect: {fileID: 0}
 --- !u!4 &221651900
 Transform:
   m_ObjectHideFlags: 0
@@ -17158,9 +17161,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
---- !u!224 &550533767 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4265908870823800925, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
+--- !u!4 &550533767 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1692761930014279050, guid: e9a9d86eb4959654d9e82b6309fe960c, type: 3}
   m_PrefabInstance: {fileID: 550533766}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &560704520
@@ -45770,8 +45773,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16cbb5c4d95f4e44ad54af36f21dcc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodySlot: {fileID: 0}
   headBSlot: {fileID: 1856211402}
-  faceSlot: {fileID: 1706351367}
+  hairSlot: {fileID: 0}
   torsoSlot: {fileID: 1868633053}
   legsSlot: {fileID: 1980386746}
   feetSlot: {fileID: 2476516}
@@ -45805,6 +45809,7 @@ MonoBehaviour:
   themeEffectPanel: {fileID: 1741490204}
   playerName: {fileID: 1683602030}
   SubsNum: {fileID: 649787312}
+  equippedItemsEffect: {fileID: 0}
 --- !u!4 &1650948605
 Transform:
   m_ObjectHideFlags: 0
@@ -46955,17 +46960,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2719830947783435568, guid: 3ea1ac6bf3bc43e4f90ba588e350060e, type: 3}
   m_PrefabInstance: {fileID: 1706351365}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1706351367 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1017825813786662652, guid: 3ea1ac6bf3bc43e4f90ba588e350060e, type: 3}
-  m_PrefabInstance: {fileID: 1706351365}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c450ce7156046dab454910f05ce1664, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1706382061
 GameObject:
   m_ObjectHideFlags: 0
