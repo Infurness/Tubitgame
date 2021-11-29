@@ -9,13 +9,13 @@ public class SelectThemeSignal
     public short ThemeId;
 }
 
-public class StartRecordingSignal //Deprecated, this is done in VideoManager_VC - StartRecordingVideo()
+public class StartRecordingSignal //Dummy - Deprecated, this is done in VideoManager_VC - StartRecordingVideo()
 {
     public ThemeType[] recordedThemes;
     public string videoName;
 }
 
-public class StartPublishSignal //Not used
+public class StartPublishSignal //Dummy - Not used
 {
 }
 

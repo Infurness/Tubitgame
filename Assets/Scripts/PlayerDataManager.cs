@@ -124,6 +124,13 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.videos = JsonConvert.DeserializeObject<List<Video>>(videosJson);
 
             }
+            if (result.Data.TryGetValue ("UnpublishedVideo", out datarecord))
+            {
+
+                var unùblishedVideosJson = datarecord.Value;
+                playerData.unpublishedVideo = JsonConvert.DeserializeObject<UnpublishedVideo> (unùblishedVideosJson);
+
+            }
             if (result.Data.TryGetValue ("XpData", out datarecord))
             {
 
@@ -244,6 +251,11 @@ public class PlayerDataManager : MonoBehaviour
         var videos = playerData.videos;
         videos.Add(_video);
         UpdateUserDatabase(new[] {"Videos"}, new[] {videos}, (() => { playerData.videos = videos; }));
+    }
+
+    public void SetUnpublishedVideo(UnpublishedVideo unpublishedvideo)
+    {
+        UpdateUserDatabase (new[] { "UnpublishedVideo" }, new[] { unpublishedvideo }, (() => { playerData.unpublishedVideo = unpublishedvideo; }));
     }
 
     public Video GetVideoByName(string _name)

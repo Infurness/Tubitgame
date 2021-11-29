@@ -231,6 +231,8 @@ public class VideoManager_VC : MonoBehaviour
                             selectedQuality
                             );
         videosShown.Add (newVideoName, videoInfoObject);
+        UnpublishedVideo unpublishedVideo = new UnpublishedVideo (newVideoName,selectedThemes,selectedQuality,3,GameClock.Instance.Now);
+        PlayerDataManager.Instance.SetUnpublishedVideo (unpublishedVideo);
     }
     void CreateVideo (Video video)
     {

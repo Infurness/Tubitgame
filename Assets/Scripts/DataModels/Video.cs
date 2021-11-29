@@ -34,3 +34,21 @@ public class Video
         CreateDateTime = createDateTime;
     }
 }
+
+public class UnpublishedVideo
+{
+    public string videoName;
+    public ThemeType[] videoThemes;
+    public VideoQuality videoQuality;
+    public int secondsToBeProduced;
+    public DateTime createdTime;
+
+    public UnpublishedVideo (string name, ThemeType[] themes, VideoQuality quality, int time, DateTime date)
+    {
+        videoName = name;
+        videoThemes = themes;
+        videoQuality = quality;
+        secondsToBeProduced = time;
+        createdTime = date;
+    }
+}
