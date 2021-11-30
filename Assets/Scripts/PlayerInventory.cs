@@ -14,6 +14,7 @@ public class PlayerInventory : MonoBehaviour
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private SignalBus signalBus;
     [SerializeField] private PlayerInventoryAddressedData playerInventoryAddressedData;
+    [SerializeField] private CharacterAvatarAddressedData characterAvatarAddressedData;
     [SerializeField] private CharacterAvatar equippedCharacterAvatar;
     [SerializeField] private CharacterAvatar defaultAvatar;
     [SerializeField] private List<ThemeCustomizationItem> characterItems;
@@ -77,40 +78,29 @@ public class PlayerInventory : MonoBehaviour
             var chItems = caharacterItemsLoadOp.Result;
             characterItems =(List<ThemeCustomizationItem>) chItems;
 
-            if (playerInventoryAddressedData.equippedCharacterItemsNames.Count==0)
+            if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
             {
                 equippedCharacterAvatar = defaultAvatar;
                 return;
             }
-            foreach (var itemName in playerInventoryAddressedData.equippedCharacterItemsNames)
-            {
-              var thItem=  characterItems.Find((it) => it.name == itemName);
-              switch (thItem)
-              {
-                      case BodyItem bodyItem :
-                          equippedCharacterAvatar.bodyItem = bodyItem;
-                          break;
-                      case HeadItem headItem :
-                          equippedCharacterAvatar.headItem = headItem;
-                          break;    
-                      case HairItem hairItem:
-                          equippedCharacterAvatar.hairItem = hairItem;
-                              break;
-                      case TorsoItem torsoItem:
-                          equippedCharacterAvatar.torsoItem = torsoItem;
-                          break;
-                      case LegsItem legsItem :
-                          equippedCharacterAvatar.legsItem = legsItem;
-                          break;
-                      case  FeetItem feetItem:
-                          equippedCharacterAvatar.feetItem = feetItem;
-                      break;    
-                      
-              }
-            }
+
+            equippedCharacterAvatar.bodyItem =
+                (BodyItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.BodyType);
+            equippedCharacterAvatar.headItem =
+                (HeadItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Head);
+            equippedCharacterAvatar.hairItem =
+                (HairItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Hair);
+            equippedCharacterAvatar.torsoItem =
+                (TorsoItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Torso);
+            equippedCharacterAvatar.legsItem =
+                (LegsItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Legs);
+            equippedCharacterAvatar.feetItem =
+                (FeetItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Feet);
+
+        }
 
          
-        }
+        
     }
     async Task LoadThemeEffectAddressedAssets()
     {
@@ -183,7 +173,7 @@ public class PlayerInventory : MonoBehaviour
       async  void  OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
         playerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
-
+        characterAvatarAddressedData = playerInventoryFetchedSignal.CharacterAvatarAddressedData;
       await  LoadThemeEffectAddressedAssets();
       await  LoadVideoQualityAddressedAssets();
       await LoadCharacterData();
@@ -204,22 +194,24 @@ public class PlayerInventory : MonoBehaviour
     public void ChangeAvatar(CharacterAvatar avatar)
     {
         equippedCharacterAvatar = avatar;
-        List<string> itemNames = new List<string>();
-        var items = avatar.GetThemesEffectItems();
-        items.ForEach((it) => itemNames.Add(it.name));
-
-        playerInventoryAddressedData.equippedCharacterItemsNames = itemNames;
+        characterAvatarAddressedData.BodyType = avatar.bodyItem.name;
+        characterAvatarAddressedData.Head = avatar.headItem.name;
+        characterAvatarAddressedData.Hair = avatar.hairItem.name;
+        characterAvatarAddressedData.Torso = avatar.torsoItem.name;
+        characterAvatarAddressedData.Legs = avatar.legsItem.name;
+        characterAvatarAddressedData.Feet = avatar.feetItem.name;
+        
         signalBus.Fire(new OnCharacterAvatarChanged()
         {
             NewAvatar = avatar
         });
-        var totalThemeEquippedItems = new List<ThemeCustomizationItem>(items);
+        var totalThemeEquippedItems = new List<ThemeCustomizationItem>(avatar.GetThemesEffectItems());
         totalThemeEquippedItems.AddRange(EquippedThemeEffectRoomItems);
         signalBus.Fire(new OnPlayerEquippedThemeItemChangedSignal()
         {
             CustomizationItems =totalThemeEquippedItems
         });
-       playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+       playerDataManager.UpdateCharacterAvatar(characterAvatarAddressedData);
 
 
     }
@@ -286,18 +278,26 @@ public class PlayerInventory : MonoBehaviour
         public  List<string> characterItemsNames;
         public List<string> roomItemsNames;
         public List<string> videoQualityItemsNames;
-        public List<string> equippedCharacterItemsNames;
-        public List<string> equippedVideoQualityItemsNames;
+       public List<string> equippedVideoQualityItemsNames;
         public RoomLayout RoomLayout;
       public  PlayerInventoryAddressedData()
         {
             characterItemsNames = new List<string>();
             roomItemsNames = new List<string>();
             videoQualityItemsNames = new List<string>();
-            equippedCharacterItemsNames = new List<string>();
             equippedVideoQualityItemsNames = new List<string>();
              RoomLayout = new RoomLayout();
 
         }
         
     }
+[System.Serializable]
+public class CharacterAvatarAddressedData
+{
+    public string BodyType;
+    public string Head;
+    public string Hair;
+    public string Torso;
+    public string Legs;
+    public string Feet;
+}

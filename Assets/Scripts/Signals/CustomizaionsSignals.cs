@@ -11,6 +11,7 @@ public class OnCharacterAvatarChanged
 public class OnPlayerInventoryFetchedSignal
 {
     public PlayerInventoryAddressedData PlayerInventoryAddressedData;
+    public CharacterAvatarAddressedData CharacterAvatarAddressedData;
 }
 
 public class OnPlayerEquippedThemeItemChangedSignal
