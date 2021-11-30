@@ -35,7 +35,6 @@ public class GlobalInstaller : MonoInstaller
         Container.DeclareSignal<TestRoomThemeItemSignal>();
         Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
-        Container.DeclareSignal<OnCharacterItemEquippedSignal>();
         Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
 
         //Advertisement signals
