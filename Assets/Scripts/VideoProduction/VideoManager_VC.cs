@@ -284,7 +284,7 @@ public class VideoManager_VC : MonoBehaviour
         }
         if (unpublishedVideosVC.Count==0)
         {
-            CreateUnpublishedVideos ();
+            CreateUnpublishedVideos ();             
         }
         else
         {
@@ -297,7 +297,10 @@ public class VideoManager_VC : MonoBehaviour
                 {
                     indexToDelete.Add (index);
                 }
-                else { infoVC.RestartProductionBar (); }
+                else 
+                { 
+                    infoVC.RestartProductionBar (); 
+                }
                 index++;
             }
             foreach(int videoindex in indexToDelete)

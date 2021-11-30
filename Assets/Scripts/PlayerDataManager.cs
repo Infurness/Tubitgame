@@ -306,6 +306,25 @@ public class PlayerDataManager : MonoBehaviour
             }
         }
 
+        foreach (UnpublishedVideo video in playerData.unpublishedVideos)
+        {
+            bool sameThemes = true;
+            if (video.videoThemes.Length == _themeTypes.Length)
+            {
+                for (int i = 0; i < video.videoThemes.Length; i++)
+                {
+                    if (video.videoThemes[i] != _themeTypes[i])
+                    {
+                        sameThemes = false;
+                        break;
+                    }
+                }
+
+                if (sameThemes)
+                    videoCounter++;
+            }
+        }
+
         return videoCounter;
     }
     public List<UnpublishedVideo> GetUnpublishedVideos ()
