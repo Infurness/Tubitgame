@@ -24,6 +24,7 @@ public class PublishVideoSignal
     public string videoName;
     public ThemeType[] videoThemes;
     public VideoQuality videoSelectedQuality;
+    public float qualityValue;
 }
 public class EndPublishVideoSignal
 {
