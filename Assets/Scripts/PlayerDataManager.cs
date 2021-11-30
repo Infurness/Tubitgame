@@ -78,17 +78,35 @@ public class PlayerDataManager : MonoBehaviour
    private void GetPlayerInventory()
     {
           GetUserDataRequest dataRequest = new GetUserDataRequest();
-        dataRequest.Keys = new List<string>() { "Inventory"};
+        dataRequest.Keys = new List<string>() { "Inventory","Avatar"};
         PlayFabClientAPI.GetUserData(dataRequest, (result =>
         {
+            PlayerInventoryAddressedData inventorydata;
+            CharacterAvatarAddressedData avatarData;
             UserDataRecord datarecord;
             if (result.Data.TryGetValue("Inventory",out datarecord))
             {
-                var inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
-                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
-                {
-                    PlayerInventoryAddressedData = inventorydata
-                });
+                
+                 inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
+                 if (result.Data.TryGetValue("Avatar",out datarecord))
+                 {
+                     avatarData=JsonConvert.DeserializeObject<CharacterAvatarAddressedData>(datarecord.Value);
+                     signalBus.Fire(new OnPlayerInventoryFetchedSignal()
+                     {
+                         PlayerInventoryAddressedData = inventorydata,
+                         CharacterAvatarAddressedData = avatarData
+                     });
+                 }
+                 else
+                 {
+                     signalBus.Fire(new OnPlayerInventoryFetchedSignal()
+                     {
+                         PlayerInventoryAddressedData = inventorydata,
+                         CharacterAvatarAddressedData = new CharacterAvatarAddressedData()
+                     });
+                 }
+                 
+               
             }
             else
             {
@@ -178,7 +196,7 @@ public class PlayerDataManager : MonoBehaviour
         }), (error => { print("Cant Retrieve User data"); }));
     }
 
-    private void UpdateUserDatabase(string[] keys, object[] data, Action onsuccess = null, Action onFailed = null)
+    private void UpdateUserDatabase(string[] keys, object[] data, Action onsuccess = null, Action onFailed = null,UserDataPermission permission=UserDataPermission.Private)
     {
 
         var dataRequest = new UpdateUserDataRequest();
@@ -193,6 +211,7 @@ public class PlayerDataManager : MonoBehaviour
             dataRequest.Data.Add(keys[i], dataJson);
         }
 
+        dataRequest.Permission = permission;
         PlayFabClientAPI.UpdateUserData(dataRequest, (result =>
             {
                 print(keys[0] + "Updated");
@@ -474,6 +493,12 @@ public class PlayerDataManager : MonoBehaviour
     public void UpdatePlayerInventoryData(PlayerInventoryAddressedData playerInventoryAddressedData)
     {
         UpdateUserDatabase(new string[] {"Inventory"}, new object[] {playerInventoryAddressedData});
+    }
+
+    public void UpdateCharacterAvatar(CharacterAvatarAddressedData addressedAvatar)
+    {
+        UpdateUserDatabase(new string[] {"Avatar"}, new object[] {addressedAvatar},permission:UserDataPermission.Public);
+
     }
 
     public void GetLevelUpRewards (LevelUpSignal signal) //Subscribed to signal in YouTubeVideomanager
