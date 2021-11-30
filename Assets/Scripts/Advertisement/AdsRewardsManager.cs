@@ -115,9 +115,9 @@ public class AdsRewardsManager : MonoBehaviour
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (NoEnergyReward);
     }
 
-    void VideoShorterProdTime (Video video)
+    void VideoShorterProdTime (UnpublishedVideo video)
     {
-        float videoQualityValue = (2 / Enum.GetValues (typeof (VideoQuality)).Length) * (int)video.selectedQuality;
+        float videoQualityValue = (2 / Enum.GetValues (typeof (VideoQuality)).Length) * (int)video.videoQuality;
         int[] shortenVideoValues = { 10,37,75,112,150,187,225,259,276,300,356,390,410,435,450,506,539,572,580,600};
         int timeReduced = 0;
         float qualityLoop = 0.1f;
@@ -130,22 +130,22 @@ public class AdsRewardsManager : MonoBehaviour
             }
             qualityLoop += 0.1f;
         }
-        //video.timeToBeProduced -= timeReduced;
+        video.secondsToBeProduced -= timeReduced;
     }
 
-    public void VideoShortenReward (Video video)
+    public void VideoShortenReward (UnpublishedVideo video)
     {
         signalBus.Subscribe<GrantRewardSignal> (()=>VideoShortenAdCompletedReward(video));
         signalBus.Subscribe<NotGrantedRewardSignal> (()=>NoVideoShortenReward(video));
         AdsManager.Instance.ShowRewardedAd ();
     }
 
-    void VideoShortenAdCompletedReward (Video video)
+    void VideoShortenAdCompletedReward (UnpublishedVideo video)
     {
         VideoShorterProdTime (video);
         NoVideoShortenReward (video);
     }
-    void NoVideoShortenReward (Video video)
+    void NoVideoShortenReward (UnpublishedVideo video)
     {
         signalBus.TryUnsubscribe<GrantRewardSignal> (()=>VideoShortenAdCompletedReward(video));
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (()=>NoVideoShortenReward(video));
@@ -167,5 +167,6 @@ public class AdsRewardsManager : MonoBehaviour
     {
         signalBus.TryUnsubscribe<GrantRewardSignal> (ViewsBonusAdCompletedReward);
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (NoViewsBonusReward);
+        signalBus.Fire<FinishedViewsBonusRewardSignal> ();
     }
 }

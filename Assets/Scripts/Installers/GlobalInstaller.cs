@@ -42,7 +42,8 @@ public class GlobalInstaller : MonoInstaller
         Container.DeclareSignal<RewardAdLoadedSignal> ();
         Container.DeclareSignal<StartShowingAdSignal> ();
         Container.DeclareSignal<GrantRewardSignal> ();
-        Container.DeclareSignal<NotGrantedRewardSignal> ();      
+        Container.DeclareSignal<NotGrantedRewardSignal> (); 
+        Container.DeclareSignal<FinishedViewsBonusRewardSignal> ();
 
         //Dependencies
         Container.Bind<PlayerInventory>().FromInstance(PlayerInventory.Instance);

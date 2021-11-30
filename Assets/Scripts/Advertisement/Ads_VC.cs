@@ -10,6 +10,7 @@ public class Ads_VC : MonoBehaviour
     [Inject] AdsRewardsManager adsRewardsManager;
 
     [SerializeField] Button showAdButton;
+    bool isAdLoaded;
     // Start is called before the first frame update
     void Start()
     {

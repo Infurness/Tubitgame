@@ -188,6 +188,7 @@ public class PlayerDataManager : MonoBehaviour
 
         var dataRequest = new UpdateUserDataRequest();
         dataRequest.Data = new Dictionary<string, string>();
+
         for (int i = 0; i < keys.Length; i++)
         {
             var dataJson = JsonConvert.SerializeObject(data[i],new JsonSerializerSettings()

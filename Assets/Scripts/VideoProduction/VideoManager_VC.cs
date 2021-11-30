@@ -15,6 +15,7 @@ public class VideoManager_VC : MonoBehaviour
     [Inject] private ThemesManager _themesManager;
     [Inject] private EnergyManager _energyManager;
     [Inject] private AlgorithmManager algorithmManager;
+    [Inject] private AdsRewardsManager adsRewardsManager;
 
     [SerializeField] private TMP_Text playerNameText;
 
@@ -228,7 +229,7 @@ public class VideoManager_VC : MonoBehaviour
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         string newVideoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
-        vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
+        vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager, adsRewardsManager);
         float qualityNumber = (float)selectedQuality / (float)Enum.GetValues (typeof (VideoQuality)).Length * 2;
         int secondsToProduce = algorithmManager.GetVideoSecondsToBeProduced (qualityNumber, selectedThemes.Length);
         vc.SetVideoInfoUp (newVideoName,
@@ -236,7 +237,8 @@ public class VideoManager_VC : MonoBehaviour
                             selectedThemes,
                             selectedQuality
                             );
-        videosShown.Add (newVideoName, videoInfoObject);
+        vc.SetTimeLeftToPublish (GameClock.Instance.Now);
+        unpublishedVideosVC.Add (vc);
         UnpublishedVideo unpublishedVideo = new UnpublishedVideo (newVideoName,selectedThemes,selectedQuality, secondsToProduce, GameClock.Instance.Now);
         PlayerDataManager.Instance.SetUnpublishedVideo (unpublishedVideo);
     }
@@ -248,7 +250,7 @@ public class VideoManager_VC : MonoBehaviour
             GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);          
             VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
             unpublishedVideosVC.Add (vc);
-            vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
+            vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager, adsRewardsManager);
             vc.SetVideoInfoUp (video.videoName,
                                 video.secondsToBeProduced,
                                 video.videoThemes,
@@ -261,7 +263,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
-        vc.SetReferences (_signalBus, _youTubeVideoManager,_energyManager);
+        vc.SetReferences (_signalBus, _youTubeVideoManager,_energyManager, adsRewardsManager);
         vc.SetVideoInfoUp (video);
         videosShown.Add (video.name, videoInfoObject);
         vc.UpdateVideoInfo ();

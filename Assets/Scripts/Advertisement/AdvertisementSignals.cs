@@ -26,3 +26,8 @@ public class NotGrantedRewardSignal
 {
 
 }
+
+public class FinishedViewsBonusRewardSignal
+{
+
+}

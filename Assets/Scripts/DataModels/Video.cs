@@ -41,6 +41,7 @@ public class UnpublishedVideo
     public ThemeType[] videoThemes;
     public VideoQuality videoQuality;
     public int secondsToBeProduced;
+    public int viewsBonus;
     public DateTime createdTime;
 
     public UnpublishedVideo (string name, ThemeType[] themes, VideoQuality quality, int time, DateTime date)

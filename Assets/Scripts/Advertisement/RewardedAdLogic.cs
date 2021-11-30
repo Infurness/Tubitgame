@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Advertisements;
 using Zenject;
 
-public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
+public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener,IUnityAdsListener
 {
     [Inject] SignalBus signalBus;
 
@@ -78,6 +78,7 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         }
         else
         {
+            Debug.Log ("Unity Ads Rewarded Ad NOT Completed");
             signalBus.Fire<NotGrantedRewardSignal> ();
         }
         Advertisement.Load (_adUnitId, this);
@@ -103,5 +104,25 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     {
         // Clean up the button listeners:
         //_showAdButton.onClick.RemoveAllListeners ();
+    }
+
+    public void OnUnityAdsReady (string placementId)
+    {
+        throw new System.NotImplementedException ();
+    }
+
+    public void OnUnityAdsDidError (string message)
+    {
+        throw new System.NotImplementedException ();
+    }
+
+    public void OnUnityAdsDidStart (string placementId)
+    {
+        throw new System.NotImplementedException ();
+    }
+
+    public void OnUnityAdsDidFinish (string placementId, ShowResult showResult)
+    {
+        Debug.Log ("Add finished");
     }
 }
