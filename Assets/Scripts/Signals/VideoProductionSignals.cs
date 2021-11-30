@@ -23,6 +23,7 @@ public class PublishVideoSignal
 {
     public string videoName;
     public ThemeType[] videoThemes;
+    public VideoQuality videoSelectedQuality;
 }
 public class EndPublishVideoSignal
 {
@@ -46,8 +47,25 @@ public class GetMoneyFromVideoSignal
 {
     public string videoName;
 }
+public class UpdateSoftCurrencySignal
+{
 
+}
+public class UpdateHardCurrencySignal
+{
+
+}
+public class UpdateExperienceSignal
+{
+
+}
 public class OpenVideoManagerSignal
+{
+}
+public class OpenVideoCreationSignal
+{
+}
+public class CloseVideoCreationSignal
 {
 }
 public class OnVideosStatsUpdatedSignal
@@ -74,4 +92,73 @@ public class ConfirmThemesSignal
 public class CancelVideoRecordingSignal
 {
     public string name;
+}
+
+public class UpdateThemesGraphSignal
+{
+
+}
+
+public class OpenSettingPanelSignal
+{
+
+}
+
+public class OpenDeleteAccountSignal
+{
+
+}
+
+public class OpenLeaderboardsSignal
+{
+
+}
+
+public class OpenEnergyInventorySignal
+{
+
+}
+
+public class LevelUpSignal
+{
+    public int level;
+    public RewardsData reward;
+}
+
+public class AddSubsForExperienceSignal
+{
+    public ulong subs;
+}
+public class AddViewsForExperienceSignal
+{
+    public ulong views;
+}
+public class AddSoftCurrencyForExperienceSignal
+{
+    public ulong softCurrency;
+}
+
+public class OpenLevelUpPanelSignal
+{
+
+}
+
+public class OpenDefaultMessagePopUpSignal
+{
+    public string message;
+}
+
+public class ChangeBackButtonSignal
+{
+    public bool changeToHome;
+}
+
+public class UseEnergyItemSignal
+{
+    public string label;
+    public float energy;
+}
+public class ChangeRestStateSignal
+{
+
 }

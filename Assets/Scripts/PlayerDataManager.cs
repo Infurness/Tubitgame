@@ -47,6 +47,8 @@ public class PlayerDataManager : MonoBehaviour
         {
             signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
         });
+        signalBus.Subscribe<RemoteAssetsCheckSignal>(GetPlayerInventory);
+
     }
 
 
@@ -73,6 +75,52 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
+   private void GetPlayerInventory()
+    {
+          GetUserDataRequest dataRequest = new GetUserDataRequest();
+        dataRequest.Keys = new List<string>() { "Inventory","Avatar"};
+        PlayFabClientAPI.GetUserData(dataRequest, (result =>
+        {
+            PlayerInventoryAddressedData inventorydata;
+            CharacterAvatarAddressedData avatarData;
+            UserDataRecord datarecord;
+            if (result.Data.TryGetValue("Inventory",out datarecord))
+            {
+                
+                 inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
+                 if (result.Data.TryGetValue("Avatar",out datarecord))
+                 {
+                     avatarData=JsonConvert.DeserializeObject<CharacterAvatarAddressedData>(datarecord.Value);
+                     signalBus.Fire(new OnPlayerInventoryFetchedSignal()
+                     {
+                         PlayerInventoryAddressedData = inventorydata,
+                         CharacterAvatarAddressedData = avatarData
+                     });
+                 }
+                 else
+                 {
+                     signalBus.Fire(new OnPlayerInventoryFetchedSignal()
+                     {
+                         PlayerInventoryAddressedData = inventorydata,
+                         CharacterAvatarAddressedData = new CharacterAvatarAddressedData()
+                     });
+                 }
+                 
+               
+            }
+            else
+            {
+                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
+                {
+                    PlayerInventoryAddressedData = new PlayerInventoryAddressedData()
+                });
+            }
+
+
+
+        }), (error => { print("Cant Retrieve Inventorey data"); }));
+    }
+
     private void GetUserData()
     {
         
@@ -93,6 +141,23 @@ public class PlayerDataManager : MonoBehaviour
                 var videosJson = datarecord.Value;
                 playerData.videos = JsonConvert.DeserializeObject<List<Video>>(videosJson);
 
+            }
+            if (result.Data.TryGetValue ("XpData", out datarecord))
+            {
+
+                var xpDataJson = datarecord.Value;
+                playerData.xpData = JsonConvert.DeserializeObject<ExperienceData> (xpDataJson);
+
+            }
+            else
+            {
+                playerData.xpData = new ExperienceData
+                {
+                    experiencePoints = 0,
+                    softCurrencyThresholdCounter = 0,
+                    subscribersThresholdCounter = 0,
+                    viewsThresholdCounter = 0
+                };
             }
 
             if (result.Data.TryGetValue("PlayerName", out datarecord))
@@ -118,40 +183,35 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.softCurrency = 0;
             }
 
-            if (result.Data.TryGetValue("Inventory",out datarecord))
+
+            if (result.Data.TryGetValue ("HardCurrency", out datarecord))
             {
-                var inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
-                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
-                {
-                    PlayerInventoryAddressedData = inventorydata
-                });
+                playerData.hardCurrency = JsonConvert.DeserializeObject<ulong> (datarecord.Value);
             }
             else
             {
-                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
-                {
-                    PlayerInventoryAddressedData = new PlayerInventoryAddressedData()
-                });
+                playerData.hardCurrency = 0;
             }
-
-
 
         }), (error => { print("Cant Retrieve User data"); }));
     }
 
-
-
-    private void UpdateUserDatabase(string[] keys, object[] data, Action onsuccess = null, Action onFailed = null)
+    private void UpdateUserDatabase(string[] keys, object[] data, Action onsuccess = null, Action onFailed = null,UserDataPermission permission=UserDataPermission.Private)
     {
 
         var dataRequest = new UpdateUserDataRequest();
         dataRequest.Data = new Dictionary<string, string>();
         for (int i = 0; i < keys.Length; i++)
         {
-            var dataJson = JsonConvert.SerializeObject(data[i], Formatting.Indented);
+            var dataJson = JsonConvert.SerializeObject(data[i],new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            });
             dataRequest.Data.Add(keys[i], dataJson);
         }
 
+        dataRequest.Permission = permission;
         PlayFabClientAPI.UpdateUserData(dataRequest, (result =>
             {
                 print(keys[0] + "Updated");
@@ -177,7 +237,25 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SetPLayerName(string playerName)
     {
-        UpdateUserDatabase(new[] {"PlayerName"}, new[] {playerName}, (() => { playerData.playerName = playerName; }));
+        UpdateUserDatabase(new[] {"PlayerName"},new[] {playerName},(() =>
+        {
+            playerData.playerName = playerName;
+ 
+        }));
+
+        UpdateUserTitleDisplayNameRequest request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = playerName
+        };
+        PlayFabClientAPI.UpdateUserTitleDisplayName (request, OnDisplayNameSetSuccess, OnDisplayNameSetError);
+    }
+    void OnDisplayNameSetSuccess (UpdateUserTitleDisplayNameResult result)
+    {
+        Debug.Log ($"The player's display name is now: {result.DisplayName}");
+    }
+    void OnDisplayNameSetError (PlayFabError error)
+    {
+        Debug.LogError (error.GenerateErrorReport ());
     }
 
     public void AddVideo(Video _video)
@@ -225,19 +303,19 @@ public class PlayerDataManager : MonoBehaviour
 
         return videoCounter;
     }
-
-    public ulong RecollectVideoMoney(string _name)
+    public ulong RecollectVideoMoney (string videoName)
     {
-        Video video = GetVideoByName(_name);
+        Video video = GetVideoByName (videoName);
         var videoMoney = video.videoSoftCurrency;
         video.collectedCurrencies += video.videoSoftCurrency;
         playerData.softCurrency += videoMoney;
-        UpdateUserDatabase(new[] {"SoftCurrency", "Videos"}, new object[] {playerData.softCurrency, playerData.videos});
+        UpdateUserDatabase(new[] {"SoftCurrency","Videos"},new object[]{ playerData.softCurrency,playerData.videos});
+        signalBus.Fire<AddSoftCurrencyForExperienceSignal> (new AddSoftCurrencyForExperienceSignal () { softCurrency = video.videoSoftCurrency });//Add the soft currency gained for experience points calculation
         video.videoSoftCurrency = 0;
+        Debug.LogError ("collectedMoney");
         return videoMoney;
     }
-
-    public float GetPlayerTotalVideos()
+    public int GetPlayerTotalVideos ()
     {
         return playerData.videos.Count;
     }
@@ -278,11 +356,16 @@ public class PlayerDataManager : MonoBehaviour
         return playerData.softCurrency;
 
     }
-
-    public void UpdatePlayerVideosSubscribersData(ulong subscribersCount, List<Video> videos)
+    public ulong GetHardCurrency ()
     {
-        UpdateUserDatabase(new[] {"Subscribers", "Videos"}, new object[]
-        {
+        return playerData.hardCurrency;
+
+    }
+    public void UpdatePlayerData(ulong subscribersCount,List<Video> videos)
+    {
+        ulong lastSubs = playerData.subscribers;
+        UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[]
+            {
             subscribersCount,
             videos
         }, (() =>
@@ -290,6 +373,8 @@ public class PlayerDataManager : MonoBehaviour
             playerData.subscribers = subscribersCount;
             playerData.videos = videos;
         }));
+        LeaderboardManager.Instance.UpdateLeaderboard ("SubscribersCount", (int)subscribersCount);
+        signalBus.Fire (new ChangePlayerSubsSignal() { previousSubs= lastSubs, subs =subscribersCount});
 
     }
 
@@ -343,12 +428,84 @@ public class PlayerDataManager : MonoBehaviour
             onRedeemed?.Invoke();
         }));
     }
-
+    public void AddExperiencePoints (ulong experience)
+    {
+        playerData.xpData.experiencePoints += experience;
+        UpdateXpData ();
+    }
+    public void CheatResetXp ()
+    {
+        playerData.xpData.experiencePoints = 0;
+        UpdateXpData ();
+    }
+    public ulong GetExperiencePoints ()
+    {
+        return playerData.xpData.experiencePoints;
+    }
+    public int GetSubsThreshold ()
+    {
+        return playerData.xpData.subscribersThresholdCounter;
+    }
+    public void SetSubsThreshold (int value)
+    {
+        playerData.xpData.subscribersThresholdCounter = value;
+        UpdateXpData ();
+    }
+    public int GetViewsThreshold ()
+    {
+        return playerData.xpData.viewsThresholdCounter;
+    }
+    public void SetViewsThreshold (int value)
+    {
+        playerData.xpData.viewsThresholdCounter = value;
+        UpdateXpData ();
+    }
+    public int GetSoftCurrencyThreshold ()
+    {
+        return playerData.xpData.softCurrencyThresholdCounter;
+    }
+    public void SetSoftCurrencyThreshold (int value)
+    {
+        playerData.xpData.softCurrencyThresholdCounter = value;
+        UpdateXpData ();
+    }
+    void UpdateXpData ()
+    {
+        UpdateUserDatabase (new[] { "XpData" }, new object[]
+        {
+            playerData.xpData
+        });
+    }
+    public void UpdateEnergyData ( EnergyData energyData)
+    {
+       UpdateUserDatabase (new[] { "Energy" }, new object[]
+       {
+            energyData
+       });
+    }
+    public void UpdateEnergyInventoryData (EnergyInventoryData energyInventoryData)
+    {
+       UpdateUserDatabase (new[] { "EnergyItems" }, new object[]
+       {
+            energyInventoryData
+       });
+    }
     public void UpdatePlayerInventoryData(PlayerInventoryAddressedData playerInventoryAddressedData)
     {
         UpdateUserDatabase(new string[] {"Inventory"}, new object[] {playerInventoryAddressedData});
     }
 
- 
+    public void UpdateCharacterAvatar(CharacterAvatarAddressedData addressedAvatar)
+    {
+        UpdateUserDatabase(new string[] {"Avatar"}, new object[] {addressedAvatar},permission:UserDataPermission.Public);
+
+    }
+
+    public void GetLevelUpRewards (LevelUpSignal signal) //Subscribed to signal in YouTubeVideomanager
+    {
+        playerData.softCurrency += (ulong)signal.reward.softCurrency;
+        UpdateUserDatabase (new[] { "SoftCurrency", "Videos" }, new object[] { playerData.softCurrency, playerData.videos });
+        AddHardCurrency (signal.reward.hardCurrency);
+    }
 
 }

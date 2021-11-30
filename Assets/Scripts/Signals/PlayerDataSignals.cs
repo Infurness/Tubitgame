@@ -5,3 +5,14 @@ using UnityEngine;
 public class ChangeUsernameSignal
 {
 }
+public class ChangePlayerSubsSignal
+{
+    public ulong previousSubs;
+    public ulong subs;
+}
+public class UpdateRankSignal
+{
+    public PartnershipTiers newTier;
+
+    public RewardsData rewardsData;
+}

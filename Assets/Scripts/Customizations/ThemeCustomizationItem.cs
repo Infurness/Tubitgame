@@ -6,7 +6,7 @@ namespace Customizations
 {
     public class ThemeCustomizationItem : ScriptableObject
     {
-        public Sprite logoSprite;
+        public Sprite sprite;
         public CustomizationThemeEffect[] affectedTheme;
         public Rareness rareness=Rareness.Common;
         [TextArea]

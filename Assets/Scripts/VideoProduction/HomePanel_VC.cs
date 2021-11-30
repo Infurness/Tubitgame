@@ -2,29 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Zenject;
 
 public class HomePanel_VC : MonoBehaviour
 {
     [Inject] private SignalBus _signalBus;
     [Inject] private YouTubeVideoManager youTubeVideoManager;
+    [Inject] private EnergyManager energyManager;
 
     //[SerializeField] private Button publishButton;
-    [SerializeField] private ScrollRect viewsScroll;
+   // [SerializeField] private ScrollRect viewsScroll;
     [SerializeField] private Button playerIconButton;
-    [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private Button closeSettingsButton;
 
-    ThemeType[] selectedThemeTypes;
+    [SerializeField] private Button restButton;
+
+    ThemeType[] selectedThemeTypes; //Dummy unused code
     // Start is called before the first frame update
     void Start ()
     {
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
-
+        _signalBus.Subscribe<ChangeRestStateSignal> (RestButtonBehaviour);
        // publishButton.onClick.AddListener (OnPublishVideoPressed);
-        viewsScroll.onValueChanged.AddListener (OnViewsScroll);
-        playerIconButton.onClick.AddListener (() => { OpenSettingsPanel (true); });
-        closeSettingsButton.onClick.AddListener (() => { OpenSettingsPanel (false); });
+     //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+        playerIconButton.onClick.AddListener (OpenSettingsPanel);
+       // closeSettingsButton.onClick.AddListener (OpenSettingsPanel );
+   //     viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+        playerIconButton.onClick.AddListener (OpenSettingsPanel);
+        restButton.onClick.AddListener (RestButtonBehaviour);
 
         InitialScreenState ();
     }
@@ -38,7 +43,6 @@ public class HomePanel_VC : MonoBehaviour
     void InitialScreenState ()
     {
         //publishButton.gameObject.SetActive (false);
-        OpenSettingsPanel (false);
     }
     void StartRecording (StartRecordingSignal _recordingSignal)
     {
@@ -68,8 +72,20 @@ public class HomePanel_VC : MonoBehaviour
         }
 
     }
-    void OpenSettingsPanel (bool open)
+    void OpenSettingsPanel ()
     {
-        settingsPanel.SetActive (open);
+        _signalBus.Fire<OpenSettingPanelSignal> ();
+    }
+
+    void RestButtonBehaviour ()
+    {
+        energyManager.ChangePlayerRestingState ();
+
+        if (!energyManager.GetPlayerIsResting ())
+            restButton.GetComponentInChildren<TMP_Text> ().text = "Rest";
+        else
+            restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";
+
+        
     }
 }

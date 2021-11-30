@@ -12,9 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ead83f9cf345b4ad55a9e896eed18c, type: 3}
   m_Name: LegsItem
   m_EditorClassIdentifier: 
-  logoSprite: {fileID: 0}
-  affectedTheme: 07000000
-  themePopularityFactor: 0
-  rareness: 1
+  sprite: {fileID: 0}
+  affectedTheme:
+  - ThemeType: 0
+    themePopularityFactor: 0.419
+  - ThemeType: 5
+    themePopularityFactor: 0.548
+  rareness: 0
+  descriptionText: 
+  newStatsText: 
   LegsType: 0
-  legSprite: {fileID: 0}
+  GenderItemType: 0
+  LegsVariants:
+  - {fileID: 21300000, guid: 75d10468a9097564e95f9212931e545b, type: 3}
+  - {fileID: 21300000, guid: b4f816bec552e2947aa03356a184f9f0, type: 3}
+  - {fileID: 21300000, guid: 19e528364cbb34346aeba71fca11d429, type: 3}

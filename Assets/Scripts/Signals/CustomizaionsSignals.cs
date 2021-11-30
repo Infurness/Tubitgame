@@ -3,14 +3,15 @@
 using System.Collections.Generic;
 using Customizations;
 
-public class OnCharacterItemEquippedSignal
+public class OnCharacterAvatarChanged
 {
-    public ThemeCustomizationItem ThemeCustomizationItem;
+    public CharacterAvatar NewAvatar;
 }
 
 public class OnPlayerInventoryFetchedSignal
 {
     public PlayerInventoryAddressedData PlayerInventoryAddressedData;
+    public CharacterAvatarAddressedData CharacterAvatarAddressedData;
 }
 
 public class OnPlayerEquippedThemeItemChangedSignal
@@ -35,6 +36,21 @@ public class SaveRoomLayoutSignal
 }
 
 public class DiscardRoomLayoutSignal
+{
+    
+}
+
+public class RoomZoomStateChangedSignal
+{
+    public bool ZoomIn = false;
+}
+
+public class AssetsLoadedSignal
+{
+    
+}
+
+public class RemoteAssetsCheckSignal
 {
     
 }

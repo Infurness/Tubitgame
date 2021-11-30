@@ -1,17 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Customizations;
 using TMPro;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
 public class CaharacterInventory_VC : MonoBehaviour
 {
     [Inject] private PlayerInventory m_PlayerInventory;
-    [SerializeField] private Button headBt, faceBt, torsoBt, legsBt, feetBt;
+    [Inject] private SignalBus signalBus;
+    [SerializeField] private CharacterCustomizationsSlot  bodySlot,headBSlot;
+    [SerializeField] private CharacterCustomizationsSlot  hairSlot;
+    [SerializeField] private CharacterCustomizationsSlot  torsoSlot, legsSlot, feetSlot;
     [SerializeField] private InventoryButton inventoryButtonPrefab;
     [SerializeField] private TabView_VC inventoryTabView;
     private List<InventoryButton> inventoryButtons;
@@ -20,58 +27,110 @@ public class CaharacterInventory_VC : MonoBehaviour
     [SerializeField] private TMP_Text selectedItemName,equippedItemName,selectedItemRareness,equippedItemRareness;
     [SerializeField] private TMP_Text equippedText, selectedText;
     [SerializeField] private TMP_Text equippedStatsText, selectedStatsText;
-    [SerializeField] private Image equippedImage, selectedImage;
-    [SerializeField] private Button backButton;
+    [SerializeField] private Image equippedLogoImage,equippedRarenessImage, selectedLogoImage,selectedRarenessImgae;
     [SerializeField] private GameObject characterSlotsPanel,roomSlotsPanel,buttonsPanel;
     [SerializeField] private Canvas inventoryCanvas;
     [SerializeField] private GameObject characterPreview;
+    [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
+    [SerializeField] private GameObject infoPanel,themeEffectPanel;
+    [SerializeField] private TMP_Text playerName, SubsNum;
+    [SerializeField] private TMP_Text equippedItemsEffect;
+    private List<Sprite> rarenessSprites;
+    private GenderItemType gender;
+    private CharacterAvatar characterAvatar;
+
+    private void Awake()
+    {
+        characterAvatar = m_PlayerInventory.EquippedAvatar();
+        bodySlot.SetButtonAction(OnBodyButtonClicked);
+        headBSlot.SetButtonAction(OnHeadButtonClicked);
+        hairSlot.SetButtonAction(OnHairButtonClicked);
+        torsoSlot.SetButtonAction(OnTorsoButtonClicked);
+        legsSlot.SetButtonAction(OnLegsButtonClicked);
+        feetSlot.SetButtonAction(OnFeetButtonClicked);
+        inventoryButtons = new List<InventoryButton>();
+        rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
+        signalBus.Subscribe<OnCharacterAvatarChanged>(UpdateItemsEffectText );
+    }
+
     void Start()
     {
-        headBt.onClick.AddListener(OnHeadButtonClicked);
-        faceBt.onClick.AddListener(OnFaceButtonClicked);
-        torsoBt.onClick.AddListener(OnTorsoButtonClicked);
-        legsBt.onClick.AddListener(OnLegsButtonClicked);
-        feetBt.onClick.AddListener(OnFeetButtonClicked);
-        inventoryButtons = new List<InventoryButton>();
+
+        inventoryCanvas.OnEnableAsObservable().Subscribe((unit => { OnSlotClosed(); }));
     }
+
+
 
     private void OnEnable()
     {
-        foreach (var characterItem in m_PlayerInventory.EquippedCharacterItems)
-        {
-            switch (characterItem)
-            {
-                case  HeadItem headItem:headBt.image.sprite =headItem.logoSprite;
-                    break;
-                case  FaceItem faceItem: faceBt.image.sprite = faceItem.logoSprite;
-                    break;
-                case  TorsoItem torsoItem: torsoBt.image.sprite = torsoItem.torsoSprite;
-                    break;
-                case  LegsItem legsItem:legsBt.image.sprite = legsItem.logoSprite;
-                        break;
-                case FeetItem feetItem: feetBt.image.sprite = feetItem.logoSprite;
-                    break;
-            }
-        }
-       
+        var avatar = characterAvatar;
+        var variantIndex = avatar.bodyItem.BodyIndex;
+        bodySlot.SetIconSprite(avatar.bodyItem.sprite);
+        bodySlot.SetRarenessSprite(GetRarenessSpriteByIndex(avatar.bodyItem.rareness));
+        headBSlot.SetIconSprite(avatar.headItem.sprite);
+        headBSlot.SetRarenessSprite(GetRarenessSpriteByIndex(avatar.headItem.rareness));
+        hairSlot.SetIconSprite(avatar.hairItem.sprite);
+        hairSlot.SetRarenessSprite(GetRarenessSpriteByIndex(avatar.hairItem.rareness));
+       torsoSlot.SetIconSprite(avatar.torsoItem.TorsoVariants[variantIndex]);
+        torsoSlot.SetRarenessSprite(GetRarenessSpriteByIndex(avatar.torsoItem.rareness));
+       legsSlot.SetIconSprite(avatar.legsItem.LegsVariants[variantIndex]);
+        legsSlot.SetRarenessSprite(GetRarenessSpriteByIndex(avatar.legsItem.rareness));
+       feetSlot.SetIconSprite (avatar.feetItem.sprite);              
+        feetSlot.SetRarenessSprite(GetRarenessSpriteByIndex(avatar.feetItem.rareness));
+        
+        playerName.text = PlayerDataManager.Instance.GetPlayerName().ToUpper();
+        SubsNum.text = PlayerDataManager.Instance.GetSubscribers().ToString();
+        UpdateItemsEffectText();
+
+
     }
 
-   
+    Sprite GetRarenessSpriteByIndex(Rareness rareness)
+    {
+        return rarenessSprites[(int) rareness];
+    }
 
-    private void SetEquippedPanelData(string description,string newStats,Sprite logoSprite,string itemName,string rarenessText)
+    void UpdateItemsEffectText()
+    {
+        var themesNames = Enum.GetNames(typeof(ThemeType));
+        var themesBounses= themesNames.ToDictionary(s=>s,k=>0f);
+        
+        var equippedItems = m_PlayerInventory.EquippedAvatar().GetThemesEffectItems();
+        foreach (var equippedItem in equippedItems)
+        {
+            foreach (var themeEffect in equippedItem.affectedTheme)
+            {
+                themesBounses[themeEffect.ThemeType.ToString()] += themeEffect.themePopularityFactor;
+            }            
+        }
+
+        equippedItemsEffect.text = null;
+        foreach (var themeBouns in themesBounses)
+        {
+            if (themeBouns.Value==0)
+            {
+                continue;
+            }
+            equippedItemsEffect.text += themeBouns.Key + "  : " + themeBouns.Value * 100 + "%" + "\n";
+        }
+    }
+
+    private void SetEquippedPanelData(string description,string newStats,Sprite logoSprite,string itemName,string rarenessText,Sprite rarenessSprite)
     {
         equippedText.text = description;
         equippedStatsText.text =newStats;
-        equippedImage.sprite = logoSprite;
+        equippedLogoImage.sprite = logoSprite;
+        equippedRarenessImage.sprite = rarenessSprite;
         equippedItemName.text = itemName;
         equippedItemRareness.text = rarenessText;
         equipPanel.SetActive(true);
     }
-    private void SetSelectedPanelData(string description,string newStats,Sprite logoSprite,string itemName,string rarenessText)
+    private void SetSelectedPanelData(string description,string newStats,Sprite logoSprite,string itemName,string rarenessText,Sprite rarenessSprite)
     {
         selectedText.text = description;
         selectedStatsText.text =newStats;
-        selectedImage.sprite = logoSprite;
+        selectedLogoImage.sprite = logoSprite;
+        selectedRarenessImgae.sprite = rarenessSprite;
         selectedItemName.text = itemName;
         selectedItemRareness.text = rarenessText;
         selectPanel.gameObject.SetActive(true);    }
@@ -89,18 +148,87 @@ public class CaharacterInventory_VC : MonoBehaviour
             }
         }
     }
-    public void OnHeadButtonClicked()
+
+    void OnSlotOpened()
     {
         inventoryTabView.gameObject.SetActive(true);
+        infoPanel.SetActive(false);
+        themeEffectPanel.SetActive(false);
+        characterPreview.SetActive(false);
+    }
+
+    void OnSlotClosed()
+    {
+        inventoryTabView.gameObject.SetActive(false);
+        infoPanel.SetActive(true);
+        themeEffectPanel.SetActive(true);
+        characterPreview.SetActive(true);
+        equipPanel.gameObject.SetActive(false);
+        selectPanel.SetActive(false);
+    }
+
+    private void OnBodyButtonClicked()
+    {
+        OnSlotOpened();
+        foreach (var button in inventoryButtons)
+        {
+            Destroy(button.gameObject);
+        }
+
+        inventoryButtons.Clear();
+        var equippedBody = characterAvatar.bodyItem;
+        SetEquippedPanelData(equippedBody.descriptionText, equippedBody.newStatsText, equippedBody.sprite,
+            equippedBody.name, equippedBody.rareness.ToString() + " " ,GetRarenessSpriteByIndex(equippedBody.rareness));
+
+        foreach (var item in m_PlayerInventory.CharacterItems)
+        {
+            if (item.GetType() != typeof(BodyItem))
+                continue;
+
+            BodyItem bodyItem = (BodyItem) item;
+
+            InventoryButton invBt =
+                Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
+                    .GetComponent<InventoryButton>();
+            invBt.Type = " ";
+            invBt.SetButtonSprites(bodyItem.sprite, GetRarenessSpriteByIndex(item.rareness));
+            invBt.SetButtonAction(() =>
+            {
+                equipBt.onClick.RemoveAllListeners();
+                equipBt.onClick.AddListener(() =>
+                {
+                    SetEquippedPanelData(bodyItem.descriptionText, bodyItem.newStatsText, bodyItem.sprite,
+                        bodyItem.name, bodyItem.rareness.ToString() + " " +
+                                      " ", GetRarenessSpriteByIndex(bodyItem.rareness));
+                    characterAvatar.bodyItem = bodyItem;
+                    m_PlayerInventory.ChangeAvatar(characterAvatar);
+                    OnSlotClosed();
+
+                });
+
+                SetSelectedPanelData(bodyItem.descriptionText, bodyItem.newStatsText, bodyItem.sprite, bodyItem.name,
+                    bodyItem.rareness.ToString() + " " , GetRarenessSpriteByIndex(bodyItem.rareness));
+
+                // unEquipBt.onClick.RemoveAllListeners();
+                // unEquipBt.onClick.AddListener(()=>);
+            });
+
+            inventoryButtons.Add(invBt);
+        }
+    }
+
+    public void OnHeadButtonClicked()
+    {
+        OnSlotOpened();
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedHead = m_PlayerInventory.GetEquippedItem<HeadItem>();
-        SetEquippedPanelData(equippedHead.descriptionText, equippedHead.newStatsText, equippedHead.logoSprite,
+        var equippedHead = characterAvatar.headItem;
+        SetEquippedPanelData(equippedHead.descriptionText, equippedHead.newStatsText, equippedHead.sprite,
             equippedHead.name, equippedHead.rareness.ToString() + " " +
-                               equippedHead.HeadItemType.ToString());
+                               equippedHead.HeadItemType.ToString(),GetRarenessSpriteByIndex(equippedHead.rareness));
 
         foreach (var  item in m_PlayerInventory.CharacterItems)
         {
@@ -113,20 +241,24 @@ public class CaharacterInventory_VC : MonoBehaviour
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
             invBt.Type = headItem.HeadItemType.ToString();
-            invBt.SetButtonLogo(headItem.logoSprite);
+            invBt.SetButtonSprites(headItem.sprite,GetRarenessSpriteByIndex(item.rareness));
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
                 equipBt.onClick.AddListener(()=>
                 {
-                    SetEquippedPanelData(headItem.descriptionText,headItem.newStatsText,headItem.logoSprite,headItem.name,headItem.rareness.ToString() + " " +
-                        headItem.HeadItemType.ToString());
-                    m_PlayerInventory.EquipCharacterItem(headItem);
+                    equipPanel.gameObject.SetActive(false);
+                    selectPanel.gameObject.SetActive(false);
+                    SetEquippedPanelData(headItem.descriptionText,headItem.newStatsText,headItem.sprite,headItem.name,headItem.rareness.ToString() + " " +
+                        headItem.HeadItemType.ToString(),GetRarenessSpriteByIndex(headItem.rareness));
+                    characterAvatar.headItem = headItem;
+                    m_PlayerInventory.ChangeAvatar(characterAvatar);
+                    OnSlotClosed();
 
                 });
      
-                SetSelectedPanelData(headItem.descriptionText,headItem.newStatsText,headItem.logoSprite,headItem.name,headItem.rareness.ToString() + " " +
-                    headItem.HeadItemType.ToString());
+                SetSelectedPanelData(headItem.descriptionText,headItem.newStatsText,headItem.sprite,headItem.name,headItem.rareness.ToString() + " " +
+                    headItem.HeadItemType.ToString(),GetRarenessSpriteByIndex(headItem.rareness));
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
@@ -135,8 +267,10 @@ public class CaharacterInventory_VC : MonoBehaviour
             inventoryButtons.Add(invBt);
         }
 
+        var names = Enum.GetNames(typeof(HeadItemType)).ToList();
+
         inventoryTabView.InitTabView(
-            new string[] {"All", HeadItemType.Hats.ToString(), HeadItemType.Hair_Style.ToString()},
+            names,
             ShowButtonsByItemType);
         inventoryTabView.SetButtonsTabVisibly(true);
         SetBackButtonBehaviour();
@@ -145,61 +279,66 @@ public class CaharacterInventory_VC : MonoBehaviour
 
     private void SetBackButtonBehaviour()
     {
-        backButton.onClick.RemoveAllListeners();
-
-        backButton.onClick.AddListener((() =>
-        {
-            characterPreview.gameObject.SetActive(true);
-
-            inventoryTabView.gameObject.SetActive(false);
-            equipPanel.SetActive(false);
-            selectPanel.SetActive(false);
-            backButton.onClick.AddListener(() =>
-            {
-                backButton.onClick.RemoveAllListeners();
-
-                inventoryCanvas.gameObject.SetActive(false);
-            });
-        }));
+        // backButton.onClick.RemoveAllListeners();
+        //
+        // backButton.onClick.AddListener((() =>
+        // {
+        //     infoPanel.SetActive(true);
+        //     characterPreview.SetActive(true);
+        //     themeEffectPanel.SetActive(true);
+        //
+        //     inventoryTabView.gameObject.SetActive(false);
+        //     equipPanel.SetActive(false);
+        //     selectPanel.SetActive(false);
+        //     backButton.onClick.AddListener(() =>
+        //     {
+        //         backButton.onClick.RemoveAllListeners();
+        //
+        //         inventoryCanvas.gameObject.SetActive(false);
+        //     });
+        // }));
     }
 
-     void OnFaceButtonClicked()
-    {
-       
-        inventoryTabView.gameObject.SetActive(true);
+     void OnHairButtonClicked()
+     {
+
+         OnSlotOpened();
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedFace = m_PlayerInventory.GetEquippedItem<FaceItem>();
-        SetEquippedPanelData(equippedFace.descriptionText, equippedFace.newStatsText, equippedFace.logoSprite,
-            equippedFace.name, equippedFace.rareness.ToString() + " " +
-                               equippedFace.FaceItemType.ToString());
+
+        var equippedHair = characterAvatar.hairItem;
+        SetEquippedPanelData(equippedHair.descriptionText, equippedHair.newStatsText, equippedHair.sprite,
+            equippedHair.name, equippedHair.rareness.ToString() + " " +
+                               equippedHair.hairItemType.ToString(),GetRarenessSpriteByIndex(equippedHair.rareness));
 
         foreach (var item in m_PlayerInventory.CharacterItems)
         {
-            if (item.GetType() != typeof(FaceItem))
+            if (item.GetType() != typeof(HairItem))
                 continue;
-            FaceItem faceItem =(FaceItem)item;
+            HairItem hairItem =(HairItem)item;
                 InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
-            invBt.Type = faceItem.FaceItemType.ToString();
-            invBt.SetButtonLogo(faceItem.logoSprite);
+            invBt.Type = hairItem.hairItemType.ToString();
+            invBt.SetButtonSprites(hairItem.sprite,GetRarenessSpriteByIndex(item.rareness));
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
                 equipBt.onClick.AddListener(()=>
                 {
-                    m_PlayerInventory.EquipCharacterItem(faceItem);
-                    SetEquippedPanelData(faceItem.descriptionText,faceItem.newStatsText,faceItem.logoSprite,faceItem.name,faceItem.rareness.ToString() + " " +
-                        faceItem.FaceItemType.ToString());
+                    characterAvatar.hairItem = hairItem;
+                    m_PlayerInventory.ChangeAvatar(characterAvatar);
+                    SetEquippedPanelData(hairItem.descriptionText,hairItem.newStatsText,hairItem.sprite,hairItem.name,hairItem.rareness.ToString() + " " +
+                        hairItem.hairItemType.ToString(),GetRarenessSpriteByIndex(hairItem.rareness));
+                    OnSlotClosed();
 
                 });
      
-                SetSelectedPanelData(faceItem.descriptionText,faceItem.newStatsText,faceItem.logoSprite,faceItem.name,faceItem.rareness.ToString() + " " +
-                    faceItem.FaceItemType.ToString());
+                SetSelectedPanelData(hairItem.descriptionText,hairItem.newStatsText,hairItem.sprite,hairItem.name,hairItem.rareness.ToString() + " " +
+                    hairItem.hairItemType.ToString(),GetRarenessSpriteByIndex(hairItem.rareness));
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
@@ -208,12 +347,11 @@ public class CaharacterInventory_VC : MonoBehaviour
             inventoryButtons.Add(invBt);
         }
 
+        var names = Enum.GetNames(typeof(HairItemType)).ToList();
+ 
+        
         inventoryTabView.InitTabView(
-            new string[]
-            {
-                "All", FaceItemType.Glasses.ToString(), FaceItemType.Masks.ToString(),
-                FaceItemType.Piercings.ToString(), FaceItemType.Bold_Makeup_Applications.ToString()
-            },
+            names,
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
         characterPreview.gameObject.SetActive(false);
@@ -221,17 +359,18 @@ public class CaharacterInventory_VC : MonoBehaviour
     }
 
      void OnTorsoButtonClicked()
-    {
-        inventoryTabView.gameObject.SetActive(true);
+     {
+         OnSlotOpened();
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedTorso = m_PlayerInventory.GetEquippedItem<TorsoItem>();
-        SetEquippedPanelData(equippedTorso.descriptionText, equippedTorso.newStatsText, equippedTorso.logoSprite,
+        var equippedTorso = characterAvatar.torsoItem;
+        int bodyIndex = characterAvatar.bodyItem.BodyIndex;
+        SetEquippedPanelData(equippedTorso.descriptionText, equippedTorso.newStatsText, equippedTorso.TorsoVariants[bodyIndex],
             equippedTorso.name, equippedTorso.rareness.ToString() + " " +
-                                equippedTorso.TorsoItemType.ToString());
+                                equippedTorso.TorsoItemType.ToString(),GetRarenessSpriteByIndex(equippedTorso.rareness));
 
         foreach (var item in m_PlayerInventory.CharacterItems)
         {
@@ -242,19 +381,22 @@ public class CaharacterInventory_VC : MonoBehaviour
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
             invBt.Type = torsoItem.TorsoItemType.ToString();
-            invBt.SetButtonLogo(torsoItem.logoSprite);
+            invBt.SetButtonSprites(torsoItem.TorsoVariants[bodyIndex],GetRarenessSpriteByIndex(item.rareness));
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
                 equipBt.onClick.AddListener(()=>
                 {
-                    m_PlayerInventory.EquipCharacterItem(torsoItem);
-                    SetEquippedPanelData(torsoItem.descriptionText,torsoItem.newStatsText,torsoItem.logoSprite,torsoItem.name,torsoItem.rareness.ToString() + " " +
-                        torsoItem.TorsoItemType.ToString());
+                    characterAvatar.torsoItem = torsoItem;
+                    m_PlayerInventory.ChangeAvatar(characterAvatar);
+                    SetEquippedPanelData(torsoItem.descriptionText,torsoItem.newStatsText,torsoItem.TorsoVariants[bodyIndex],torsoItem.name,torsoItem.rareness.ToString() + " " +
+                        torsoItem.TorsoItemType.ToString(),GetRarenessSpriteByIndex(torsoItem.rareness));
+                    OnSlotClosed();
+
                 });
      
-                SetSelectedPanelData(torsoItem.descriptionText,torsoItem.newStatsText,torsoItem.logoSprite,torsoItem.name,torsoItem.rareness.ToString() + " " +
-                    torsoItem.TorsoItemType.ToString());
+                SetSelectedPanelData(torsoItem.descriptionText,torsoItem.newStatsText,torsoItem.TorsoVariants[bodyIndex],torsoItem.name,torsoItem.rareness.ToString() + " " +
+                    torsoItem.TorsoItemType.ToString(),GetRarenessSpriteByIndex(torsoItem.rareness));
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
@@ -263,12 +405,9 @@ public class CaharacterInventory_VC : MonoBehaviour
             inventoryButtons.Add(invBt);
         }
 
-        inventoryTabView.InitTabView(
-            new string[]
-            {
-                "All", TorsoItemType.Jackets.ToString(), TorsoItemType.Tshirts.ToString(),
-               
-            },
+        var names = Enum.GetNames(typeof(TorsoItemType)).ToList();
+        names.Insert(0,"All");
+        inventoryTabView.InitTabView(names,
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
         characterPreview.gameObject.SetActive(false);
@@ -278,17 +417,18 @@ public class CaharacterInventory_VC : MonoBehaviour
     }
 
      void OnLegsButtonClicked()
-    {
-        inventoryTabView.gameObject.SetActive(true);
+     {
+         OnSlotOpened();
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedLegs = m_PlayerInventory.GetEquippedItem<LegsItem>();
-        SetEquippedPanelData(equippedLegs.descriptionText, equippedLegs.newStatsText, equippedLegs.logoSprite,
+        var equippedLegs = characterAvatar.legsItem;
+        int bodyIndex = characterAvatar.bodyItem.BodyIndex;
+        SetEquippedPanelData(equippedLegs.descriptionText, equippedLegs.newStatsText, equippedLegs.LegsVariants[bodyIndex],
             equippedLegs.name, equippedLegs.rareness.ToString() + " " +
-                               equippedLegs.LegsType.ToString());
+                               equippedLegs.LegsType.ToString(),GetRarenessSpriteByIndex(equippedLegs.rareness));
 
         foreach (var item in m_PlayerInventory.CharacterItems)
         {
@@ -300,19 +440,23 @@ public class CaharacterInventory_VC : MonoBehaviour
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
             invBt.Type = legsItem.LegsType.ToString();
-            invBt.SetButtonLogo(legsItem.logoSprite);
+            invBt.SetButtonSprites(legsItem.LegsVariants[bodyIndex],GetRarenessSpriteByIndex(item.rareness));
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
                 equipBt.onClick.AddListener(()=>
                 {
-                    m_PlayerInventory.EquipCharacterItem(legsItem);
-                    SetEquippedPanelData(legsItem.descriptionText,legsItem.newStatsText,legsItem.logoSprite,legsItem.name,legsItem.rareness.ToString() + " " +
-                        legsItem.LegsType.ToString());
+                    characterAvatar.legsItem = legsItem;
+                    m_PlayerInventory.ChangeAvatar(characterAvatar);
+                    SetEquippedPanelData(legsItem.descriptionText,legsItem.newStatsText,legsItem.LegsVariants[bodyIndex],legsItem.name,legsItem.rareness.ToString() + " " +
+                        legsItem.LegsType.ToString(),GetRarenessSpriteByIndex(legsItem.rareness));
+                    
+                    OnSlotClosed();
+
                 });
      
-                SetSelectedPanelData(legsItem.descriptionText,legsItem.newStatsText,legsItem.logoSprite,legsItem.name,legsItem.rareness.ToString() + " " +
-                    legsItem.LegsType.ToString());
+                SetSelectedPanelData(legsItem.descriptionText,legsItem.newStatsText,legsItem.LegsVariants[bodyIndex],legsItem.name,legsItem.rareness.ToString() + " " +
+                    legsItem.LegsType.ToString(),GetRarenessSpriteByIndex(legsItem.rareness));
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
@@ -321,12 +465,9 @@ public class CaharacterInventory_VC : MonoBehaviour
             inventoryButtons.Add(invBt);
         }
 
+        var names = Enum.GetNames(typeof(LegsItemType)).ToList();
         inventoryTabView.InitTabView(
-            new string[]
-            {
-                "All", LegsItemType.Pants.ToString(),LegsItemType.Shorts.ToString(),LegsItemType.Bathing_Suits.ToString()
-               
-            },
+            names,
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
         characterPreview.gameObject.SetActive(false);
@@ -336,18 +477,18 @@ public class CaharacterInventory_VC : MonoBehaviour
     }
 
      void OnFeetButtonClicked()
-    {
-      
-        inventoryTabView.gameObject.SetActive(true);
+     {
+
+         OnSlotOpened();
         foreach (var button in inventoryButtons)
         {
             Destroy(button.gameObject);
         }
         inventoryButtons.Clear();
-        var equippedFeet = m_PlayerInventory.GetEquippedItem<FeetItem>();
-        SetEquippedPanelData(equippedFeet.descriptionText, equippedFeet.newStatsText, equippedFeet.logoSprite,
+        var equippedFeet = characterAvatar.feetItem;
+        SetEquippedPanelData(equippedFeet.descriptionText, equippedFeet.newStatsText, equippedFeet.sprite,
             equippedFeet.name, equippedFeet.rareness.ToString() + " " +
-                               equippedFeet.FeetItemType.ToString());
+                               equippedFeet.FeetItemType.ToString(), GetRarenessSpriteByIndex(equippedFeet.rareness));
 
         foreach (var  item in m_PlayerInventory.CharacterItems)
         {
@@ -358,20 +499,22 @@ public class CaharacterInventory_VC : MonoBehaviour
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
             invBt.Type = feetItem.FeetItemType.ToString();
-            invBt.SetButtonLogo(feetItem.logoSprite);
+            invBt.SetButtonSprites(feetItem.sprite,GetRarenessSpriteByIndex(item.rareness));
             invBt.SetButtonAction(() =>
             {
                 equipBt.onClick.RemoveAllListeners();
                 equipBt.onClick.AddListener(()=>
                 {
-                    SetEquippedPanelData(feetItem.descriptionText,feetItem.newStatsText,feetItem.logoSprite,feetItem.name,feetItem.rareness.ToString() + " " +
-                        feetItem.FeetItemType.ToString());
-                    m_PlayerInventory.EquipCharacterItem(feetItem);
+                    SetEquippedPanelData(feetItem.descriptionText,feetItem.newStatsText,feetItem.sprite,feetItem.name,feetItem.rareness.ToString() + " " +
+                        feetItem.FeetItemType.ToString(),GetRarenessSpriteByIndex(feetItem.rareness));
+                    characterAvatar.feetItem = feetItem;
+                    m_PlayerInventory.ChangeAvatar(characterAvatar);
+                    OnSlotClosed();
 
                 });
      
-                SetSelectedPanelData(feetItem.descriptionText,feetItem.newStatsText,feetItem.logoSprite,feetItem.name,feetItem.rareness.ToString() + " " +
-                    feetItem.FeetItemType.ToString());
+                SetSelectedPanelData(feetItem.descriptionText,feetItem.newStatsText,feetItem.sprite,feetItem.name,feetItem.rareness.ToString() + " " +
+                    feetItem.FeetItemType.ToString(),GetRarenessSpriteByIndex(feetItem.rareness));
 
                 // unEquipBt.onClick.RemoveAllListeners();
                 // unEquipBt.onClick.AddListener(()=>);
@@ -379,13 +522,10 @@ public class CaharacterInventory_VC : MonoBehaviour
 
             inventoryButtons.Add(invBt);
         }
+        var names = Enum.GetNames(typeof(FeetItemType)).ToList();
 
         inventoryTabView.InitTabView(
-            new string[]
-            {
-                "All", FeetItemType.Boots.ToString(), FeetItemType.Sandals.ToString(), FeetItemType.Sneakers.ToString(), FeetItemType.Ankle_Bracelets.ToString()
-               
-            },
+          names,
             ShowButtonsByItemType);
            
 
@@ -397,8 +537,5 @@ public class CaharacterInventory_VC : MonoBehaviour
       
     }
 
-    void Update()
-    {
-        
-    }
+
 }

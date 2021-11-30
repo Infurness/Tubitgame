@@ -11,10 +11,12 @@ public class VideoInfo_VC : MonoBehaviour
 {
     private SignalBus signalBus;
     private YouTubeVideoManager youTubeVideoManager;
+    private EnergyManager energyManger;
 
     private Video videoRef;
     private string videoName;
     private ThemeType[] themeTypes;
+    private VideoQuality selectedQuality;
     private float internalRecordTime;
     
     [SerializeField] private TMP_Text nameText;
@@ -25,6 +27,8 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private TMP_Text commentsText;
     [SerializeField] private GameObject subscribersPanel;
     [SerializeField] private GameObject viralVisual;
+    [SerializeField] private TMP_Text qualityText;
+    [SerializeField] private TMP_Text energyCostText;
 
     [SerializeField] GameObject[] themeHolders;
 
@@ -33,10 +37,13 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private GameObject skipButtonPanel;
 
     [SerializeField] private Image videoProgressBar;
+    [SerializeField] private TMP_Text videoProgressBarCountText;
+    [SerializeField] private TMP_Text videoProgressText;
 
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button skipButton;
     [SerializeField] private Button publishButton;
+    [SerializeField] private GameObject moneyButtonPanel;
     [SerializeField] private Button moneyButton;
     // Start is called before the first frame update
     void Start ()
@@ -49,6 +56,7 @@ public class VideoInfo_VC : MonoBehaviour
 
         publishButton.onClick.AddListener (PublishVideo);
         cancelButton.onClick.AddListener (CancelVideo);
+        moneyButton.onClick.AddListener (RecollectMoney);
     }
 
     // Update is called once per frame
@@ -60,7 +68,10 @@ public class VideoInfo_VC : MonoBehaviour
     {
         CheckVirality ();
         publishButton.gameObject.SetActive (false);
-        moneyButton.gameObject.SetActive (true);
+        skipButtonPanel.SetActive (false);
+        cancelButton.gameObject.SetActive (false);
+        publishButton.gameObject.SetActive (false);
+        moneyButtonPanel.SetActive (true);
         statsPanel.SetActive (true);
         subscribersPanel.SetActive (true);
         progressBarPanel.SetActive (false);
@@ -80,18 +91,23 @@ public class VideoInfo_VC : MonoBehaviour
             }
         }
     }
-    public void SetReferences (SignalBus _signalBus, YouTubeVideoManager _youTubeVideoManager)
+    public void SetReferences (SignalBus _signalBus, YouTubeVideoManager _youTubeVideoManager, EnergyManager _energyManager)
     {
         signalBus = _signalBus;
         youTubeVideoManager = _youTubeVideoManager;
+        energyManger = _energyManager;
     }
-    public void SetVideoInfoUp (string _name, float recordTime, ThemeType[] videoThemes)
+    public void SetVideoInfoUp (string _name, float recordTime, ThemeType[] videoThemes, VideoQuality quality)
     {
         videoRef = null;
         videoName = _name;
         nameText.text = videoName;
         themeTypes = videoThemes;
+        selectedQuality = quality;
         internalRecordTime = recordTime;
+        qualityText.text =  string.Concat (Enum.GetName (quality.GetType (), quality).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
+        energyCostText.text =$"{energyManger.GetVideoEnergyCost (quality)}";
+
         SetThemes (themeTypes);
     }
     public void SetVideoInfoUp(Video video)
@@ -102,11 +118,13 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if(videoRef!=null)
         {
-            moneyText.text = $"{videoRef.videoSoftCurrency}$";
-            viewsText.text = $"Views\n{videoRef.views}";
-            likesText.text = $"Likes\n{videoRef.likes}";
-            subscribersText.text = $"Subscribers gained: {videoRef.newSubscribers}"; 
-            commentsText.text = $"Comments\n{videoRef.comments}"; 
+            videoName = videoRef.name;
+            nameText.text = videoName;
+            moneyText.text = $"{videoRef.videoSoftCurrency}";
+            viewsText.text = $"{videoRef.views}";
+            likesText.text = $"{videoRef.likes}";
+            subscribersText.text = $"+{videoRef.newSubscribers}"; 
+            commentsText.text = $"{videoRef.comments}"; 
         }
         else
         {
@@ -116,25 +134,31 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void RecollectMoney ()
     {
-        moneyText.text = "0$";
+        moneyText.text = "0";
         signalBus.Fire<GetMoneyFromVideoSignal> (new GetMoneyFromVideoSignal () { videoName = videoName});
     } 
     void StartRecordingVideo ()
     {
         skipButtonPanel.SetActive (true);
         progressBarPanel.SetActive (true);
+        statsPanel.SetActive (false);
         cancelButton.gameObject.SetActive (true);
         StartCoroutine (FillTheRecordImage (internalRecordTime));  
     }
     void VideoReadyToPublish ()
     {
+        videoProgressBarCountText.text = $"Completed";
+        videoProgressText.text = $"This video is ready!";
         skipButtonPanel.SetActive (false);
         cancelButton.gameObject.SetActive (false);
         publishButton.gameObject.SetActive (true);
+        youTubeVideoManager.SetIsRecording (false);
     }
     void PublishVideo ()
     {
-        signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes });
+        if (youTubeVideoManager.IsPlayerResting ())
+            return;
+        signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality });
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
         InitialState ();
 
@@ -158,6 +182,8 @@ public class VideoInfo_VC : MonoBehaviour
         float tACC = 0;
         while (tACC < time)
         {
+            int secondsLeft = (int)(time - tACC);
+            videoProgressBarCountText.text =$"0{secondsLeft}s"; //Dummy
             yield return new WaitForEndOfFrame ();
             tACC += Time.deltaTime;
             videoProgressBar.fillAmount = tACC / time;

@@ -11,6 +11,7 @@ public class YouTubeVideoManager : MonoBehaviour
     [Inject] private PlayerDataManager playerDataManger;
     [Inject] private AlgorithmManager algorithmManager;
     [Inject] private ThemesManager themesManager;
+    [Inject] private EnergyManager energyManager;
 
     bool isRecording;
 
@@ -19,6 +20,8 @@ public class YouTubeVideoManager : MonoBehaviour
         _signalBus.Subscribe<PublishVideoSignal> (CreateVideo);
         _signalBus.Subscribe<StartRecordingSignal> (() => SetIsRecording (true));
         _signalBus.Subscribe<CancelVideoRecordingSignal> (() => SetIsRecording (false));
+        _signalBus.Subscribe<GetMoneyFromVideoSignal> (RecollectVideoMoney);
+        _signalBus.Subscribe<LevelUpSignal> (playerDataManger.GetLevelUpRewards);
     }
 
     void Update()
@@ -29,7 +32,7 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         return isRecording;
     }
-    void SetIsRecording (bool recording)
+    public void SetIsRecording (bool recording)
     {
         isRecording = recording;
     }
@@ -40,7 +43,8 @@ public class YouTubeVideoManager : MonoBehaviour
         Video newVideo = new Video (GameClock.Instance.Now);
         newVideo.name = videoName;
         newVideo.themes = (ThemeType[]) videoThemes.Clone();
-        newVideo.quality = playerDataManger.GetQuality();
+        newVideo.selectedQuality = signal.videoSelectedQuality;
+        newVideo.quality = playerDataManger.GetQuality(); //Dummy not yet implement lacks of themes quality and selected quality
         if (Random.Range (0, 101) >= 95) //5% chance of being viral
         {
             newVideo.isViral = true;
@@ -61,11 +65,11 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
         newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
         newVideo.videoMaxSoftCurrency = algorithmManager.GetVideoSoftCurrency(videoViews);
-        newVideo.lifeTimeDays = Random.Range(1, 2);
+        float qualityNumber = (float)newVideo.selectedQuality / (float) Enum.GetValues (typeof(VideoQuality)).Length * 2;
+        newVideo.lifeTimeHours = (float)(algorithmManager.GetVideoLifetime (videoViews, qualityNumber, 0.9f))/3600f; //Fromseconds to hours
         newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
 
-        isRecording = false;
         _signalBus.Fire<EndPublishVideoSignal> ();
     }
     public string GetVideoNameByTheme (ThemeType[] _themeTypes)
@@ -94,12 +98,17 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         return GetVideoByName (_name).videoSoftCurrency;
     }
-    public ulong RecollectVideoMoney (string _name)
+    void RecollectVideoMoney (GetMoneyFromVideoSignal signal)
     {
-        return playerDataManger.RecollectVideoMoney (_name);
+        playerDataManger.RecollectVideoMoney (signal.videoName);
+        _signalBus.Fire<UpdateSoftCurrencySignal> ();
     }
-    int GetTimeHour ()
+    int GetTimeHour () //Dummy Not being used
     {
         return GameClock.Instance.Now.Hour;
+    }
+    public bool IsPlayerResting ()
+    {
+        return energyManager.GetPlayerIsResting ();
     }
 }
