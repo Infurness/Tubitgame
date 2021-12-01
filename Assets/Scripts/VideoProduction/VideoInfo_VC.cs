@@ -74,11 +74,12 @@ public class VideoInfo_VC : MonoBehaviour
         skipButtonPanel.SetActive (false);
         cancelButton.gameObject.SetActive (false);
         publishButton.gameObject.SetActive (false);
-        moneyButtonPanel.SetActive (true);
+        if (moneyButtonPanel != null)
+            moneyButtonPanel.SetActive (true);
         statsPanel.SetActive (true);
         subscribersPanel.SetActive (true);
         progressBarPanel.SetActive (false);
-        if(videoRef!=null)
+        if (videoRef != null)
             SetThemes (videoRef.themes);
     }
     public string GetVideoName ()
@@ -179,9 +180,8 @@ public class VideoInfo_VC : MonoBehaviour
 
         if (AdsManager.Instance.IsAdLoaded ())
         {
-            signalBus.Subscribe<FinishedViewsBonusRewardSignal> (PublishVideo);
-            adsRewardsManager.ViewsBonusReward (); 
-            //signalBus.Fire<FinishedViewsBonusRewardSignal> (new FinishedViewsBonusRewardSignal ());
+            signalBus.Subscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);
+            signalBus.Fire<OpenDoubleViewsAdSignal> ();
         }
         else
         {
@@ -190,12 +190,12 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void PublishVideo ()
     {
-        signalBus.TryUnsubscribe<FinishedViewsBonusRewardSignal> (PublishVideo);
+        signalBus.TryUnsubscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);       
         signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality});
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
-        //InitialState ();
+        //InitialState (); //This line makes an android build crash when being executed after watching a reward ad
 
-        //UpdateVideoInfo ();
+        UpdateVideoInfo ();
     }
 
     void CancelVideo ()
@@ -206,7 +206,7 @@ public class VideoInfo_VC : MonoBehaviour
 
     void CheckVirality ()
     {
-        if (videoRef.isViral)
+        if (videoRef!=null && videoRef.isViral)
             viralVisual.SetActive (true);
     }
     public void RestartProductionBar ()

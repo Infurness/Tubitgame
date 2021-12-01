@@ -36,10 +36,16 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private GameObject energyTimePanel;
     [SerializeField] private Button energyTimePanelButton;
 
+    [SerializeField] private GameObject adsDefaultPanelPopUp;
+    [SerializeField] private TMP_Text adsPanelText;
+    [SerializeField] private Button adsDefaultPanelCancelButton;
+
     // Start is called before the first frame update
     void Start()
     {
         signalBus.Subscribe<OpenDefaultMessagePopUpSignal> (OpenDefaultDisclaimer);
+        signalBus.Subscribe<OpenAdsDefaultPopUpSignal> (OpenAdsDefaultPanel);
+        signalBus.Subscribe<CloseAdsDefaultPopUpSignal> (CloseAdsDefaultPanel);
         signalBus.Subscribe<OpenThemeSelectorPopUpSignal> (OpenThemeSelector);
         signalBus.Subscribe<ConfirmThemesSignal> (CloseThemeSelector);
         signalBus.Subscribe<OpenSettingPanelSignal> (OpenSettings);
@@ -48,6 +54,7 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Subscribe<LevelUpSignal> (OpenLevelUp);
 
         defaultDisclaimerPanelCloseButton.onClick.AddListener (CloseDefaultDisclaimer);
+        adsDefaultPanelCancelButton.onClick.AddListener (CancelAdsDefaultPanel);
         themeSelectionPanelCloseButton.onClick.AddListener (CloseThemeSelector);
         settingsPanelCloseButton.onClick.AddListener (CloseSettings);
         foreach(Button button in deleteAccountPanelCloseButtons)
@@ -71,6 +78,7 @@ public class PopUps_VC : MonoBehaviour
         CloseDefaultDisclaimer ();
         energyInventoryPanel.SetActive (false);
         energyTimePanel.SetActive (false);
+        CloseAdsDefaultPanel ();
     }
 
     void OpenDefaultDisclaimer(OpenDefaultMessagePopUpSignal signal)
@@ -177,5 +185,22 @@ public class PopUps_VC : MonoBehaviour
     void OpenCloseEnergyTimeLeftPanel ()
     {
         energyTimePanel.SetActive (!energyTimePanel.activeSelf);
+    }
+
+    void OpenAdsDefaultPanel (OpenAdsDefaultPopUpSignal signal)
+    {
+        adsDefaultPanelPopUp.SetActive (true);
+        StartCoroutine (OpenPanelAnimation (adsDefaultPanelPopUp));
+        adsPanelText.text = signal.message;
+    }
+    void CloseAdsDefaultPanel ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (false);
+        adsDefaultPanelPopUp.SetActive (false);
+    }
+    void CancelAdsDefaultPanel ()
+    {
+        signalBus.Fire<FinishedAdVisualitationRewardSignal> ();
+        CloseAdsDefaultPanel ();
     }
 }

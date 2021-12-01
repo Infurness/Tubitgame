@@ -167,6 +167,6 @@ public class AdsRewardsManager : MonoBehaviour
     {
         signalBus.TryUnsubscribe<GrantRewardSignal> (ViewsBonusAdCompletedReward);
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (NoViewsBonusReward);
-        signalBus.Fire<FinishedViewsBonusRewardSignal> ();
+        signalBus.Fire<FinishedAdVisualitationRewardSignal> ();
     }
 }

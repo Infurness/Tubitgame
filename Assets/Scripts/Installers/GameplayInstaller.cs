@@ -43,6 +43,8 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<UpdateRankSignal> ();
         Container.DeclareSignal<OpenLevelUpPanelSignal> ();
         Container.DeclareSignal<OpenDefaultMessagePopUpSignal> ();
+        Container.DeclareSignal<CloseAdsDefaultPopUpSignal> ();
+        Container.DeclareSignal<OpenAdsDefaultPopUpSignal> ();
         Container.DeclareSignal<ChangeBackButtonSignal> ();
         Container.DeclareSignal<OpenEnergyInventorySignal> ();
         Container.DeclareSignal<UseEnergyItemSignal> ();

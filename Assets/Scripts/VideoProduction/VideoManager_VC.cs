@@ -231,7 +231,7 @@ public class VideoManager_VC : MonoBehaviour
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager, adsRewardsManager);
         float qualityNumber = (float)selectedQuality / (float)Enum.GetValues (typeof (VideoQuality)).Length * 2;
-        int secondsToProduce = algorithmManager.GetVideoSecondsToBeProduced (qualityNumber, selectedThemes.Length);
+        int secondsToProduce = 1;// algorithmManager.GetVideoSecondsToBeProduced (qualityNumber, selectedThemes.Length); Dummy for testing
         vc.SetVideoInfoUp (newVideoName,
                             secondsToProduce,
                             selectedThemes,

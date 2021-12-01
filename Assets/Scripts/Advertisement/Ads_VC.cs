@@ -9,21 +9,56 @@ public class Ads_VC : MonoBehaviour
     [Inject] SignalBus signalBus;
     [Inject] AdsRewardsManager adsRewardsManager;
 
-    [SerializeField] Button showAdButton;
-    bool isAdLoaded;
+    [SerializeField] Button popUpConfirmButton;
+
     // Start is called before the first frame update
     void Start()
     {
-        showAdButton.onClick.AddListener (adsRewardsManager.SoftCurrencyReward);
-        signalBus.Subscribe<RewardAdLoadedSignal> (EnableAdButton);
-        signalBus.Subscribe<StartShowingAdSignal> (DisableAddButton);
+        signalBus.Subscribe<OpenSoftCurrencyAdSignal> (OpenSoftCurrencyAd);
+        signalBus.Subscribe<OpenDoubleViewsAdSignal> (OpenDoubleViewsAd);
     }
-    void EnableAdButton ()
+    void ClosePopUp ()
     {
-        showAdButton.interactable = true;
+        signalBus.Fire<CloseAdsDefaultPopUpSignal> ();
     }
-    void DisableAddButton ()
+    void OpenSoftCurrencyAd ()
     {
-        showAdButton.interactable = false;
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal { message = "Watch an Ad to recieve a x4 reward?"});
+        popUpConfirmButton.onClick.RemoveAllListeners ();
+        popUpConfirmButton.onClick.AddListener (adsRewardsManager.SoftCurrencyReward);
+        popUpConfirmButton.onClick.AddListener (ClosePopUp);
+    }
+    void OpenHardCurrencyAd ()
+    {
+        popUpConfirmButton.onClick.RemoveAllListeners ();
+        popUpConfirmButton.onClick.AddListener (adsRewardsManager.HardCurrencyReward);
+        popUpConfirmButton.onClick.AddListener (ClosePopUp);
+    }
+    void OpenThemeBonusAd ()
+    {
+        popUpConfirmButton.onClick.RemoveAllListeners ();
+        popUpConfirmButton.onClick.AddListener (adsRewardsManager.ThemeBonusReward);
+        popUpConfirmButton.onClick.AddListener (ClosePopUp);
+    }
+    void OpenEnergyAd ()
+    {
+        popUpConfirmButton.onClick.RemoveAllListeners ();
+        popUpConfirmButton.onClick.AddListener (adsRewardsManager.EnergyReward);
+        popUpConfirmButton.onClick.AddListener (ClosePopUp);
+    }
+
+    void OpenVideoShortenAd ()
+    {
+        popUpConfirmButton.onClick.RemoveAllListeners ();
+        //popUpConfirmButton.onClick.AddListener (adsRewardsManager.VideoShortenReward);
+        popUpConfirmButton.onClick.AddListener (ClosePopUp);
+    }
+
+    void OpenDoubleViewsAd ()
+    {
+        signalBus.Fire (new OpenAdsDefaultPopUpSignal { message = "Watch an Ad to double the views for this video" });
+        popUpConfirmButton.onClick.RemoveAllListeners ();
+        popUpConfirmButton.onClick.AddListener (adsRewardsManager.ViewsBonusReward);
+        popUpConfirmButton.onClick.AddListener (ClosePopUp);
     }
 }

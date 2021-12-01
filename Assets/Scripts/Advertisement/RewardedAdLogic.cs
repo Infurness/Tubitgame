@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Advertisements;
 using Zenject;
 
-public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener,IUnityAdsListener
+public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener, IUnityAdsListener
 {
     [Inject] SignalBus signalBus;
 

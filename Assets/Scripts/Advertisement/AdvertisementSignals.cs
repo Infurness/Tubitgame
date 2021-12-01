@@ -27,7 +27,27 @@ public class NotGrantedRewardSignal
 
 }
 
-public class FinishedViewsBonusRewardSignal
+public class FinishedAdVisualitationRewardSignal
+{
+
+}
+
+public class OpenSoftCurrencyAdSignal
+{
+
+}
+
+public class OpenHardCurrencyAdSignal
+{
+
+}
+
+public class OpenEnergyAdSignal
+{
+
+}
+
+public class OpenDoubleViewsAdSignal
 {
 
 }

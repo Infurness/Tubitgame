@@ -149,6 +149,14 @@ public class OpenDefaultMessagePopUpSignal
     public string message;
 }
 
+public class OpenAdsDefaultPopUpSignal
+{
+    public string message;
+}
+public class CloseAdsDefaultPopUpSignal
+{
+
+}
 public class ChangeBackButtonSignal
 {
     public bool changeToHome;
