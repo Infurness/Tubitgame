@@ -7,6 +7,7 @@ using Zenject;
 public class Shop_VC : MonoBehaviour
 {
     [Inject] private SignalBus _signalBus;
+    [SerializeField] private GameObject shopPanel;
     
     void Start()
     {
