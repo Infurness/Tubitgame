@@ -12,10 +12,10 @@ public class AdsRewardsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        InvokeRepeating ("RandomReward", 60, 300);
     }
 
-    int GetSoftCurrencyBonus ()
+    public int GetSoftCurrencyBonus ()
     {
        return 10 * (xpManager.GetPlayerLevel ()+1);
     }
@@ -41,7 +41,7 @@ public class AdsRewardsManager : MonoBehaviour
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (NoSoftCurrencyReward);
     }
 
-    int GetHardCurrencyBonus ()
+    public int GetHardCurrencyBonus ()
     {
         return 10 * (xpManager.GetPlayerLevel () + 1);
     }
@@ -67,7 +67,7 @@ public class AdsRewardsManager : MonoBehaviour
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (NoHardCurrencyReward);
     }
 
-    float GetThemeBonusReward ( int rewardValue)
+    public float GetThemeBonusReward ( int rewardValue)
     {
         return (0.1f * xpManager.GetPlayerLevel ())/ rewardValue;
     }
@@ -91,7 +91,7 @@ public class AdsRewardsManager : MonoBehaviour
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (NoThemeBonusReward);
     }
 
-    int GetEnergyBonus ()
+    public int GetEnergyBonus ()
     {
         return 15;
     }
@@ -168,5 +168,22 @@ public class AdsRewardsManager : MonoBehaviour
         signalBus.TryUnsubscribe<GrantRewardSignal> (ViewsBonusAdCompletedReward);
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (NoViewsBonusReward);
         signalBus.Fire<FinishedAdVisualitationRewardSignal> ();
+    }
+
+    void RandomReward()
+    {
+        int randomNumber = UnityEngine.Random.Range (0,101);
+        if (randomNumber < 40)
+        {
+            signalBus.Fire<OpenSoftCurrencyAdSignal> ();
+        }
+        else if(randomNumber < 75)
+        {
+            signalBus.Fire<OpenThemeBonusAdSignal> ();
+        }
+        else
+        {
+            signalBus.Fire<OpenHardCurrencyAdSignal> ();
+        }
     }
 }

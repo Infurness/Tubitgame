@@ -44,7 +44,12 @@ public class GlobalInstaller : MonoInstaller
         Container.DeclareSignal<GrantRewardSignal> ();
         Container.DeclareSignal<NotGrantedRewardSignal> (); 
         Container.DeclareSignal<FinishedAdVisualitationRewardSignal> ();
+
         Container.DeclareSignal<OpenSoftCurrencyAdSignal> ();
+        Container.DeclareSignal<OpenHardCurrencyAdSignal> ();
+        Container.DeclareSignal<OpenThemeBonusAdSignal> ();
+        Container.DeclareSignal<OpenEnergyAdSignal> ();
+        Container.DeclareSignal<OpenTimeShortenAdSignal> ();
         Container.DeclareSignal<OpenDoubleViewsAdSignal> ();
 
         //Dependencies

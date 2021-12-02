@@ -41,12 +41,18 @@ public class OpenHardCurrencyAdSignal
 {
 
 }
+public class OpenThemeBonusAdSignal
+{
 
+}
 public class OpenEnergyAdSignal
 {
 
 }
-
+public class OpenTimeShortenAdSignal
+{
+    public UnpublishedVideo video;
+}
 public class OpenDoubleViewsAdSignal
 {
 
