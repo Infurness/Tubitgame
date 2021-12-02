@@ -9,5 +9,9 @@ namespace Customizations
         public Rareness rareness=Rareness.Common;
         [TextArea]
         public string descriptionText;
+        
+        public PriceType PriceType;
+        public short HCPrice;
+        public short SCPrice;
     }
 }
