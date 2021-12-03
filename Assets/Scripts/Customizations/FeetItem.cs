@@ -15,7 +15,7 @@ namespace Customizations
         Sneakers,
         Sandals,
         Boots,
-        Ankle_Bracelets
+        Bracelets
     }
 }
 

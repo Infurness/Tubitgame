@@ -15,6 +15,7 @@ public class CharacterRender : MonoBehaviour
     [SerializeField] private SpriteRenderer feetRender;
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory _playerInventory;
+    [SerializeField] private Sprite defaultMaleHead, defaultFemaleHead,defaultMaleHair,defaultFemaleHair;
     
     
     private void Start()
@@ -34,11 +35,16 @@ public class CharacterRender : MonoBehaviour
     {
       
         int variantIndex = avatar.bodyItem.BodyIndex;
-        headRender.sprite =avatar.headItem.sprite;
-        hairRender.sprite =avatar.hairItem.sprite;
-        torsoRender.sprite = avatar.torsoItem.TorsoVariants[variantIndex];
-        legsRender.sprite = avatar.legsItem.LegsVariants[variantIndex];
-        feetRender.sprite =avatar.feetItem.sprite;
+        var gender = avatar.bodyItem.GenderItemType; 
+        Sprite defaultHeadSprite= avatar.bodyItem.GenderItemType ==GenderItemType.Male ? defaultMaleHead : defaultFemaleHead ;
+        Sprite defaultHairSprite= avatar.bodyItem.GenderItemType ==GenderItemType.Male ? defaultMaleHair : defaultFemaleHair ;
+        bodyRenderer.sprite = avatar.bodyItem.sprite;
+        headRender.sprite = avatar.headItem.GenderItemType==gender ? avatar.headItem.sprite:defaultHeadSprite;
+        hairRender.sprite =avatar.hairItem.GenderItemType==gender ? avatar.hairItem.sprite:defaultHairSprite;
+        torsoRender.sprite =avatar.torsoItem.GenderItemType==gender ? avatar.torsoItem.TorsoVariants[variantIndex]:null;
+        legsRender.sprite =avatar.legsItem.GenderItemType==gender ? avatar.legsItem.LegsVariants[variantIndex]:null;
+        feetRender.sprite =avatar.legsItem.GenderItemType==gender ? avatar.feetItem.sprite:null;
+        
     }
     
     
