@@ -37,6 +37,7 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         isRecording = recording;
     }
+   
     private void CreateVideo (PublishVideoSignal signal)
     {
         string videoName = signal.videoName;

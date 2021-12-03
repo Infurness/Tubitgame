@@ -12,6 +12,7 @@ public class VideoInfo_VC : MonoBehaviour
     private SignalBus signalBus;
     private YouTubeVideoManager youTubeVideoManager;
     private EnergyManager energyManger;
+    private AdsRewardsManager adsRewardsManager;
 
     private Video videoRef;
     private string videoName;
@@ -56,7 +57,7 @@ public class VideoInfo_VC : MonoBehaviour
         else
             InitialState ();
 
-        publishButton.onClick.AddListener (PublishVideo);
+        publishButton.onClick.AddListener (AdBeforeVideoPublish);
         cancelButton.onClick.AddListener (CancelVideo);
         moneyButton.onClick.AddListener (RecollectMoney);
     }
@@ -73,11 +74,13 @@ public class VideoInfo_VC : MonoBehaviour
         skipButtonPanel.SetActive (false);
         cancelButton.gameObject.SetActive (false);
         publishButton.gameObject.SetActive (false);
-        moneyButtonPanel.SetActive (true);
+        if (moneyButtonPanel != null)
+            moneyButtonPanel.SetActive (true);
         statsPanel.SetActive (true);
         subscribersPanel.SetActive (true);
         progressBarPanel.SetActive (false);
-        SetThemes (videoRef.themes);
+        if (videoRef != null)
+            SetThemes (videoRef.themes);
     }
     public string GetVideoName ()
     {
@@ -97,11 +100,12 @@ public class VideoInfo_VC : MonoBehaviour
             }
         }
     }
-    public void SetReferences (SignalBus _signalBus, YouTubeVideoManager _youTubeVideoManager, EnergyManager _energyManager)
+    public void SetReferences (SignalBus _signalBus, YouTubeVideoManager _youTubeVideoManager, EnergyManager _energyManager, AdsRewardsManager _adsRewardsManager)
     {
         signalBus = _signalBus;
         youTubeVideoManager = _youTubeVideoManager;
         energyManger = _energyManager;
+        adsRewardsManager = _adsRewardsManager;
     }
     public void SetVideoInfoUp (string _name, float recordTime, ThemeType[] videoThemes, VideoQuality quality)
     {
@@ -137,7 +141,8 @@ public class VideoInfo_VC : MonoBehaviour
             viewsText.text = $"{videoRef.views}";
             likesText.text = $"{videoRef.likes}";
             subscribersText.text = $"+{videoRef.newSubscribers}"; 
-            commentsText.text = $"{videoRef.comments}"; 
+            commentsText.text = $"{videoRef.comments}";
+            qualityText.text = string.Concat (Enum.GetName (videoRef.selectedQuality.GetType (), videoRef.selectedQuality).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
         }
         else
         {
@@ -168,13 +173,27 @@ public class VideoInfo_VC : MonoBehaviour
         publishButton.gameObject.SetActive (true);
         youTubeVideoManager.SetIsRecording (false);
     }
-    void PublishVideo ()
+    private void AdBeforeVideoPublish ()
     {
         if (youTubeVideoManager.IsPlayerResting ())
             return;
-        signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality });
+
+        if (AdsManager.Instance.IsAdLoaded ())
+        {
+            signalBus.Subscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);
+            signalBus.Fire<OpenDoubleViewsAdSignal> ();
+        }
+        else
+        {
+            PublishVideo ();
+        }
+    }
+    void PublishVideo ()
+    {
+        signalBus.TryUnsubscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);       
+        signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality});
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
-        InitialState ();
+        //InitialState (); //This line makes an android build crash when being executed after watching a reward ad
 
         UpdateVideoInfo ();
     }
@@ -187,7 +206,7 @@ public class VideoInfo_VC : MonoBehaviour
 
     void CheckVirality ()
     {
-        if (videoRef.isViral)
+        if (videoRef!=null && videoRef.isViral)
             viralVisual.SetActive (true);
     }
     public void RestartProductionBar ()

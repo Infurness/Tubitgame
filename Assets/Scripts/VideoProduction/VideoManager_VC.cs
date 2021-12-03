@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 using Zenject;
 
@@ -15,6 +16,8 @@ public class VideoManager_VC : MonoBehaviour
     [Inject] private ThemesManager _themesManager;
     [Inject] private EnergyManager _energyManager;
     [Inject] private AlgorithmManager algorithmManager;
+    [Inject] private AdsRewardsManager adsRewardsManager;
+    [Inject] private EnergyManager energyManager;
 
     [SerializeField] private TMP_Text playerNameText;
 
@@ -53,6 +56,8 @@ public class VideoManager_VC : MonoBehaviour
 
     [SerializeField] private GameObject[] qualitiesTags;
     [SerializeField] private Slider qualitySelector;
+    private float oldValue;
+    private bool energyHasBeenOfferedThisSesion; //Dummy value for Vertical Slice, not for real release to the market
     [SerializeField] private Color qualitySelectedColor;
     [SerializeField] private Sprite qualitySelectedImage;
     [SerializeField] private TMP_FontAsset qualitySelectedFont;
@@ -95,6 +100,23 @@ public class VideoManager_VC : MonoBehaviour
         //theme1Button.onClick.AddListener (() => { OnThemeButtonPressed (1, theme1Button.GetComponentInChildren<TMP_Text>());});
         //theme2Button.onClick.AddListener (() => { OnThemeButtonPressed (2, theme2Button.GetComponentInChildren<TMP_Text> ()); });
         //theme3Button.onClick.AddListener (() => { OnThemeButtonPressed (3, theme3Button.GetComponentInChildren<TMP_Text> ()); });
+        energyHasBeenOfferedThisSesion = false;
+    }
+    void CheckEnergyForVideo ()
+    {
+        if (oldValue == qualitySelector.value || energyHasBeenOfferedThisSesion)
+            return;
+        
+        oldValue = qualitySelector.value;
+        float qualityStep = 1f / Enum.GetValues (typeof (VideoQuality)).Length;
+        int qualityTagIndex = (int)(qualitySelector.value / qualityStep);
+        selectedQuality = (VideoQuality)qualityTagIndex + 1;
+        float energycost = _energyManager.GetVideoEnergyCost (selectedQuality);
+        if(energycost> energyManager.GetEnergy ())
+        {
+            energyHasBeenOfferedThisSesion = true;
+            _signalBus.Fire<OpenEnergyAdSignal> ();
+        }
     }
     void InitialState ()
     {
@@ -140,7 +162,10 @@ public class VideoManager_VC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonUp (0) && makeAVideoPanel.activeSelf)
+        {
+            CheckEnergyForVideo ();
+        }
     }
     void OpenMakeAVideoPanel ()
     {
@@ -210,7 +235,6 @@ public class VideoManager_VC : MonoBehaviour
         {
             recordedThemes = selectedThemes,
             videoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes)
-            //Dummy set quality selected for video here too
         });
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -videoCreationEnergyCost });
         StartRecordingVideo ();
@@ -228,17 +252,19 @@ public class VideoManager_VC : MonoBehaviour
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         string newVideoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
-        vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
+        vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager, adsRewardsManager);
         float qualityNumber = (float)selectedQuality / (float)Enum.GetValues (typeof (VideoQuality)).Length * 2;
-        int secondsToProduce = algorithmManager.GetVideoSecondsToBeProduced (qualityNumber, selectedThemes.Length);
+        int secondsToProduce = 1;// algorithmManager.GetVideoSecondsToBeProduced (qualityNumber, selectedThemes.Length); Dummy for testing
         vc.SetVideoInfoUp (newVideoName,
                             secondsToProduce,
                             selectedThemes,
                             selectedQuality
                             );
-        videosShown.Add (newVideoName, videoInfoObject);
+        vc.SetTimeLeftToPublish (GameClock.Instance.Now);
+        unpublishedVideosVC.Add (vc);
         UnpublishedVideo unpublishedVideo = new UnpublishedVideo (newVideoName,selectedThemes,selectedQuality, secondsToProduce, GameClock.Instance.Now);
         PlayerDataManager.Instance.SetUnpublishedVideo (unpublishedVideo);
+        _signalBus.Fire<OpenTimeShortenAdSignal> (new OpenTimeShortenAdSignal {video = unpublishedVideo });
     }
     void CreateUnpublishedVideos ()
     {
@@ -248,7 +274,7 @@ public class VideoManager_VC : MonoBehaviour
             GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);          
             VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
             unpublishedVideosVC.Add (vc);
-            vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager);
+            vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager, adsRewardsManager);
             vc.SetVideoInfoUp (video.videoName,
                                 video.secondsToBeProduced,
                                 video.videoThemes,
@@ -261,7 +287,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
-        vc.SetReferences (_signalBus, _youTubeVideoManager,_energyManager);
+        vc.SetReferences (_signalBus, _youTubeVideoManager,_energyManager, adsRewardsManager);
         vc.SetVideoInfoUp (video);
         videosShown.Add (video.name, videoInfoObject);
         vc.UpdateVideoInfo ();

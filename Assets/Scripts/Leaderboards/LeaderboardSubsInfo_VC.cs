@@ -7,6 +7,7 @@ using TMPro;
 public class LeaderboardSubsInfo_VC : MonoBehaviour
 {
     [SerializeField] private TMP_Text rankNumber;
+    [SerializeField] private Image rankImage;
     [SerializeField] private TMP_Text playerLevels;
     [SerializeField] private TMP_Text playerName;
     [SerializeField] private TMP_Text rankTitle;
@@ -25,9 +26,13 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
         
     }
 
-    public void SetInfo(int rank, int levels, string name, string title, ulong subscribers)
+    public void SetInfo(int rank ,Sprite rankIcon, int levels, string name, string title, ulong subscribers)
     {
         rankNumber.text = rank.ToString();
+        if (rankImage != null)
+            rankImage.sprite = rankIcon;
+        else
+            rankImage.gameObject.SetActive (false);
         playerLevels.text = levels.ToString ();
         playerName.text = name;
         rankTitle.text = title;

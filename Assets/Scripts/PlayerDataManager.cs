@@ -188,6 +188,7 @@ public class PlayerDataManager : MonoBehaviour
 
         var dataRequest = new UpdateUserDataRequest();
         dataRequest.Data = new Dictionary<string, string>();
+
         for (int i = 0; i < keys.Length; i++)
         {
             var dataJson = JsonConvert.SerializeObject(data[i],new JsonSerializerSettings()
@@ -384,6 +385,11 @@ public class PlayerDataManager : MonoBehaviour
         return playerData.softCurrency;
 
     }
+    public void AddSoftCurrency ( ulong softCurrency)
+    {
+        playerData.softCurrency += softCurrency;
+        UpdateUserDatabase (new[] {"SoftCurrency"}, new object[] { playerData.softCurrency });
+    }
     public ulong GetHardCurrency ()
     {
         return playerData.hardCurrency;
@@ -406,7 +412,7 @@ public class PlayerDataManager : MonoBehaviour
 
     }
 
-    void AddHardCurrency(int amount, Action confirmPurchase = null)
+    public void AddHardCurrency(int amount, Action confirmPurchase = null)
     {
         var hc = playerData.hardCurrency;
         hc += (ulong) amount;

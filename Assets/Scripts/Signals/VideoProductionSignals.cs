@@ -24,6 +24,7 @@ public class PublishVideoSignal
     public string videoName;
     public ThemeType[] videoThemes;
     public VideoQuality videoSelectedQuality;
+    public float qualityValue;
 }
 public class EndPublishVideoSignal
 {
@@ -148,6 +149,14 @@ public class OpenDefaultMessagePopUpSignal
     public string message;
 }
 
+public class OpenAdsDefaultPopUpSignal
+{
+    public string message;
+}
+public class CloseAdsDefaultPopUpSignal
+{
+
+}
 public class ChangeBackButtonSignal
 {
     public bool changeToHome;
