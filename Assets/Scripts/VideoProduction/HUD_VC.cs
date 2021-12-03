@@ -70,8 +70,6 @@ public class HUD_VC : MonoBehaviour
         foreach(Button button in storeButtons)
             button.onClick.AddListener (OpenStorePanel);
 
-        InvokeRepeating ("UpdateEnergyTimeCount", 0, 1);
-
         InitialState ();
         //StopAllCoroutines ();
         //StartCoroutine (DecreaseSeconds());
@@ -182,7 +180,7 @@ public class HUD_VC : MonoBehaviour
         energyTimeSecondsCount = (energyManager.GetEnergy()-energyManager.GetMaxEnergy())/ energyManager.GetEnergyGainedPerSecond ();
         TimeSpan time = TimeSpan.FromSeconds (energyTimeSecondsCount);
         string timeStr = time.ToString (@"hh\:mm\:ss");
-        energyTimeText.text = timeStr;
+        energyTimeText.text = $"Energy will be fulfilled in { timeStr }";
     }
     void UpdateSoftCurrency ()
     {

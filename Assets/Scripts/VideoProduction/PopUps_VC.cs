@@ -33,10 +33,19 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private GameObject energyInventoryPanel;
     [SerializeField] private Button energyInventoryPanelCloseButton;
 
+    [SerializeField] private GameObject energyTimePanel;
+    [SerializeField] private Button energyTimePanelButton;
+
+    [SerializeField] private GameObject adsDefaultPanelPopUp;
+    [SerializeField] private TMP_Text adsPanelText;
+    [SerializeField] private Button adsDefaultPanelCancelButton;
+
     // Start is called before the first frame update
     void Start()
     {
         signalBus.Subscribe<OpenDefaultMessagePopUpSignal> (OpenDefaultDisclaimer);
+        signalBus.Subscribe<OpenAdsDefaultPopUpSignal> (OpenAdsDefaultPanel);
+        signalBus.Subscribe<CloseAdsDefaultPopUpSignal> (CloseAdsDefaultPanel);
         signalBus.Subscribe<OpenThemeSelectorPopUpSignal> (OpenThemeSelector);
         signalBus.Subscribe<ConfirmThemesSignal> (CloseThemeSelector);
         signalBus.Subscribe<OpenSettingPanelSignal> (OpenSettings);
@@ -45,6 +54,7 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Subscribe<LevelUpSignal> (OpenLevelUp);
 
         defaultDisclaimerPanelCloseButton.onClick.AddListener (CloseDefaultDisclaimer);
+        adsDefaultPanelCancelButton.onClick.AddListener (CancelAdsDefaultPanel);
         themeSelectionPanelCloseButton.onClick.AddListener (CloseThemeSelector);
         settingsPanelCloseButton.onClick.AddListener (CloseSettings);
         foreach(Button button in deleteAccountPanelCloseButtons)
@@ -53,7 +63,8 @@ public class PopUps_VC : MonoBehaviour
         }
         leaderboardsPanelCloseButton.onClick.AddListener (CloseLeaderboards);
         levelUpPanelCloseButton.onClick.AddListener (CloseLevelUp);
-        energyInventoryPanelCloseButton.onClick.AddListener (OpenEnergyInventroy);
+        energyInventoryPanelCloseButton.onClick.AddListener (OpenCloseEnergyInventroy);
+        energyTimePanelButton.onClick.AddListener (OpenCloseEnergyTimeLeftPanel);
 
         InitialState ();
     }
@@ -66,6 +77,8 @@ public class PopUps_VC : MonoBehaviour
         CloseLevelUp ();
         CloseDefaultDisclaimer ();
         energyInventoryPanel.SetActive (false);
+        energyTimePanel.SetActive (false);
+        CloseAdsDefaultPanel ();
     }
 
     void OpenDefaultDisclaimer(OpenDefaultMessagePopUpSignal signal)
@@ -131,7 +144,7 @@ public class PopUps_VC : MonoBehaviour
     void OpenLeaderboards ()
     {
         LeaderboardManager.Instance.GetTop10InLeaderboard ();
-        popUpsBlockBackgroundPanel.SetActive (true);
+        //popUpsBlockBackgroundPanel.SetActive (true);
         leaderboardsPanel.SetActive (true);
     }
     void CloseLeaderboards ()
@@ -155,7 +168,7 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Fire<UpdateHardCurrencySignal> ();
     }
 
-    void OpenEnergyInventroy ()
+    void OpenCloseEnergyInventroy ()
     {
         if (energyInventoryPanel.activeSelf)
         {
@@ -167,5 +180,27 @@ public class PopUps_VC : MonoBehaviour
             signalBus.Fire<OpenEnergyInventorySignal> ();
         }
         
+    }
+
+    void OpenCloseEnergyTimeLeftPanel ()
+    {
+        energyTimePanel.SetActive (!energyTimePanel.activeSelf);
+    }
+
+    void OpenAdsDefaultPanel (OpenAdsDefaultPopUpSignal signal)
+    {
+        adsDefaultPanelPopUp.SetActive (true);
+        StartCoroutine (OpenPanelAnimation (adsDefaultPanelPopUp));
+        adsPanelText.text = signal.message;
+    }
+    void CloseAdsDefaultPanel ()
+    {
+        popUpsBlockBackgroundPanel.SetActive (false);
+        adsDefaultPanelPopUp.SetActive (false);
+    }
+    void CancelAdsDefaultPanel ()
+    {
+        signalBus.Fire<FinishedAdVisualitationRewardSignal> ();
+        CloseAdsDefaultPanel ();
     }
 }
