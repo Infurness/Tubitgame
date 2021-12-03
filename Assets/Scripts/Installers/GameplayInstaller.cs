@@ -69,6 +69,8 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<AdsRewardsManager> ().FromComponentInHierarchy ().AsSingle ();
         
         Container.Bind<CheatsManager> ().FromComponentInHierarchy ().AsSingle ();
-        
+
+        Container.Bind<Shop>().FromComponentInHierarchy().AsSingle();
+
     }
 }
