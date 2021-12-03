@@ -183,11 +183,27 @@ public class PlayerInventory : MonoBehaviour
     }
     public void AddCharacterItem(ThemeCustomizationItem themeCustomizationItem)
     {
-        if (playerInventoryAddressedData.characterItemsNames.Contains(themeCustomizationItem.name))
-            return;
+        
         playerInventoryAddressedData.characterItemsNames.Add(themeCustomizationItem.name);
+        characterItems.Add(themeCustomizationItem);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         
+    }
+
+    public void AddVCItem(VideoQualityCustomizationItem videoQualityCustomizationItem)
+    {
+        videoQualityRoomItems.Add(videoQualityCustomizationItem);
+        playerInventoryAddressedData.videoQualityItemsNames.Add(videoQualityCustomizationItem.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+
+    }
+
+    public void AddRoomItem(ThemeCustomizationItem themeCustomizationItem)
+    {
+        roomThemeEffectItems.Add(themeCustomizationItem);
+        playerInventoryAddressedData.roomItemsNames.Add(themeCustomizationItem.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+
     }
    
 

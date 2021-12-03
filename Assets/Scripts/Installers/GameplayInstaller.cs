@@ -66,6 +66,8 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<RoomInteractivityManager> ().FromComponentInHierarchy ().AsSingle (); 
 
         Container.Bind<CheatsManager> ().FromComponentInHierarchy ().AsSingle ();
-        
+
+        Container.Bind<Shop>().FromComponentInHierarchy().AsSingle();
+
     }
 }

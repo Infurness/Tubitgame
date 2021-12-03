@@ -15,10 +15,10 @@ namespace Customizations
         public string descriptionText;
 
         [TextArea] public string newStatsText;
-        
+        public bool Owned=false;
         public PriceType PriceType;
-        public short HCPrice;
-        public short SCPrice;
+        public uint HCPrice;
+        public uint SCPrice;
     }
 
     public enum VideoQualityItemType
