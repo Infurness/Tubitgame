@@ -16,12 +16,21 @@ public class Shop_VC : MonoBehaviour
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private PlayerInventory playerInventory;
     [SerializeField] private GameObject shopPanel;
-    [SerializeField] private GameObject itemsPanel,offersPanel,realEstatePanel;
-    [SerializeField] private Button offersButton, clothingButton, furnitureButton, equipmentsButton, realEstateButton;
+    [SerializeField] private GameObject itemsPanel,offersPanel,realEstatePanel,currenciesPanel;
+    [SerializeField] private Button offersButton, clothingButton, furnitureButton, equipmentsButton,currenciesButton, realEstateButton;
     [SerializeField] private GameObject itemsScrollView, offersButtonsScrollView, offerRedeemPanel;
     [SerializeField] private ShopItemSlot shopItemButton;
     [SerializeField] private Sprite[] rarenessSprites;
 
+    void ClearItemsPanel()
+    {
+        
+        for (int i = 0; i < itemsScrollView.transform.childCount; i++)
+        {
+            Destroy(itemsScrollView.transform.GetChild(i).gameObject);
+        }
+    }
+    
     void Start()
     {
         itemsPanel.gameObject.SetActive(false);
@@ -31,6 +40,7 @@ public class Shop_VC : MonoBehaviour
         furnitureButton.onClick.AddListener(OpenFurniturePanel);
         equipmentsButton.onClick.AddListener(OpenEquipmentsPanel);
         realEstateButton.onClick.AddListener(OpenRealEstatePanel);
+        currenciesButton.onClick.AddListener(OpenCurrenciesPanel);
         shopPanel.OnEnableAsObservable().Subscribe((unit => offersButton.onClick.Invoke()));
     }
 
@@ -38,11 +48,22 @@ public class Shop_VC : MonoBehaviour
     {
         return rarenessSprites[(int) rareness];
     }
+
+    public void OpenCurrenciesPanel()
+    {
+        itemsPanel.gameObject.SetActive(false);
+        offersPanel.gameObject.SetActive(false);
+        realEstatePanel.gameObject.SetActive(false);
+        currenciesPanel.gameObject.SetActive(true);
+
+    }
     void OpenOffersPanel()
     {
         itemsPanel.gameObject.SetActive(false);
         offersPanel.gameObject.SetActive(true);
         realEstatePanel.gameObject.SetActive(false);
+        currenciesPanel.gameObject.SetActive(false);
+
         
         
 
@@ -50,30 +71,38 @@ public class Shop_VC : MonoBehaviour
 
     void OpenClothingPanel()
     {
+        ClearItemsPanel();
         itemsPanel.gameObject.SetActive(true);
         offersPanel.gameObject.SetActive(false);
         realEstatePanel.gameObject.SetActive(false);
+        currenciesPanel.gameObject.SetActive(false);
+
 
         var clothes = shop.Clothes;
-
+  
         foreach (var item in clothes)
         {
+          
           var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
           switch (item.PriceType)
           {
               case PriceType.Free:
+                  Destroy(shopButton.gameObject);
+
                   break;
               case PriceType.SC:
                   shopButton.SetSCBuyButton(item.SCPrice,GetRarenessSpriteByIndex(item.rareness),item.sprite,(() => BuyClothItem(item,PriceType.SC)));
-                  
+
                   break;
               case PriceType.HC:
                   shopButton.SetHCBuyButton(item.HCPrice,GetRarenessSpriteByIndex(item.rareness),item.sprite,()=>BuyClothItem(item,PriceType.HC));
                   break;
+
               case PriceType.Exchangeable:
                   shopButton.SetBuyByBothButtons(item.HCPrice,item.SCPrice,GetRarenessSpriteByIndex(item.rareness),item.sprite,(() => BuyClothItem(item,PriceType.SC)),
                       (() => BuyClothItem(item,PriceType.HC)));
                   break;
+
               default:
                   throw new ArgumentOutOfRangeException();
           }
@@ -85,9 +114,12 @@ public class Shop_VC : MonoBehaviour
 
     void OpenFurniturePanel()
     {
+        ClearItemsPanel();
         itemsPanel.gameObject.SetActive(true);
         offersPanel.gameObject.SetActive(false);
         realEstatePanel.gameObject.SetActive(false);
+        currenciesPanel.gameObject.SetActive(false);
+    
         var furniture = shop.Furniture;
 
         foreach (var item in furniture)
@@ -96,17 +128,21 @@ public class Shop_VC : MonoBehaviour
             switch (item.PriceType)
             {
                 case PriceType.Free:
+                    Destroy(shopButton.gameObject);
+
                     break;
+                return;
                 case PriceType.SC:
                     shopButton.SetSCBuyButton(item.SCPrice,GetRarenessSpriteByIndex(item.rareness),item.sprite,(() => BuyRoomItem(item,PriceType.SC)));
-                  
                     break;
                 case PriceType.HC:
                     shopButton.SetHCBuyButton(item.HCPrice,GetRarenessSpriteByIndex(item.rareness),item.sprite,()=>BuyRoomItem(item,PriceType.HC));
+
                     break;
                 case PriceType.Exchangeable:
                     shopButton.SetBuyByBothButtons(item.HCPrice,item.SCPrice,GetRarenessSpriteByIndex(item.rareness),item.sprite,(() => BuyRoomItem(item,PriceType.SC)),
                         (() => BuyRoomItem(item,PriceType.HC)));
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -117,28 +153,35 @@ public class Shop_VC : MonoBehaviour
 
     void OpenEquipmentsPanel()
     {
+        ClearItemsPanel();
         itemsPanel.gameObject.SetActive(true);
         offersPanel.gameObject.SetActive(false);
         realEstatePanel.gameObject.SetActive(false);
-        var equipments = shop.Equipments;
+        currenciesPanel.gameObject.SetActive(false);
 
+        var equipments = shop.Equipments;
+      ;
         foreach (var item in equipments)
         {
             var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
             switch (item.PriceType)
             {
                 case PriceType.Free:
+                    Destroy(shopButton.gameObject);
+
                     break;
                 case PriceType.SC:
                     shopButton.SetSCBuyButton(item.SCPrice,GetRarenessSpriteByIndex(item.rareness),item.itemSprite,(() => BuyVCItem(item,PriceType.SC)));
-                  
+
                     break;
                 case PriceType.HC:
                     shopButton.SetHCBuyButton(item.HCPrice,GetRarenessSpriteByIndex(item.rareness),item.itemSprite,()=>BuyVCItem(item,PriceType.HC));
+
                     break;
                 case PriceType.Exchangeable:
                     shopButton.SetBuyByBothButtons(item.HCPrice,item.SCPrice,GetRarenessSpriteByIndex(item.rareness),item.itemSprite,(() => BuyVCItem(item,PriceType.SC)),
                         (() => BuyVCItem(item,PriceType.HC)));
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -154,7 +197,7 @@ public class Shop_VC : MonoBehaviour
        realEstatePanel.gameObject.SetActive(true);
     }
     
-    public void OnBuyProductPressed(string id)
+    public void BuyHCBundle(string id)
     {
         
         _signalBus.Fire<OnPurchaseProductSignal>(new OnPurchaseProductSignal()
@@ -222,5 +265,7 @@ public class Shop_VC : MonoBehaviour
      
         }
     }
+
+
 
 }
