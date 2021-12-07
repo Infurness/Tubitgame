@@ -16,6 +16,8 @@ public class ShopItemSlot : MonoBehaviour
 
     public void SetHCBuyButton(uint price,Sprite rarenessSprite,Sprite iconSprite,UnityAction buyAction)
     {
+        rarenessImage.sprite = rarenessSprite;
+        iconImage.sprite = iconSprite;
         HcPriceText.text = price.ToString();
         HCBuyButton.gameObject.SetActive(true);
         SCBuyButton.gameObject.SetActive(false);
@@ -23,6 +25,8 @@ public class ShopItemSlot : MonoBehaviour
     }
     public void SetSCBuyButton(uint price,Sprite rarenessSprite,Sprite iconSprite,UnityAction buyAction)
     {
+        rarenessImage.sprite = rarenessSprite;
+        iconImage.sprite = iconSprite;
         SCPriceText.text = price.ToString();
         HCBuyButton.gameObject.SetActive(false);
         SCBuyButton.gameObject.SetActive(true);
@@ -30,6 +34,8 @@ public class ShopItemSlot : MonoBehaviour
     }
     public void SetBuyByBothButtons(uint HCprice,uint SCPrice,Sprite rarenessSprite,Sprite iconSprite,UnityAction buySCAction,UnityAction buyHCAction)
     {
+        rarenessImage.sprite = rarenessSprite;
+        iconImage.sprite = iconSprite;
         HcPriceText.text = HCprice.ToString();
         SCPriceText.text = SCPrice.ToString();
         
