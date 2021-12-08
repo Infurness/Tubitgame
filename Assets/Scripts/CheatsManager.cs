@@ -31,8 +31,4 @@ public class CheatsManager : MonoBehaviour
     {
         energyInventoryManager.AddItem (energyItemToAdd);
     }
-    public void SoftCurrencyRewardAd ()
-    {
-        signalBus.Fire<OpenSoftCurrencyAdSignal> ();
-    }
 }

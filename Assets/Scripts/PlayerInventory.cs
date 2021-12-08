@@ -78,7 +78,7 @@ public class PlayerInventory : MonoBehaviour
             var chItems = caharacterItemsLoadOp.Result;
             characterItems =(List<ThemeCustomizationItem>) chItems;
 
-            if (characterAvatarAddressedData == null || string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
+            if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
             {
                 equippedCharacterAvatar = defaultAvatar;
                 return;

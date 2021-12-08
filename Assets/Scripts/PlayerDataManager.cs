@@ -142,11 +142,6 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.videos = JsonConvert.DeserializeObject<List<Video>>(videosJson);
 
             }
-            if (result.Data.TryGetValue ("UnpublishedVideos", out datarecord))
-            {
-                var unpublishedVideosJson = datarecord.Value;
-                playerData.unpublishedVideos = JsonConvert.DeserializeObject<List<UnpublishedVideo>> (unpublishedVideosJson);
-            }
             if (result.Data.TryGetValue ("XpData", out datarecord))
             {
 
@@ -206,7 +201,6 @@ public class PlayerDataManager : MonoBehaviour
 
         var dataRequest = new UpdateUserDataRequest();
         dataRequest.Data = new Dictionary<string, string>();
-
         for (int i = 0; i < keys.Length; i++)
         {
             var dataJson = JsonConvert.SerializeObject(data[i],new JsonSerializerSettings()
@@ -271,25 +265,6 @@ public class PlayerDataManager : MonoBehaviour
         UpdateUserDatabase(new[] {"Videos"}, new[] {videos}, (() => { playerData.videos = videos; }));
     }
 
-    public void SetUnpublishedVideo(UnpublishedVideo unpublishedvideo)
-    {
-        var unpublishedvideos = playerData.unpublishedVideos;
-        unpublishedvideos.Add (unpublishedvideo);
-        UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
-    }
-    public void DeleteUnpublishVideo(string name)
-    {
-        var unpublishedvideos = playerData.unpublishedVideos;
-        int index = 0;
-        foreach(UnpublishedVideo video in unpublishedvideos)
-        {
-            if (video.videoName == name)
-                break;
-            index++;
-        }        
-        unpublishedvideos.RemoveAt(index);
-        UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
-    }
     public Video GetVideoByName(string _name)
     {
         foreach (Video video in playerData.videos)
@@ -326,30 +301,7 @@ public class PlayerDataManager : MonoBehaviour
             }
         }
 
-        foreach (UnpublishedVideo video in playerData.unpublishedVideos)
-        {
-            bool sameThemes = true;
-            if (video.videoThemes.Length == _themeTypes.Length)
-            {
-                for (int i = 0; i < video.videoThemes.Length; i++)
-                {
-                    if (video.videoThemes[i] != _themeTypes[i])
-                    {
-                        sameThemes = false;
-                        break;
-                    }
-                }
-
-                if (sameThemes)
-                    videoCounter++;
-            }
-        }
-
         return videoCounter;
-    }
-    public List<UnpublishedVideo> GetUnpublishedVideos ()
-    {
-        return playerData.unpublishedVideos;
     }
     public ulong RecollectVideoMoney (string videoName)
     {
@@ -404,11 +356,6 @@ public class PlayerDataManager : MonoBehaviour
         return playerData.softCurrency;
 
     }
-    public void AddSoftCurrency ( ulong softCurrency)
-    {
-        playerData.softCurrency += softCurrency;
-        UpdateUserDatabase (new[] {"SoftCurrency"}, new object[] { playerData.softCurrency });
-    }
     public ulong GetHardCurrency ()
     {
         return playerData.hardCurrency;
@@ -431,7 +378,7 @@ public class PlayerDataManager : MonoBehaviour
 
     }
 
-    public void AddHardCurrency(int amount, Action confirmPurchase = null)
+    void AddHardCurrency(int amount, Action confirmPurchase = null)
     {
         var hc = playerData.hardCurrency;
         hc += (ulong) amount;
