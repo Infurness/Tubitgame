@@ -22,7 +22,6 @@ public class YouTubeVideoManager : MonoBehaviour
         _signalBus.Subscribe<CancelVideoRecordingSignal> (() => SetIsRecording (false));
         _signalBus.Subscribe<GetMoneyFromVideoSignal> (RecollectVideoMoney);
         _signalBus.Subscribe<LevelUpSignal> (playerDataManger.GetLevelUpRewards);
-        _signalBus.Subscribe<CancelVideoRecordingSignal> ((signal) => DeleteUnpublishedVideo (signal.name));
     }
 
     void Update()
@@ -37,7 +36,6 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         isRecording = recording;
     }
-   
     private void CreateVideo (PublishVideoSignal signal)
     {
         string videoName = signal.videoName;
@@ -71,13 +69,8 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.lifeTimeHours = (float)(algorithmManager.GetVideoLifetime (videoViews, qualityNumber, 0.9f))/3600f; //Fromseconds to hours
         newVideo.lastUpdateTime = GameClock.Instance.Now;
         playerDataManger.AddVideo (newVideo);
-        DeleteUnpublishedVideo (newVideo.name);
 
         _signalBus.Fire<EndPublishVideoSignal> ();
-    }
-    public void DeleteUnpublishedVideo (string name)
-    {
-        playerDataManger.DeleteUnpublishVideo (name);
     }
     public string GetVideoNameByTheme (ThemeType[] _themeTypes)
     {
