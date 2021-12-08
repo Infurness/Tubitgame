@@ -43,6 +43,8 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<UpdateRankSignal> ();
         Container.DeclareSignal<OpenLevelUpPanelSignal> ();
         Container.DeclareSignal<OpenDefaultMessagePopUpSignal> ();
+        Container.DeclareSignal<CloseAdsDefaultPopUpSignal> ();
+        Container.DeclareSignal<OpenAdsDefaultPopUpSignal> ();
         Container.DeclareSignal<ChangeBackButtonSignal> ();
         Container.DeclareSignal<OpenEnergyInventorySignal> ();
         Container.DeclareSignal<UseEnergyItemSignal> ();
@@ -63,8 +65,9 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<ExperienceManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<GlobalAudioManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<EnergyInventoryManager> ().FromComponentInHierarchy ().AsSingle ();
-        Container.Bind<RoomInteractivityManager> ().FromComponentInHierarchy ().AsSingle (); 
-
+        
+        Container.Bind<AdsRewardsManager> ().FromComponentInHierarchy ().AsSingle ();
+        
         Container.Bind<CheatsManager> ().FromComponentInHierarchy ().AsSingle ();
 
         Container.Bind<Shop>().FromComponentInHierarchy().AsSingle();

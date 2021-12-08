@@ -12,6 +12,7 @@ public class Cheats_VC : MonoBehaviour
     [SerializeField] private Button levelUpButton;
     [SerializeField] private Button resetXp;
     [SerializeField] private Button AddEnergyItem;
+    [SerializeField] private Button softCurrencyRewardedAd;
     // Start is called before the first frame update
     void Start ()
     {
@@ -19,5 +20,6 @@ public class Cheats_VC : MonoBehaviour
         levelUpButton.onClick.AddListener (cheatsManager.Add1Level);
         resetXp.onClick.AddListener (cheatsManager.ResetExperience);
         AddEnergyItem.onClick.AddListener (cheatsManager.AddEnergyItem);
+        softCurrencyRewardedAd.onClick.AddListener (cheatsManager.SoftCurrencyRewardAd);
     }
 }
