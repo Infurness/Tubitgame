@@ -18,8 +18,7 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<ShowVideosStatsSignal> ();
         Container.DeclareSignal<GetMoneyFromVideoSignal> ();
         Container.DeclareSignal<RoomZoomStateChangedSignal>();
-        Container.DeclareSignal<UpdateSoftCurrencySignal> ();
-        Container.DeclareSignal<UpdateHardCurrencySignal> ();
+  
         Container.DeclareSignal<UpdateExperienceSignal> ();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
@@ -42,7 +41,6 @@ public class GameplayInstaller : MonoInstaller
         Container.DeclareSignal<LevelUpSignal> ();
         Container.DeclareSignal<UpdateRankSignal> ();
         Container.DeclareSignal<OpenLevelUpPanelSignal> ();
-        Container.DeclareSignal<OpenDefaultMessagePopUpSignal> ();
         Container.DeclareSignal<ChangeBackButtonSignal> ();
         Container.DeclareSignal<OpenEnergyInventorySignal> ();
         Container.DeclareSignal<UseEnergyItemSignal> ();

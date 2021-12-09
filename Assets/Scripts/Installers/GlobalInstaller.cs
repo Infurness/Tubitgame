@@ -30,6 +30,10 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<ChangePlayerSubsSignal> ();
     Container.DeclareSignal<AssetsLoadedSignal>();
     Container.DeclareSignal<RemoteAssetsCheckSignal>();
+    
+    Container.DeclareSignal<OpenDefaultMessagePopUpSignal> ();
+    Container.DeclareSignal<UpdateSoftCurrencySignal> ();
+    Container.DeclareSignal<UpdateHardCurrencySignal> ();
   
     //Customizations signals 
     Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
