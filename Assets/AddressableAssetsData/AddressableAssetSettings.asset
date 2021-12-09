@@ -103,6 +103,8 @@ MonoBehaviour:
     - roomtheme
     - character
     - roomvc
+    - furniture
+    - cloth
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 723b68469c1b1ad4aab0fcef18b79d88, type: 2}
@@ -124,5 +126,6 @@ MonoBehaviour:
     m_RegisteredServiceTypeRefs: []
     m_GlobalProfileVariablesInfos:
     - key: PrivateIpAddress
-      value: 192.168.1.29
-
+      value: 192.168.56.1
+    - key: PrivateIpAddress_1
+      value: 192.168.1.139

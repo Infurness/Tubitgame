@@ -20,6 +20,10 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
 
     private Vector2 previousScreenSize;
 
+    [SerializeField] private Transform viewsHolder;
+    [SerializeField] private Transform houseView;
+    [SerializeField] private Transform streetView;
+
     // Start is called before the first frame update
     void Start()
     { 
@@ -67,14 +71,14 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
     void ScrollView(int movement)
     {
         int newViewIndex = currentViewIndex + movement;
-        if (newViewIndex >= 0 && newViewIndex < views.Length)
+        if (newViewIndex >= 0 && newViewIndex < 3)
         {
             if (newViewIndex == 0)
             {
                 rightButtonPanel.SetActive(true);
                 leftButtonPanel.SetActive (false);
             }
-            else if( newViewIndex == views.Length - 1)
+            else if( newViewIndex == 3 - 1)
             {
                 rightButtonPanel.SetActive (false);
                 leftButtonPanel.SetActive (true);
@@ -87,7 +91,22 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
                 
 
             currentViewIndex = newViewIndex;
-            StartCoroutine (SmoothSnapTo (views[newViewIndex]));
+            //StartCoroutine (SmoothSnapTo (views[newViewIndex]));
+        }
+        //Dummy
+        if (currentViewIndex == 2)
+        {
+            float movementLength = viewsHolder.position.x - streetView.position.x;
+            StartCoroutine (SmoothSnapTo (new Vector3 (movementLength, 0, 0)));
+        }
+        else if (currentViewIndex == 1)
+        {
+            float movementLength = viewsHolder.position.x - houseView.position.x;
+            StartCoroutine (SmoothSnapTo (new Vector3 (movementLength, 0, 0)));
+        }
+        else
+        {
+            StartCoroutine (SmoothSnapTo (Vector3.zero));
         }
     }
 
@@ -105,5 +124,16 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
             contentPanel.anchoredPosition = Vector2.Lerp (contentPanel.anchoredPosition , contentPanelNewPos, lerpCounter);
             yield return null;
         } 
+    }
+
+    public IEnumerator SmoothSnapTo (Vector3 newPos)
+    {
+        float lerpCounter = 0;
+        while (lerpCounter < 1)
+        {
+            lerpCounter += Time.deltaTime * movementSpeed;
+            viewsHolder.position = Vector3.Lerp (viewsHolder.position, newPos, lerpCounter);
+            yield return null;
+        }
     }
 }
