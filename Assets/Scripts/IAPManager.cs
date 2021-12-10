@@ -45,6 +45,7 @@ public class IAPManager : MonoBehaviour,IStoreListener
 
     public void OnInitializeFailed(InitializationFailureReason error)
     {
+        print("Init IAP Failed " + error);
     }
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
@@ -93,11 +94,11 @@ public class IAPManager : MonoBehaviour,IStoreListener
         }
     }
 
-    public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
+    public void OnInitialized(IStoreController cont, IExtensionProvider ext)
     {
 
-        this.controller = controller;
-        this.extensions = extensions;
+        this.controller = cont;
+        this.extensions = ext;
         print("Purchasing init");
     }
 }

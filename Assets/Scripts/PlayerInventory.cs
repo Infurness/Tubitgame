@@ -77,12 +77,19 @@ public class PlayerInventory : MonoBehaviour
         {
             var chItems = caharacterItemsLoadOp.Result;
             characterItems =(List<ThemeCustomizationItem>) chItems;
-
-            if (characterAvatarAddressedData == null || string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
+            if (characterAvatarAddressedData!=null)
+            {
+                if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
+                {
+                   
+                }
+            }
+            else
             {
                 equippedCharacterAvatar = defaultAvatar;
                 return;
             }
+           
 
             equippedCharacterAvatar.bodyItem =
                 (BodyItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.BodyType);
