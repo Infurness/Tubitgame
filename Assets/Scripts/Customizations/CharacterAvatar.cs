@@ -17,5 +17,15 @@ namespace Customizations
         {
             return new List<ThemeCustomizationItem>() {bodyItem,headItem, torsoItem, hairItem, legsItem, feetItem};
         }
+
+        public CharacterAvatar(CharacterAvatar characterAvatar)
+        {
+            bodyItem = characterAvatar.bodyItem;
+            headItem = characterAvatar.headItem;
+            hairItem = characterAvatar.hairItem;
+            torsoItem = characterAvatar.torsoItem;
+            legsItem = characterAvatar.legsItem;
+            feetItem = characterAvatar.feetItem;
+        }
     }
 }

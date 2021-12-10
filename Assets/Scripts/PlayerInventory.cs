@@ -16,7 +16,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private PlayerInventoryAddressedData playerInventoryAddressedData;
     [SerializeField] private CharacterAvatarAddressedData characterAvatarAddressedData;
     [SerializeField] private CharacterAvatar equippedCharacterAvatar;
-    [SerializeField] private CharacterAvatar defaultAvatar;
+    [SerializeField]  private CharacterAvatar defaultAvatar;
     [SerializeField] private List<ThemeCustomizationItem> characterItems;
     [SerializeField] private List<ThemeCustomizationItem> roomThemeEffectItems;
     [SerializeField] private List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
@@ -40,7 +40,8 @@ public class PlayerInventory : MonoBehaviour
     {
         if (equippedCharacterAvatar==null)
         {
-            return defaultAvatar;
+            equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+            return equippedCharacterAvatar;
         }
         else
         {
@@ -81,12 +82,13 @@ public class PlayerInventory : MonoBehaviour
             {
                 if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
                 {
-                   
+                    equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+                    return;
                 }
             }
             else
             {
-                equippedCharacterAvatar = defaultAvatar;
+                equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
                 return;
             }
            
@@ -104,6 +106,10 @@ public class PlayerInventory : MonoBehaviour
             equippedCharacterAvatar.feetItem =
                 (FeetItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Feet);
 
+        }
+        else
+        {
+            equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
         }
 
          

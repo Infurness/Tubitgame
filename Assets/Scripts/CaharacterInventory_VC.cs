@@ -63,7 +63,7 @@ public class CaharacterInventory_VC : MonoBehaviour
 
     private void OnEnable()
     {
-        var avatar = characterAvatar;
+        var avatar = m_PlayerInventory.EquippedAvatar();;
         var variantIndex = avatar.bodyItem.BodyIndex;
         bodySlot.SetIconSprite(avatar.bodyItem.sprite);
         bodySlot.SetRarenessSprite(GetRarenessSpriteByIndex(avatar.bodyItem.rareness));
