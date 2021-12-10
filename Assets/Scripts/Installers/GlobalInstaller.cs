@@ -34,7 +34,21 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OpenDefaultMessagePopUpSignal> ();
     Container.DeclareSignal<UpdateSoftCurrencySignal> ();
     Container.DeclareSignal<UpdateHardCurrencySignal> ();
-  
+
+    //Advertisement signals
+    Container.DeclareSignal<AdsInitializedSignal> ();
+    Container.DeclareSignal<RewardAdLoadedSignal> ();
+    Container.DeclareSignal<StartShowingAdSignal> ();
+    Container.DeclareSignal<GrantRewardSignal> ();
+    Container.DeclareSignal<NotGrantedRewardSignal> ();
+    Container.DeclareSignal<FinishedAdVisualitationRewardSignal> ();
+    Container.DeclareSignal<OpenSoftCurrencyAdSignal> ();
+    Container.DeclareSignal<OpenHardCurrencyAdSignal> ();
+    Container.DeclareSignal<OpenThemeBonusAdSignal> ();
+    Container.DeclareSignal<OpenEnergyAdSignal> ();
+    Container.DeclareSignal<OpenTimeShortenAdSignal> ();
+    Container.DeclareSignal<OpenDoubleViewsAdSignal> ();
+
     //Customizations signals 
     Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
     Container.DeclareSignal<TestRoomThemeItemSignal>();
