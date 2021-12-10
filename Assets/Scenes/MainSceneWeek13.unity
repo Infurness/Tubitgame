@@ -2288,6 +2288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateTime: 15
   baseNum: 800
+  baseTimeToBeProduced: 
 --- !u!4 &70403867
 Transform:
   m_ObjectHideFlags: 0
@@ -12059,10 +12060,10 @@ RectTransform:
   m_Father: {fileID: 537759526}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 176.6852, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 648.3982, y: -65.59183}
+  m_SizeDelta: {x: 176.6852, y: 131.18365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &324836910
 MonoBehaviour:
@@ -15199,10 +15200,10 @@ RectTransform:
   m_Father: {fileID: 537759526}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 176.6852, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 88.3426, y: -65.59183}
+  m_SizeDelta: {x: 176.6852, y: 131.18365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &398631870
 MonoBehaviour:
@@ -15824,6 +15825,9 @@ MonoBehaviour:
   rightButton: {fileID: 178344524}
   leftButton: {fileID: 453828148}
   movementSpeed: 3
+  viewsHolder: {fileID: 0}
+  houseView: {fileID: 0}
+  streetView: {fileID: 0}
 --- !u!1 &417949908
 GameObject:
   m_ObjectHideFlags: 0
@@ -22078,10 +22082,10 @@ RectTransform:
   m_Father: {fileID: 537759526}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 176.6852, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 275.0278, y: -65.59183}
+  m_SizeDelta: {x: 176.6852, y: 131.18365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &567673184
 MonoBehaviour:
@@ -44892,10 +44896,10 @@ RectTransform:
   m_Father: {fileID: 537759526}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 176.6852, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 461.71298, y: -65.59183}
+  m_SizeDelta: {x: 176.6852, y: 131.18365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1209919567
 MonoBehaviour:
@@ -53615,6 +53619,7 @@ MonoBehaviour:
   levelUpButton: {fileID: 567673184}
   resetXp: {fileID: 1209919567}
   AddEnergyItem: {fileID: 324836910}
+  softCurrencyRewardedAd: {fileID: 0}
 --- !u!1 &1496056599
 GameObject:
   m_ObjectHideFlags: 0
@@ -55911,10 +55916,10 @@ RectTransform:
   m_Father: {fileID: 537759526}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 176.6852, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 835.0834, y: -65.59183}
+  m_SizeDelta: {x: 176.6852, y: 131.18365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1542600057
 MonoBehaviour:
@@ -59206,6 +59211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a46fb61164ad89409fcfec59f9316a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popUpConfirmButton: {fileID: 0}
 --- !u!1 &1643053203
 GameObject:
   m_ObjectHideFlags: 0
@@ -59426,6 +59432,11 @@ MonoBehaviour:
   levelUpPanelCloseButton: {fileID: 1107113776}
   energyInventoryPanel: {fileID: 1643053203}
   energyInventoryPanelCloseButton: {fileID: 451441127}
+  energyTimePanel: {fileID: 0}
+  energyTimePanelButton: {fileID: 0}
+  adsDefaultPanelPopUp: {fileID: 0}
+  adsPanelText: {fileID: 0}
+  adsDefaultPanelCancelButton: {fileID: 0}
 --- !u!1 &1654602081
 GameObject:
   m_ObjectHideFlags: 0
@@ -60308,7 +60319,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: e38233b99e13b6348a8a96b21dc4b494, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 7eb2b01028f269e4d9de1d404ea93218, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -68722,6 +68733,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboardPlayerInfoPrefab: {fileID: 2094430008710567554, guid: 927ba5155c13fbf46bff13d61d0ee52b, type: 3}
   leaderboardPlayerInfoHolder: {fileID: 1164659195}
+  channelsTabButton: {fileID: 0}
+  themesTabButton: {fileID: 0}
+  selectedSprite: {fileID: 0}
+  unselectedSprite: {fileID: 0}
+  selectedColor: {r: 0, g: 0, b: 0, a: 0}
+  unselectedColor: {r: 0, g: 0, b: 0, a: 0}
+  rankIcons: []
 --- !u!1 &1959961221
 GameObject:
   m_ObjectHideFlags: 0
@@ -72009,6 +72027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyItemPrefab: {fileID: 6666727563101153603, guid: 415691a8f54149c46a5f9330b11b3f59, type: 3}
   itemsHolder: {fileID: 710831244}
+  useButton: {fileID: 0}
 --- !u!1 &2044638323
 GameObject:
   m_ObjectHideFlags: 0
