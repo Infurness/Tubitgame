@@ -65,11 +65,26 @@ public class PlayerDataManager : MonoBehaviour
         });
         switch (purchaseSignal.product.definition.id)
         {
-            case "10HC":
+            case "10hc":
                 AddHardCurrency(10, confirmAction);
                 break;
-            case "50HC":
+            case "30hc":
+                AddHardCurrency(30, confirmAction);
+                break;
+            case "50hc":
                 AddHardCurrency(50, confirmAction);
+                break;
+            case "60hc":
+                AddHardCurrency(60, confirmAction);
+                break;
+            case "100hc":
+                AddHardCurrency(100, confirmAction);
+                break;
+            case "140hc":
+                AddHardCurrency(140, confirmAction);
+                break;
+            case "250hc":
+                AddHardCurrency(250, confirmAction);
                 break;
 
         }
@@ -442,6 +457,7 @@ public class PlayerDataManager : MonoBehaviour
             playerData.hardCurrency = hc;
             print("Added HC");
             confirmPurchase?.Invoke();
+            signalBus.Fire(new UpdateHardCurrencySignal());
         }));
     }
 

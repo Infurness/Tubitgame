@@ -257,6 +257,8 @@ public class Shop_VC : MonoBehaviour
 
                         playerInventory.AddCharacterItem(item);
                         buyPanel.gameObject.SetActive(false);
+                        OpenClothingPanel();
+
                     });
                 }));
 
@@ -321,6 +323,8 @@ public class Shop_VC : MonoBehaviour
 
                         playerInventory.AddRoomItem(item);
                         buyPanel.gameObject.SetActive(false);
+                        OpenFurniturePanel();
+
 
                     });
                 }));
@@ -366,6 +370,8 @@ public class Shop_VC : MonoBehaviour
                         item.Owned = true;
                         playerInventory.AddVCItem(item);
                         buyPanel.gameObject.SetActive(false);
+                        OpenEquipmentsPanel();
+
 
                     });
                 });
