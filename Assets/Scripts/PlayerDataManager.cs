@@ -449,6 +449,10 @@ public class PlayerDataManager : MonoBehaviour
     {
         if (amount > playerData.hardCurrency)
         {
+            signalBus.Fire(new  OpenDefaultMessagePopUpSignal()
+            {
+                message =  "Can't Purchase Not Enough coins"
+            });
             return;
         }
 
@@ -456,9 +460,10 @@ public class PlayerDataManager : MonoBehaviour
 
         hc -= amount;
 
-        UpdateUserDatabase(new[] {"HardCurrency"}, new object[hc], (() =>
+        UpdateUserDatabase(new[] {"HardCurrency"}, new object[]{hc}, (() =>
         {
             playerData.hardCurrency = hc;
+            signalBus.Fire(new UpdateHardCurrencySignal());
             onRedeemed?.Invoke();
         }));
 
@@ -468,16 +473,21 @@ public class PlayerDataManager : MonoBehaviour
     {
         if (amount > playerData.softCurrency)
         {
+            signalBus.Fire(new  OpenDefaultMessagePopUpSignal()
+            {
+              message =  "Can't Purchase Not Enough coins"
+            });
             return;
         }
 
-        var sc = playerData.hardCurrency;
+        ulong sc = playerData.hardCurrency;
 
         sc -= amount;
 
-        UpdateUserDatabase(new[] {"SoftCurrency"}, new object[sc], (() =>
+        UpdateUserDatabase(new[] {"SoftCurrency"}, new object[]{sc}, (() =>
         {
             playerData.softCurrency = sc;
+            signalBus.Fire(new UpdateSoftCurrencySignal());
             onRedeemed?.Invoke();
         }));
     }

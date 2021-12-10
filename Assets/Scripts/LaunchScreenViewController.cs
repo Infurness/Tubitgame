@@ -9,7 +9,7 @@ using Zenject;
 public class LaunchScreenViewController : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
-    [SerializeField] private TMP_Text playFabIDText;
+    [SerializeField] private TMP_Text playFabIDText,stateText;
     [Inject] private IAuthenticator authenticator;
     [SerializeField] private Button googleSignIn_Bt, appleSignin_Bt, facebookSignIn_Bt;
     [SerializeField] private GameObject signInCanvas;
@@ -39,6 +39,21 @@ public class LaunchScreenViewController : MonoBehaviour
         {
            signInCanvas.gameObject.SetActive(true);
         });
+        
+        signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal) =>
+        {
+            SetStateText("Check Remote Assets Updates" );
+        });
+        signalBus.Subscribe<OnLoginFailedSignal>((signal)=>
+        {
+            SetStateText(signal.Reason);
+        });
+        signalBus.Subscribe<RemoteAssetsCheckSignal>((signal =>
+        {
+            SetStateText("Get Player Data");
+        } ));
+        
+        
     }
 
     public void OnGoogleLoginPressed()
@@ -67,5 +82,10 @@ public class LaunchScreenViewController : MonoBehaviour
         authenticator.LoginWithAppleID();
         signInCanvas.gameObject.SetActive(false);
 
+    }
+
+    void SetStateText(string text)
+    {
+        stateText.text = text+".......";
     }
 }
