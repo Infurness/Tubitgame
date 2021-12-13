@@ -8,8 +8,6 @@ using Zenject;
 
 public class HeadRender : MonoBehaviour
 {
-    [Inject] private PlayerInventory playerInventory;
-
     [SerializeField] private SpriteRenderer headRender, hairRender;
     [SerializeField] private Camera headRenderCamera;
     [SerializeField] private SpriteRenderer TestResult;
@@ -41,18 +39,14 @@ public class HeadRender : MonoBehaviour
 
         headItems = (List<HeadItem>) loadHeads.Result;
         hairItems=( List<HairItem>) loadHairs.Result;
-        TestResults();
+        Test();
     }
 
 
-    void TestResults()
+    void Test()
     {
       var sprite=  GetHeadTexture("HeadItem", "HairItem");
       TestResult.sprite = sprite;
     }
 
-    void Update()
-    {
-        
-    }
 }
