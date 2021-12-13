@@ -24,6 +24,9 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
     [SerializeField] private List<RealEstateCustomizationItem> realEstateItems;
 
+    [SerializeField] private List<HeadItem> headItems;
+    [SerializeField] private List<HairItem> hairItems;
+
     public List<ThemeCustomizationItem> CharacterItems => characterItems.ToList();
 
     public List<ThemeCustomizationItem> RoomThemeEffectItems => roomThemeEffectItems.ToList();
@@ -299,12 +302,12 @@ public class PlayerInventory : MonoBehaviour
 
     public HairItem GetHairItem(string hairName)
     {
-        return (HairItem)characterItems.Find ((it) => it.name == hairName);
+        return hairItems.Find ((it) => it.name == hairName);
     }
 
     public HeadItem GetHeadItem (string headName)
     {
-        return (HeadItem)characterItems.Find ((it) => it.name == headName);
+        return headItems.Find ((it) => it.name == headName);
     }
 
 }

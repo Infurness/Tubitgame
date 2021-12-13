@@ -19,17 +19,6 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
 
     [SerializeField] private Image avatarHair;
     [SerializeField] private Image avatarHead;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void SetInfo(int rank ,Sprite rankIcon, int levels, string name, string title, ulong subscribers)
     {
