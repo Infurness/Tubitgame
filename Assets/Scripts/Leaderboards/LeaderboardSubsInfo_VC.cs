@@ -71,13 +71,11 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
 
     void GetUsersPublicData (PlayFab.ClientModels.GetUserDataResult result)
     {
-        foreach(KeyValuePair<string, PlayFab.ClientModels.UserDataRecord> keyPair in result.Data)
+        if (result.Data.ContainsKey("Avatar"))
         {
-            Debug.Log ("KEYS: " + keyPair.Key);
-        }
-        
-        //PlayFab.ClientModels.UserDataRecord data = result.Data["Avatar"];
-        //CharacterAvatarAddressedData avatarData = JsonConvert.DeserializeObject<CharacterAvatarAddressedData> (data.Value);
-        //SetAvatarData (avatarData);
+            PlayFab.ClientModels.UserDataRecord data = result.Data["Avatar"];
+            CharacterAvatarAddressedData avatarData = JsonConvert.DeserializeObject<CharacterAvatarAddressedData> (data.Value);
+            SetAvatarData (avatarData);
+        } 
     }
 }
