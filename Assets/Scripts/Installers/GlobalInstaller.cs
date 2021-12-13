@@ -30,66 +30,7 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<ChangePlayerSubsSignal> ();
     Container.DeclareSignal<AssetsLoadedSignal>();
     Container.DeclareSignal<RemoteAssetsCheckSignal>();
-    
-    Container.DeclareSignal<OpenDefaultMessagePopUpSignal> ();
-    Container.DeclareSignal<UpdateSoftCurrencySignal> ();
-    Container.DeclareSignal<UpdateHardCurrencySignal> ();
-    Container.DeclareSignal<UpdateSoftCurrencySignal> ();
-
-     Container.DeclareSignal<SelectThemeSignal>();
-        Container.DeclareSignal<StartRecordingSignal>();
-        Container.DeclareSignal<StartPublishSignal>();
-        Container.DeclareSignal<PublishVideoSignal>();
-        Container.DeclareSignal<EndPublishVideoSignal> ();
-        Container.DeclareSignal<EnergyValueSignal> ();
-        Container.DeclareSignal<AddEnergySignal> ();
-        Container.DeclareSignal<ShowVideosStatsSignal> ();
-        Container.DeclareSignal<GetMoneyFromVideoSignal> ();
-        Container.DeclareSignal<RoomZoomStateChangedSignal>();
-        Container.DeclareSignal<UpdateExperienceSignal> ();
-        Container.DeclareSignal<OpenVideoManagerSignal> ();
-        Container.DeclareSignal<Recieve3BestLeaderboard> ();
-        Container.DeclareSignal<RecieveTop10Leaderboard> ();
-        Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();
-        Container.DeclareSignal<OnVideosStatsUpdatedSignal> ();
-        Container.DeclareSignal<OpenThemeSelectorPopUpSignal> ();
-        Container.DeclareSignal<ThemeHeldSignal> ();
-        Container.DeclareSignal<ConfirmThemesSignal> ();
-        Container.DeclareSignal<CancelVideoRecordingSignal> ();
-        Container.DeclareSignal<ChangeUsernameSignal> ();
-        Container.DeclareSignal<OpenVideoCreationSignal> ();
-        Container.DeclareSignal<CloseVideoCreationSignal> ();
-        Container.DeclareSignal<UpdateThemesGraphSignal> ();
-        Container.DeclareSignal<OpenSettingPanelSignal> ();
-        Container.DeclareSignal<OpenDeleteAccountSignal> ();
-        Container.DeclareSignal<OpenLeaderboardsSignal> ();
-        Container.DeclareSignal<AddSubsForExperienceSignal> ();
-        Container.DeclareSignal<AddViewsForExperienceSignal> ();
-        Container.DeclareSignal<LevelUpSignal> ();
-        Container.DeclareSignal<UpdateRankSignal> ();
-        Container.DeclareSignal<OpenLevelUpPanelSignal> ();
-        Container.DeclareSignal<OpenDefaultMessagePopUpSignal> ();
-        Container.DeclareSignal<CloseAdsDefaultPopUpSignal> ();
-        Container.DeclareSignal<OpenAdsDefaultPopUpSignal> ();
-        Container.DeclareSignal<ChangeBackButtonSignal> ();
-        Container.DeclareSignal<OpenEnergyInventorySignal> ();
-        Container.DeclareSignal<UseEnergyItemSignal> ();
-        Container.DeclareSignal<ChangeRestStateSignal> ();
-
-    //Advertisement signals
-    Container.DeclareSignal<AdsInitializedSignal> ();
-    Container.DeclareSignal<RewardAdLoadedSignal> ();
-    Container.DeclareSignal<StartShowingAdSignal> ();
-    Container.DeclareSignal<GrantRewardSignal> ();
-    Container.DeclareSignal<NotGrantedRewardSignal> ();
-    Container.DeclareSignal<FinishedAdVisualitationRewardSignal> ();
-    Container.DeclareSignal<OpenSoftCurrencyAdSignal> ();
-    Container.DeclareSignal<OpenHardCurrencyAdSignal> ();
-    Container.DeclareSignal<OpenThemeBonusAdSignal> ();
-    Container.DeclareSignal<OpenEnergyAdSignal> ();
-    Container.DeclareSignal<OpenTimeShortenAdSignal> ();
-    Container.DeclareSignal<OpenDoubleViewsAdSignal> ();
-
+  
     //Customizations signals 
     Container.DeclareSignal<OnPlayerEquippedThemeItemChangedSignal>();
     Container.DeclareSignal<TestRoomThemeItemSignal>();

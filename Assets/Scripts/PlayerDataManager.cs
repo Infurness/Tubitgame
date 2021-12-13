@@ -65,26 +65,11 @@ public class PlayerDataManager : MonoBehaviour
         });
         switch (purchaseSignal.product.definition.id)
         {
-            case "10hc":
+            case "10HC":
                 AddHardCurrency(10, confirmAction);
                 break;
-            case "30hc":
-                AddHardCurrency(30, confirmAction);
-                break;
-            case "50hc":
+            case "50HC":
                 AddHardCurrency(50, confirmAction);
-                break;
-            case "60hc":
-                AddHardCurrency(60, confirmAction);
-                break;
-            case "100hc":
-                AddHardCurrency(100, confirmAction);
-                break;
-            case "140hc":
-                AddHardCurrency(140, confirmAction);
-                break;
-            case "250hc":
-                AddHardCurrency(250, confirmAction);
                 break;
 
         }
@@ -404,7 +389,6 @@ public class PlayerDataManager : MonoBehaviour
             playerData.hardCurrency = hc;
             print("Added HC");
             confirmPurchase?.Invoke();
-            signalBus.Fire(new UpdateHardCurrencySignal());
         }));
     }
 
@@ -412,10 +396,6 @@ public class PlayerDataManager : MonoBehaviour
     {
         if (amount > playerData.hardCurrency)
         {
-            signalBus.Fire(new  OpenDefaultMessagePopUpSignal()
-            {
-                message =  "Can't Purchase Not Enough coins"
-            });
             return;
         }
 
@@ -423,10 +403,9 @@ public class PlayerDataManager : MonoBehaviour
 
         hc -= amount;
 
-        UpdateUserDatabase(new[] {"HardCurrency"}, new object[]{hc}, (() =>
+        UpdateUserDatabase(new[] {"HardCurrency"}, new object[hc], (() =>
         {
             playerData.hardCurrency = hc;
-            signalBus.Fire(new UpdateHardCurrencySignal());
             onRedeemed?.Invoke();
         }));
 
@@ -436,21 +415,16 @@ public class PlayerDataManager : MonoBehaviour
     {
         if (amount > playerData.softCurrency)
         {
-            signalBus.Fire(new  OpenDefaultMessagePopUpSignal()
-            {
-              message =  "Can't Purchase Not Enough coins"
-            });
             return;
         }
 
-        ulong sc = playerData.hardCurrency;
+        var sc = playerData.hardCurrency;
 
         sc -= amount;
 
-        UpdateUserDatabase(new[] {"SoftCurrency"}, new object[]{sc}, (() =>
+        UpdateUserDatabase(new[] {"SoftCurrency"}, new object[sc], (() =>
         {
             playerData.softCurrency = sc;
-            signalBus.Fire(new UpdateSoftCurrencySignal());
             onRedeemed?.Invoke();
         }));
     }
