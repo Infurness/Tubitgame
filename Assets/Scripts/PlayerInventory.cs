@@ -77,30 +77,28 @@ public class PlayerInventory : MonoBehaviour
         {
             var chItems = caharacterItemsLoadOp.Result;
             characterItems =(List<ThemeCustomizationItem>) chItems;
-
-            if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
+            if(characterAvatarAddressedData != null)
             {
-                equippedCharacterAvatar = defaultAvatar;
-                return;
+                if (string.IsNullOrEmpty (characterAvatarAddressedData.BodyType))
+                {
+                    equippedCharacterAvatar = defaultAvatar;
+                    return;
+                }
+
+                equippedCharacterAvatar.bodyItem =
+                    (BodyItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.BodyType);
+                equippedCharacterAvatar.headItem =
+                    (HeadItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Head);
+                equippedCharacterAvatar.hairItem =
+                    (HairItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Hair);
+                equippedCharacterAvatar.torsoItem =
+                    (TorsoItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Torso);
+                equippedCharacterAvatar.legsItem =
+                    (LegsItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Legs);
+                equippedCharacterAvatar.feetItem =
+                    (FeetItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Feet);
             }
-
-            equippedCharacterAvatar.bodyItem =
-                (BodyItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.BodyType);
-            equippedCharacterAvatar.headItem =
-                (HeadItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Head);
-            equippedCharacterAvatar.hairItem =
-                (HairItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Hair);
-            equippedCharacterAvatar.torsoItem =
-                (TorsoItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Torso);
-            equippedCharacterAvatar.legsItem =
-                (LegsItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Legs);
-            equippedCharacterAvatar.feetItem =
-                (FeetItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Feet);
-
-        }
-
-         
-        
+        }       
     }
     async Task LoadThemeEffectAddressedAssets()
     {
@@ -284,8 +282,16 @@ public class PlayerInventory : MonoBehaviour
         return  new RoomLayout( playerInventoryAddressedData.RoomLayout);
     }
 
-   
-  
+    public HairItem GetHairItem(string hairName)
+    {
+        return (HairItem)characterItems.Find ((it) => it.name == hairName);
+    }
+
+    public HeadItem GetHeadItem (string headName)
+    {
+        return (HeadItem)characterItems.Find ((it) => it.name == headName);
+    }
+
 }
 [System.Serializable]
     public class PlayerInventoryAddressedData
