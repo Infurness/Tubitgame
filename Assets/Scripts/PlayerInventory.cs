@@ -16,7 +16,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private PlayerInventoryAddressedData playerInventoryAddressedData;
     [SerializeField] private CharacterAvatarAddressedData characterAvatarAddressedData;
     [SerializeField] private CharacterAvatar equippedCharacterAvatar;
-    [SerializeField] private CharacterAvatar defaultAvatar;
+    [SerializeField]  private CharacterAvatar defaultAvatar;
     [SerializeField] private List<ThemeCustomizationItem> characterItems;
     [SerializeField] private List<ThemeCustomizationItem> roomThemeEffectItems;
     [SerializeField] private List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
@@ -40,7 +40,8 @@ public class PlayerInventory : MonoBehaviour
     {
         if (equippedCharacterAvatar==null)
         {
-            return defaultAvatar;
+            equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+            return equippedCharacterAvatar;
         }
         else
         {
@@ -77,28 +78,42 @@ public class PlayerInventory : MonoBehaviour
         {
             var chItems = caharacterItemsLoadOp.Result;
             characterItems =(List<ThemeCustomizationItem>) chItems;
-            if(characterAvatarAddressedData != null)
+            if (characterAvatarAddressedData!=null)
             {
-                if (string.IsNullOrEmpty (characterAvatarAddressedData.BodyType))
+                if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
                 {
-                    equippedCharacterAvatar = defaultAvatar;
+                    equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
                     return;
                 }
-
-                equippedCharacterAvatar.bodyItem =
-                    (BodyItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.BodyType);
-                equippedCharacterAvatar.headItem =
-                    (HeadItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Head);
-                equippedCharacterAvatar.hairItem =
-                    (HairItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Hair);
-                equippedCharacterAvatar.torsoItem =
-                    (TorsoItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Torso);
-                equippedCharacterAvatar.legsItem =
-                    (LegsItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Legs);
-                equippedCharacterAvatar.feetItem =
-                    (FeetItem)characterItems.Find ((it) => it.name == characterAvatarAddressedData.Feet);
             }
-        }       
+            else
+            {
+                equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+                return;
+            }
+           
+
+            equippedCharacterAvatar.bodyItem =
+                (BodyItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.BodyType);
+            equippedCharacterAvatar.headItem =
+                (HeadItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Head);
+            equippedCharacterAvatar.hairItem =
+                (HairItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Hair);
+            equippedCharacterAvatar.torsoItem =
+                (TorsoItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Torso);
+            equippedCharacterAvatar.legsItem =
+                (LegsItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Legs);
+            equippedCharacterAvatar.feetItem =
+                (FeetItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Feet);
+
+        }
+        else
+        {
+            equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+        }
+
+         
+        
     }
     async Task LoadThemeEffectAddressedAssets()
     {
