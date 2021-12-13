@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using PlayFab;
+using PlayFab.ClientModels;
+using PlayFab.AdminModels;
+using Newtonsoft.Json;
 
 public class LeaderboardSubsInfo_VC : MonoBehaviour
 {
@@ -13,7 +17,8 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
     [SerializeField] private TMP_Text rankTitle;
     [SerializeField] private TMP_Text subscribersNumber;
 
-    [SerializeField] private Image profilePicture;
+    [SerializeField] private Image avatarHair;
+    [SerializeField] private Image avatarHead;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,5 +42,36 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
         playerName.text = name;
         rankTitle.text = title;
         subscribersNumber.text = subscribers.ToString ();
+        GetUserFaceData (name);
+    }
+    void SetAvatarData (CharacterAvatarAddressedData avatarData)
+    {
+        avatarHead.sprite = PlayerInventory.Instance.GetHeadItem (avatarData.Head).sprite;
+        avatarHair.sprite = PlayerInventory.Instance.GetHairItem (avatarData.Hair).sprite;
+    }
+    void GetUserFaceData (string name)
+    {
+        LookupUserAccountInfoRequest request = new LookupUserAccountInfoRequest { TitleDisplayName = name };
+        PlayFabAdminAPI.GetUserAccountInfo (request, OnGetUsersFaceData, ErrorGetUsersFaceData);
+    }
+    void OnGetUsersFaceData (LookupUserAccountInfoResult result)
+    {
+        Debug.Log (result.UserInfo.PlayFabId);
+        PlayFab.ClientModels.GetUserDataRequest request = new PlayFab.ClientModels.GetUserDataRequest
+        {
+            PlayFabId = result.UserInfo.PlayFabId
+        };
+        PlayFabClientAPI.GetUserData (request, GetUsersPublicData, ErrorGetUsersFaceData);
+    }
+    void ErrorGetUsersFaceData (PlayFabError error)
+    {
+        Debug.LogError (error.ErrorDetails);
+    }
+
+    void GetUsersPublicData (PlayFab.ClientModels.GetUserDataResult result)
+    {
+        PlayFab.ClientModels.UserDataRecord data = result.Data["Avatar"];
+        CharacterAvatarAddressedData avatarData = JsonConvert.DeserializeObject<CharacterAvatarAddressedData> (data.Value);
+        SetAvatarData (avatarData);
     }
 }
