@@ -16,13 +16,16 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private PlayerInventoryAddressedData playerInventoryAddressedData;
     [SerializeField] private CharacterAvatarAddressedData characterAvatarAddressedData;
     [SerializeField] private CharacterAvatar equippedCharacterAvatar;
-    [SerializeField]  private CharacterAvatar defaultAvatar;
+    [SerializeField] private CharacterAvatar defaultAvatar;
     [SerializeField] private List<ThemeCustomizationItem> characterItems;
     [SerializeField] private List<ThemeCustomizationItem> roomThemeEffectItems;
     [SerializeField] private List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> videoQualityRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
     [SerializeField] private List<RealEstateCustomizationItem> realEstateItems;
+
+    [SerializeField] private List<HeadItem> headItems;
+    [SerializeField] private List<HairItem> hairItems;
 
     public List<ThemeCustomizationItem> CharacterItems => characterItems.ToList();
 
@@ -297,8 +300,16 @@ public class PlayerInventory : MonoBehaviour
         return  new RoomLayout( playerInventoryAddressedData.RoomLayout);
     }
 
-   
-  
+    public HairItem GetHairItem(string hairName)
+    {
+        return hairItems.Find ((it) => it.name == hairName);
+    }
+
+    public HeadItem GetHeadItem (string headName)
+    {
+        return headItems.Find ((it) => it.name == headName);
+    }
+
 }
 [System.Serializable]
     public class PlayerInventoryAddressedData
