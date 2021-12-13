@@ -51,6 +51,7 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
     }
     void GetUserFaceData (string name)
     {
+        Debug.Log ("Name: " + name);
         LookupUserAccountInfoRequest request = new LookupUserAccountInfoRequest { TitleDisplayName = name };
         PlayFabAdminAPI.GetUserAccountInfo (request, OnGetUsersFaceData, ErrorGetUsersFaceData);
     }
@@ -70,8 +71,13 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
 
     void GetUsersPublicData (PlayFab.ClientModels.GetUserDataResult result)
     {
-        PlayFab.ClientModels.UserDataRecord data = result.Data["Avatar"];
-        CharacterAvatarAddressedData avatarData = JsonConvert.DeserializeObject<CharacterAvatarAddressedData> (data.Value);
-        SetAvatarData (avatarData);
+        foreach(KeyValuePair<string, PlayFab.ClientModels.UserDataRecord> keyPair in result.Data)
+        {
+            Debug.Log ("KEYS: " + keyPair.Key);
+        }
+        
+        //PlayFab.ClientModels.UserDataRecord data = result.Data["Avatar"];
+        //CharacterAvatarAddressedData avatarData = JsonConvert.DeserializeObject<CharacterAvatarAddressedData> (data.Value);
+        //SetAvatarData (avatarData);
     }
 }
