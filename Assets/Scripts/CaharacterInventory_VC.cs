@@ -38,7 +38,19 @@ public class CaharacterInventory_VC : MonoBehaviour
     private List<Sprite> rarenessSprites;
     private GenderItemType gender;
     private CharacterAvatar characterAvatar;
+    [SerializeField] private Button CharacterCustomizationButton;
+    [SerializeField] private GameObject characterPanel;
 
+
+    void OpenCharacterPanel()
+    {
+        inventoryCanvas.gameObject.SetActive(true);
+        characterPanel.gameObject.SetActive(true);
+        signalBus.Fire(new CharacterCustomizationVisibilityChanged()
+        {
+            Visibility = true
+        });
+    }
     private void Awake()
     {
         characterAvatar = m_PlayerInventory.EquippedAvatar();
@@ -57,6 +69,11 @@ public class CaharacterInventory_VC : MonoBehaviour
     {
 
         inventoryCanvas.OnEnableAsObservable().Subscribe((unit => { OnSlotClosed(); }));
+        CharacterCustomizationButton.onClick.AddListener(OpenCharacterPanel);
+        signalBus.Subscribe<RoomCustomizationVisibilityChanged>((() =>
+        {
+            characterPanel.gameObject.SetActive(false);
+        }));
     }
 
 

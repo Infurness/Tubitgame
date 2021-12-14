@@ -71,6 +71,39 @@ public class HUD_VC : MonoBehaviour
             button.onClick.AddListener (OpenStorePanel);
 
         InitialState ();
+        _signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal =>
+        {
+            if (signal.Visibility)
+            {
+                leaderboardsPanel.gameObject.SetActive(false);
+                playerPanel.gameObject.SetActive(false);
+                
+            }
+            else
+            {
+                leaderboardsPanel.gameObject.SetActive(true);
+                playerPanel.gameObject.SetActive(true);
+
+            }
+        } ));
+        
+        _signalBus.Subscribe<CharacterCustomizationVisibilityChanged>((signal) =>
+        {
+            if (signal.Visibility)
+            {
+                leaderboardsPanel.gameObject.SetActive(false);
+                playerPanel.gameObject.SetActive(false);
+                videoManagerButton.gameObject.SetActive(false);
+                
+            }
+            else
+            {
+                leaderboardsPanel.gameObject.SetActive(true);
+                playerPanel.gameObject.SetActive(true);
+                videoManagerButton.gameObject.SetActive(true);
+
+            }
+        });
         //StopAllCoroutines ();
         //StartCoroutine (DecreaseSeconds());
     }

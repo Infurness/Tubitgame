@@ -75,7 +75,8 @@ public class GlobalInstaller : MonoInstaller
         Container.DeclareSignal<OpenEnergyInventorySignal> ();
         Container.DeclareSignal<UseEnergyItemSignal> ();
         Container.DeclareSignal<ChangeRestStateSignal> ();
-
+        Container.DeclareSignal<RoomCustomizationVisibilityChanged>();
+        Container.DeclareSignal<CharacterCustomizationVisibilityChanged>();
     //Advertisement signals
     Container.DeclareSignal<AdsInitializedSignal> ();
     Container.DeclareSignal<RewardAdLoadedSignal> ();

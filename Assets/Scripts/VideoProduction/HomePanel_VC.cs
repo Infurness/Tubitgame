@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UniRx.Triggers;
 using Zenject;
 
 public class HomePanel_VC : MonoBehaviour
@@ -15,8 +16,9 @@ public class HomePanel_VC : MonoBehaviour
    // [SerializeField] private ScrollRect viewsScroll;
     [SerializeField] private Button playerIconButton;
 
-    [SerializeField] private Button restButton;
-
+    [SerializeField] private Button restButton, shopButton;
+    [SerializeField] private GameObject videoMangerButtonPanel;
+    [SerializeField] private GameObject customizationButtonsPanel;
     ThemeType[] selectedThemeTypes; //Dummy unused code
     // Start is called before the first frame update
     void Start ()
@@ -32,6 +34,52 @@ public class HomePanel_VC : MonoBehaviour
         restButton.onClick.AddListener (RestButtonBehaviour);
 
         InitialScreenState ();
+        _signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal =>
+        {
+            if (signal.Visibility)
+            {
+                videoMangerButtonPanel.gameObject.SetActive(false);
+                shopButton.gameObject.SetActive(false);
+                restButton.gameObject.SetActive(false);
+                playerIconButton.gameObject.SetActive(false);
+                customizationButtonsPanel.gameObject.SetActive(false);
+                
+            }
+            else
+            {
+                videoMangerButtonPanel.gameObject.SetActive(true);
+                shopButton.gameObject.SetActive(true);
+                restButton.gameObject.SetActive(true);
+                playerIconButton.gameObject.SetActive(true);
+                customizationButtonsPanel.gameObject.SetActive(true);
+
+
+            }
+        } ));
+        
+        _signalBus.Subscribe<CharacterCustomizationVisibilityChanged>((signal) =>
+        {
+            if (signal.Visibility)
+            {
+                videoMangerButtonPanel.gameObject.SetActive(false);
+                shopButton.gameObject.SetActive(false);
+                restButton.gameObject.SetActive(false);
+                playerIconButton.gameObject.SetActive(false);
+                customizationButtonsPanel.gameObject.SetActive(false);
+
+                
+            }
+            else
+            {
+                videoMangerButtonPanel.gameObject.SetActive(true);
+                shopButton.gameObject.SetActive(true);
+                restButton.gameObject.SetActive(true);
+                playerIconButton.gameObject.SetActive(true);
+                customizationButtonsPanel.gameObject.SetActive(true);
+
+
+            }
+        });
     }
 
     // Update is called once per frame
