@@ -19,12 +19,15 @@ public class AdsRewardsManager : MonoBehaviour
     {
        return 10 * (xpManager.GetPlayerLevel ()+1);
     }
+    public void InitialSoftCurrencyReward ()
+    {
+        PlayerDataManager.Instance.AddSoftCurrency ((ulong)GetSoftCurrencyBonus ());
+    }
 
     public void SoftCurrencyReward ()
     {
         signalBus.Subscribe<GrantRewardSignal> (SoftCurrencyAdCompletedReward);
         signalBus.Subscribe<NotGrantedRewardSignal> (NoSoftCurrencyReward);
-        PlayerDataManager.Instance.AddSoftCurrency ((ulong)GetSoftCurrencyBonus ());
         signalBus.Fire<UpdateSoftCurrencySignal> ();
         AdsManager.Instance.ShowRewardedAd ();
     }
@@ -45,7 +48,10 @@ public class AdsRewardsManager : MonoBehaviour
     {
         return 10 * (xpManager.GetPlayerLevel () + 1);
     }
-
+    public void InitialHardCurrencyReward ()
+    {
+        PlayerDataManager.Instance.AddHardCurrency (GetHardCurrencyBonus ());
+    }
     public void HardCurrencyReward ()
     {
         signalBus.Subscribe<GrantRewardSignal> (HardCurrencyAdCompletedReward);
@@ -72,6 +78,11 @@ public class AdsRewardsManager : MonoBehaviour
         return (0.1f * xpManager.GetPlayerLevel ())/ rewardValue;
     }
 
+    public void InitialThemeBonusReward ()
+    {
+        algorithmManager.SetThemeBonus (GetThemeBonusReward (2));
+    }
+
     public void ThemeBonusReward ()
     {
         signalBus.Subscribe<GrantRewardSignal> (ThemeBonusAdCompletedReward);
@@ -86,7 +97,6 @@ public class AdsRewardsManager : MonoBehaviour
     }
     void NoThemeBonusReward ()
     {
-        algorithmManager.SetThemeBonus (GetThemeBonusReward (2));
         signalBus.TryUnsubscribe<GrantRewardSignal> (ThemeBonusAdCompletedReward);
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (NoThemeBonusReward);
     }
@@ -173,7 +183,7 @@ public class AdsRewardsManager : MonoBehaviour
     void RandomReward()
     {
         int randomNumber = UnityEngine.Random.Range (0,101);
-        if (randomNumber < 40)
+        if (randomNumber < 1000)
         {
             signalBus.Fire<OpenSoftCurrencyAdSignal> ();
         }

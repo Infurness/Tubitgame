@@ -422,7 +422,10 @@ public class PlayerDataManager : MonoBehaviour
     public void AddSoftCurrency ( ulong softCurrency)
     {
         playerData.softCurrency += softCurrency;
-        UpdateUserDatabase (new[] {"SoftCurrency"}, new object[] { playerData.softCurrency });
+        UpdateUserDatabase (new[] {"SoftCurrency"}, new object[] { playerData.softCurrency }, () => 
+        {
+            signalBus.Fire (new UpdateSoftCurrencySignal ());
+        });
     }
     public ulong GetHardCurrency ()
     {

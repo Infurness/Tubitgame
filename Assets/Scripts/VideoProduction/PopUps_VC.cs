@@ -197,6 +197,7 @@ public class PopUps_VC : MonoBehaviour
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         adsDefaultPanelPopUp.SetActive (false);
+        signalBus.TryFire<OnVideosStatsUpdatedSignal> ();
     }
     void CancelAdsDefaultPanel ()
     {

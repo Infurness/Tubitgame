@@ -29,6 +29,7 @@ public class Ads_VC : MonoBehaviour
     void OpenSoftCurrencyAd ()
     {
         signalBus.Fire(new OpenAdsDefaultPopUpSignal { message = $"You have been rewarded with <b><color=#CFCD00FF>{adsRewardsManager.GetSoftCurrencyBonus()}</color></b> coins!!\nWatch an Ad to recieve <b><color=#CFCD00FF>{adsRewardsManager.GetSoftCurrencyBonus ()*4}</color></b> more?" });
+        adsRewardsManager.InitialSoftCurrencyReward ();
         popUpConfirmButton.onClick.RemoveAllListeners ();
         popUpConfirmButton.onClick.AddListener (adsRewardsManager.SoftCurrencyReward);
         popUpConfirmButton.onClick.AddListener (ClosePopUp);
@@ -36,6 +37,7 @@ public class Ads_VC : MonoBehaviour
     void OpenHardCurrencyAd ()
     {
         signalBus.Fire (new OpenAdsDefaultPopUpSignal { message = $"You have been rewarded with <b><color=purple>{adsRewardsManager.GetHardCurrencyBonus ()}</color></b> gems!!\nWatch an Ad to recieve <b><color=purple>{adsRewardsManager.GetHardCurrencyBonus () * 2}</color></b> more?" });
+        adsRewardsManager.InitialHardCurrencyReward ();
         popUpConfirmButton.onClick.RemoveAllListeners ();
         popUpConfirmButton.onClick.AddListener (adsRewardsManager.HardCurrencyReward);
         popUpConfirmButton.onClick.AddListener (ClosePopUp);
@@ -44,6 +46,7 @@ public class Ads_VC : MonoBehaviour
     {
         signalBus.Fire (new OpenAdsDefaultPopUpSignal { message = $"You have been rewarded with <b><color=green>{(float)adsRewardsManager.GetThemeBonusReward (2)}</color></b> bonus popularity on your next theme!!\nWatch an Ad to recieve <b><color=green>{(float)adsRewardsManager.GetThemeBonusReward (1)}</color></b> more?" });
         popUpConfirmButton.onClick.RemoveAllListeners ();
+        adsRewardsManager.InitialThemeBonusReward ();
         popUpConfirmButton.onClick.AddListener (adsRewardsManager.ThemeBonusReward);
         popUpConfirmButton.onClick.AddListener (ClosePopUp);
     }
