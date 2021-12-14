@@ -54,3 +54,12 @@ public class RemoteAssetsCheckSignal
 {
     
 }
+
+public class RoomCustomizationVisibilityChanged
+{
+    public bool Visibility;
+}
+public class CharacterCustomizationVisibilityChanged
+{
+    public bool Visibility;
+}

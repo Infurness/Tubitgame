@@ -71,6 +71,37 @@ public class HUD_VC : MonoBehaviour
             button.onClick.AddListener (OpenStorePanel);
 
         InitialState ();
+        _signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal =>
+        {
+            if (signal.Visibility)
+            {
+                leaderboardsPanel.gameObject.SetActive(false);
+                playerPanel.gameObject.SetActive(false);
+                
+            }
+            else
+            {
+                leaderboardsPanel.gameObject.SetActive(true);
+                playerPanel.gameObject.SetActive(true);
+
+            }
+        } ));
+        
+        _signalBus.Subscribe<CharacterCustomizationVisibilityChanged>((signal) =>
+        {
+            if (signal.Visibility)
+            {
+                leaderboardsPanel.gameObject.SetActive(false);
+                playerPanel.gameObject.SetActive(false);
+                
+            }
+            else
+            {
+                leaderboardsPanel.gameObject.SetActive(true);
+                playerPanel.gameObject.SetActive(true);
+
+            }
+        });
         //StopAllCoroutines ();
         //StartCoroutine (DecreaseSeconds());
     }
@@ -213,18 +244,24 @@ public class HUD_VC : MonoBehaviour
     
     void ChangeBackButton (ChangeBackButtonSignal signal)
     {
+        backButtonsPanel.SetActive(true);
+
         backButton.onClick.RemoveAllListeners ();
         if (signal.changeToHome)
         {
             backButtonIcon.SetActive (false);
             homeButtonIcon.SetActive (true);
+            backButtonsPanel.SetActive(true);
             backButton.onClick.AddListener (OpenHomePanel);
+            backButton.onClick.AddListener(signal.buttonAction);
         }
         else
         {
             backButtonIcon.SetActive (true);
             homeButtonIcon.SetActive (false);
-            backButton.onClick.AddListener (OpenVideoManagerPanel);
+          //  backButton.onClick.AddListener (OpenVideoManagerPanel);
+            backButton.onClick.AddListener(signal.buttonAction);
+
         }
             
     }
