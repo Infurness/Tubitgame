@@ -28,7 +28,7 @@ public class CaharacterInventory_VC : MonoBehaviour
     [SerializeField] private TMP_Text equippedText, selectedText;
     [SerializeField] private TMP_Text equippedStatsText, selectedStatsText;
     [SerializeField] private Image equippedLogoImage,equippedRarenessImage, selectedLogoImage,selectedRarenessImgae;
-    [SerializeField] private GameObject characterSlotsPanel,roomSlotsPanel,buttonsPanel;
+    [SerializeField] private GameObject characterSlotsPanel,buttonsPanel;
     [SerializeField] private Canvas inventoryCanvas;
     [SerializeField] private GameObject characterPreview;
     [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
@@ -49,6 +49,45 @@ public class CaharacterInventory_VC : MonoBehaviour
         signalBus.Fire(new CharacterCustomizationVisibilityChanged()
         {
             Visibility = true
+        });
+        SetHomeButton();
+    }
+
+    private void SetHomeButton()
+    {
+        signalBus.Fire(new ChangeBackButtonSignal()
+        {
+            changeToHome = true,
+            buttonAction = () =>
+            {
+                inventoryCanvas.gameObject.SetActive(false);
+                characterPanel.gameObject.SetActive(false);
+                signalBus.Fire(new CharacterCustomizationVisibilityChanged()
+                {
+                    Visibility = false
+                });
+            }
+        });
+    }
+
+    void SetBackButton()
+    {
+        signalBus.Fire(new ChangeBackButtonSignal()
+        {
+            changeToHome = false,
+            buttonAction = () => { 
+                selectPanel.gameObject.SetActive(false);
+                equipPanel.gameObject.SetActive(false);
+                characterPreview.SetActive(true);
+                inventoryTabView.gameObject.SetActive(false);
+                infoPanel.gameObject.SetActive(true);
+                characterSlotsPanel.gameObject.SetActive(true);
+                themeEffectPanel.gameObject.SetActive(true);
+                
+                SetHomeButton();
+                
+            }
+         
         });
     }
     private void Awake()
@@ -282,6 +321,8 @@ public class CaharacterInventory_VC : MonoBehaviour
             });
 
             inventoryButtons.Add(invBt);
+
+            SetBackButton();
         }
 
         var names = Enum.GetNames(typeof(HeadItemType)).ToList();
@@ -362,6 +403,8 @@ public class CaharacterInventory_VC : MonoBehaviour
             });
 
             inventoryButtons.Add(invBt);
+            SetBackButton();
+
         }
 
         var names = Enum.GetNames(typeof(HairItemType)).ToList();
@@ -429,6 +472,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         SetBackButtonBehaviour();
         characterPreview.gameObject.SetActive(false);
 
+        SetBackButton();
 
        
     }
@@ -489,6 +533,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         SetBackButtonBehaviour();
         characterPreview.gameObject.SetActive(false);
 
+        SetBackButton();
 
         
     }
@@ -550,6 +595,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         SetBackButtonBehaviour();
         characterPreview.gameObject.SetActive(false);
 
+        SetBackButton();
 
       
     }

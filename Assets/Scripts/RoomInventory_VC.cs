@@ -31,6 +31,7 @@ public class RoomInventory_VC : MonoBehaviour
 
     [SerializeField] private Button roomCustomizationButton;
     [SerializeField] private Canvas inventoryCanvas;
+    
     void OpenRoomCustomizationPanel()
     {
         inventoryCanvas.gameObject.SetActive(true);
@@ -38,6 +39,20 @@ public class RoomInventory_VC : MonoBehaviour
         signalBus.Fire(new RoomCustomizationVisibilityChanged()
         {
             Visibility = true
+        });
+        signalBus.Fire(new ChangeBackButtonSignal()
+        {
+            changeToHome = true,
+            buttonAction = (() =>
+            {
+                inventoryCanvas.gameObject.SetActive(false);
+                roomInventoryPanel.gameObject.SetActive(false);
+                
+                signalBus.Fire(new RoomCustomizationVisibilityChanged()
+                {
+                    Visibility = false
+                });
+            })
         });
     }
     private void Start()
@@ -50,6 +65,8 @@ public class RoomInventory_VC : MonoBehaviour
         {
             roomInventoryPanel.gameObject.SetActive(false);
         }));
+        
+      
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
