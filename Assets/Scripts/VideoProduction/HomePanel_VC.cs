@@ -16,7 +16,8 @@ public class HomePanel_VC : MonoBehaviour
    // [SerializeField] private ScrollRect viewsScroll;
     [SerializeField] private Button playerIconButton;
 
-    [SerializeField] private Button restButton, shopButton;
+    [SerializeField] private Button restButton; 
+       [SerializeField] GameObject shopButtonPanel;
     [SerializeField] private GameObject videoMangerButtonPanel;
     [SerializeField] private GameObject customizationButtonsPanel;
     ThemeType[] selectedThemeTypes; //Dummy unused code
@@ -39,7 +40,7 @@ public class HomePanel_VC : MonoBehaviour
             if (signal.Visibility)
             {
                 videoMangerButtonPanel.gameObject.SetActive(false);
-                shopButton.gameObject.SetActive(false);
+                shopButtonPanel.gameObject.SetActive(false);
                 restButton.gameObject.SetActive(false);
                 playerIconButton.gameObject.SetActive(false);
                 customizationButtonsPanel.gameObject.SetActive(false);
@@ -48,7 +49,7 @@ public class HomePanel_VC : MonoBehaviour
             else
             {
                 videoMangerButtonPanel.gameObject.SetActive(true);
-                shopButton.gameObject.SetActive(true);
+                shopButtonPanel.gameObject.SetActive(true);
                 restButton.gameObject.SetActive(true);
                 playerIconButton.gameObject.SetActive(true);
                 customizationButtonsPanel.gameObject.SetActive(true);
@@ -62,7 +63,7 @@ public class HomePanel_VC : MonoBehaviour
             if (signal.Visibility)
             {
                 videoMangerButtonPanel.gameObject.SetActive(false);
-                shopButton.gameObject.SetActive(false);
+                shopButtonPanel.gameObject.SetActive(false);
                 restButton.gameObject.SetActive(false);
                 playerIconButton.gameObject.SetActive(false);
                 customizationButtonsPanel.gameObject.SetActive(false);
@@ -72,7 +73,7 @@ public class HomePanel_VC : MonoBehaviour
             else
             {
                 videoMangerButtonPanel.gameObject.SetActive(true);
-                shopButton.gameObject.SetActive(true);
+                shopButtonPanel.gameObject.SetActive(true);
                 restButton.gameObject.SetActive(true);
                 playerIconButton.gameObject.SetActive(true);
                 customizationButtonsPanel.gameObject.SetActive(true);
