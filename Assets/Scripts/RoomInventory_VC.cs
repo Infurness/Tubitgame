@@ -29,10 +29,43 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private TMP_Text equippedVideoQualityItemsEffect;
     private List<Sprite> rarenessSprites;
 
+    [SerializeField] private Button roomCustomizationButton;
+    [SerializeField] private Canvas inventoryCanvas;
+    
+    void OpenRoomCustomizationPanel()
+    {
+        inventoryCanvas.gameObject.SetActive(true);
+        roomInventoryPanel.gameObject.SetActive(true);
+        signalBus.Fire(new RoomCustomizationVisibilityChanged()
+        {
+            Visibility = true
+        });
+        signalBus.Fire(new ChangeBackButtonSignal()
+        {
+            changeToHome = true,
+            buttonAction = (() =>
+            {
+                inventoryCanvas.gameObject.SetActive(false);
+                roomInventoryPanel.gameObject.SetActive(false);
+                
+                signalBus.Fire(new RoomCustomizationVisibilityChanged()
+                {
+                    Visibility = false
+                });
+            })
+        });
+    }
     private void Start()
     {
         UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
         UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
+        roomCustomizationButton.onClick.AddListener(OpenRoomCustomizationPanel);
+        
+        signalBus.Subscribe<CharacterCustomizationVisibilityChanged>((() =>
+        {
+            roomInventoryPanel.gameObject.SetActive(false);
+        }));
+        
       
     }
 

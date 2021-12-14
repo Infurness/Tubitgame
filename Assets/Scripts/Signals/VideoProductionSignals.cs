@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Zenject;
 
 public class SelectThemeSignal
@@ -160,6 +161,7 @@ public class CloseAdsDefaultPopUpSignal
 public class ChangeBackButtonSignal
 {
     public bool changeToHome;
+    public UnityAction buttonAction;
 }
 public class UseEnergyItemSignal
 {
