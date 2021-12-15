@@ -8,7 +8,7 @@ public class CheatsManager : MonoBehaviour
     [Inject] private SignalBus signalBus;
     [Inject] private ExperienceManager experienceManager;
     [Inject] private EnergyInventoryManager energyInventoryManager;
-
+    [Inject] private PlayerDataManager PlayerDataManager;
     [SerializeField] ScriptableEnergyItem energyItemToAdd;
     public void Add1Level()
     {
@@ -26,6 +26,16 @@ public class CheatsManager : MonoBehaviour
     public void Add100Energy ()
     {
         signalBus.Fire<AddEnergySignal> (new AddEnergySignal { energyAddition = 100 });
+    }
+
+    public void Add100HardCurrency()
+    {
+        PlayerDataManager.AddHardCurrency(100);
+    }
+
+    public void Add100SoftCurrency()
+    {
+        PlayerDataManager.AddSoftCurrency(100);
     }
     public void AddEnergyItem ()
     {

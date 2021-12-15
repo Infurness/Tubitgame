@@ -35,16 +35,21 @@ public class CharacterRender : MonoBehaviour
     {
       
         int variantIndex = avatar.bodyItem.BodyIndex;
+        var body = avatar.bodyItem;
         var gender = avatar.bodyItem.GenderItemType; 
         Sprite defaultHeadSprite= avatar.bodyItem.GenderItemType ==GenderItemType.Male ? defaultMaleHead : defaultFemaleHead ;
         Sprite defaultHairSprite= avatar.bodyItem.GenderItemType ==GenderItemType.Male ? defaultMaleHair : defaultFemaleHair ;
         bodyRenderer.sprite = avatar.bodyItem.sprite;
         headRender.sprite = avatar.headItem.GenderItemType==gender ? avatar.headItem.sprite:defaultHeadSprite;
+        headRender.transform.localPosition = body.headPosition;
         hairRender.sprite =avatar.hairItem.GenderItemType==gender ? avatar.hairItem.sprite:defaultHairSprite;
         torsoRender.sprite =avatar.torsoItem.GenderItemType==gender ? avatar.torsoItem.TorsoVariants[variantIndex]:null;
+        torsoRender.transform.localPosition = body.torsoPosition;
         legsRender.sprite =avatar.legsItem.GenderItemType==gender ? avatar.legsItem.LegsVariants[variantIndex]:null;
+        legsRender.transform.localPosition = body.legsPosition;
         feetRender.sprite =avatar.legsItem.GenderItemType==gender ? avatar.feetItem.sprite:null;
-        
+        feetRender.transform.localPosition = body.feetPosition;
+
     }
     
     

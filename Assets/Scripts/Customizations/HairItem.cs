@@ -17,6 +17,7 @@ namespace Customizations
         Blonde,
 
         Red,
+        Blue
         
     }
 }
