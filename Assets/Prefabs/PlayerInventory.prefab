@@ -47,7 +47,6 @@ MonoBehaviour:
     characterItemsNames: []
     roomItemsNames: []
     videoQualityItemsNames: []
-    equippedCharacterItemsNames: []
     equippedVideoQualityItemsNames: []
     RoomLayout:
       WallLayoutSlots: []
@@ -77,6 +76,13 @@ MonoBehaviour:
         Position: {x: 0, y: 0, z: 0}
         Scale: {x: 0, y: 0, z: 0}
         RotaionId: 0
+  characterAvatarAddressedData:
+    BodyType: 
+    Head: 
+    Hair: 
+    Torso: 
+    Legs: 
+    Feet: 
   equippedCharacterAvatar:
     bodyItem: {fileID: 0}
     headItem: {fileID: 0}
@@ -85,7 +91,7 @@ MonoBehaviour:
     legsItem: {fileID: 0}
     feetItem: {fileID: 0}
   defaultAvatar:
-    bodyItem: {fileID: 11400000, guid: 8fb542cc5f0794a21b193f086f30e5d8, type: 2}
+    bodyItem: {fileID: 11400000, guid: 74ae6b6bdd3874fb381422d580467adc, type: 2}
     headItem: {fileID: 11400000, guid: 959702bc1263d6645890d8e1a44bacac, type: 2}
     hairItem: {fileID: 11400000, guid: f4c7d2c12e6234c94a2e7f56ed87a98e, type: 2}
     torsoItem: {fileID: 11400000, guid: deb4da5bbf3c341468b0243045914d57, type: 2}
@@ -97,3 +103,21 @@ MonoBehaviour:
   videoQualityRoomItems: []
   equippedVideoQualityRoomItems: []
   realEstateItems: []
+  headItems:
+  - {fileID: 11400000, guid: 052afb2d563a2a5489ab1c08aed83add, type: 2}
+  - {fileID: 11400000, guid: bbff57550d3bbe1479990e1c2746663a, type: 2}
+  - {fileID: 11400000, guid: 6e5223698130195468ce9b20095f787c, type: 2}
+  - {fileID: 11400000, guid: 5a58cc05f03c9054184a27b9a9062a38, type: 2}
+  - {fileID: 11400000, guid: b4a5654ba62300d4fbe2ec854e114472, type: 2}
+  - {fileID: 11400000, guid: 46a91ef9db4e5af44a0087793da3f85e, type: 2}
+  - {fileID: 11400000, guid: 0870e778190406d4b801c8f210336ba7, type: 2}
+  - {fileID: 11400000, guid: 959702bc1263d6645890d8e1a44bacac, type: 2}
+  hairItems:
+  - {fileID: 11400000, guid: 4afe66d88cdf4b4489b42a319e9e12ab, type: 2}
+  - {fileID: 11400000, guid: f4c7d2c12e6234c94a2e7f56ed87a98e, type: 2}
+  - {fileID: 11400000, guid: 99f5d64df3df74ab581e948b5f479312, type: 2}
+  - {fileID: 11400000, guid: 9018c25c89ea873438c05e49e5e42373, type: 2}
+  - {fileID: 11400000, guid: aec0373e1c44e9c4f856274b4392edad, type: 2}
+  - {fileID: 11400000, guid: 191e2b3a9afa23f4ea2a9065d1ade5ff, type: 2}
+  - {fileID: 11400000, guid: 701419161bc39954ab2fc7a998d0d348, type: 2}
+  - {fileID: 11400000, guid: 773a2ecbfa5fb20429455e92429b4b7c, type: 2}
