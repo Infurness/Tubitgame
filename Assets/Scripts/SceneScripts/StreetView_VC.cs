@@ -20,7 +20,7 @@ public class StreetView_VC : MonoBehaviour
         ResizeForCameraWidth (houseViewTransform);
         MoveSpriteNextToOther (houseViewTransform, roomViewTransform);
 
-        ResizeForCameraHeight (streetViewTransform);
+        ResizeForCameraWidth (streetViewTransform);
         MoveSpriteNextToOther (streetViewTransform, houseViewTransform);
     }
     // Update is called once per frame
