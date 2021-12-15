@@ -198,7 +198,12 @@ public class VideoManager_VC : MonoBehaviour
         {
             makeAVideoPanel.SetActive (true);
             _signalBus.Fire<OpenVideoCreationSignal> ();
-            _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = false });
+            _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = false,
+                buttonAction = () =>
+                {
+                    OpenPanel (VideoManagerPanels.ManageVideos);
+                }
+            });
             ForceQualityTagSelectionSliderPosition (0);
         }
         else
@@ -211,8 +216,7 @@ public class VideoManager_VC : MonoBehaviour
         if (_panel == VideoManagerPanels.ManageVideos)
         {
             manageVideosPanel.SetActive (true);
-            if (videosShown.Count == 0)
-                UpdateVideoList ();
+            UpdateVideoList ();
             _signalBus.TryUnsubscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             _signalBus.Subscribe<OnVideosStatsUpdatedSignal> (UpdateVideoList);
             _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = true });
@@ -308,6 +312,7 @@ public class VideoManager_VC : MonoBehaviour
                 CreateVideo (video);
             }
         }
+
         if (unpublishedVideosVC.Count==0)
         {
             CreateUnpublishedVideos ();             

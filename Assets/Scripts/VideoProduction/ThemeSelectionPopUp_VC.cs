@@ -185,8 +185,8 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         while (draggingTheme)
         {
             Vector3 themeNewPos = mainCam.ScreenToWorldPoint (Input.mousePosition) - offset;
-            themeNewPos.z = 0;
-            draggableThemeObjects[draggableBeingUsed].transform.position = themeNewPos;
+            themeNewPos.z = 100;
+            draggableThemeObjects[draggableBeingUsed].GetComponent<RectTransform>().position = themeNewPos;
             draggableThemeObjects[draggableBeingUsed].GetComponent<Image> ().enabled = true;
             if (!Input.anyKey)//Not being hold anymore
             {
