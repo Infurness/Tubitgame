@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4ead83f9cf345b4ad55a9e896eed18c, type: 3}
-  m_Name: LegsItem 4
+  m_Name: Jeans
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: f701624011d87c2448f14b4c4db47784, type: 3}
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0.419
@@ -21,11 +21,15 @@ MonoBehaviour:
   rareness: 2
   descriptionText: 
   newStatsText: 
+  Owned: 0
+  PriceType: 2
+  HCPrice: 25
+  SCPrice: 0
   LegsType: 0
-  GenderItemType: 1
+  GenderItemType: 0
   LegsVariants:
-  - {fileID: 21300000, guid: 75d10468a9097564e95f9212931e545b, type: 3}
-  - {fileID: 21300000, guid: b4f816bec552e2947aa03356a184f9f0, type: 3}
-  - {fileID: 21300000, guid: 19e528364cbb34346aeba71fca11d429, type: 3}
-  - {fileID: 21300000, guid: 9e2b3fdad8970874a96e8d1c7600f024, type: 3}
-  - {fileID: 21300000, guid: 891a9905e83009a49840e73e38282cef, type: 3}
+  - {fileID: 21300000, guid: f701624011d87c2448f14b4c4db47784, type: 3}
+  - {fileID: 21300000, guid: 28809541c7753dc44ad833105e135162, type: 3}
+  - {fileID: 21300000, guid: d17fde69e5400814f97d2641ca86ad7e, type: 3}
+  - {fileID: 21300000, guid: 5c497c0c73e6b794bada0b1fef426686, type: 3}
+  - {fileID: 21300000, guid: c11b974a02c12d54194acea058052258, type: 3}

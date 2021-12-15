@@ -12,12 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adf118a713974afb82cae10ec6ba7de5, type: 3}
   m_Name: BodyItem 1
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: d3e1a4c1419811b43be3321c6bea33ae, type: 3}
+  sprite: {fileID: 21300000, guid: 78fcfa7b8ee58b84ba3ea5fdc1093a11, type: 3}
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0
   rareness: 0
   descriptionText: 
   newStatsText: 
+  Owned: 0
+  PriceType: 0
+  HCPrice: 0
+  SCPrice: 0
   GenderItemType: 0
-  BodyIndex: 1
+  BodyIndex: 0
+  headPosition: {x: -0.03, y: 4.21, z: 0}
+  torsoPosition: {x: 0.05, y: 0.1, z: 0}
+  legsPosition: {x: 0.02, y: 0.19, z: 0}
+  feetPosition: {x: 0.364, y: -3.397, z: 0}

@@ -10,24 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4ead83f9cf345b4ad55a9e896eed18c, type: 3}
-  m_Name: LegsItem
+  m_Name: Shorts
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 41e6ff4e41e377446b05ebe8f6077e36, type: 3}
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0.419
   - ThemeType: 5
     themePopularityFactor: 0.548
-  rareness: 0
+  rareness: 2
   descriptionText: 
   newStatsText: 
-  Owned: 1
+  Owned: 0
   PriceType: 0
   HCPrice: 0
   SCPrice: 0
-  LegsType: 0
+  LegsType: 1
   GenderItemType: 0
   LegsVariants:
-  - {fileID: 21300000, guid: 75d10468a9097564e95f9212931e545b, type: 3}
-  - {fileID: 21300000, guid: b4f816bec552e2947aa03356a184f9f0, type: 3}
-  - {fileID: 21300000, guid: 19e528364cbb34346aeba71fca11d429, type: 3}
+  - {fileID: 21300000, guid: 41e6ff4e41e377446b05ebe8f6077e36, type: 3}
+  - {fileID: 21300000, guid: ca8d97d4237597b4e8362b398cdd5f25, type: 3}
+  - {fileID: 21300000, guid: 256659019f490654a9d0b9fc8cdaceef, type: 3}
+  - {fileID: 21300000, guid: acc243862ebe0a746bdbd874ea8309fb, type: 3}
+  - {fileID: 21300000, guid: b6fc837fb8b369143b8c4e7dcbdf7836, type: 3}

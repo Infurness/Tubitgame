@@ -10,20 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4ead83f9cf345b4ad55a9e896eed18c, type: 3}
-  m_Name: LegsItem 2
+  m_Name: BlueJeans
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: c29f6f9b2954e1c4bbc14747e65b89bd, type: 3}
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0.419
   - ThemeType: 5
     themePopularityFactor: 0.548
-  rareness: 2
+  rareness: 0
   descriptionText: 
   newStatsText: 
+  Owned: 0
+  PriceType: 0
+  HCPrice: 0
+  SCPrice: 0
   LegsType: 0
   GenderItemType: 0
   LegsVariants:
-  - {fileID: 21300000, guid: 75d10468a9097564e95f9212931e545b, type: 3}
-  - {fileID: 21300000, guid: b4f816bec552e2947aa03356a184f9f0, type: 3}
-  - {fileID: 21300000, guid: 19e528364cbb34346aeba71fca11d429, type: 3}
+  - {fileID: 21300000, guid: c29f6f9b2954e1c4bbc14747e65b89bd, type: 3}
+  - {fileID: 21300000, guid: 954cfce08fce85d41927ba05ac611bf6, type: 3}
+  - {fileID: 21300000, guid: 32436909ecf01af4b8177d00f51b8163, type: 3}
+  - {fileID: 21300000, guid: cf3dbd71f4925364ab9e87f1a718b7a8, type: 3}
+  - {fileID: 21300000, guid: 7ca5654c60e42d94b8dd690a81625c91, type: 3}

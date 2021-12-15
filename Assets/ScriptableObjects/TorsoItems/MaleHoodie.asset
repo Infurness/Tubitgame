@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8814ae8fea24a1b9314e4eaf3061680, type: 3}
-  m_Name: TorsoItem 2
+  m_Name: MaleHoodie
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 74f6924453739be4db602c9539d5857d, type: 3}
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0
@@ -21,9 +21,15 @@ MonoBehaviour:
   rareness: 1
   descriptionText: 
   newStatsText: 
+  Owned: 0
+  PriceType: 1
+  HCPrice: 0
+  SCPrice: 350
   TorsoItemType: 1
   GenderItemType: 0
   TorsoVariants:
-  - {fileID: 21300000, guid: 74d17e2586c4e5c4780bf6fcfa6be049, type: 3}
-  - {fileID: 21300000, guid: 121f5301e7e78594ead9acad1d4097b3, type: 3}
-  - {fileID: -213070496708570122, guid: ad80a8b6b9d93a0419b3d68c09159da3, type: 3}
+  - {fileID: 21300000, guid: 74f6924453739be4db602c9539d5857d, type: 3}
+  - {fileID: 21300000, guid: 88a5d34ef7c17ef449ef8843724a6efd, type: 3}
+  - {fileID: 21300000, guid: 0081db005d8494243a94fd8fcd2b1443, type: 3}
+  - {fileID: 21300000, guid: 2a6db6753974e5d439b31df584100917, type: 3}
+  - {fileID: 21300000, guid: 4f2d6923c75adfe4da0a22df01d2acbb, type: 3}

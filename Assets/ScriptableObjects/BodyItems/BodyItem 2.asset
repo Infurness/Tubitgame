@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adf118a713974afb82cae10ec6ba7de5, type: 3}
   m_Name: BodyItem 2
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: f927cce2436c2714ba2d7e7cc2c62ceb, type: 3}
+  sprite: {fileID: 21300000, guid: b2631acaed5a07a44963f8f867c9ce21, type: 3}
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0
@@ -24,4 +24,8 @@ MonoBehaviour:
   HCPrice: 0
   SCPrice: 0
   GenderItemType: 0
-  BodyIndex: 2
+  BodyIndex: 1
+  headPosition: {x: -0.03, y: 4.21, z: 0}
+  torsoPosition: {x: 0.05, y: 0.1, z: 0}
+  legsPosition: {x: 0.02, y: 0.19, z: 0}
+  feetPosition: {x: 0.32, y: -3.6, z: 0}
