@@ -34,6 +34,8 @@ public class EnergyManager : MonoBehaviour
     [SerializeField] float restFactorValue = 6f;
     bool isResting;
     bool energyChargeBlocked = false;
+
+    [SerializeField] private List<ScriptableEnergyItem> items;
     // Start is called before the first frame update
     void Start()
     {
@@ -158,6 +160,16 @@ public class EnergyManager : MonoBehaviour
     {
         return isResting;
     }
+
+    public void SetEnergyItem(ScriptableEnergyItem itemRecieved)
+    {
+        Debug.Log ("Label: " + itemRecieved.IDLable + itemRecieved.energyRecover + itemRecieved.ObjectIcon.name);
+        ScriptableEnergyItem itemFound = items.Find ((item) => item.IDLable == itemRecieved.IDLable);
+        Debug.Log ("Found Label: " + itemFound.IDLable + itemFound.energyRecover);
+        itemFound.ObjectIcon = itemRecieved.ObjectIcon;
+        itemFound.energyRecover = itemRecieved.energyRecover;
+    }
+
     private void OnApplicationQuit ()
     {
         SaveEnergyData ();
