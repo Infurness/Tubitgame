@@ -48,6 +48,7 @@ public class GlobalInstaller : MonoInstaller
         Container.DeclareSignal<RoomZoomStateChangedSignal>();
         Container.DeclareSignal<UpdateExperienceSignal> ();
         Container.DeclareSignal<OpenVideoManagerSignal> ();
+        Container.DeclareSignal<OpenHomePanelSignal> (); 
         Container.DeclareSignal<Recieve3BestLeaderboard> ();
         Container.DeclareSignal<RecieveTop10Leaderboard> ();
         Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();

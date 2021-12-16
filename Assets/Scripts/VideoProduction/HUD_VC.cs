@@ -163,6 +163,7 @@ public class HUD_VC : MonoBehaviour
             xpBarPanel.SetActive (true);
             backButtonsPanel.SetActive (false);
             _signalBus.Fire<UpdateExperienceSignal> ();
+            _signalBus.Fire<OpenHomePanelSignal> ();
         }
         else
         {

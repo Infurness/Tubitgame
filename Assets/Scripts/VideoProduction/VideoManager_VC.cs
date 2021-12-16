@@ -66,6 +66,8 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private TMP_FontAsset qualityNonSelectedFont;
 
     [SerializeField] private TMP_Text[] graphHourTexts;
+    float minGraphX;
+    float maxGraphX;
 
     private int videoCreationEnergyCost;
     [SerializeField] private GameObject energyCostPanel;
@@ -76,6 +78,10 @@ public class VideoManager_VC : MonoBehaviour
     // Start is called before the first frame update
     void Start ()
     {
+        minGraphX = graphHourTexts[0].gameObject.GetComponent<RectTransform> ().anchoredPosition.x;
+        Debug.Log ("RECT: " + minGraphX);
+        maxGraphX = graphHourTexts[graphHourTexts.Length - 1].gameObject.GetComponent<RectTransform> ().anchoredPosition.x;
+        Debug.Log ("RECT Max: " + maxGraphX);
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenManageVideosPanel);
         _signalBus.Subscribe<OpenVideoManagerSignal> (InitialState);
         _signalBus.Subscribe<ConfirmThemesSignal> (SetConfirmedThemes);
@@ -420,9 +426,27 @@ public class VideoManager_VC : MonoBehaviour
     {
         int hourPeriod = Math.DivRem (GameClock.Instance.Now.Hour-1, 6, out int remaindesr);
         int i = 0;
+        
+        int hour = GameClock.Instance.Now.Hour % 6;
+        float minutes = GameClock.Instance.Now.Minute * 100f / 60f;
+        float timeNowDecimals = (hour + (minutes / 100));
+
+        float maxDistance = maxGraphX - minGraphX;
+        float distanceBetweenHours = (maxDistance * (1 / timeNowDecimals));
+
         foreach (TMP_Text text in graphHourTexts)
         {
+            //Change hour
             text.text = $"{i + hourPeriod*6}:00";
+            //Change position
+            
+            if (i > 0)
+            {
+                RectTransform rectTransform = text.gameObject.GetComponent<RectTransform> ();
+                Vector3 newPos = rectTransform.anchoredPosition;
+                newPos.x = minGraphX + (distanceBetweenHours * i);
+                rectTransform.anchoredPosition = newPos;
+            }
             i++;
         }
     }

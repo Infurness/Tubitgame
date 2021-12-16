@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Zenject;
 
 public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
 {
+    [Inject] private SignalBus signalBus;
+
     [SerializeField] private RectTransform canvas;
     [SerializeField] private RectTransform contentPanel;
     [SerializeField] private ScrollRect scrollRect;
@@ -26,7 +29,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
 
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        signalBus.Subscribe<OpenHomePanelSignal> (ForceHomePanel);
         ResizeContentPanel ();
         previousScreenSize = new Vector2 (Screen.width, Screen.height);
         rightButton.onClick.AddListener (()=> { ScrollView (1); });
@@ -109,7 +113,11 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
             StartCoroutine (SmoothSnapTo (Vector3.zero));
         }
     }
-
+    void ForceHomePanel ()
+    {
+        int movement = -currentViewIndex;
+        ScrollView (movement);
+    }
     public IEnumerator SmoothSnapTo (RectTransform _target)
     {
         float lerpCounter = 0;

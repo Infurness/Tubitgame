@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,6 +41,8 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private TMP_Text adsPanelText;
     [SerializeField] private Button adsDefaultPanelCancelButton;
 
+
+    Camera mainCam;
     // Start is called before the first frame update
     void Start()
     {
@@ -63,8 +66,10 @@ public class PopUps_VC : MonoBehaviour
         }
         leaderboardsPanelCloseButton.onClick.AddListener (CloseLeaderboards);
         levelUpPanelCloseButton.onClick.AddListener (CloseLevelUp);
-        energyInventoryPanelCloseButton.onClick.AddListener (OpenCloseEnergyInventroy);
+        energyInventoryPanelCloseButton.onClick.AddListener (OpenEnergyInventory);
         energyTimePanelButton.onClick.AddListener (OpenCloseEnergyTimeLeftPanel);
+
+        mainCam = Camera.main;
 
         InitialState ();
     }
@@ -168,18 +173,46 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Fire<UpdateHardCurrencySignal> ();
     }
 
-    void OpenCloseEnergyInventroy ()
+    void OpenEnergyInventory ()
     {
-        if (energyInventoryPanel.activeSelf)
+        energyInventoryPanel.SetActive (true);
+        signalBus.Fire<OpenEnergyInventorySignal> ();
+        StartCoroutine (TapOutsideToClosePanel (energyInventoryPanel, CloseEnergyInventory));
+    }
+    void CloseEnergyInventory ()
+    {
+        energyInventoryPanel.SetActive (false);
+    }
+    IEnumerator TapOutsideToClosePanel(GameObject panel, Action callback)
+    {
+        yield return null;
+        bool dragging = false;
+        RectTransform rect = panel.GetComponent<RectTransform> ();
+        while (panel.activeSelf == true)
         {
-            energyInventoryPanel.SetActive (false);
+            if (Input.GetMouseButtonDown (0))
+            {
+                if (RectTransformUtility.RectangleContainsScreenPoint (rect, Input.mousePosition, Camera.main))
+                {
+                    dragging = true;
+                }
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                if (!dragging)
+                {
+                    if (!RectTransformUtility.RectangleContainsScreenPoint (rect, Input.mousePosition, Camera.main))
+                    {
+                        callback.Invoke ();
+                    }
+                }
+                else
+                {
+                    dragging = false;
+                } 
+            }
+            yield return null;
         }
-        else
-        {
-            energyInventoryPanel.SetActive (true);
-            signalBus.Fire<OpenEnergyInventorySignal> ();
-        }
-        
     }
 
     void OpenCloseEnergyTimeLeftPanel ()
