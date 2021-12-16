@@ -212,7 +212,6 @@ public class PlayerDataManager : MonoBehaviour
             {
                 playerData.hardCurrency = 0;
             }
-
         }), (error => { print("Cant Retrieve User data"); }));
     }
 
