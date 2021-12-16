@@ -83,6 +83,7 @@ public class PlayerInventory : MonoBehaviour
             characterItems =(List<ThemeCustomizationItem>) chItems;
             if (characterAvatarAddressedData!=null)
             {
+                
                 if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
                 {
                     equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
@@ -226,6 +227,7 @@ public class PlayerInventory : MonoBehaviour
     public void ChangeAvatar(CharacterAvatar avatar)
     {
         equippedCharacterAvatar = avatar;
+        characterAvatarAddressedData = new CharacterAvatarAddressedData();
         characterAvatarAddressedData.BodyType = avatar.bodyItem.name;
         characterAvatarAddressedData.Head = avatar.headItem.name;
         characterAvatarAddressedData.Hair = avatar.hairItem.name;
