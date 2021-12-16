@@ -186,15 +186,30 @@ public class PopUps_VC : MonoBehaviour
     IEnumerator TapOutsideToClosePanel(GameObject panel, Action callback)
     {
         yield return null;
+        bool dragging = false;
+        RectTransform rect = panel.GetComponent<RectTransform> ();
         while (panel.activeSelf == true)
         {
+            if (Input.GetMouseButtonDown (0))
+            {
+                if (RectTransformUtility.RectangleContainsScreenPoint (rect, Input.mousePosition, Camera.main))
+                {
+                    dragging = true;
+                }
+            }
             if (Input.GetMouseButtonUp(0))
             {
-                RectTransform rect = panel.GetComponent<RectTransform> ();
-                if(!RectTransformUtility.RectangleContainsScreenPoint (rect, Input.mousePosition, Camera.main))
+                if (!dragging)
                 {
-                    callback.Invoke ();
+                    if (!RectTransformUtility.RectangleContainsScreenPoint (rect, Input.mousePosition, Camera.main))
+                    {
+                        callback.Invoke ();
+                    }
                 }
+                else
+                {
+                    dragging = false;
+                } 
             }
             yield return null;
         }
