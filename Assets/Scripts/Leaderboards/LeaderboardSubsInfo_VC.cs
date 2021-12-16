@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using PlayFab.AdminModels;
 using Newtonsoft.Json;
+using Zenject;
 
 public class LeaderboardSubsInfo_VC : MonoBehaviour
 {
@@ -19,6 +21,12 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
 
     [SerializeField] private Image avatarHair;
     [SerializeField] private Image avatarHead;
+    private HeadAssets headAssets;
+
+    private void Awake()
+    {
+        headAssets = FindObjectOfType<HeadAssets>();
+    }
 
     public void SetInfo(int rank ,Sprite rankIcon, int levels, string name, string title, ulong subscribers)
     {
@@ -35,8 +43,8 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
     }
     void SetAvatarData (CharacterAvatarAddressedData avatarData)
     {
-        avatarHead.sprite = PlayerInventory.Instance.GetHeadItem (avatarData.Head).sprite;
-        avatarHair.sprite = PlayerInventory.Instance.GetHairItem (avatarData.Hair).sprite;
+        avatarHead.sprite = headAssets.GetHeadSprite(avatarData.Head);
+        avatarHair.sprite = headAssets.GetHairSprite(avatarData.Hair);
     }
     void GetUserFaceData (string name)
     {
@@ -64,6 +72,7 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
         {
             PlayFab.ClientModels.UserDataRecord data = result.Data["Avatar"];
             CharacterAvatarAddressedData avatarData = JsonConvert.DeserializeObject<CharacterAvatarAddressedData> (data.Value);
+            print("Avatar Data"+avatarData);
             SetAvatarData (avatarData);
         } 
     }

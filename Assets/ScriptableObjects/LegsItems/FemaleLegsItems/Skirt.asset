@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ead83f9cf345b4ad55a9e896eed18c, type: 3}
+  m_Name: Skirt
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: f70bb01fe96445040af16037f6faec02, type: 3}
+  affectedTheme:
+  - ThemeType: 0
+    themePopularityFactor: 0.419
+  - ThemeType: 5
+    themePopularityFactor: 0.548
+  rareness: 2
+  descriptionText: 
+  newStatsText: 
+  Owned: 0
+  PriceType: 2
+  HCPrice: 25
+  SCPrice: 0
+  LegsType: 0
+  GenderItemType: 1
+  LegsVariants:
+  - {fileID: 21300000, guid: f70bb01fe96445040af16037f6faec02, type: 3}
+  - {fileID: 21300000, guid: e031e0928cd586f469cf27c00882479c, type: 3}
+  - {fileID: 21300000, guid: d88e76cb5757c124686dbbceebbe17f6, type: 3}
+  - {fileID: 21300000, guid: e4f660d0baa41cd41ad44f5e551fc5ac, type: 3}
+  - {fileID: 21300000, guid: bbc0b17d824c9764193c2945370cf910, type: 3}

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ead83f9cf345b4ad55a9e896eed18c, type: 3}
+  m_Name: FemaleJeans
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 4657708252b71d046b872a887f763a1d, type: 3}
+  affectedTheme:
+  - ThemeType: 0
+    themePopularityFactor: 0.419
+  - ThemeType: 5
+    themePopularityFactor: 0.548
+  rareness: 2
+  descriptionText: 
+  newStatsText: 
+  Owned: 0
+  PriceType: 0
+  HCPrice: 0
+  SCPrice: 0
+  LegsType: 0
+  GenderItemType: 1
+  LegsVariants:
+  - {fileID: 21300000, guid: 4657708252b71d046b872a887f763a1d, type: 3}
+  - {fileID: 21300000, guid: 83027be273228574ab188a295d02f1b8, type: 3}
+  - {fileID: 21300000, guid: 588737e2b5df1fc4ea92b65cc444a3da, type: 3}
+  - {fileID: 21300000, guid: b9bafe413c5532443b051245bf5ee54c, type: 3}
+  - {fileID: 21300000, guid: 7dce30aa90b6df046857452e1bfb0de5, type: 3}
