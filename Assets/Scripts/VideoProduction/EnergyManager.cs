@@ -35,7 +35,6 @@ public class EnergyManager : MonoBehaviour
     bool isResting;
     bool energyChargeBlocked = false;
 
-    [SerializeField] private List<ScriptableEnergyItem> items;
     // Start is called before the first frame update
     void Start()
     {
@@ -98,7 +97,7 @@ public class EnergyManager : MonoBehaviour
     }
     public int GetMaxEnergy ()
     {
-        return maxEnergyByLevel[xpManager.GetPlayerLevel () - 1];
+        return maxEnergyByLevel[Mathf.Max(0, xpManager.GetPlayerLevel () - 1)];
     }
     void AddEnergy (AddEnergySignal _signal)
     {
@@ -116,7 +115,7 @@ public class EnergyManager : MonoBehaviour
     IEnumerator UpdateEnergy ()
     {
         _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
-        while (energyData.energy < maxEnergyByLevel[xpManager.GetPlayerLevel()-1])
+        while (energyData.energy < maxEnergyByLevel[Mathf.Max (0, xpManager.GetPlayerLevel()-1)])
         {
             if(!youTubeVideoManager.IsRecording()) //Dont charge energy if there is a video recording
             {
@@ -126,8 +125,8 @@ public class EnergyManager : MonoBehaviour
             }
             yield return null;
         }
-        if (energyData.energy > maxEnergyByLevel[xpManager.GetPlayerLevel () - 1])
-            energyData.energy = maxEnergyByLevel[xpManager.GetPlayerLevel () - 1];
+        if (energyData.energy > maxEnergyByLevel[Mathf.Max (0, xpManager.GetPlayerLevel () - 1)])
+            energyData.energy = maxEnergyByLevel[Mathf.Max (0, xpManager.GetPlayerLevel () - 1)];
         _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
     }
     public float GetEnergyGainedPerSecond ()
@@ -159,15 +158,6 @@ public class EnergyManager : MonoBehaviour
     public bool GetPlayerIsResting ()
     {
         return isResting;
-    }
-
-    public void SetEnergyItem(ScriptableEnergyItem itemRecieved)
-    {
-        Debug.Log ("Label: " + itemRecieved.IDLable + itemRecieved.energyRecover + itemRecieved.ObjectIcon.name);
-        ScriptableEnergyItem itemFound = items.Find ((item) => item.IDLable == itemRecieved.IDLable);
-        Debug.Log ("Found Label: " + itemFound.IDLable + itemFound.energyRecover);
-        itemFound.ObjectIcon = itemRecieved.ObjectIcon;
-        itemFound.energyRecover = itemRecieved.energyRecover;
     }
 
     private void OnApplicationQuit ()

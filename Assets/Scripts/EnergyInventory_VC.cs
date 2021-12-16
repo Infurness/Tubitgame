@@ -56,8 +56,10 @@ public class EnergyInventory_VC : MonoBehaviour
     }
     public void Selectitem (EnergyInventoryItem_VC item) //Called from a EnergyInventoryItem_VC
     {
-        if (selectedItem)
-            selectedItem.DeselectItem ();
+        if (selectedItem && selectedItem != item)
+        {
+            selectedItem.DeselectItem ();          
+        }
         selectedItem = item;
     }
 

@@ -8,7 +8,7 @@ public class LoadAssetsManager : MonoBehaviour
 {
     [Inject] SignalBus signalBus;
     [Inject] ThemesManager themesManager;
-    [Inject] EnergyManager energyManager;
+    [Inject] EnergyInventoryManager energyInventoryManager;
 
     [SerializeField] private string _label;
     [SerializeField] ScriptableTheme cloudThemeData;
@@ -69,8 +69,8 @@ public class LoadAssetsManager : MonoBehaviour
                 if (data.IsValid ())
                 {
                     await data.Task;
-                    energyManager.SetEnergyItem (data.Result);
                     cloudEnergyData = data.Result;
+                    energyInventoryManager.SetEnergyItem (data.Result);   
                 }
             }
         }

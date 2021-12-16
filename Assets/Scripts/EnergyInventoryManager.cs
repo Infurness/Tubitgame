@@ -20,7 +20,7 @@ public class EnergyInventoryManager : MonoBehaviour
     [Inject] SignalBus signalBus;
     PlayerDataManager playerDataManager;
 
-    [SerializeField]ScriptableEnergyItem[] allEnergyItems;
+    [SerializeField]List<ScriptableEnergyItem> allEnergyItems;
     EnergyInventoryData inventoryData;
     // Start is called before the first frame update
     void Start()
@@ -48,6 +48,16 @@ public class EnergyInventoryManager : MonoBehaviour
             {
                 inventoryData = JsonConvert.DeserializeObject<EnergyInventoryData> (datarecord.Value);
                 Debug.Log ($"Items Gotten: { inventoryData.items.Length}");
+            }
+            else
+            {
+                foreach(ScriptableEnergyItem item in allEnergyItems)
+                {
+                    for(int i=0;i<10;i++)
+                    {
+                        AddItem (item);
+                    }
+                }     
             }
         }), (error => { print ("Cant Retrieve Energy Inventory data"); }));
 
@@ -108,5 +118,14 @@ public class EnergyInventoryManager : MonoBehaviour
         Debug.LogError ($"No item with label: {label}");
         return null;
 
+    }
+
+    public void SetEnergyItem (ScriptableEnergyItem itemRecieved)
+    {
+        Debug.Log ("Label: " + itemRecieved.IDLable + itemRecieved.energyRecover + itemRecieved.ObjectIcon.name);
+        ScriptableEnergyItem itemFound = allEnergyItems.Find ((item) => item.IDLable == itemRecieved.IDLable);
+        Debug.Log ("Found Label: " + itemFound.IDLable + itemFound.energyRecover);
+        itemFound.ObjectIcon = itemRecieved.ObjectIcon;
+        itemFound.energyRecover = itemRecieved.energyRecover;
     }
 }
