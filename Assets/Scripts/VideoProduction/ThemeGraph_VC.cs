@@ -75,12 +75,13 @@ public class ThemeGraph_VC : MonoBehaviour
                 Vector3 lrNewPos = dictSlot.Key.gameObject.transform.position;
                 if (key.time < limitTimeValue)
                 {
-                    lrNewPos += new Vector3 (key.time * timeConversion, key.value * valueConversion, 0) * enlargerValue;
+                    float timeInGraph = key.time / limitTimeValue;
+                    lrNewPos += new Vector3 (timeInGraph * timeConversion, key.value * valueConversion, 0) * enlargerValue;
                     dictSlot.Key.SetPosition (i, lrNewPos);
                 }
                 else
                 {
-                    lrNewPos += new Vector3 (limitTimeValue * timeConversion, themeCurve.Evaluate (limitTimeValue) * valueConversion, 0) * enlargerValue;
+                    lrNewPos += new Vector3 (1 * timeConversion, themeCurve.Evaluate (limitTimeValue) * valueConversion, 0) * enlargerValue;
                     dictSlot.Key.SetPosition (i, lrNewPos);
                     break;
                 }
