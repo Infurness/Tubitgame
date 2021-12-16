@@ -61,6 +61,9 @@ public class UpdateExperienceSignal
 {
 
 }
+public class OpenHomePanelSignal
+{
+}
 public class OpenVideoManagerSignal
 {
 }
