@@ -2201,10 +2201,6 @@ MonoBehaviour:
   maxEnergyByLevel: 82000000910000009b000000a5000000af000000b9000000c8000000dc000000eb000000fa000000
   baseRegenerationValue: 0.0018
   restFactorValue: 6
-  items:
-  - {fileID: 11400000, guid: 653d723a0ff12ba4ba9cdcad0302615a, type: 2}
-  - {fileID: 11400000, guid: 8a2cbaaa11811b7418755927a5fda5c1, type: 2}
-  - {fileID: 11400000, guid: 4d4f9c634f84cd648bf3d747855acaa9, type: 2}
 --- !u!114 &70403864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2362,6 +2358,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allEnergyItems:
   - {fileID: 11400000, guid: 653d723a0ff12ba4ba9cdcad0302615a, type: 2}
+  - {fileID: 11400000, guid: 4d4f9c634f84cd648bf3d747855acaa9, type: 2}
+  - {fileID: 11400000, guid: 8a2cbaaa11811b7418755927a5fda5c1, type: 2}
 --- !u!114 &70403873
 MonoBehaviour:
   m_ObjectHideFlags: 0
