@@ -228,6 +228,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         characterPreview.SetActive(true);
         equipPanel.gameObject.SetActive(false);
         selectPanel.SetActive(false);
+        SetHomeButton();
     }
 
     private void OnBodyButtonClicked()
