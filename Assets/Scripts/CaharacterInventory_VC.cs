@@ -217,7 +217,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         inventoryTabView.gameObject.SetActive(true);
         infoPanel.SetActive(false);
         themeEffectPanel.SetActive(false);
-        characterPreview.SetActive(false);
+        characterPreview.SetActive(true);
     }
 
     void OnSlotClosed()
@@ -339,7 +339,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             ShowButtonsByItemType);
         inventoryTabView.SetButtonsTabVisibly(true);
         SetBackButtonBehaviour();
-        characterPreview.gameObject.SetActive(false);
+        //characterPreview.gameObject.SetActive(false);
     }
 
     private void SetBackButtonBehaviour()
@@ -421,7 +421,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             names,
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
-        characterPreview.gameObject.SetActive(false);
+        //characterPreview.gameObject.SetActive(false);
 
     }
 
@@ -477,7 +477,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         inventoryTabView.InitTabView(names,
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
-        characterPreview.gameObject.SetActive(false);
+        //characterPreview.gameObject.SetActive(false);
 
         SetBackButton();
 
@@ -538,7 +538,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             names,
             ShowButtonsByItemType);
         SetBackButtonBehaviour();
-        characterPreview.gameObject.SetActive(false);
+        //characterPreview.gameObject.SetActive(false);
 
         SetBackButton();
 
@@ -600,7 +600,7 @@ public class CaharacterInventory_VC : MonoBehaviour
 
         
         SetBackButtonBehaviour();
-        characterPreview.gameObject.SetActive(false);
+        //characterPreview.gameObject.SetActive(false);
 
         SetBackButton();
 
