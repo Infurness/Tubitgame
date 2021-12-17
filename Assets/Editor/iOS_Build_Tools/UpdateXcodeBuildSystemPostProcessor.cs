@@ -190,9 +190,13 @@ public class UpdateXcodeBuildSystemPostProcessor : MonoBehaviour
 
             "SWIFT_VERSION", "5.0");
 
-
-
+       pbxProject.SetBuildProperty(unityFrameworkTargetGuid,"Always Embed Swift Standard Libraries in target","No");
+       Debug.Log(unityFrameworkTargetGuid+" setted to NO");
+       
+       var unityIphonePath = pbxProject.GetUnityMainTargetGuid();
+       pbxProject.SetBuildProperty(unityIphonePath, "Always Embed Swift Standard Libraries in target", "Yes");
         // Write out the Xcode project
+        Debug.Log(unityIphonePath+" setted to NO");
 
         pbxProject.WriteToFile(pbxProjectPath);
 

@@ -29,5 +29,6 @@ public class InventoryButton : MonoBehaviour
     {
         itemButton.onClick.AddListener(buttonAction);
     }
+    
    
 }
