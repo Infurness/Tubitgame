@@ -412,7 +412,7 @@ public class PlayerDataManager : MonoBehaviour
     {
         return playerData.videos;
     }
-
+    
     public ulong GetSoftCurrency()
     {
         return playerData.softCurrency;
