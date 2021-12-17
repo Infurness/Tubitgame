@@ -11,6 +11,8 @@ public class Settings_VC : MonoBehaviour
     [Inject] private GlobalAudioManager audioManager;
 
     [SerializeField] private Button editButton;
+    [SerializeField] private Button confirmButton;
+
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private Button deleteAccountButton;
 
@@ -21,6 +23,7 @@ public class Settings_VC : MonoBehaviour
     {
         inputField.onDeselect.AddListener (OnConfirm);
         inputField.onSubmit.AddListener (OnConfirm);
+        confirmButton.onClick.AddListener (()=>OnConfirm(inputField.text));
         editButton.onClick.AddListener (EditName);
         deleteAccountButton.onClick.AddListener (OpenDeleteAccount);
 

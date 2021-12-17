@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEditor;
 using Zenject;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -125,7 +126,7 @@ public class EnergyInventoryManager : MonoBehaviour
         Debug.Log ("Label: " + itemRecieved.IDLable + itemRecieved.energyRecover + itemRecieved.ObjectIcon.name);
         ScriptableEnergyItem itemFound = allEnergyItems.Find ((item) => item.IDLable == itemRecieved.IDLable);
         Debug.Log ("Found Label: " + itemFound.IDLable + itemFound.energyRecover);
-        itemFound.ObjectIcon = itemRecieved.ObjectIcon;
+        itemFound.ObjectIcon = Resources.Load<Sprite>( "EnergySprites/"+ itemRecieved.ObjectIcon.name);
         itemFound.energyRecover = itemRecieved.energyRecover;
     }
 }
