@@ -54,6 +54,7 @@ public class RoomInventory_VC : MonoBehaviour
                 });
             })
         });
+        signalBus.Fire<OpenHomePanelSignal> ();
     }
     private void Start()
     {
