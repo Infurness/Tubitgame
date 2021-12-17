@@ -5,7 +5,7 @@ using UnityEditor.iOS.Xcode;
 
 public static class GoogleSignInPostBuild {
 #if UNITY_IOS
-    [PostProcessBuild(999)]
+    [PostProcessBuild(0)]
     public static void OnPostProcessBuild(BuildTarget buildTarget, string buildPath)
     {
         var projPath = buildPath + "/Unity-iPhone.xcodeproj/project.pbxproj";

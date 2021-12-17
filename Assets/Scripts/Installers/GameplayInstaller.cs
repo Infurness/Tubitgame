@@ -9,6 +9,7 @@ public class GameplayInstaller : MonoInstaller
         
        
         //Dependencies
+
         Container.Bind<PlayerData> ().AsSingle();
         Container.Bind<YouTubeVideoManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<AlgorithmManager> ().FromComponentInHierarchy ().AsSingle ();
@@ -29,6 +30,5 @@ public class GameplayInstaller : MonoInstaller
 
         Container.Bind<Shop>().FromComponentInHierarchy().AsSingle();
         Container.Bind<AdsRewardsManager> ().FromComponentInHierarchy ().AsSingle ();
-        Container.Bind<HeadAssets>().FromComponentInHierarchy().AsSingle();
     }
 }

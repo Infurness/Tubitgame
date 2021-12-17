@@ -33,15 +33,15 @@ public class CaharacterInventory_VC : MonoBehaviour
     [SerializeField] private GameObject characterPreview;
     [SerializeField] private Sprite commonSprite, uncommonSprite, rareSprite;
     [SerializeField] private GameObject infoPanel,themeEffectPanel;
-    [SerializeField] private TMP_Text playerName, SubsNum;
-    [SerializeField] private TMP_Text equippedItemsEffect;
+    [SerializeField] private TMP_Text playerName, subscribersNum;
     private List<Sprite> rarenessSprites;
     private GenderItemType gender;
     private CharacterAvatar characterAvatar;
     [SerializeField] private Button CharacterCustomizationButton;
     [SerializeField] private GameObject characterPanel;
-
-
+    [SerializeField] private GameObject effectsPanel;
+    [SerializeField] private EffectCell effectCellPrefab;
+    [SerializeField] private TMP_Text uploadedVideosNum;
     void OpenCharacterPanel()
     {
         inventoryCanvas.gameObject.SetActive(true);
@@ -108,6 +108,7 @@ public class CaharacterInventory_VC : MonoBehaviour
     {
 
         inventoryCanvas.OnEnableAsObservable().Subscribe((unit => { OnSlotClosed(); }));
+        characterPanel.OnEnableAsObservable().Subscribe((unit => OnCharacterPanelEnabled()));
         CharacterCustomizationButton.onClick.AddListener(OpenCharacterPanel);
         signalBus.Subscribe<RoomCustomizationVisibilityChanged>((() =>
         {
@@ -117,7 +118,7 @@ public class CaharacterInventory_VC : MonoBehaviour
 
 
 
-    private void OnEnable()
+    private void OnCharacterPanelEnabled()
     {
         var avatar = m_PlayerInventory.EquippedAvatar();;
         var variantIndex = avatar.bodyItem.BodyIndex;
@@ -135,7 +136,8 @@ public class CaharacterInventory_VC : MonoBehaviour
         feetSlot.SetRarenessSprite(GetRarenessSpriteByIndex(avatar.feetItem.rareness));
         
         playerName.text = PlayerDataManager.Instance.GetPlayerName().ToUpper();
-        SubsNum.text = PlayerDataManager.Instance.GetSubscribers().ToString();
+        subscribersNum.text = PlayerDataManager.Instance.GetSubscribers().ToString();
+        uploadedVideosNum.text = PlayerDataManager.Instance.GetPlayerTotalVideos().ToString();
         UpdateItemsEffectText();
 
 
@@ -160,14 +162,19 @@ public class CaharacterInventory_VC : MonoBehaviour
             }            
         }
 
-        equippedItemsEffect.text = null;
+        for (int i = 0; i < effectsPanel.transform.childCount; i++)
+        {
+            Destroy(effectsPanel.transform.GetChild(i).gameObject);
+        }
         foreach (var themeBouns in themesBounses)
         {
-            if (themeBouns.Value==0)
+            if (themeBouns.Value == 0)
             {
                 continue;
             }
-            equippedItemsEffect.text += themeBouns.Key + "  : " + themeBouns.Value * 100 + "%" + "\n";
+
+            var cell = Instantiate(effectCellPrefab, effectsPanel.transform);
+                cell.SetText(themeBouns.Key + "  : " + themeBouns.Value * 100 + "%" + "\n");
         }
     }
 

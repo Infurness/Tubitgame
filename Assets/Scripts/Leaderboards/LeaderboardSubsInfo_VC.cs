@@ -21,12 +21,8 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
 
     [SerializeField] private Image avatarHair;
     [SerializeField] private Image avatarHead;
-    private HeadAssets headAssets;
 
-    private void Awake()
-    {
-        headAssets = FindObjectOfType<HeadAssets>();
-    }
+ 
 
     public void SetInfo(int rank ,Sprite rankIcon, int levels, string name, string title, ulong subscribers)
     {
@@ -43,8 +39,11 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
     }
     void SetAvatarData (CharacterAvatarAddressedData avatarData)
     {
-        avatarHead.sprite = headAssets.GetHeadSprite(avatarData.Head);
-        avatarHair.sprite = headAssets.GetHairSprite(avatarData.Hair);
+        print("Avatar Head :"+avatarData.Head);
+        print("Avatar Hair :"+avatarData.Hair);
+        
+        avatarHead.sprite = HeadAssets.Instance.GetHeadSprite(avatarData.Head);
+        avatarHair.sprite = HeadAssets.Instance.GetHairSprite(avatarData.Hair);
     }
     void GetUserFaceData (string name)
     {

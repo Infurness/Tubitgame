@@ -8,12 +8,15 @@ using Zenject;
 
 public class HeadAssets : MonoBehaviour
 {
+    public static HeadAssets Instance;
     private List<HeadItem> headItems;
     private List<HairItem> hairItems;
    
 
     private async void Awake()
     {
+        Instance = this;
+        
         var loadHeads = Addressables.LoadAssetsAsync<HeadItem>("character", null);
         await loadHeads.Task;
         var loadHairs = Addressables.LoadAssetsAsync<HairItem>("character", null);

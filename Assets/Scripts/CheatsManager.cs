@@ -30,12 +30,12 @@ public class CheatsManager : MonoBehaviour
 
     public void Add100HardCurrency()
     {
-        PlayerDataManager.AddHardCurrency(100);
+        PlayerDataManager.AddHardCurrency(10000);
     }
 
     public void Add100SoftCurrency()
     {
-        PlayerDataManager.AddSoftCurrency(100);
+        PlayerDataManager.AddSoftCurrency(10000);
     }
     public void AddEnergyItem ()
     {
