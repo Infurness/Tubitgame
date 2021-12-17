@@ -108,6 +108,7 @@ public class CaharacterInventory_VC : MonoBehaviour
     {
 
         inventoryCanvas.OnEnableAsObservable().Subscribe((unit => { OnSlotClosed(); }));
+        characterPanel.OnEnableAsObservable().Subscribe((unit => OnCharacterPanelEnabled()));
         CharacterCustomizationButton.onClick.AddListener(OpenCharacterPanel);
         signalBus.Subscribe<RoomCustomizationVisibilityChanged>((() =>
         {
@@ -117,7 +118,7 @@ public class CaharacterInventory_VC : MonoBehaviour
 
 
 
-    private void OnEnable()
+    private void OnCharacterPanelEnabled()
     {
         var avatar = m_PlayerInventory.EquippedAvatar();;
         var variantIndex = avatar.bodyItem.BodyIndex;
@@ -163,7 +164,7 @@ public class CaharacterInventory_VC : MonoBehaviour
 
         for (int i = 0; i < effectsPanel.transform.childCount; i++)
         {
-            Destroy(effectsPanel.transform.GetChild(i));
+            Destroy(effectsPanel.transform.GetChild(i).gameObject);
         }
         foreach (var themeBouns in themesBounses)
         {
