@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1388361554980536256}
   - component: {fileID: 7494761263884986976}
-  - component: {fileID: 3087100988568272155}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -75,14 +74,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &3087100988568272155
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1161941724124072667}
-  m_Enabled: 1
 --- !u!1 &3835313006967435980
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,9 +130,9 @@ MonoBehaviour:
   legsRender: {fileID: 423795988546910200}
   feetRender: {fileID: 5818848890987039676}
   defaultMaleHead: {fileID: 21300000, guid: 4bea097d42fd50542b27313aa79c33a7, type: 3}
-  defaultFemaleHead: {fileID: 21300000, guid: 1dd6a697f5dd3a846891c55cd432fee0, type: 3}
+  defaultFemaleHead: {fileID: 21300000, guid: a16ce55bcbf6b274f98feba9eb01a1a8, type: 3}
   defaultMaleHair: {fileID: 21300000, guid: 6388fe67dcb495040a67380ca9acb888, type: 3}
-  defaultFemaleHair: {fileID: 21300000, guid: 9100122a50af64f44bbd24e78446fdb8, type: 3}
+  defaultFemaleHair: {fileID: 21300000, guid: 7e304f116618394479a32a277ce003bf, type: 3}
 --- !u!1 &3835313007208176617
 GameObject:
   m_ObjectHideFlags: 0
