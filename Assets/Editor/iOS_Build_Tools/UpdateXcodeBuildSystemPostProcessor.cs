@@ -28,7 +28,7 @@ public class UpdateXcodeBuildSystemPostProcessor : MonoBehaviour
 
 {
 
-    [PostProcessBuild(999)]
+    [PostProcessBuild(0)]
 
     public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
 
