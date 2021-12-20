@@ -237,6 +237,14 @@ public class Shop_VC : MonoBehaviour
             productID = id
         });
     }
+
+    public void BuyNoAds()
+    {
+        _signalBus.Fire<OnPurchaseProductSignal>(new OnPurchaseProductSignal()
+        {
+            productID = "noads"
+        });
+    }
     void BuyClothItem(ThemeCustomizationItem item,PriceType priceType)
     {
         SetBuyPanelData(item.name, item.rareness, item.descriptionText, item.newStatsText, item.sprite);

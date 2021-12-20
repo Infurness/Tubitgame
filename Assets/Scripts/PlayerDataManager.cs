@@ -86,8 +86,20 @@ public class PlayerDataManager : MonoBehaviour
             case "250hc":
                 AddHardCurrency(250, confirmAction);
                 break;
+            case "noads":
+                SetPlayerNoAdsData(confirmAction);
+                break;
 
         }
+    }
+
+    void SetPlayerNoAdsData(Action confirmAction)
+    {
+        UpdateUserDatabase(new[] {"NoAds"},new object[]{true},(() =>
+        {
+            confirmAction.Invoke();
+            playerData.noAds = true;
+        }));
     }
 
    private void GetPlayerInventory()
@@ -168,6 +180,12 @@ public class PlayerDataManager : MonoBehaviour
                 var xpDataJson = datarecord.Value;
                 playerData.xpData = JsonConvert.DeserializeObject<ExperienceData> (xpDataJson);
 
+            }
+
+            if (result.Data.TryGetValue("NoAds",out datarecord))
+            {
+                var noads = datarecord.Value;
+                playerData.noAds = JsonConvert.DeserializeObject<bool>(noads);
             }
             else
             {
@@ -587,6 +605,11 @@ public class PlayerDataManager : MonoBehaviour
         playerData.softCurrency += (ulong)signal.reward.softCurrency;
         UpdateUserDatabase (new[] { "SoftCurrency", "Videos" }, new object[] { playerData.softCurrency, playerData.videos });
         AddHardCurrency (signal.reward.hardCurrency);
+    }
+
+    public bool GetAdsState()
+    {
+        return playerData.noAds;
     }
 
 }
