@@ -19,6 +19,7 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
        signalBus.Subscribe<RoomZoomStateChangedSignal>(((signal) =>
        {
            editMode = !signal.ZoomIn;
+           print("Room Edit Mode ON");
        }));
    }
 

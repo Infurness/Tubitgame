@@ -20,6 +20,7 @@ public class HomePanel_VC : MonoBehaviour
        [SerializeField] GameObject shopButtonPanel;
     [SerializeField] private GameObject videoMangerButtonPanel;
     [SerializeField] private GameObject customizationButtonsPanel;
+    [SerializeField] private Canvas mainCanvas;
     ThemeType[] selectedThemeTypes; //Dummy unused code
     // Start is called before the first frame update
     void Start ()
@@ -44,7 +45,8 @@ public class HomePanel_VC : MonoBehaviour
                 restButton.gameObject.SetActive(false);
                 playerIconButton.gameObject.SetActive(false);
                 customizationButtonsPanel.gameObject.SetActive(false);
-                
+                mainCanvas.sortingOrder = 0;
+
             }
             else
             {
@@ -53,6 +55,7 @@ public class HomePanel_VC : MonoBehaviour
                 restButton.gameObject.SetActive(true);
                 playerIconButton.gameObject.SetActive(true);
                 customizationButtonsPanel.gameObject.SetActive(true);
+                mainCanvas.sortingOrder = 30;
 
 
             }

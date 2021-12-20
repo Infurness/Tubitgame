@@ -31,7 +31,9 @@ public class RoomInventory_VC : MonoBehaviour
 
     [SerializeField] private Button roomCustomizationButton;
     [SerializeField] private Canvas inventoryCanvas;
-    
+    [SerializeField] private EffectCell effectCellPrefab;
+    [SerializeField] private GameObject effectTransform;
+    [SerializeField] private Sprite selectedTabSprite, notSelectedTabSprite;
     void OpenRoomCustomizationPanel()
     {
         inventoryCanvas.gameObject.SetActive(true);
@@ -58,6 +60,7 @@ public class RoomInventory_VC : MonoBehaviour
     }
     private void Start()
     {
+        CleanEffectsCells();
         UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
         UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
         roomCustomizationButton.onClick.AddListener(OpenRoomCustomizationPanel);
@@ -68,6 +71,12 @@ public class RoomInventory_VC : MonoBehaviour
         }));
         
       
+    }
+    void CleanEffectsCells(){
+        for (int i = 0; i < effectTransform.transform.childCount; i++)
+        {
+            Destroy(effectTransform.transform.GetChild(i).gameObject);
+        }
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -105,14 +114,16 @@ public class RoomInventory_VC : MonoBehaviour
             }            
         }
 
-        equippedThemeItemsEffect.text = null;
+       // equippedThemeItemsEffect.text = null;
         foreach (var themeBouns in themesBounses)
         {
             if (themeBouns.Value==0)
             {
                 continue;
             }
-            equippedThemeItemsEffect.text += themeBouns.Key + "  : " + themeBouns.Value * 100 + "%" + "\n";
+
+            var themeItemTextCell = Instantiate(effectCellPrefab, effectTransform.transform);
+            themeItemTextCell.SetText(themeBouns.Key + "  : " + themeBouns.Value * 100 + "%");
         }
     }
 
@@ -124,7 +135,9 @@ public class RoomInventory_VC : MonoBehaviour
             sum += vCItem.videoQualityBonus;
         }
 
-        equippedVideoQualityItemsEffect.text ="Video Quality +% "+sum*100;
+        var vcEffectTextCell = Instantiate(effectCellPrefab, effectTransform.transform);
+        vcEffectTextCell.SetText("Video Quality +% "+sum*100);
+      //  equippedVideoQualityItemsEffect.text 
     }
 
     void Awake()
@@ -157,6 +170,7 @@ public class RoomInventory_VC : MonoBehaviour
     public void SaveRoomLayout()
     {
         signalBus.Fire<SaveRoomLayoutSignal>();
+        CleanEffectsCells();
         UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
         UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
     }
@@ -252,29 +266,9 @@ public class RoomInventory_VC : MonoBehaviour
         }
         
         PopulateInventoryButtons("wall");
-        HighLightCurrentTab(0);
     }
 
- public  void HighLightCurrentTab(int tabIndex)
-    {
-        for (int i = 0; i < tabsButtonsTransform.transform.childCount; i++)
-        {
-            var bt = tabsButtonsTransform.transform.GetChild(i).GetComponent<Button>();
-            var color = bt.image.color;
-            if (i!=tabIndex)
-            {
-                
-                bt.image.color = new Color(color.r, color.g, color.b, 0);
-             
-            }
-            else
-            {
-                bt.Select();
-                bt.image.color = new Color(color.r, color.g, color.b, 1f);
 
-            }
-        }
-    }
 
  void SetSelectedPanelData(string _name,string _rareness,string _description,string _newStats,Sprite _logoSprite,Sprite rarenessSprite)
  {
