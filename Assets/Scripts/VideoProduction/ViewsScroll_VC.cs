@@ -36,6 +36,12 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         rightButton.onClick.AddListener (()=> { ScrollView (1); });
         leftButton.onClick.AddListener (() => { ScrollView (-1); });
         StartingState ();
+        
+        signalBus.Subscribe<RoomCustomizationVisibilityChanged>(((signal) =>
+        {
+            enabled = !signal.Visibility;
+            SetButtonVisibility(!signal.Visibility);
+        }));
     }
 
     void StartingState ()
@@ -143,5 +149,11 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
             viewsHolder.position = Vector3.Lerp (viewsHolder.position, newPos, lerpCounter);
             yield return null;
         }
+    }
+
+    public void SetButtonVisibility(bool state)
+    {
+        rightButton.gameObject.SetActive(state);
+        leftButton.gameObject.SetActive(state);
     }
 }

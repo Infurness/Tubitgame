@@ -266,29 +266,9 @@ public class RoomInventory_VC : MonoBehaviour
         }
         
         PopulateInventoryButtons("wall");
-        HighLightCurrentTab(0);
     }
 
- public  void HighLightCurrentTab(int tabIndex)
-    {
-        // for (int i = 0; i < tabsButtonsTransform.transform.childCount; i++)
-        // {
-        //     var bt = tabsButtonsTransform.transform.GetChild(i).GetComponent<Button>();
-        //     var color = bt.image.color;
-        //     if (i!=tabIndex)
-        //     {
-        //
-        //         bt.image.sprite = notSelectedTabSprite;
-        //
-        //     }
-        //     else
-        //     {
-        //         bt.Select();
-        //         bt.image.sprite = selectedTabSprite;
-        //
-        //     }
-        // }
-    }
+
 
  void SetSelectedPanelData(string _name,string _rareness,string _description,string _newStats,Sprite _logoSprite,Sprite rarenessSprite)
  {
