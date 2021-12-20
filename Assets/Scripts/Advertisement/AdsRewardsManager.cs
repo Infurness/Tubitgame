@@ -19,11 +19,17 @@ public class AdsRewardsManager : MonoBehaviour
     {
        return 10 * (xpManager.GetPlayerLevel ()+1);
     }
+
+    public void SoftCurrencyRewardNoAd ()
+    {
+        PlayerDataManager.Instance.AddSoftCurrency ((ulong)GetSoftCurrencyBonus ()*5);
+        signalBus.Fire<UpdateSoftCurrencySignal> ();
+    }
+
     public void InitialSoftCurrencyReward ()
     {
         PlayerDataManager.Instance.AddSoftCurrency ((ulong)GetSoftCurrencyBonus ());
     }
-
     public void SoftCurrencyReward ()
     {
         signalBus.Subscribe<GrantRewardSignal> (SoftCurrencyAdCompletedReward);
@@ -47,6 +53,11 @@ public class AdsRewardsManager : MonoBehaviour
     public int GetHardCurrencyBonus ()
     {
         return 10 * (xpManager.GetPlayerLevel () + 1);
+    }
+    public void HardCurrencyRewardNoAds ()
+    {
+        PlayerDataManager.Instance.AddHardCurrency (GetHardCurrencyBonus ()*2);
+        signalBus.Fire<UpdateHardCurrencySignal> ();
     }
     public void InitialHardCurrencyReward ()
     {
@@ -77,7 +88,10 @@ public class AdsRewardsManager : MonoBehaviour
     {
         return (0.1f * xpManager.GetPlayerLevel ())/ rewardValue;
     }
-
+    public void ThemeBonusRewardNoAds ()
+    {
+        algorithmManager.SetThemeBonus (GetThemeBonusReward (1));
+    }
     public void InitialThemeBonusReward ()
     {
         algorithmManager.SetThemeBonus (GetThemeBonusReward (2));
@@ -105,7 +119,10 @@ public class AdsRewardsManager : MonoBehaviour
     {
         return 15;
     }
-
+    public void EnergyRewardNoAds ()
+    {
+        signalBus.Fire<AddEnergySignal> (new AddEnergySignal { energyAddition = GetEnergyBonus () * 2 });
+    }
     public void EnergyReward ()
     {
         signalBus.Subscribe<GrantRewardSignal> (EnergyAdCompletedReward);
@@ -143,6 +160,13 @@ public class AdsRewardsManager : MonoBehaviour
         video.secondsToBeProduced -= timeReduced;
     }
 
+
+    public void VideoShortenRewardNoAds (UnpublishedVideo video)
+    {
+        VideoShorterProdTime (video);
+    }
+
+
     public void VideoShortenReward (UnpublishedVideo video)
     {
         signalBus.Subscribe<GrantRewardSignal> (()=>VideoShortenAdCompletedReward(video));
@@ -159,6 +183,11 @@ public class AdsRewardsManager : MonoBehaviour
     {
         signalBus.TryUnsubscribe<GrantRewardSignal> (()=>VideoShortenAdCompletedReward(video));
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (()=>NoVideoShortenReward(video));
+    }
+
+    public void ViewsBonusRewardNoAds ()
+    {
+        algorithmManager.SetViewsBonus (2);
     }
 
     public void ViewsBonusReward ()
