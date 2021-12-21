@@ -30,7 +30,10 @@ public class AdsManager : MonoBehaviour
 
         rewardedAdLogic = gameObject.GetComponent<RewardedAdLogic> ();
     }
-
+    public bool AreAdsDeactive()
+    {
+        return PlayerDataManager.Instance.GetAdsState();
+    }
     public void ShowRewardedAd ()
     {
         rewardedAdLogic.ShowAd ();
