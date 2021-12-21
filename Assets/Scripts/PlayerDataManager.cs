@@ -126,21 +126,28 @@ public class PlayerDataManager : MonoBehaviour
                  }
                  else
                  {
+                    CharacterAvatarAddressedData newCharacterAvatarData = new CharacterAvatarAddressedData();
                      signalBus.Fire(new OnPlayerInventoryFetchedSignal()
                      {
                          PlayerInventoryAddressedData = inventorydata,
-                         CharacterAvatarAddressedData = new CharacterAvatarAddressedData()
+                         CharacterAvatarAddressedData = newCharacterAvatarData
                      });
+                     UpdateCharacterAvatar(newCharacterAvatarData);
                  }
                  
                
             }
             else
             {
+                CharacterAvatarAddressedData newCharacterAvatarData = new CharacterAvatarAddressedData();
+                PlayerInventoryAddressedData newPlayerInventoryData = new PlayerInventoryAddressedData();
                 signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
                 {
-                    PlayerInventoryAddressedData = new PlayerInventoryAddressedData()
+                    PlayerInventoryAddressedData = newPlayerInventoryData
                 });
+
+                UpdatePlayerInventoryData(newPlayerInventoryData);
+                UpdateCharacterAvatar(newCharacterAvatarData);
             }
 
 
