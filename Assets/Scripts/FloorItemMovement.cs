@@ -9,11 +9,13 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
 {
     [Inject] private SignalBus signalBus;
     private bool pointerDown;
-    [SerializeField] private Vector2 maxPos, minPos;
-   [SerializeField] private float speed=0.5f;
-   private Vector3 mospos;
-[SerializeField]   private bool editMode=false;
-
+    [SerializeField] private float speed = 0.5f;
+    private Vector3 mospos;
+    [SerializeField] private bool editMode = false;
+    [SerializeField] private Collider2D collider;
+    [SerializeField] private LayerMask mask;
+    [SerializeField] private List<Transform> endPoints;
+    [SerializeField] private float margin;
    private void Awake()
    {
        signalBus.Subscribe<RoomZoomStateChangedSignal>(((signal) =>
@@ -21,6 +23,7 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
            editMode = !signal.ZoomIn;
            print("Room Edit Mode ON");
        }));
+    //   mask = LayerMask.GetMask("Floor");
    }
 
    void Start()
@@ -28,25 +31,52 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
         //    maxPos = transform.TransformVector(maxPos);
        //  minPos = transform.TransformVector(minPos);
        mospos = Input.mousePosition;
+       collider = GetComponent<Collider2D>();
+       endPoints = new List<Transform>();
+       for (int i = 0; i < transform.childCount; i++)
+       {
+           endPoints.Add(transform.GetChild(i));
+       }
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+       
+       
         if (editMode)
         {
             if (pointerDown)
             {
-                var delta = Input.mousePosition - mospos;
+                var size = collider.bounds.size;
+                foreach (var endPoint in endPoints)
+                {
+                    if(Physics2D.Linecast(transform.position,endPoint.position,mask))
+                    {
+                        transform.position=Vector3.MoveTowards(transform.position,endPoint.position,-margin);
+                        return;
+                    }
 
-                var mouseScreenPos = mospos;
+                   
+                }
+            
+                    print("Tocuhing Floor");
 
-                var newPos = transform.localPosition + (delta * speed * Time.deltaTime);
-                transform.localPosition = new Vector3(Mathf.Clamp(newPos.x, minPos.x, maxPos.x),
-                    Mathf.Clamp(newPos.y, minPos.y, maxPos.y), newPos.z);
+                    var delta = Input.mousePosition - mospos;
 
-                mospos = Input.mousePosition;
+                    var mouseScreenPos = mospos;
+                    var newPos = transform.localPosition + (delta * speed * Time.deltaTime);
+                    if (Physics2D.Raycast(transform.position,newPos,mask))
+                    {
+                                            transform.localPosition = newPos;
 
+                    }
+
+                   
+
+                    mospos = Input.mousePosition;
+
+                
             }
 
         }
@@ -65,6 +95,16 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
     public void OnPointerUp(PointerEventData eventData)
     {
         pointerDown = false;
+
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        foreach (var endPoint in endPoints)
+        {
+            Gizmos.DrawLine(transform.position,endPoint.position);
+
+        }
 
     }
 }
