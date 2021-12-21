@@ -36,7 +36,6 @@ public class OpenSoftCurrencyAdSignal
 {
 
 }
-
 public class OpenHardCurrencyAdSignal
 {
 

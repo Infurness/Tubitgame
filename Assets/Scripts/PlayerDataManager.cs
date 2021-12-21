@@ -126,21 +126,28 @@ public class PlayerDataManager : MonoBehaviour
                  }
                  else
                  {
+                    CharacterAvatarAddressedData newCharacterAvatarData = new CharacterAvatarAddressedData();
                      signalBus.Fire(new OnPlayerInventoryFetchedSignal()
                      {
                          PlayerInventoryAddressedData = inventorydata,
-                         CharacterAvatarAddressedData = new CharacterAvatarAddressedData()
+                         CharacterAvatarAddressedData = newCharacterAvatarData
                      });
+                     UpdateCharacterAvatar(newCharacterAvatarData);
                  }
                  
                
             }
             else
             {
+                CharacterAvatarAddressedData newCharacterAvatarData = new CharacterAvatarAddressedData();
+                PlayerInventoryAddressedData newPlayerInventoryData = new PlayerInventoryAddressedData();
                 signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
                 {
-                    PlayerInventoryAddressedData = new PlayerInventoryAddressedData()
+                    PlayerInventoryAddressedData = newPlayerInventoryData
                 });
+
+                UpdatePlayerInventoryData(newPlayerInventoryData);
+                UpdateCharacterAvatar(newCharacterAvatarData);
             }
 
 
@@ -311,14 +318,18 @@ public class PlayerDataManager : MonoBehaviour
     }
     public void DeleteUnpublishVideo(string name)
     {
+        
         var unpublishedvideos = playerData.unpublishedVideos;
+        if (unpublishedvideos == null || unpublishedvideos.Count < 1)
+            return;
         int index = 0;
         foreach(UnpublishedVideo video in unpublishedvideos)
         {
             if (video.videoName == name)
                 break;
             index++;
-        }        
+        }
+        Debug.Log("OUT OF INDEX ERROR: " + index);
         unpublishedvideos.RemoveAt(index);
         UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
     }

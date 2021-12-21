@@ -178,7 +178,7 @@ public class VideoInfo_VC : MonoBehaviour
         if (youTubeVideoManager.IsPlayerResting ())
             return;
 
-        if (AdsManager.Instance.IsAdLoaded ())
+        if (AdsManager.Instance.IsAdLoaded () && !AdsManager.Instance.AreAdsDeactive())
         {
             signalBus.Subscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);
             signalBus.Fire<OpenDoubleViewsAdSignal> ();

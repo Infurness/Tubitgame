@@ -147,7 +147,7 @@ public class VideoManager_VC : MonoBehaviour
         foreach (Button button in themeSelectionButtons)
         {
             button.GetComponentInChildren<TMP_Text> ().text = "";
-            button.transform.GetChild(1).GetComponentInChildren<Image> ().enabled = false;
+            button.transform.GetChild(1).GetComponentInChildren<Image> ().enabled = true;
         }
            
         recordVideoButton.interactable = false;
@@ -211,6 +211,7 @@ public class VideoManager_VC : MonoBehaviour
                 }
             });
             ForceQualityTagSelectionSliderPosition (0);
+            ResetVideoCreationInfo();
         }
         else
         {
