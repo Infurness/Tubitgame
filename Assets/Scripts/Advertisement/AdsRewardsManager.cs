@@ -146,7 +146,7 @@ public class AdsRewardsManager : MonoBehaviour
     {
         float videoQualityValue = (2 / Enum.GetValues (typeof (VideoQuality)).Length) * (int)video.videoQuality;
         int[] shortenVideoValues = { 10,37,75,112,150,187,225,259,276,300,356,390,410,435,450,506,539,572,580,600};
-        int timeReduced = 0;
+        int timeReduced = 10;
         float qualityLoop = 0.1f;
         foreach(int shortenValue in shortenVideoValues)
         {

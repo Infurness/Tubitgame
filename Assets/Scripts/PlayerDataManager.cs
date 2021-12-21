@@ -311,14 +311,18 @@ public class PlayerDataManager : MonoBehaviour
     }
     public void DeleteUnpublishVideo(string name)
     {
+        
         var unpublishedvideos = playerData.unpublishedVideos;
+        if (unpublishedvideos == null || unpublishedvideos.Count < 1)
+            return;
         int index = 0;
         foreach(UnpublishedVideo video in unpublishedvideos)
         {
             if (video.videoName == name)
                 break;
             index++;
-        }        
+        }
+        Debug.Log("OUT OF INDEX ERROR: " + index);
         unpublishedvideos.RemoveAt(index);
         UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
     }
