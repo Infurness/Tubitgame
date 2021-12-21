@@ -42,6 +42,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         signalBus.Subscribe<ThemeHeldSignal> (StartDraggingTheme);
         signalBus.Subscribe<EndPublishVideoSignal> (InitialState);
         signalBus.Subscribe<CancelVideoRecordingSignal> (InitialState);
+        signalBus.Subscribe<OpenVideoCreationSignal>(InitialState);
 
         confirmButton.onClick.AddListener (ConfirmThemes);
         mainCam = Camera.main;
