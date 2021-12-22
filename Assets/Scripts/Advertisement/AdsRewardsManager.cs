@@ -19,11 +19,17 @@ public class AdsRewardsManager : MonoBehaviour
     {
        return 10 * (xpManager.GetPlayerLevel ()+1);
     }
+
+    public void SoftCurrencyRewardNoAd ()
+    {
+        PlayerDataManager.Instance.AddSoftCurrency ((ulong)GetSoftCurrencyBonus ()*5);
+        signalBus.Fire<UpdateSoftCurrencySignal> ();
+    }
+
     public void InitialSoftCurrencyReward ()
     {
         PlayerDataManager.Instance.AddSoftCurrency ((ulong)GetSoftCurrencyBonus ());
     }
-
     public void SoftCurrencyReward ()
     {
         signalBus.Subscribe<GrantRewardSignal> (SoftCurrencyAdCompletedReward);
@@ -47,6 +53,11 @@ public class AdsRewardsManager : MonoBehaviour
     public int GetHardCurrencyBonus ()
     {
         return 10 * (xpManager.GetPlayerLevel () + 1);
+    }
+    public void HardCurrencyRewardNoAds ()
+    {
+        PlayerDataManager.Instance.AddHardCurrency (GetHardCurrencyBonus ()*2);
+        signalBus.Fire<UpdateHardCurrencySignal> ();
     }
     public void InitialHardCurrencyReward ()
     {
@@ -77,7 +88,10 @@ public class AdsRewardsManager : MonoBehaviour
     {
         return (0.1f * xpManager.GetPlayerLevel ())/ rewardValue;
     }
-
+    public void ThemeBonusRewardNoAds ()
+    {
+        algorithmManager.SetThemeBonus (GetThemeBonusReward (1));
+    }
     public void InitialThemeBonusReward ()
     {
         algorithmManager.SetThemeBonus (GetThemeBonusReward (2));
@@ -105,7 +119,10 @@ public class AdsRewardsManager : MonoBehaviour
     {
         return 15;
     }
-
+    public void EnergyRewardNoAds ()
+    {
+        signalBus.Fire<AddEnergySignal> (new AddEnergySignal { energyAddition = GetEnergyBonus () * 2 });
+    }
     public void EnergyReward ()
     {
         signalBus.Subscribe<GrantRewardSignal> (EnergyAdCompletedReward);
@@ -129,7 +146,7 @@ public class AdsRewardsManager : MonoBehaviour
     {
         float videoQualityValue = (2 / Enum.GetValues (typeof (VideoQuality)).Length) * (int)video.videoQuality;
         int[] shortenVideoValues = { 10,37,75,112,150,187,225,259,276,300,356,390,410,435,450,506,539,572,580,600};
-        int timeReduced = 0;
+        int timeReduced = 10;
         float qualityLoop = 0.1f;
         foreach(int shortenValue in shortenVideoValues)
         {
@@ -142,6 +159,13 @@ public class AdsRewardsManager : MonoBehaviour
         }
         video.secondsToBeProduced -= timeReduced;
     }
+
+
+    public void VideoShortenRewardNoAds (UnpublishedVideo video)
+    {
+        VideoShorterProdTime (video);
+    }
+
 
     public void VideoShortenReward (UnpublishedVideo video)
     {
@@ -159,6 +183,11 @@ public class AdsRewardsManager : MonoBehaviour
     {
         signalBus.TryUnsubscribe<GrantRewardSignal> (()=>VideoShortenAdCompletedReward(video));
         signalBus.TryUnsubscribe<NotGrantedRewardSignal> (()=>NoVideoShortenReward(video));
+    }
+
+    public void ViewsBonusRewardNoAds ()
+    {
+        algorithmManager.SetViewsBonus (2);
     }
 
     public void ViewsBonusReward ()
