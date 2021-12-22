@@ -15,7 +15,7 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
     [SerializeField] private Collider2D collider;
     [SerializeField] private LayerMask mask;
     [SerializeField] private List<Transform> endPoints;
-    [SerializeField] private float margin;
+    
    private void Awake()
    {
        signalBus.Subscribe<RoomZoomStateChangedSignal>(((signal) =>
@@ -48,38 +48,39 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
         {
             if (pointerDown)
             {
-                var size = collider.bounds.size;
-                foreach (var endPoint in endPoints)
-                {
-                    if(Physics2D.Linecast(transform.position,endPoint.position,mask))
-                    {
-                        transform.position=Vector3.MoveTowards(transform.position,endPoint.position,-margin);
-                        return;
-                    }
-
+                var delta = Input.mousePosition - mospos;
                    
-                }
-            
-                    print("Tocuhing Floor");
-
-                    var delta = Input.mousePosition - mospos;
-
-                    var mouseScreenPos = mospos;
                     var newPos = transform.localPosition + (delta * speed * Time.deltaTime);
-                    if (Physics2D.Raycast(transform.position,newPos,mask))
+                    var normalizedDelta = (newPos-transform.localPosition).normalized;
+                    Debug.DrawRay(transform.position,normalizedDelta,Color.red);
+                    
+                    foreach (var endPoint in endPoints)
                     {
-                                            transform.localPosition = newPos;
+                        if (Vector3.Angle(endPoint.position.normalized,normalizedDelta)<45)
+                        {
+                            if (Physics2D.Linecast(transform.position, endPoint.position, mask))
+                            {
+                                return;
+                            }
+                       
+
+                        }
 
                     }
+                    transform.localPosition = newPos;
+
+                    
+
+                    
 
                    
 
-                    mospos = Input.mousePosition;
 
                 
             }
 
         }
+        mospos = Input.mousePosition;
 
     }
 
@@ -98,13 +99,14 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
 
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        foreach (var endPoint in endPoints)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Gizmos.DrawLine(transform.position,endPoint.position);
+            Gizmos.DrawLine(transform.position,transform.GetChild(i).position);
 
         }
+       
 
     }
 }
