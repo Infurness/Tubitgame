@@ -102,8 +102,11 @@ public class EnergyManager : MonoBehaviour
     void AddEnergy (AddEnergySignal _signal)
     {
         Debug.Log ("AddEnergy");
+        float previousEnergy = energyData.energy;
         energyData.energy += _signal.energyAddition;
         StartChargingEnergy ();
+
+        _signalBus.Fire<VFX_EnergyChangeSignal>(new VFX_EnergyChangeSignal() { oldFill = previousEnergy / GetMaxEnergy(), newFill = energyData.energy / GetMaxEnergy() });
     }
 
     void StartChargingEnergy ()
