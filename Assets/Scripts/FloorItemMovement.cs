@@ -33,7 +33,13 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
        mospos = Input.mousePosition;
  
        rigidbody2D = GetComponent<Rigidbody2D>();
-       collider.isTrigger = true;
+       // if (!collider)
+       // {
+       //     collider = GetComponent<Collider2D>();
+       // }
+
+       rigidbody2D.bodyType = RigidbodyType2D.Static;
+      // collider.isTrigger = true;
     }
 
     // Update is called once per frame
@@ -66,14 +72,18 @@ public void OnPointerDown(PointerEventData eventData)
     {
         mospos = Input.mousePosition;
         pointerDown = true;
-        collider.isTrigger = false;
+     //   collider.isTrigger = false;
+        rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         pointerDown = false;
         rigidbody2D.velocity=Vector2.zero;
-        collider.isTrigger = true;
+       // collider.isTrigger = true;
+        rigidbody2D.bodyType = RigidbodyType2D.Static;
+
     }
 
 

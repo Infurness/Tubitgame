@@ -14,7 +14,6 @@ public class WallItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHand
     [SerializeField] private float speed = 0.5f;
     private Vector3 mospos;
     [SerializeField] private bool editMode = false;
-    [SerializeField] private LayerMask mask;
     private Rigidbody2D rigidbody2D;
     [SerializeField] private Collider2D collider;
    private void Awake()

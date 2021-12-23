@@ -279,6 +279,8 @@ public class CaharacterInventory_VC : MonoBehaviour
 
             inventoryButtons.Add(invBt);
         }
+        SetBackButton();
+
     }
 
     public void OnHeadButtonClicked()
