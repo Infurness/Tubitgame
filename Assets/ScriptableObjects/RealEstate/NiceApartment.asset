@@ -10,9 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 772cac2f02b24669849ea341dc28a42f, type: 3}
-  m_Name: RealEstate
+  m_Name: NiceApartment
   m_EditorClassIdentifier: 
-  logoSprite: {fileID: 0}
-  itemSprite: {fileID: 0}
+  itemName: Nice apartment
+  itemSprite: {fileID: 3902968890173713350, guid: b0c89c187f28e844c8d5c66cfe2fd2e5, type: 3}
   rareness: 1
-  descriptionText: 
+  roomSlots: 15
+  garageSlots: 1
+  Owned: 0
+  PriceType: 1
+  HCPrice: 0
+  SCPrice: 34000

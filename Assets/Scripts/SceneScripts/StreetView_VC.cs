@@ -1,18 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
 
 public class StreetView_VC : MonoBehaviour
 {
+    [Inject] SignalBus signalBus;
+
     [SerializeField] private Camera mainCamera;
 
     [SerializeField] private Transform roomViewTransform;
     [SerializeField] private Transform houseViewTransform;
     [SerializeField] private Transform streetViewTransform;
 
+    [SerializeField] private Transform basicHousePivot;
+    [SerializeField] private Transform niceApartmentPivot;
+    [SerializeField] private Transform hugeHousePivot;
+
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private Button basicHouseButton;
+    [SerializeField] private Button niceApartmentButton;
+    [SerializeField] private Button hugeHouseButton;
     // Start is called before the first frame update
     void Start()
     {
+        signalBus.Subscribe<SnapToNeighborhoodViewSignal>(SetButtonsPosition);
+        basicHouseButton.onClick.AddListener(()=>ShopButton("BasicHouse"));
+        niceApartmentButton.onClick.AddListener(() => ShopButton("NiceApartment"));
+        hugeHouseButton.onClick.AddListener(() => ShopButton("HugeHouse"));
         StartImage ();
     }
     void StartImage ()
@@ -71,5 +87,23 @@ public class StreetView_VC : MonoBehaviour
 
         float width = spriteToMove.sprite.bounds.size.x * transformToMove.localScale.x;
         transformToMove.position += new Vector3 (width / 2, 0, 0);
+    }
+    void SetButtonsPosition()
+    {
+        Vector2 viewportPosition = mainCamera.WorldToViewportPoint(basicHousePivot.position);
+        viewportPosition *= canvas.GetComponent<RectTransform>().sizeDelta;
+        basicHouseButton.GetComponent<RectTransform>().anchoredPosition = viewportPosition;
+
+        viewportPosition = mainCamera.WorldToViewportPoint(niceApartmentPivot.position);
+        viewportPosition *= canvas.GetComponent<RectTransform>().sizeDelta;
+        niceApartmentButton.GetComponent<RectTransform>().anchoredPosition = viewportPosition;
+
+        viewportPosition = mainCamera.WorldToViewportPoint(hugeHousePivot.position);
+        viewportPosition *= canvas.GetComponent<RectTransform>().sizeDelta;
+        hugeHouseButton.GetComponent<RectTransform>().anchoredPosition = viewportPosition;
+    }
+    void ShopButton(string houseName)
+    {
+        signalBus.Fire<OpenRealEstateShopSignal>(new OpenRealEstateShopSignal { houseName = houseName});
     }
 }

@@ -15,10 +15,13 @@ public class Shop : MonoBehaviour
 
     public List<VideoQualityCustomizationItem> Equipments => equipments;
 
+    public List<RealEstateCustomizationItem> Houses => houses;
+
     [SerializeField] private List<ThemeCustomizationItem> clothes;
     [SerializeField] private List<ThemeCustomizationItem> furniture;
     [SerializeField] private List<VideoQualityCustomizationItem> equipments;
-   
+    [SerializeField] private List<RealEstateCustomizationItem> houses;
+
     void Start()
     {
         LoadEquipments();

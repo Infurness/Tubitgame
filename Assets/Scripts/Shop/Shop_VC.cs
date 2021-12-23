@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Customizations;
 using TMPro;
 using UniRx.Triggers;
@@ -19,6 +21,14 @@ public class Shop_VC : MonoBehaviour
     [SerializeField] private Button offersButton, clothingButton, furnitureButton, equipmentsButton,currenciesButton, realEstateButton;
     [SerializeField] private GameObject itemsScrollView, offersButtonsScrollView, offerRedeemPanel;
     [SerializeField] private ShopItemSlot shopItemButton;
+    //RealState
+    [SerializeField] private GameObject realStateButton;
+    [SerializeField] private GameObject realStateButtonsContainer;
+    [SerializeField] private Image houseImage;
+    [SerializeField] private TMP_Text roomSlots;
+    [SerializeField] private TMP_Text garageSlots;
+    [SerializeField] private TMP_Text housePrice;
+
     [SerializeField] private Sprite[] rarenessSprites;
     [SerializeField] private GameObject buyPanel;
     [SerializeField] private Image rarenessImage, iconImage,coinImage;
@@ -49,6 +59,7 @@ public class Shop_VC : MonoBehaviour
             offersButton.onClick.Invoke();
             buyPanel.gameObject.SetActive(false);
         }));
+        _signalBus.Subscribe<OpenRealEstateShopSignal>(OpenRealEstateFromSignal);
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -221,14 +232,43 @@ public class Shop_VC : MonoBehaviour
       }
 
     }
-
+    void OpenRealEstateFromSignal(OpenRealEstateShopSignal signal)
+    {
+        OpenRealEstatePanel();
+        realEstateButton.GetComponent<ShopCategoryButton>().SetButtonSelected();
+        realEstateButton.gameObject.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1000, 0);
+        SetHouseDisplay(signal.houseName);
+    }
     void OpenRealEstatePanel()
     {
         itemsPanel.gameObject.SetActive(false);
         offersPanel.gameObject.SetActive(false);
-       realEstatePanel.gameObject.SetActive(true);
+        realEstatePanel.gameObject.SetActive(true);
+
+        List<RealEstateCustomizationItem> houses = shop.Houses;
+
+        foreach (RealEstateCustomizationItem item in houses)
+        {
+            if (!item.Owned)
+            {
+                GameObject shopButton = Instantiate(realStateButton, realStateButtonsContainer.transform);
+
+                shopButton.GetComponentInChildren<TMP_Text>().text = item.name;
+                shopButton.GetComponentInChildren<Button>().onClick.AddListener(()=>SetHouseDisplay(item.name));
+            }
+        }
     }
     
+    void SetHouseDisplay(string houseName)
+    {
+        RealEstateCustomizationItem house = shop.Houses.Where((house)=>house.name == houseName).FirstOrDefault();
+
+        houseImage.sprite = house.itemSprite;
+        garageSlots.text = $"Garage slots: {house.garageSlots}";
+        roomSlots.text = $"Room slots: {house.roomSlots}";
+        housePrice.text = $"{house.SCPrice}";
+    }
+
     public void BuyHCBundle(string id)
     {
         
