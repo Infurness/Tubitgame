@@ -104,11 +104,7 @@ public class RoomRender : MonoBehaviour
 
     public void ProcessCurrentThemeItems()
     {
-        var colliders = GetComponentsInChildren<PolygonCollider2D>();
-        foreach (var collider in colliders)
-        {
-            Destroy(collider);
-        }
+   
         foreach (var wallSlot in RoomLayout.WallLayoutSlots)
         {
            var item= currentThemeItems.Find((it)=>it.name==wallSlot.ItemName);
@@ -117,7 +113,6 @@ public class RoomRender : MonoBehaviour
             wallSlots[wallSlot.SlotID].Image.gameObject.SetActive(true);
             wallSlots[wallSlot.SlotID].Image.gameObject.transform.localPosition = wallSlot.Position;
          //   wallSlots[wallSlot.SlotID].Image.gameObject.transform.localScale = wallSlot.Scale;
-            wallSlots[wallSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
         }
 
         foreach (var floorLayoutSlot in RoomLayout.FloorLayoutSlots)
@@ -131,7 +126,6 @@ public class RoomRender : MonoBehaviour
                     ((FloorOrnament) item).sprite;
                 floorSlots[floorLayoutSlot.SlotID].Image.gameObject.SetActive(true);
                 floorSlots[floorLayoutSlot.SlotID].Image.gameObject.transform.localPosition = floorLayoutSlot.Position;
-               floorSlots[floorLayoutSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
                 print("Floor ITem " + floorLayoutSlot.ItemName +" Found");
 
 
@@ -152,7 +146,6 @@ public class RoomRender : MonoBehaviour
             
             roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.SetActive(true);
             roomObjectSlots[objectLayoutSlot.SlotID].Image.transform.localPosition = objectLayoutSlot.Position;
-            roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.AddComponent<PolygonCollider2D>();
         }
     }
 
