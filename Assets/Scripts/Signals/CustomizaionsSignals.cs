@@ -63,3 +63,4 @@ public class CharacterCustomizationVisibilityChanged
 {
     public bool Visibility;
 }
+
