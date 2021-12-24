@@ -212,7 +212,7 @@ public class AdsRewardsManager : MonoBehaviour
     void RandomReward()
     {
         int randomNumber = UnityEngine.Random.Range (0,101);
-        if (randomNumber < 1000)
+        if (randomNumber < 40)
         {
             signalBus.Fire<OpenSoftCurrencyAdSignal> ();
         }
