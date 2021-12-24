@@ -147,6 +147,7 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         {
             lerpCounter += Time.deltaTime * movementSpeed;
             viewsHolder.position = Vector3.Lerp (viewsHolder.position, newPos, lerpCounter);
+            signalBus.Fire<SnapToNeighborhoodViewSignal>();
             yield return null;
         }
     }

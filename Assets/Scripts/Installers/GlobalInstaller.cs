@@ -101,8 +101,13 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OnCharacterAvatarChanged>();
     Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
 
-        //VFX
-        Container.DeclareSignal<VFX_EnergyChangeSignal>();
+    //VFX
+    Container.DeclareSignal<VFX_EnergyChangeSignal>();
+
+    //Views signals
+    Container.DeclareSignal<SnapToNeighborhoodViewSignal>();
+    Container.DeclareSignal<OpenRealEstateShopSignal>();
+        
     //Dependencies
     Container.Bind<PlayerInventory>().FromInstance(PlayerInventory.Instance);
 

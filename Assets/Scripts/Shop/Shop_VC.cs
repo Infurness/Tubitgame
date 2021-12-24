@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Customizations;
 using TMPro;
 using UniRx.Triggers;
@@ -19,6 +21,15 @@ public class Shop_VC : MonoBehaviour
     [SerializeField] private Button offersButton, clothingButton, furnitureButton, equipmentsButton,currenciesButton, realEstateButton;
     [SerializeField] private GameObject itemsScrollView, offersButtonsScrollView, offerRedeemPanel;
     [SerializeField] private ShopItemSlot shopItemButton;
+    //RealState
+    [SerializeField] private GameObject realStateButton;
+    [SerializeField] private GameObject realStateButtonsContainer;
+    [SerializeField] private Image houseImage;
+    [SerializeField] private TMP_Text roomSlots;
+    [SerializeField] private TMP_Text garageSlots;
+    [SerializeField] private Button houseBuyButton;
+    [SerializeField] private TMP_Text housePrice;
+
     [SerializeField] private Sprite[] rarenessSprites;
     [SerializeField] private GameObject buyPanel;
     [SerializeField] private Image rarenessImage, iconImage,coinImage;
@@ -49,6 +60,7 @@ public class Shop_VC : MonoBehaviour
             offersButton.onClick.Invoke();
             buyPanel.gameObject.SetActive(false);
         }));
+        _signalBus.Subscribe<OpenRealEstateShopSignal>(OpenRealEstateFromSignal);
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -221,14 +233,45 @@ public class Shop_VC : MonoBehaviour
       }
 
     }
-
+    void OpenRealEstateFromSignal(OpenRealEstateShopSignal signal)
+    {
+        OpenRealEstatePanel();
+        realEstateButton.GetComponent<ShopCategoryButton>().SetButtonSelected();
+        realEstateButton.gameObject.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1000, 0);
+        SetHouseDisplay(signal.houseName);
+    }
     void OpenRealEstatePanel()
     {
         itemsPanel.gameObject.SetActive(false);
         offersPanel.gameObject.SetActive(false);
-       realEstatePanel.gameObject.SetActive(true);
+        realEstatePanel.gameObject.SetActive(true);
+
+        List<RealEstateCustomizationItem> houses = shop.Houses;
+
+        foreach (RealEstateCustomizationItem item in houses)
+        {
+            if (!item.Owned)
+            {
+                GameObject shopButton = Instantiate(realStateButton, realStateButtonsContainer.transform);
+
+                shopButton.GetComponentInChildren<TMP_Text>().text = item.name;
+                shopButton.GetComponentInChildren<Button>().onClick.AddListener(()=>SetHouseDisplay(item.name));
+            }
+        }
     }
     
+    void SetHouseDisplay(string houseName)
+    {
+        RealEstateCustomizationItem house = shop.Houses.Where((house)=>house.name == houseName).FirstOrDefault();
+
+        houseImage.sprite = house.itemSprite;
+        garageSlots.text = $"Garage slots: {house.garageSlots}";
+        roomSlots.text = $"Room slots: {house.roomSlots}";
+        housePrice.text = $"{house.SCPrice}";
+
+        houseBuyButton.onClick.AddListener(()=>BuyRealEstateItem(house, house.PriceType));
+    }
+
     public void BuyHCBundle(string id)
     {
         
@@ -299,7 +342,7 @@ public class Shop_VC : MonoBehaviour
          buyButton.onClick.RemoveAllListeners();
         switch (priceType)
         {
-         
+
             case PriceType.SC:
                 priceText.text = item.SCPrice.ToString();
                 coinImage.sprite = scCoin;
@@ -387,6 +430,46 @@ public class Shop_VC : MonoBehaviour
                
                 break;
      
+        }
+    }
+    void BuyRealEstateItem(RealEstateCustomizationItem item, PriceType priceType)
+    {
+        SetBuyPanelData(item.name, item.rareness,"", $"Room Slots: {item.roomSlots}\nGarage Slots: {item.garageSlots}", item.itemSprite);
+        buyButton.onClick.RemoveAllListeners();
+        switch (priceType)
+        {
+            case PriceType.SC:
+                priceText.text = item.SCPrice.ToString();
+                coinImage.sprite = scCoin;
+                buyButton.onClick.AddListener((() =>
+                {
+                    playerDataManager.ConsumeSoftCurrency((ulong)item.SCPrice, () =>
+                    {
+                        item.Owned = true;
+
+                        playerInventory.AddRealEstateItem(item);
+                        buyPanel.gameObject.SetActive(false);
+                        OpenRealEstatePanel();
+                    });
+                }));
+                break;
+
+            case PriceType.HC:
+                priceText.text = item.HCPrice.ToString();
+                coinImage.sprite = hcCoin;
+
+                buyButton.onClick.AddListener(() =>
+                {
+                    playerDataManager.ConsumeHardCurrency((ulong)item.HCPrice, () =>
+                    {
+                        item.Owned = true;
+                        playerInventory.AddRealEstateItem(item);
+                        buyPanel.gameObject.SetActive(false);
+                        OpenRealEstatePanel();
+                    });
+                });
+                break;
+
         }
     }
 

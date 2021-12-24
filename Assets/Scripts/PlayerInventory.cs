@@ -146,9 +146,6 @@ public class PlayerInventory : MonoBehaviour
             { 
                 equippedThemeEffectRoomItems.Add(themeEffectItems.Find((it) => it.name == objectItem.ItemName));
             }
-           
-            
-
         }
         else
         {
@@ -187,16 +184,15 @@ public class PlayerInventory : MonoBehaviour
              print("Failed to load Assets ");
          }
      }
-      async  void  OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
+    async  void  OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
         playerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
         characterAvatarAddressedData = playerInventoryFetchedSignal.CharacterAvatarAddressedData;
-      await  LoadThemeEffectAddressedAssets();
-      await  LoadVideoQualityAddressedAssets();
-      await LoadCharacterData();
+        await  LoadThemeEffectAddressedAssets();
+        await  LoadVideoQualityAddressedAssets();
+        await LoadCharacterData();
 
-      signalBus.Fire<AssetsLoadedSignal>();
-
+        signalBus.Fire<AssetsLoadedSignal>();
     }
     public void AddCharacterItem(ThemeCustomizationItem themeCustomizationItem)
     {
@@ -220,9 +216,14 @@ public class PlayerInventory : MonoBehaviour
         roomThemeEffectItems.Add(themeCustomizationItem);
         playerInventoryAddressedData.roomItemsNames.Add(themeCustomizationItem.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
-
     }
    
+    public void AddRealEstateItem(RealEstateCustomizationItem realEstateCustomizationItem)
+    {
+        realEstateItems.Add(realEstateCustomizationItem);
+        playerInventoryAddressedData.realEstateItems.Add(realEstateCustomizationItem.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+    }
 
     public void ChangeAvatar(CharacterAvatar avatar)
     {
@@ -315,23 +316,22 @@ public class PlayerInventory : MonoBehaviour
 }
 [System.Serializable]
     public class PlayerInventoryAddressedData
-    {
-      
+    {    
         public  List<string> characterItemsNames;
         public List<string> roomItemsNames;
         public List<string> videoQualityItemsNames;
-       public List<string> equippedVideoQualityItemsNames;
+        public List<string> equippedVideoQualityItemsNames;
+        public List<string> realEstateItems;
         public RoomLayout RoomLayout;
-      public  PlayerInventoryAddressedData()
+        public  PlayerInventoryAddressedData()
         {
             characterItemsNames = new List<string>();
             roomItemsNames = new List<string>();
             videoQualityItemsNames = new List<string>();
             equippedVideoQualityItemsNames = new List<string>();
-             RoomLayout = new RoomLayout();
+                RoomLayout = new RoomLayout();
 
-        }
-        
+        } 
     }
 [System.Serializable]
 public class CharacterAvatarAddressedData

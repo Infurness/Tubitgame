@@ -57,6 +57,7 @@ public class HUD_VC : MonoBehaviour
         _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
         _signalBus.Subscribe<LevelUpSignal> (LevelUpUpdateHUD);
         _signalBus.Subscribe<ChangeBackButtonSignal> (ChangeBackButton);
+        _signalBus.Subscribe<OpenRealEstateShopSignal>(OpenStorePanel);
 
         gameClock = GameClock.Instance;
     }
