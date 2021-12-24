@@ -5,10 +5,11 @@ namespace Customizations
     [CreateAssetMenu(fileName = "RealEstate", menuName = "Customizations/RealEstateItem")]
     public class RealEstateCustomizationItem : ScriptableObject
     {
+        public string itemName;
         public Sprite itemSprite;
         public Rareness rareness=Rareness.Common;
-        [TextArea]
-        public string descriptionText;
+        public uint roomSlots;
+        public uint garageSlots;
         public bool Owned=false;
 
         public PriceType PriceType;
