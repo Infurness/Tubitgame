@@ -15,7 +15,6 @@ public class CharacterRender : MonoBehaviour
     [SerializeField] private SpriteRenderer feetRender;
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory _playerInventory;
-    [SerializeField] private Sprite defaultMaleHead, defaultFemaleHead,defaultMaleHair,defaultFemaleHair;
     
     
     private void Start()
@@ -36,18 +35,15 @@ public class CharacterRender : MonoBehaviour
       
         int variantIndex = avatar.bodyItem.BodyIndex;
         var body = avatar.bodyItem;
-        var gender = avatar.bodyItem.GenderItemType; 
-        Sprite defaultHeadSprite= avatar.bodyItem.GenderItemType ==GenderItemType.Male ? defaultMaleHead : defaultFemaleHead ;
-        Sprite defaultHairSprite= avatar.bodyItem.GenderItemType ==GenderItemType.Male ? defaultMaleHair : defaultFemaleHair ;
         bodyRenderer.sprite = avatar.bodyItem.sprite;
-        headRender.sprite = avatar.headItem.GenderItemType==gender ? avatar.headItem.sprite:defaultHeadSprite;
+        headRender.sprite =  avatar.headItem.sprite;
         headRender.transform.localPosition = body.headPosition;
-        hairRender.sprite =avatar.hairItem.GenderItemType==gender ? avatar.hairItem.sprite:defaultHairSprite;
-        torsoRender.sprite =avatar.torsoItem.GenderItemType==gender ? avatar.torsoItem.TorsoVariants[variantIndex]:null;
+        hairRender.sprite =avatar.hairItem==null ? null: avatar.hairItem.sprite;
+        torsoRender.sprite =avatar.torsoItem==null ? null:avatar.torsoItem.TorsoVariants[variantIndex];
         torsoRender.transform.localPosition = body.torsoPosition;
-        legsRender.sprite =avatar.legsItem.GenderItemType==gender ? avatar.legsItem.LegsVariants[variantIndex]:null;
+        legsRender.sprite =avatar.legsItem==null?  null:avatar.legsItem.LegsVariants[variantIndex];
         legsRender.transform.localPosition = body.legsPosition;
-        feetRender.sprite =avatar.legsItem.GenderItemType==gender ? avatar.feetItem.sprite:null;
+        feetRender.sprite = avatar.feetItem == null ? null:avatar.feetItem.sprite;
         feetRender.transform.localPosition = body.feetPosition;
 
     }

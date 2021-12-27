@@ -48,6 +48,7 @@ MonoBehaviour:
     roomItemsNames: []
     videoQualityItemsNames: []
     equippedVideoQualityItemsNames: []
+    realEstateItems: []
     RoomLayout:
       WallLayoutSlots: []
       FloorLayoutSlots: []
@@ -90,13 +91,15 @@ MonoBehaviour:
     torsoItem: {fileID: 0}
     legsItem: {fileID: 0}
     feetItem: {fileID: 0}
-  defaultAvatar:
+  defaultMaleAvatar:
     bodyItem: {fileID: 11400000, guid: 74ae6b6bdd3874fb381422d580467adc, type: 2}
-    headItem: {fileID: 11400000, guid: 959702bc1263d6645890d8e1a44bacac, type: 2}
-    hairItem: {fileID: 11400000, guid: f4c7d2c12e6234c94a2e7f56ed87a98e, type: 2}
-    torsoItem: {fileID: 11400000, guid: deb4da5bbf3c341468b0243045914d57, type: 2}
-    legsItem: {fileID: 11400000, guid: 3f17d3b0cba1a034e9764c1aaf63c9c2, type: 2}
-    feetItem: {fileID: 11400000, guid: 1ea11c7143a0fe9409c7445ef2124760, type: 2}
+    headItem: {fileID: 11400000, guid: 052afb2d563a2a5489ab1c08aed83add, type: 2}
+    hairItem: {fileID: 11400000, guid: 4afe66d88cdf4b4489b42a319e9e12ab, type: 2}
+    torsoItem: {fileID: 11400000, guid: b1e26c00b572ed146996233daca666c4, type: 2}
+    legsItem: {fileID: 11400000, guid: cb1236f582016482faa4b4d67f963cd9, type: 2}
+    feetItem: {fileID: 11400000, guid: b197c5462b5b4224087a6aab1b65c4b4, type: 2}
+  defaultFemaleHead: {fileID: 11400000, guid: 46a91ef9db4e5af44a0087793da3f85e, type: 2}
+  defaultMaleHead: {fileID: 11400000, guid: 052afb2d563a2a5489ab1c08aed83add, type: 2}
   characterItems: []
   roomThemeEffectItems: []
   equippedThemeEffectRoomItems: []

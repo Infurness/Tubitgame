@@ -15,7 +15,10 @@ namespace Customizations
 
         public List<ThemeCustomizationItem> GetThemesEffectItems()
         {
-            return new List<ThemeCustomizationItem>() {bodyItem,headItem, torsoItem, hairItem, legsItem, feetItem};
+            var items = new List<ThemeCustomizationItem>() {bodyItem,headItem, torsoItem, hairItem, legsItem, feetItem};
+
+            items.RemoveAll((item => item == null));
+            return items;
         }
 
         public CharacterAvatar(CharacterAvatar characterAvatar)
