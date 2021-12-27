@@ -16,7 +16,8 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private PlayerInventoryAddressedData playerInventoryAddressedData;
     [SerializeField] private CharacterAvatarAddressedData characterAvatarAddressedData;
     [SerializeField] private CharacterAvatar equippedCharacterAvatar;
-    [SerializeField] private CharacterAvatar defaultAvatar;
+    [SerializeField] private CharacterAvatar defaultMaleAvatar;
+    [SerializeField] private HeadItem defaultFemaleHead,defaultMaleHead;
     [SerializeField] private List<ThemeCustomizationItem> characterItems;
     [SerializeField] private List<ThemeCustomizationItem> roomThemeEffectItems;
     [SerializeField] private List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
@@ -39,11 +40,17 @@ public class PlayerInventory : MonoBehaviour
 
     public List<RealEstateCustomizationItem> RealEstateItems => realEstateItems.ToList();
 
+
+
+    public HeadItem GetDefaultMaleHead => defaultMaleHead;
+
+    public HeadItem GetDefaultFemaleHead => defaultFemaleHead;
+
     public CharacterAvatar EquippedAvatar()
     {
         if (equippedCharacterAvatar==null)
         {
-            equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+            equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
             return equippedCharacterAvatar;
         }
         else
@@ -86,13 +93,13 @@ public class PlayerInventory : MonoBehaviour
                 
                 if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
                 {
-                    equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+                    equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
                     return;
                 }
             }
             else
             {
-                equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+                equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
                 return;
             }
            
@@ -113,7 +120,7 @@ public class PlayerInventory : MonoBehaviour
         }
         else
         {
-            equippedCharacterAvatar = new CharacterAvatar(defaultAvatar);
+            equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
         }
 
          
@@ -231,10 +238,10 @@ public class PlayerInventory : MonoBehaviour
         characterAvatarAddressedData = new CharacterAvatarAddressedData();
         characterAvatarAddressedData.BodyType = avatar.bodyItem.name;
         characterAvatarAddressedData.Head = avatar.headItem.name;
-        characterAvatarAddressedData.Hair = avatar.hairItem.name;
-        characterAvatarAddressedData.Torso = avatar.torsoItem.name;
-        characterAvatarAddressedData.Legs = avatar.legsItem.name;
-        characterAvatarAddressedData.Feet = avatar.feetItem.name;
+        characterAvatarAddressedData.Hair = avatar.hairItem == null? "" : avatar.hairItem.name;
+        characterAvatarAddressedData.Torso = avatar.torsoItem == null ? "" : avatar.torsoItem.name;
+        characterAvatarAddressedData.Legs = avatar.legsItem == null ? "" : avatar.legsItem.name;
+        characterAvatarAddressedData.Feet = avatar.feetItem==null ? "":avatar.feetItem.name;
         
         signalBus.Fire(new OnCharacterAvatarChanged()
         {
