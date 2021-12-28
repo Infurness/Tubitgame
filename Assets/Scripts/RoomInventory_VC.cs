@@ -58,19 +58,20 @@ public class RoomInventory_VC : MonoBehaviour
         });
         signalBus.Fire<OpenHomePanelSignal> ();
     }
+    
     private void Start()
     {
-        CleanEffectsCells();
-        UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
-        UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
+        
         roomCustomizationButton.onClick.AddListener(OpenRoomCustomizationPanel);
         
         signalBus.Subscribe<CharacterCustomizationVisibilityChanged>((() =>
         {
             roomInventoryPanel.gameObject.SetActive(false);
         }));
-        
-      
+
+        roomInventoryPanel.OnEnableAsObservable().Subscribe((unit => { OnRoomPanelOpened(); }));
+
+
     }
     void CleanEffectsCells(){
         for (int i = 0; i < effectTransform.transform.childCount; i++)
@@ -91,11 +92,11 @@ public class RoomInventory_VC : MonoBehaviour
 
     }
 
-    private void OnEnable()
+    void OnRoomPanelOpened()
     {
-       // backButton.onClick.RemoveAllListeners();
-        //backButton.onClick.AddListener((() => roomInventoryPanel.gameObject.SetActive(false)));
-        
+        CleanEffectsCells();
+        UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
+        UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
     }
 
     void UpdateThemeEffectItemsText(List<ThemeCustomizationItem> themeCustomizationItems)
