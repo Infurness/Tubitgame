@@ -8,6 +8,7 @@ namespace Customizations
         public TorsoItemType TorsoItemType;
         public GenderItemType GenderItemType;
         public Sprite[] TorsoVariants;
+        public Sprite SeatedTorso;
     }
 
     public enum TorsoItemType

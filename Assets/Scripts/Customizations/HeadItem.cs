@@ -12,7 +12,6 @@ namespace Customizations
         public HeadItemType HeadItemType;
         public GenderItemType GenderItemType;
         public Sprite[] HeadVariants;
-
     }
 
     public enum HeadItemType

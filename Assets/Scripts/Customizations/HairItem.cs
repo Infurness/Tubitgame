@@ -8,6 +8,8 @@ namespace Customizations
         public HairItemType hairItemType;
         public GenderItemType GenderItemType;
         public Sprite[] HairVariants;
+        public Sprite SeatedHair;
+
     }
 
     public enum HairItemType
