@@ -14,8 +14,16 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
     private Vector3 mospos;
     [SerializeField] private bool editMode = false;
     private Rigidbody2D rigidbody2D;
+
+    public Collider2D Collider => collider;
+
     [SerializeField] private Collider2D collider;
-   private void Awake()
+
+    public int StackOrder => stackOrder;
+
+    [SerializeField] private int stackOrder;
+   [SerializeField] private int stackCount;
+    private void Awake()
    {
        signalBus.Subscribe<RoomZoomStateChangedSignal>(((signal) =>
        {
@@ -33,13 +41,14 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
        mospos = Input.mousePosition;
  
        rigidbody2D = GetComponent<Rigidbody2D>();
-       // if (!collider)
-       // {
-       //     collider = GetComponent<Collider2D>();
-       // }
+       if (!collider)
+       {
+           collider = GetComponent<Collider2D>();
+       }
 
        rigidbody2D.bodyType = RigidbodyType2D.Static;
       // collider.isTrigger = true;
+      
     }
 
     // Update is called once per frame
@@ -90,7 +99,41 @@ public void OnPointerDown(PointerEventData eventData)
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        rigidbody2D.velocity=Vector2.zero;
+        if (other.gameObject.layer > gameObject.layer)
+        {
+            print("Stackable");
+        }
         
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer > gameObject.layer)
+        {
+            print("Stackable");
+        }
+    }
+    //
+    // private void OnTriggerStay2D(Collider2D other)
+    // {
+    //     print("Floor Item Stacked");
+    //
+    // }
+    //
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        // stackCount--;
+        // if (stackCount==0)
+        // {
+        //     collider.isTrigger = false;
+        // }
+
+    }
+    //
+    // private void OnCollisionExit2D(Collision2D other)
+    // {
+    //     
+    //   //  this.collider.isTrigger = false;
+    //
+    // }
 }
