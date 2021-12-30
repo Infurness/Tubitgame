@@ -70,10 +70,12 @@ public class UpdateXcodeBuildSystemPostProcessor : MonoBehaviour
             pbxProject.GetUnityFrameworkTargetGuid();
 
 
-        pbxProject.SetBuildProperty(unityFrameworkTargetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "No");
+        pbxProject.SetBuildProperty(unityFrameworkTargetGuid, "Always embed Swift Standard libraries", "No");
         var mainTargetPath = pbxProject.GetUnityMainTargetGuid();
-        pbxProject.SetBuildProperty(mainTargetPath, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "Yes");
-
+        pbxProject.SetBuildProperty(mainTargetPath, "Always embed Swift Standard libraries", "YES");
+        
+        pbxProject.SetBuildProperty(mainTargetPath,  "Embedded Content Contains Swift Code", "YES");
+       
 
 
 
