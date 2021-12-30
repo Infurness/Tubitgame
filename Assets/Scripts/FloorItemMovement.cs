@@ -99,10 +99,9 @@ public void OnPointerDown(PointerEventData eventData)
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.layer > gameObject.layer)
-        {
+       
             print("Stackable");
-        }
+        
         
     }
 
