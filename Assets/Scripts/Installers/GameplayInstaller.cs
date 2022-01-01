@@ -30,5 +30,6 @@ public class GameplayInstaller : MonoInstaller
 
         Container.Bind<Shop>().FromComponentInHierarchy().AsSingle();
         Container.Bind<AdsRewardsManager> ().FromComponentInHierarchy ().AsSingle ();
+        Container.Bind<IAPManager>().FromComponentInHierarchy().AsSingle();
     }
 }

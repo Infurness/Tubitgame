@@ -17,10 +17,19 @@ public class Shop_VC : MonoBehaviour
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private PlayerInventory playerInventory;
     [SerializeField] private GameObject shopPanel;
-    [SerializeField] private GameObject itemsPanel,offersPanel,realEstatePanel,currenciesPanel;
-    [SerializeField] private Button offersButton, clothingButton, furnitureButton, equipmentsButton,currenciesButton, realEstateButton;
+    [SerializeField] private GameObject itemsPanel, offersPanel, realEstatePanel, currenciesPanel;
+
+    [SerializeField] private Button offersButton,
+        clothingButton,
+        furnitureButton,
+        equipmentsButton,
+        currenciesButton,
+        realEstateButton;
+
     [SerializeField] private GameObject itemsScrollView, offersButtonsScrollView, offerRedeemPanel;
+
     [SerializeField] private ShopItemSlot shopItemButton;
+
     //RealState
     [SerializeField] private GameObject realStateButton;
     [SerializeField] private GameObject realStateButtonsContainer;
@@ -32,19 +41,24 @@ public class Shop_VC : MonoBehaviour
 
     [SerializeField] private Sprite[] rarenessSprites;
     [SerializeField] private GameObject buyPanel;
-    [SerializeField] private Image rarenessImage, iconImage,coinImage;
-    [SerializeField] private TMP_Text descriptionText, statsText, nameText, rarenessText,priceText;
+    [SerializeField] private Image rarenessImage, iconImage, coinImage;
+    [SerializeField] private TMP_Text descriptionText, statsText, nameText, rarenessText, priceText;
     [SerializeField] private Sprite hcCoin, scCoin;
     [SerializeField] private Button buyButton;
+    [SerializeField] private GameObject softCurrencyPanel, energyPanel;
+    [SerializeField] private GameObject consumablesPanel;
+    [SerializeField] private ConsumableInventoryButton consumableItemButtonPrefab;
+    
+    
     void ClearItemsPanel()
     {
-        
+
         for (int i = 0; i < itemsScrollView.transform.childCount; i++)
         {
             Destroy(itemsScrollView.transform.GetChild(i).gameObject);
         }
     }
-    
+
     void Start()
     {
         itemsPanel.gameObject.SetActive(false);
@@ -61,6 +75,13 @@ public class Shop_VC : MonoBehaviour
             buyPanel.gameObject.SetActive(false);
         }));
         _signalBus.Subscribe<OpenRealEstateShopSignal>(OpenRealEstateFromSignal);
+
+        consumablesPanel.OnEnableAsObservable().Subscribe((unit =>
+        {
+            PopulateSoftCurrencyBundles();
+            PopulateEnergyItems();
+        }));
+       
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -76,6 +97,7 @@ public class Shop_VC : MonoBehaviour
         currenciesPanel.gameObject.SetActive(true);
 
     }
+
     void OpenOffersPanel()
     {
         itemsPanel.gameObject.SetActive(false);
@@ -83,8 +105,8 @@ public class Shop_VC : MonoBehaviour
         realEstatePanel.gameObject.SetActive(false);
         currenciesPanel.gameObject.SetActive(false);
 
-        
-        
+
+
 
     }
 
@@ -137,7 +159,7 @@ public class Shop_VC : MonoBehaviour
 
     }
 
-   
+
 
     void OpenFurniturePanel()
     {
@@ -146,7 +168,7 @@ public class Shop_VC : MonoBehaviour
         offersPanel.gameObject.SetActive(false);
         realEstatePanel.gameObject.SetActive(false);
         currenciesPanel.gameObject.SetActive(false);
-    
+
         var furniture = shop.Furniture;
 
         foreach (var item in furniture)
@@ -196,50 +218,55 @@ public class Shop_VC : MonoBehaviour
         currenciesPanel.gameObject.SetActive(false);
 
         var equipments = shop.Equipments;
-      ;
-      foreach (var item in equipments)
-      {
-          if (!item.Owned)
-          {
-              var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
+        ;
+        foreach (var item in equipments)
+        {
+            if (!item.Owned)
+            {
+                var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
 
-              switch (item.PriceType)
-              {
-                  case PriceType.Free:
-                      Destroy(shopButton.gameObject);
+                switch (item.PriceType)
+                {
+                    case PriceType.Free:
+                        Destroy(shopButton.gameObject);
 
-                      break;
-                  case PriceType.SC:
-                      shopButton.SetSCBuyButton(item.SCPrice, GetRarenessSpriteByIndex(item.rareness), item.itemSprite,
-                          (() => BuyVCItem(item, PriceType.SC)));
+                        break;
+                    case PriceType.SC:
+                        shopButton.SetSCBuyButton(item.SCPrice, GetRarenessSpriteByIndex(item.rareness),
+                            item.itemSprite,
+                            (() => BuyVCItem(item, PriceType.SC)));
 
-                      break;
-                  case PriceType.HC:
-                      shopButton.SetHCBuyButton(item.HCPrice, GetRarenessSpriteByIndex(item.rareness), item.itemSprite,
-                          () => BuyVCItem(item, PriceType.HC));
+                        break;
+                    case PriceType.HC:
+                        shopButton.SetHCBuyButton(item.HCPrice, GetRarenessSpriteByIndex(item.rareness),
+                            item.itemSprite,
+                            () => BuyVCItem(item, PriceType.HC));
 
-                      break;
-                  case PriceType.Exchangeable:
-                      shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                          GetRarenessSpriteByIndex(item.rareness), item.itemSprite,
-                          (() => BuyVCItem(item, PriceType.SC)),
-                          (() => BuyVCItem(item, PriceType.HC)));
+                        break;
+                    case PriceType.Exchangeable:
+                        shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
+                            GetRarenessSpriteByIndex(item.rareness), item.itemSprite,
+                            (() => BuyVCItem(item, PriceType.SC)),
+                            (() => BuyVCItem(item, PriceType.HC)));
 
-                      break;
-                  default:
-                      throw new ArgumentOutOfRangeException();
-              }
-          }
-      }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
 
     }
+
     void OpenRealEstateFromSignal(OpenRealEstateShopSignal signal)
     {
         OpenRealEstatePanel();
         realEstateButton.GetComponent<ShopCategoryButton>().SetButtonSelected();
-        realEstateButton.gameObject.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1000, 0);
+        realEstateButton.gameObject.transform.parent.GetComponent<RectTransform>().anchoredPosition =
+            new Vector3(0, 1000, 0);
         SetHouseDisplay(signal.houseName);
     }
+
     void OpenRealEstatePanel()
     {
         itemsPanel.gameObject.SetActive(false);
@@ -255,26 +282,26 @@ public class Shop_VC : MonoBehaviour
                 GameObject shopButton = Instantiate(realStateButton, realStateButtonsContainer.transform);
 
                 shopButton.GetComponentInChildren<TMP_Text>().text = item.name;
-                shopButton.GetComponentInChildren<Button>().onClick.AddListener(()=>SetHouseDisplay(item.name));
+                shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => SetHouseDisplay(item.name));
             }
         }
     }
-    
+
     void SetHouseDisplay(string houseName)
     {
-        RealEstateCustomizationItem house = shop.Houses.Where((house)=>house.name == houseName).FirstOrDefault();
+        RealEstateCustomizationItem house = shop.Houses.Where((house) => house.name == houseName).FirstOrDefault();
 
         houseImage.sprite = house.itemSprite;
         garageSlots.text = $"Garage slots: {house.garageSlots}";
         roomSlots.text = $"Room slots: {house.roomSlots}";
         housePrice.text = $"{house.SCPrice}";
 
-        houseBuyButton.onClick.AddListener(()=>BuyRealEstateItem(house, house.PriceType));
+        houseBuyButton.onClick.AddListener(() => BuyRealEstateItem(house, house.PriceType));
     }
 
     public void BuyHCBundle(string id)
     {
-        
+
         _signalBus.Fire<OnPurchaseProductSignal>(new OnPurchaseProductSignal()
         {
             productID = id
@@ -288,21 +315,22 @@ public class Shop_VC : MonoBehaviour
             productID = "noads"
         });
     }
-    void BuyClothItem(ThemeCustomizationItem item,PriceType priceType)
+
+    void BuyClothItem(ThemeCustomizationItem item, PriceType priceType)
     {
         SetBuyPanelData(item.name, item.rareness, item.descriptionText, item.newStatsText, item.sprite);
         buyButton.onClick.RemoveAllListeners();
 
         switch (priceType)
         {
-         
+
             case PriceType.SC:
                 priceText.text = item.SCPrice.ToString();
                 coinImage.sprite = scCoin;
 
                 buyButton.onClick.AddListener((() =>
                 {
-                    playerDataManager.ConsumeSoftCurrency((ulong)item.SCPrice, () =>
+                    playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
 
@@ -313,7 +341,7 @@ public class Shop_VC : MonoBehaviour
                     });
                 }));
 
-              
+
                 break;
             case PriceType.HC:
                 priceText.text = item.HCPrice.ToString();
@@ -321,7 +349,7 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener((() =>
                 {
-                    playerDataManager.ConsumeHardCurrency((ulong)item.HCPrice, () =>
+                    playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
 
@@ -331,15 +359,16 @@ public class Shop_VC : MonoBehaviour
 
                     });
                 }));
-               
+
                 break;
-     
+
         }
     }
-    void BuyRoomItem(ThemeCustomizationItem item,PriceType priceType)
+
+    void BuyRoomItem(ThemeCustomizationItem item, PriceType priceType)
     {
         SetBuyPanelData(item.name, item.rareness, item.descriptionText, item.newStatsText, item.sprite);
-         buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.RemoveAllListeners();
         switch (priceType)
         {
 
@@ -349,7 +378,7 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener((() =>
                 {
-                    playerDataManager.ConsumeSoftCurrency((ulong)item.SCPrice, () =>
+                    playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
 
@@ -360,7 +389,7 @@ public class Shop_VC : MonoBehaviour
                     });
                 }));
 
-             
+
                 break;
             case PriceType.HC:
                 priceText.text = item.HCPrice.ToString();
@@ -368,7 +397,7 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener((() =>
                 {
-                    playerDataManager.ConsumeHardCurrency((ulong)item.HCPrice, () =>
+                    playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
 
@@ -380,24 +409,25 @@ public class Shop_VC : MonoBehaviour
                     });
                 }));
 
-               
+
                 break;
-     
+
         }
     }
-    void BuyVCItem(VideoQualityCustomizationItem item,PriceType priceType)
+
+    void BuyVCItem(VideoQualityCustomizationItem item, PriceType priceType)
     {
         SetBuyPanelData(item.name, item.rareness, item.descriptionText, item.newStatsText, item.itemSprite);
         buyButton.onClick.RemoveAllListeners();
         switch (priceType)
         {
-         
+
             case PriceType.SC:
                 priceText.text = item.SCPrice.ToString();
                 coinImage.sprite = scCoin;
                 buyButton.onClick.AddListener((() =>
                 {
-                    playerDataManager.ConsumeSoftCurrency((ulong)item.SCPrice, () =>
+                    playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
 
@@ -405,10 +435,10 @@ public class Shop_VC : MonoBehaviour
                         buyPanel.gameObject.SetActive(false);
                         OpenEquipmentsPanel();
 
-                    }); 
+                    });
                 }));
 
-            
+
                 break;
             case PriceType.HC:
                 priceText.text = item.HCPrice.ToString();
@@ -416,7 +446,7 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener(() =>
                 {
-                    playerDataManager.ConsumeHardCurrency((ulong)item.HCPrice, () =>
+                    playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
                         playerInventory.AddVCItem(item);
@@ -427,14 +457,16 @@ public class Shop_VC : MonoBehaviour
                     });
                 });
 
-               
+
                 break;
-     
+
         }
     }
+
     void BuyRealEstateItem(RealEstateCustomizationItem item, PriceType priceType)
     {
-        SetBuyPanelData(item.name, item.rareness,"", $"Room Slots: {item.roomSlots}\nGarage Slots: {item.garageSlots}", item.itemSprite);
+        SetBuyPanelData(item.name, item.rareness, "", $"Room Slots: {item.roomSlots}\nGarage Slots: {item.garageSlots}",
+            item.itemSprite);
         buyButton.onClick.RemoveAllListeners();
         switch (priceType)
         {
@@ -443,7 +475,7 @@ public class Shop_VC : MonoBehaviour
                 coinImage.sprite = scCoin;
                 buyButton.onClick.AddListener((() =>
                 {
-                    playerDataManager.ConsumeSoftCurrency((ulong)item.SCPrice, () =>
+                    playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
 
@@ -460,7 +492,7 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener(() =>
                 {
-                    playerDataManager.ConsumeHardCurrency((ulong)item.HCPrice, () =>
+                    playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
                         playerInventory.AddRealEstateItem(item);
@@ -473,7 +505,7 @@ public class Shop_VC : MonoBehaviour
         }
     }
 
-    void SetBuyPanelData(string itemName,Rareness rareness, string description, string stats,Sprite icon )
+    void SetBuyPanelData(string itemName, Rareness rareness, string description, string stats, Sprite icon)
     {
         buyPanel.gameObject.SetActive(true);
         nameText.text = itemName;
@@ -482,7 +514,47 @@ public class Shop_VC : MonoBehaviour
         statsText.text = stats;
         rarenessImage.sprite = GetRarenessSpriteByIndex(rareness);
         iconImage.sprite = icon;
-        
+
+    }
+
+
+
+    public void PopulateSoftCurrencyBundles()
+    {
+        for (int i = 0; i < softCurrencyPanel.transform.childCount; i++)
+        {
+            Destroy(softCurrencyPanel.transform.GetChild(i).gameObject);
+        }
+        var items = shop.ConsumableItems.FindAll(it => it.type == ConsumableItem.ConsumableType.SoftCurrency);
+        foreach (var item in items)
+        {
+            var bt = Instantiate(consumableItemButtonPrefab, softCurrencyPanel.transform);
+            bt.SetButtonData(item.sprite,item.name,item.price,item.amount, () =>
+            {
+                playerDataManager.ConsumeHardCurrency((uint)item.price,(() =>
+                {
+                    playerDataManager.AddSoftCurrency((uint)item.amount);
+
+                }));
+            });
+        }
+    }
+
+    public void PopulateEnergyItems()
+    {
+        for (int i = 0; i < energyPanel.transform.childCount; i++)
+        {
+            Destroy(energyPanel.transform.GetChild(i).gameObject);
+        }
+        var items = shop.ConsumableItems.FindAll(it => it.type == ConsumableItem.ConsumableType.Energy);
+        foreach (var item in items)
+        {
+            var bt = Instantiate(consumableItemButtonPrefab, energyPanel.transform);
+            bt.SetButtonData(item.sprite,item.name,item.price,item.amount, () =>
+            {
+              
+            });
+        }
     }
 
 }
