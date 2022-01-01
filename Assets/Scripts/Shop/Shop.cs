@@ -16,17 +16,24 @@ public class Shop : MonoBehaviour
     public List<VideoQualityCustomizationItem> Equipments => equipments;
 
     public List<RealEstateCustomizationItem> Houses => houses;
+    public List<ConsumableItem> ConsumableItems => consumableItems;
+
+    
+    
 
     [SerializeField] private List<ThemeCustomizationItem> clothes;
     [SerializeField] private List<ThemeCustomizationItem> furniture;
     [SerializeField] private List<VideoQualityCustomizationItem> equipments;
     [SerializeField] private List<RealEstateCustomizationItem> houses;
+    [SerializeField] private List<ConsumableItem> consumableItems;
+
 
     void Start()
     {
         LoadEquipments();
         LoadClothes();
         LoadFurniture();
+        LoadConsumablesItems();
     }
     
    async void  LoadEquipments()
@@ -55,9 +62,11 @@ public class Shop : MonoBehaviour
 
        clothes = roomVCITems.FindAll((vc) => vc.Owned == false);
    }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+   async void LoadConsumablesItems()
+   {
+       var loadOP = Addressables.LoadAssetsAsync<ConsumableItem>("consumable", null);
+       await loadOP.Task;
+        consumableItems =(List<ConsumableItem>) loadOP.Result;
+   }
 }

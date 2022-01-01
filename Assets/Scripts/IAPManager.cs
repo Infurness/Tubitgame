@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Purchasing;
@@ -26,7 +27,6 @@ public class IAPManager : MonoBehaviour,IStoreListener
             );
         }
        UnityPurchasing.Initialize(this,builder);
-       signalBus.Subscribe<OnPurchaseProductSignal>(PurchaseProduct);
        signalBus.Subscribe<ConfirmPendingPurchaseSignal>(ConfirmPendingPurchase);
     }
 
@@ -38,9 +38,9 @@ public class IAPManager : MonoBehaviour,IStoreListener
         
     }
 
-     void PurchaseProduct(OnPurchaseProductSignal purchaseProductSignal)
+    public void PurchaseProduct(string productID)
     {
-     controller.InitiatePurchase(purchaseProductSignal.productID);
+     controller.InitiatePurchase(productID);
     }
 
     public void OnInitializeFailed(InitializationFailureReason error)
@@ -100,5 +100,11 @@ public class IAPManager : MonoBehaviour,IStoreListener
         this.controller = cont;
         this.extensions = ext;
         print("Purchasing init");
+    }
+
+    public string GetPrice(string productID)
+    {
+        var product = controller.products.all.ToList().Find((product => product.definition.id == productID));
+        return product.metadata.localizedPriceString;
     }
 }
