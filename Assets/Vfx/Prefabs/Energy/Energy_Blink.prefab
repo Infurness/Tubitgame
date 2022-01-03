@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1689505917323476282}
   - component: {fileID: 1689505917323476287}
   - component: {fileID: 1689505917323476284}
-  - component: {fileID: 1689505917323476285}
+  - component: {fileID: 580466508}
   m_Layer: 5
   m_Name: Energy_Blink
   m_TagString: Untagged
@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1689505917323476283}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.087995, y: 1.087995, z: 1.087995}
   m_Children: []
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &1689505917323476285
+--- !u!95 &580466508
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -86,7 +86,7 @@ Animator:
   m_GameObject: {fileID: 1689505917323476283}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b98d445f36b0f79488a08fdd92775deb, type: 2}
+  m_Controller: {fileID: 9100000, guid: d2278466b02ba73469e3bf6615a16239, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

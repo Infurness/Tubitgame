@@ -214,6 +214,12 @@ public class HUD_VC : MonoBehaviour
         TimeSpan time = TimeSpan.FromSeconds (energyTimeSecondsCount);
         string timeStr = time.ToString (@"hh\:mm\:ss");
         energyTimeText.text = $"Energy will be fulfilled in { timeStr }";
+
+        //VFX
+        if (_signal.energy <1)
+            _signalBus.Fire<VFX_NoEnergyParticlesSignal>();
+        if (_signal.energy / energyManager.GetMaxEnergy() < 0.4f)
+            _signalBus.Fire<VFX_LowEnergyBlinkSignal>();
     }
     void UpdateSoftCurrency ()
     {
