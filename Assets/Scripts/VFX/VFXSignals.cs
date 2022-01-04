@@ -7,3 +7,11 @@ public class VFX_EnergyChangeSignal
     public float oldFill;
     public float newFill;
 }
+
+public class VFX_LowEnergyBlinkSignal
+{
+}
+
+public class VFX_NoEnergyParticlesSignal
+{
+}

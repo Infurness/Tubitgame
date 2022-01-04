@@ -35,21 +35,16 @@ public class EnergyInventory_VC : MonoBehaviour
         }
         energyItemsSpawned.Clear ();
         EnergyItemData[] items = energyInventoryManager.GetEnergyItems ();
-        List<string> itemsAdded = new List<string> ();
         Debug.Log ($"items{items.Length}");
         EnergyInventoryItem_VC firstItemAdded = null;
         foreach (EnergyItemData item in items)
         {
-            if (!itemsAdded.Contains (item.label))
-            {
-                itemsAdded.Add (item.label);
-                int quantity = items.Where (c => c.label == item.label).Count ();
-                GameObject itemSpawned = Instantiate (energyItemPrefab, itemsHolder.transform);
-                if (!firstItemAdded)
-                    firstItemAdded = itemSpawned.GetComponent<EnergyInventoryItem_VC> ();
-                itemSpawned.GetComponent<EnergyInventoryItem_VC> ().SetUpItem (signalBus, energyInventoryManager, item, quantity, this);
-                energyItemsSpawned.Add (itemSpawned);
-            } 
+            int quantity = item.quantity;
+            GameObject itemSpawned = Instantiate (energyItemPrefab, itemsHolder.transform);
+            if (!firstItemAdded)
+                firstItemAdded = itemSpawned.GetComponent<EnergyInventoryItem_VC> ();
+            itemSpawned.GetComponent<EnergyInventoryItem_VC> ().SetUpItem (signalBus, energyInventoryManager, item, quantity, this);
+            energyItemsSpawned.Add (itemSpawned);
         }
         if (firstItemAdded)
             firstItemAdded.SelectItem ();

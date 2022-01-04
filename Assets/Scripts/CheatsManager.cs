@@ -39,7 +39,7 @@ public class CheatsManager : MonoBehaviour
     }
     public void AddEnergyItem ()
     {
-        energyInventoryManager.AddItem (energyItemToAdd);
+        energyInventoryManager.AddItem (energyItemToAdd.IDLable,  1);
     }
     public void SoftCurrencyRewardAd ()
     {

@@ -52,7 +52,7 @@ public class EnergyInventoryItem_VC : MonoBehaviour
     }
     public void UseItem ()
     {
-        signalBus.Fire<UseEnergyItemSignal> (new UseEnergyItemSignal { label = itemData.label, energy=itemData.energy });
+        signalBus.Fire<UseEnergyItemSignal> (new UseEnergyItemSignal { label = itemData.label});
         int quantity = int.Parse (countText.text);
         quantity--;
         if (quantity > 0)

@@ -103,6 +103,8 @@ public class GlobalInstaller : MonoInstaller
 
     //VFX
     Container.DeclareSignal<VFX_EnergyChangeSignal>();
+    Container.DeclareSignal<VFX_LowEnergyBlinkSignal>();
+    Container.DeclareSignal<VFX_NoEnergyParticlesSignal>();
 
     //Views signals
     Container.DeclareSignal<SnapToNeighborhoodViewSignal>();

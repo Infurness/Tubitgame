@@ -11,10 +11,10 @@ public struct EnergyInventoryData
 {
     public EnergyItemData[] items;
 }
-public struct EnergyItemData
+public class EnergyItemData
 {
     public string label;
-    public float energy;
+    public int quantity;
 }
 public class EnergyInventoryManager : MonoBehaviour
 {
@@ -56,12 +56,21 @@ public class EnergyInventoryManager : MonoBehaviour
                 {
                     for(int i=0;i<10;i++)
                     {
-                        AddItem (item);
+                        AddItem (item.IDLable, 1);
                     }
                 }     
             }
         }), (error => { print ("Cant Retrieve Energy Inventory data"); }));
 
+    }
+    public float GetItemEnergy(string IDLabel)
+    {
+        ScriptableEnergyItem item = allEnergyItems.Find(item => item.IDLable == IDLabel);
+        float itemEnergy = 0;
+        if (item)
+            itemEnergy = item.energyRecover;
+
+        return itemEnergy;
     }
     public EnergyItemData[] GetEnergyItems ()
     {
@@ -70,41 +79,56 @@ public class EnergyInventoryManager : MonoBehaviour
     public void UseEnergyItem (UseEnergyItemSignal signal)
     {
         if(RemoveItem (signal.label))
-            signalBus.Fire<AddEnergySignal> (new AddEnergySignal { energyAddition = signal.energy });   
+        {
+            signalBus.Fire<AddEnergySignal>(new AddEnergySignal { energyAddition = GetItemEnergy(signal.label)});
+        }        
     }
 
-    public void AddItem(ScriptableEnergyItem item)
+    public void AddItem(string ID, int quantity)
     {
         List<EnergyItemData> energyitems = GetEnergyItems ().ToList ();
-        EnergyItemData itemToAdd = new EnergyItemData { label = item.IDLable, energy = item.energyRecover };
-        energyitems.Add (itemToAdd);
+
+        bool itemFound = false;
+        foreach(EnergyItemData item in energyitems)
+        {
+            if (item.label == ID)
+            {
+                item.quantity += quantity;
+                itemFound = true;
+                break;
+            }        
+        }
+
+        if (!itemFound)
+        {
+            energyitems.Add(new EnergyItemData { label = ID, quantity = quantity });
+        }
+
         inventoryData.items = energyitems.ToArray ();
         SaveEnergyInventoryData ();
     }
-    bool RemoveItem (string label)
+    bool RemoveItem (string ID)
     {
         List<EnergyItemData> energyitems = GetEnergyItems ().ToList ();
-        bool exists = false;
-        int index = 0;
+
+        bool itemFound = false;
         foreach (EnergyItemData item in energyitems)
         {
-            if (item.label == label)
+            if (item.label == ID)
             {
-                exists = true;
+                item.quantity -= 1;
+                itemFound = true;
                 break;
             }
-            index++;
         }
-        if (!exists)
-            return false;
 
-        energyitems.RemoveAt (index);
+        if (itemFound)
+        {
+            inventoryData.items = energyitems.ToArray();
+            SaveEnergyInventoryData();
+        }
+        return itemFound;
 
-        inventoryData.items = energyitems.ToArray ();
-
-        SaveEnergyInventoryData ();
-
-        return true;
     }
 
     public Sprite GetIcon (string label)

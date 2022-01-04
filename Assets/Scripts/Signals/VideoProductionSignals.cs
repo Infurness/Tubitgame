@@ -169,7 +169,6 @@ public class ChangeBackButtonSignal
 public class UseEnergyItemSignal
 {
     public string label;
-    public float energy;
 }
 public class ChangeRestStateSignal
 {

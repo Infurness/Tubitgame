@@ -272,7 +272,8 @@ public class Shop_VC : MonoBehaviour
         itemsPanel.gameObject.SetActive(false);
         offersPanel.gameObject.SetActive(false);
         realEstatePanel.gameObject.SetActive(true);
-
+        if (realStateButtonsContainer.transform.childCount > 1)
+            return;
         List<RealEstateCustomizationItem> houses = shop.Houses;
 
         foreach (RealEstateCustomizationItem item in houses)
