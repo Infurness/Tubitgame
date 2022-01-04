@@ -74,7 +74,13 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private TMP_Text energyCostText;
 
     private List<VideoInfo_VC> unpublishedVideosVC = new List<VideoInfo_VC>();
+    private List<GameObject> unpublishedVideosShown = new List<GameObject>();
 
+    [SerializeField] private int videosPerPage = 5;
+    [SerializeField] private Button pageLeft;
+    [SerializeField] private Button pageRight;
+    [SerializeField] private TMP_Text pagesCount;
+    private int currentPageNumber = 1;
     // Start is called before the first frame update
     void Start ()
     {
@@ -86,6 +92,7 @@ public class VideoManager_VC : MonoBehaviour
         _signalBus.Subscribe<OpenVideoManagerSignal> (InitialState);
         _signalBus.Subscribe<ConfirmThemesSignal> (SetConfirmedThemes);
         _signalBus.Subscribe<EndPublishVideoSignal> (ResetVideoCreationInfo);
+        _signalBus.Subscribe<EndPublishVideoSignal>(StartSortNextFrame);
         _signalBus.Subscribe<CancelVideoRecordingSignal> (ResetVideoCreationInfo);
         _signalBus.Subscribe<CancelVideoRecordingSignal> (CancelVideoRecording);
         _signalBus.Subscribe<ChangePlayerSubsSignal> (UpdateGlobalSubsFromSignal);
@@ -106,6 +113,9 @@ public class VideoManager_VC : MonoBehaviour
         //theme1Button.onClick.AddListener (() => { OnThemeButtonPressed (1, theme1Button.GetComponentInChildren<TMP_Text>());});
         //theme2Button.onClick.AddListener (() => { OnThemeButtonPressed (2, theme2Button.GetComponentInChildren<TMP_Text> ()); });
         //theme3Button.onClick.AddListener (() => { OnThemeButtonPressed (3, theme3Button.GetComponentInChildren<TMP_Text> ()); });
+        pageLeft.onClick.AddListener(GoToPreviousVideosPage);
+        pageRight.onClick.AddListener(GoToNextVideosPage);
+
         energyHasBeenOfferedThisSesion = false;
     }
     void CheckEnergyForVideo ()
@@ -132,6 +142,7 @@ public class VideoManager_VC : MonoBehaviour
         skipRecodingPanelPopUp.SetActive (false);
         SetQualityTagVisual (0);
         UpdateUsername ();
+        OpenVideosPage(currentPageNumber);
     }
     void UpdateUsername ()
     {
@@ -273,6 +284,7 @@ public class VideoManager_VC : MonoBehaviour
                             );
         vc.SetTimeLeftToPublish (GameClock.Instance.Now);
         unpublishedVideosVC.Add (vc);
+        unpublishedVideosShown.Add(videoInfoObject);
         UnpublishedVideo unpublishedVideo = new UnpublishedVideo (newVideoName,selectedThemes,selectedQuality, secondsToProduce, GameClock.Instance.Now);
         PlayerDataManager.Instance.SetUnpublishedVideo (unpublishedVideo);
         _signalBus.Fire<OpenTimeShortenAdSignal> (new OpenTimeShortenAdSignal {video = unpublishedVideo });
@@ -285,6 +297,7 @@ public class VideoManager_VC : MonoBehaviour
             GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);          
             VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
             unpublishedVideosVC.Add (vc);
+            unpublishedVideosShown.Add(videoInfoObject);
             vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager, adsRewardsManager);
             vc.SetVideoInfoUp (video.videoName,
                                 video.secondsToBeProduced,
@@ -345,6 +358,7 @@ public class VideoManager_VC : MonoBehaviour
             {
                 Destroy(unpublishedVideosVC[videoindex].gameObject);
             }
+            unpublishedVideosVC.RemoveAll(item => item == null);
         }
     }
 
@@ -450,5 +464,78 @@ public class VideoManager_VC : MonoBehaviour
             }
             i++;
         }
+    }
+
+    void GoToNextVideosPage()
+    {
+        OpenVideosPage(currentPageNumber + 1);
+    }
+    void GoToPreviousVideosPage()
+    {
+        OpenVideosPage(currentPageNumber - 1);
+    }
+    void OpenVideosPage(int pageNumber)
+    {
+        if (pageNumber < 1)
+            return;
+        unpublishedVideosShown.RemoveAll(video => video == null);
+        int numberOfTotalVideos = videosShown.Count + unpublishedVideosShown.Count;
+        if (numberOfTotalVideos <= 0)
+        {
+            pageRight.transform.parent.gameObject.SetActive(false);
+            pageLeft.transform.parent.gameObject.SetActive(false);
+            pagesCount.text = "1/1";
+            return;
+        }
+        int maxPage = (int)Mathf.Ceil(numberOfTotalVideos / videosPerPage)+1;
+        if (pageNumber > maxPage)
+            return;
+
+        
+        SortVideos(pageNumber);
+
+        currentPageNumber = pageNumber;
+        pagesCount.text = $"{currentPageNumber}/{maxPage}";
+
+        bool canGoRight = currentPageNumber < maxPage;
+        bool canGoLeft = currentPageNumber > 1;
+        pageRight.transform.parent.gameObject.SetActive(canGoRight);
+        pageLeft.transform.parent.gameObject.SetActive(canGoLeft);
+    }
+
+    void SortVideos(int pageNumber)
+    {
+        int startShownIndex = videosPerPage * (pageNumber - 1);
+        List<GameObject> videoObjects = videosShown.Values.ToList();
+        videoObjects.AddRange(unpublishedVideosShown);
+        videoObjects.Reverse();
+        videoObjects.RemoveAll(video => video == null);
+        for (int i = videoObjects.Count - 1; i >= 0; i--)
+        {
+            if (i < startShownIndex || i > (startShownIndex + videosPerPage) - 1)
+            {
+                if (videoObjects[i].activeSelf)
+                {
+                    videoObjects[i].SetActive(false);
+                }
+            }
+            else
+            {
+                if (!videoObjects[i].activeSelf)
+                {
+                    videoObjects[i].SetActive(true);
+                }
+            }
+            videoObjects[i].transform.SetSiblingIndex(i);
+        }
+    }
+    void StartSortNextFrame()
+    {
+        StartCoroutine(SortNextFrame());
+    }
+    IEnumerator SortNextFrame()
+    {
+        yield return null;
+        SortVideos(currentPageNumber);
     }
 }

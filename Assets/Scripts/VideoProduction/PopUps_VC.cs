@@ -9,6 +9,8 @@ using TMPro;
 public class PopUps_VC : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
+    [Inject] private GlobalAudioManager audioManager;
+    [Inject] private SoundsHolder soundsHolder;
 
     [SerializeField] private GameObject popUpsBlockBackgroundPanel;
 
@@ -88,6 +90,7 @@ public class PopUps_VC : MonoBehaviour
 
     void OpenDefaultDisclaimer(OpenDefaultMessagePopUpSignal signal)
     {
+        audioManager.PlaySound(soundsHolder.popUp, AudioType.Effect);
         popUpsBlockBackgroundPanel.SetActive (true);
         defaultDisclaimerPanelPopUp.SetActive (true);
         StartCoroutine(OpenPanelAnimation (defaultDisclaimerPanelPopUp));
@@ -161,6 +164,7 @@ public class PopUps_VC : MonoBehaviour
 
     void OpenLevelUp ()
     {
+        audioManager.PlaySound(soundsHolder.popUp, AudioType.Effect);
         popUpsBlockBackgroundPanel.SetActive (true);
         LevelUpPanel.SetActive (true);
         signalBus.Fire<OpenLevelUpPanelSignal> ();
@@ -222,6 +226,7 @@ public class PopUps_VC : MonoBehaviour
 
     void OpenAdsDefaultPanel (OpenAdsDefaultPopUpSignal signal)
     {
+        audioManager.PlaySound(soundsHolder.popUp, AudioType.Effect);
         adsDefaultPanelPopUp.SetActive (true);
         StartCoroutine (OpenPanelAnimation (adsDefaultPanelPopUp));
         adsPanelText.text = signal.message;

@@ -14,7 +14,6 @@ public class HUD_VC : MonoBehaviour
     [Inject] YouTubeVideoManager youTubeVideoManager;
     [Inject] private ExperienceManager xpManager;
     [Inject] private EnergyManager energyManager;
-    [Inject] private GlobalAudioManager audioManager;
     GameClock gameClock;
 
     [SerializeField] private TMP_Text energyText;
@@ -43,8 +42,6 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private GameObject xpBarPanel;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private Image xpFillBar;
-
-    [SerializeField] AudioClip pushButtonAudioClip;
 
     private void Awake ()
     {
@@ -155,7 +152,6 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenScreenPanel (HUDScreen _screenToOpen)
     {
-        audioManager.PlaySound (pushButtonAudioClip, AudioType.Effect);
         if (_screenToOpen == HUDScreen.Home)
         {
             homePanel.SetActive (true);
