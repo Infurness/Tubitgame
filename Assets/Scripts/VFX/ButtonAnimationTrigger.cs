@@ -4,10 +4,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using Zenject;
 
 [RequireComponent(typeof(Animator))]
 public class ButtonAnimationTrigger : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    [Inject] private GlobalAudioManager audioManager;
+    [Inject] private SoundsHolder soundsHolder;
+
     Animator anim;
 
     // Start is called before the first frame update
@@ -15,11 +19,15 @@ public class ButtonAnimationTrigger : MonoBehaviour, IPointerDownHandler, IPoint
     {
         anim = GetComponent<Animator> ();
     }
-
+    private void OnEnable()
+    {
+        anim.Play("Idle");
+    }
     public void OnPointerDown (PointerEventData eventData)
     {
         if(anim)
         {
+            audioManager.PlaySound(soundsHolder.pushButton, AudioType.Effect);
             anim.SetTrigger("Pressed");
             anim.ResetTrigger("Release");
         }

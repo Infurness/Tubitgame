@@ -30,8 +30,17 @@ public class Settings_VC : MonoBehaviour
         musicVolumeSlider.onValueChanged.AddListener ((value) =>  audioManager.SetMusicVolumeModifier (value));
         effectsVolumeSlider.onValueChanged.AddListener ((value) => audioManager.SetEffectsVolumeModifier (value));
 
-        audioManager.SetMusicVolumeModifier (musicVolumeSlider.value);
-        audioManager.SetEffectsVolumeModifier (effectsVolumeSlider.value);
+        float musicVolume = 0.5f;
+        if(PlayerPrefs.HasKey("MusicVolume"))
+            musicVolume = PlayerPrefs.GetFloat("MusicVolume");
+        audioManager.SetMusicVolumeModifier(musicVolume);
+        musicVolumeSlider.value = musicVolume;
+
+        float effectsVolume = 0.5f;
+        if (PlayerPrefs.HasKey("EffectsVolume"))
+            effectsVolume = PlayerPrefs.GetFloat("EffectsVolume");
+        audioManager.SetEffectsVolumeModifier(effectsVolume);
+        effectsVolumeSlider.value = effectsVolume;
 
         inputField.interactable = false;
         RefreshPlayerName ();

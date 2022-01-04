@@ -23,6 +23,7 @@ public class GameplayInstaller : MonoInstaller
 
         Container.Bind<ExperienceManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<GlobalAudioManager> ().FromComponentInHierarchy ().AsSingle ();
+        Container.Bind<SoundsHolder>().FromComponentInHierarchy().AsSingle();
         Container.Bind<EnergyInventoryManager> ().FromComponentInHierarchy ().AsSingle ();
      //   Container.Bind<RoomInteractivityManager> ().FromComponentInHierarchy ().AsSingle (); 
 
