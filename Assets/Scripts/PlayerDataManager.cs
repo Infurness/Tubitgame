@@ -89,8 +89,20 @@ public class PlayerDataManager : MonoBehaviour
             case "noads":
                 SetPlayerNoAdsData(confirmAction);
                 break;
-
+            case "x2energy":
+                SetPlayerHasDoubleEnergy(confirmAction);
+                break;
+            
         }
+    }
+
+    void SetPlayerHasDoubleEnergy(Action confirmation)
+    {
+        UpdateUserDatabase(new[] {"DoubleEnergy"},new object[]{true},(() =>
+        {
+            confirmation.Invoke();
+            playerData.hasDoubleEnergy = true;
+        }));
     }
 
     void SetPlayerNoAdsData(Action confirmAction)
@@ -188,12 +200,6 @@ public class PlayerDataManager : MonoBehaviour
                 playerData.xpData = JsonConvert.DeserializeObject<ExperienceData> (xpDataJson);
 
             }
-
-            if (result.Data.TryGetValue("NoAds",out datarecord))
-            {
-                var noads = datarecord.Value;
-                playerData.noAds = JsonConvert.DeserializeObject<bool>(noads);
-            }
             else
             {
                 playerData.xpData = new ExperienceData
@@ -203,6 +209,16 @@ public class PlayerDataManager : MonoBehaviour
                     subscribersThresholdCounter = 0,
                     viewsThresholdCounter = 0
                 };
+            }
+            if (result.Data.TryGetValue("NoAds",out datarecord))
+            {
+                var noads = datarecord.Value;
+                playerData.noAds = JsonConvert.DeserializeObject<bool>(noads);
+            }
+            if (result.Data.TryGetValue("DoubleEnergy",out datarecord))
+            {
+                var x2Energy = datarecord.Value;
+                playerData.hasDoubleEnergy = JsonConvert.DeserializeObject<bool>(x2Energy);
             }
 
             if (result.Data.TryGetValue("PlayerName", out datarecord))
@@ -623,4 +639,8 @@ public class PlayerDataManager : MonoBehaviour
         return playerData.noAds;
     }
 
+    public bool GetDoubleEnergyState()
+    {
+        return playerData.hasDoubleEnergy;
+    }
 }

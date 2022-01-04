@@ -117,13 +117,14 @@ public class EnergyManager : MonoBehaviour
    
     IEnumerator UpdateEnergy ()
     {
+        int energyMultiplier = PlayerDataManager.Instance.GetDoubleEnergyState() ? 2 : 1;
         _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
         while (energyData.energy < maxEnergyByLevel[Mathf.Max (0, xpManager.GetPlayerLevel()-1)])
         {
             if(!youTubeVideoManager.IsRecording()) //Dont charge energy if there is a video recording
             {
                 float energyGainPerSecond = GetEnergyGainedPerSecond ();
-                energyData.energy += energyGainPerSecond * Time.deltaTime;
+                energyData.energy += energyGainPerSecond * Time.deltaTime*energyMultiplier;
                 _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
             }
             yield return null;
