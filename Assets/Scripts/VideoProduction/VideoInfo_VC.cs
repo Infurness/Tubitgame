@@ -14,6 +14,8 @@ public class VideoInfo_VC : MonoBehaviour
     private EnergyManager energyManger;
     private AdsRewardsManager adsRewardsManager;
 
+    private bool hasBeenInitialized;
+
     private Video videoRef;
     private string videoName;
     private ThemeType[] themeTypes;
@@ -60,8 +62,14 @@ public class VideoInfo_VC : MonoBehaviour
         publishButton.onClick.AddListener (AdBeforeVideoPublish);
         cancelButton.onClick.AddListener (CancelVideo);
         moneyButton.onClick.AddListener (RecollectMoney);
-    }
 
+        hasBeenInitialized = true;
+    }
+    private void OnEnable()
+    {
+        if(hasBeenInitialized && videoRef==null)
+            RestartProductionBar();
+    }
     // Update is called once per frame
     void Update ()
     {
@@ -161,7 +169,10 @@ public class VideoInfo_VC : MonoBehaviour
         progressBarPanel.SetActive (true);
         statsPanel.SetActive (false);
         cancelButton.gameObject.SetActive (true);
-        StartCoroutine (FillTheRecordImage (maxInternalRecordTime,internalRecordTime));  
+        if (gameObject.activeSelf)
+            StartCoroutine(FillTheRecordImage(maxInternalRecordTime, internalRecordTime));
+        else
+            Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
     }
     void VideoReadyToPublish ()
     {
