@@ -31,10 +31,12 @@ public class GlobalAudioManager : MonoBehaviour
     public void SetMusicVolumeModifier (float value)
     {
         musicVolumeModifier = value;
+        PlayerPrefs.SetFloat("MusicVolume", value);
     }
     public void SetEffectsVolumeModifier (float value)
     {
         effectsVolumeModifier = value;
+        PlayerPrefs.SetFloat("EffectsVolume", value);
     }
     //Pooling system: Get aud out of the available queue, wait for it to end and return it to the Queue
     public void PlaySound(AudioClip clip, AudioType audioType, bool loop = false, float volume=1f)
