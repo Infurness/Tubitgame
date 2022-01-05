@@ -20,4 +20,7 @@ public class ProcessPurchaseSignal
     public Product product;
 }
 
-
+public class BuyHouseSignal
+{
+    public string houseName;
+}

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Houses
+  m_EditorClassIdentifier: 
+  m_GroupName: Houses
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1bf041273d7e5b1468939df85e650ad0
+  m_SerializeEntries:
+  - m_GUID: 129b12127210484439ceb6d8be049333
+    m_Address: Assets/ScriptableObjects/RealEstate/BasicHouse.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - house
+  - m_GUID: 3de2f1b238147994eb4039d90ba02b2f
+    m_Address: Assets/ScriptableObjects/RealEstate/HugeHouse.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - house
+  - m_GUID: ffaba2e04fa24bd439b641472185ac5c
+    m_Address: Assets/ScriptableObjects/RealEstate/NiceApartment.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - house
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 1bc69c4ea8e0c9e4483baab6cc5eb4ff, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 09c0e4c36cb90bf488b2c3b2c7679e9e, type: 2}
+    - {fileID: 11400000, guid: 4265e173cf2047142bea9f033cc11eb6, type: 2}
