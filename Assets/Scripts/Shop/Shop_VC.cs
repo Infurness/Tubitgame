@@ -16,6 +16,7 @@ public class Shop_VC : MonoBehaviour
     [Inject] private Shop shop;
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private PlayerInventory playerInventory;
+    [Inject] private EnergyInventoryManager energyInventoryManager;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject itemsPanel, offersPanel, realEstatePanel, currenciesPanel;
 
@@ -564,7 +565,7 @@ public class Shop_VC : MonoBehaviour
             var bt = Instantiate(consumableItemButtonPrefab, energyPanel.transform);
             bt.SetButtonData(item.sprite,item.name,item.price,item.amount, () =>
             {
-              
+              energyInventoryManager.AddItem(item.specialID,item.amount);
             });
         }
     }

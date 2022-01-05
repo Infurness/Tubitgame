@@ -12,6 +12,8 @@ public class PlayerData
     public ulong hardCurrency;
 
     public bool noAds = false;
+
+    public bool hasDoubleEnergy = false;
     //Leveling System 
     public ExperienceData xpData;
 }

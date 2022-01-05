@@ -11,6 +11,7 @@ using UnityEngine;
         public int price;
         public int amount;
         public ConsumableType type;
+        public string specialID;
         public enum ConsumableType
         {
             SoftCurrency,
