@@ -265,7 +265,6 @@ public class RoomInventory_VC : MonoBehaviour
             
             roomInventoryButtons.Add(bt);
         }
-        
         PopulateInventoryButtons("wall");
     }
 

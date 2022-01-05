@@ -6,7 +6,8 @@ namespace Customizations
     public class RealEstateCustomizationItem : ScriptableObject
     {
         public string itemName;
-        public Sprite itemSprite;
+        public Sprite streetViewSprite;
+        public Sprite houseCloseSpite;
         public Rareness rareness=Rareness.Common;
         public uint roomSlots;
         public uint garageSlots;
