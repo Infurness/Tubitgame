@@ -114,7 +114,7 @@ public class StreetView_VC : MonoBehaviour
     }
     void StartHouseButtons()
     {
-        foreach(RealEstateCustomizationItem item in playerInventory.EquippedRealEstateItems)
+        foreach(RealEstateCustomizationItem item in playerInventory.RealEstateItems)
         {
             DeactivateButton(item.name);
         }

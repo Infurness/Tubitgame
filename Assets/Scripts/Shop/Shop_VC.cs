@@ -291,9 +291,9 @@ public class Shop_VC : MonoBehaviour
 
     void SetHouseDisplay(RealEstateCustomizationItem item)
     {
-        bool ownedHouse = item.Owned || playerInventory.EquippedRealEstateItems.Find(house => house.itemName == item.itemName);
+        bool ownedHouse = item.Owned || playerInventory.RealEstateItems.Find(house => house.itemName == item.itemName);
 
-        houseImage.sprite = item.itemSprite;
+        houseImage.sprite = item.streetViewSprite;
         garageSlots.text = $"Garage slots: {item.garageSlots}";
         roomSlots.text = $"Room slots: {item.roomSlots}";
         if (ownedHouse)
@@ -481,7 +481,7 @@ public class Shop_VC : MonoBehaviour
     void BuyRealEstateItem(RealEstateCustomizationItem item, PriceType priceType)
     {
         SetBuyPanelData(item.name, item.rareness, "", $"Room Slots: {item.roomSlots}\nGarage Slots: {item.garageSlots}",
-            item.itemSprite);
+            item.streetViewSprite);
         buyButton.onClick.RemoveAllListeners();
         switch (priceType)
         {

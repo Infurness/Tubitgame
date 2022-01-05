@@ -24,8 +24,8 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private List<VideoQualityCustomizationItem> videoQualityRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
     [SerializeField] private List<RealEstateCustomizationItem> realEstateItems;
-    [SerializeField] private List<RealEstateCustomizationItem> equippedRealEstateItems;
-
+    [SerializeField] private RealEstateCustomizationItem equippedHouse;
+    [SerializeField] private RealEstateCustomizationItem defaultHouse;
     [SerializeField] private List<HeadItem> headItems;
     [SerializeField] private List<HairItem> hairItems;
 
@@ -41,7 +41,7 @@ public class PlayerInventory : MonoBehaviour
 
     public List<RealEstateCustomizationItem> RealEstateItems => realEstateItems.ToList();
 
-    public List<RealEstateCustomizationItem> EquippedRealEstateItems => equippedRealEstateItems.ToList();
+    public RealEstateCustomizationItem EquippedHouse => equippedHouse;
 
 
     public HeadItem GetDefaultMaleHead => defaultMaleHead;
@@ -202,29 +202,27 @@ public class PlayerInventory : MonoBehaviour
         {
             var vcItems = (List<RealEstateCustomizationItem>)realEstateAddressedItems.Result;
 
-            realEstateItems = vcItems;
-
-            // foreach (var videoQualityItemName in playerInventoryAddressedData.videoQualityItemsNames)
-            // {
-            //     videoQualityRoomItems.Add(vcItems.Find((item => item.name==videoQualityItemName)));     //todo uncomment when shop implemented
-            // }
-
-
-
+            
             foreach (var realStateItemName in playerInventoryAddressedData.realEstateItemsNames)
             {
-                foreach(RealEstateCustomizationItem item in realEstateItems)
-                {
-                    if (item.name == realStateItemName)
-                        equippedRealEstateItems.Add(item);
-                }
+                var item = vcItems.Find((item => item.name == realStateItemName));
+                realEstateItems.Add(item);
+
             }
+
+          equippedHouse=  vcItems.Find((rsItem => rsItem.name == playerInventoryAddressedData.equippedHouse));
+          if (equippedHouse==null)
+          {
+              equippedHouse = defaultHouse;
+          }
 
         }
         else
         {
             print("Failed to load Assets ");
         }
+        realEstateItems.Add(defaultHouse);
+
     }
     async  void  OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
@@ -263,12 +261,20 @@ public class PlayerInventory : MonoBehaviour
    
     public void AddRealEstateItem(RealEstateCustomizationItem realEstateCustomizationItem)
     {
-        equippedRealEstateItems.Add(realEstateCustomizationItem);
+        realEstateItems.Add(realEstateCustomizationItem);
         playerInventoryAddressedData.realEstateItemsNames.Add(realEstateCustomizationItem.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         signalBus.Fire(new BuyHouseSignal { houseName = realEstateCustomizationItem.name });
     }
 
+    public void SetEquippedHouse(RealEstateCustomizationItem realEstateCustomizationItem)
+    {
+        equippedHouse = realEstateCustomizationItem;
+        playerInventoryAddressedData.equippedHouse = equippedHouse.name;
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+
+        
+    }
     public void ChangeAvatar(CharacterAvatar avatar)
     {
         equippedCharacterAvatar = avatar;
@@ -366,6 +372,7 @@ public class PlayerInventory : MonoBehaviour
         public List<string> videoQualityItemsNames;
         public List<string> equippedVideoQualityItemsNames;
         public List<string> realEstateItemsNames;
+        public string equippedHouse;
         public RoomLayout RoomLayout;
         public  PlayerInventoryAddressedData()
         {

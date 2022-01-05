@@ -265,19 +265,6 @@ public class RoomInventory_VC : MonoBehaviour
             
             roomInventoryButtons.Add(bt);
         }
-
-        foreach (var realEstateItem in playerInventory.RealEstateItems)
-        {
-            var bt = Instantiate(inventoryButtonPrefab, buttonsTransform.transform);
-            bt.Type = "realestate";
-            bt.SetButtonSprites(realEstateItem.itemSprite,GetRarenessSpriteByIndex(realEstateItem.rareness));
-            bt.SetButtonAction(() =>
-            {
-                
-            });
-            roomInventoryButtons.Add(bt);
-        }
-        
         PopulateInventoryButtons("wall");
     }
 
