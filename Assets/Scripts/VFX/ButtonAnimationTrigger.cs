@@ -21,6 +21,7 @@ public class ButtonAnimationTrigger : MonoBehaviour, IPointerDownHandler, IPoint
     }
     private void OnEnable()
     {
+        anim = GetComponent<Animator>();
         anim.Play("Idle");
     }
     public void OnPointerDown (PointerEventData eventData)
