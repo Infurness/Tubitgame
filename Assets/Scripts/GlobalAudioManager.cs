@@ -6,6 +6,8 @@ using Zenject;
 public enum AudioType {Music, Effect };
 public class GlobalAudioManager : MonoBehaviour
 {
+    static public GlobalAudioManager Instance;
+
     [Inject] SignalBus signalBus;
     [Inject] SoundsHolder soundsHolder;
 
@@ -18,6 +20,11 @@ public class GlobalAudioManager : MonoBehaviour
     Dictionary<AudioType, List<AudioSource>> allAudios = new Dictionary<AudioType,List<AudioSource>>();
     private void Awake ()
     {
+        if (Instance)
+            Destroy(this);
+        else
+            Instance = this;
+
         allAudios.Add(AudioType.Effect, new List<AudioSource>());
         allAudios.Add(AudioType.Music,new List<AudioSource>());
         for (int i=0; i<numberOfAudioSourcesForPool;i++)
