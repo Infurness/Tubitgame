@@ -81,7 +81,10 @@ public class Shop_VC : MonoBehaviour
             PopulateSoftCurrencyBundles();
             PopulateEnergyItems();
         }));
-       
+
+        _signalBus.Subscribe<BuyHouseSignal>(UpdateHouseDisplay);
+
+        SetHouseDisplay(playerInventory.RealEstateItems[0]);
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -264,7 +267,8 @@ public class Shop_VC : MonoBehaviour
         realEstateButton.GetComponent<ShopCategoryButton>().SetButtonSelected();
         realEstateButton.gameObject.transform.parent.GetComponent<RectTransform>().anchoredPosition =
             new Vector3(0, 1000, 0);
-        SetHouseDisplay(signal.houseName);
+        RealEstateCustomizationItem house = shop.Houses.Where((house) => house.name == signal.houseName).FirstOrDefault();
+        SetHouseDisplay(house);
     }
 
     void OpenRealEstatePanel()
@@ -278,26 +282,33 @@ public class Shop_VC : MonoBehaviour
 
         foreach (RealEstateCustomizationItem item in houses)
         {
-            if (!item.Owned)
-            {
-                GameObject shopButton = Instantiate(realStateButton, realStateButtonsContainer.transform);
-
-                shopButton.GetComponentInChildren<TMP_Text>().text = item.name;
-                shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => SetHouseDisplay(item.name));
-            }
+            GameObject shopButton = Instantiate(realStateButton, realStateButtonsContainer.transform);
+            shopButton.GetComponentInChildren<TMP_Text>().text = item.name;            
+            shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => SetHouseDisplay(item));          
         }
     }
 
-    void SetHouseDisplay(string houseName)
+    void SetHouseDisplay(RealEstateCustomizationItem item)
     {
-        RealEstateCustomizationItem house = shop.Houses.Where((house) => house.name == houseName).FirstOrDefault();
+        bool ownedHouse = item.Owned || playerInventory.EquippedRealEstateItems.Find(house => house.itemName == item.itemName);
 
-        houseImage.sprite = house.itemSprite;
-        garageSlots.text = $"Garage slots: {house.garageSlots}";
-        roomSlots.text = $"Room slots: {house.roomSlots}";
-        housePrice.text = $"{house.SCPrice}";
+        houseImage.sprite = item.itemSprite;
+        garageSlots.text = $"Garage slots: {item.garageSlots}";
+        roomSlots.text = $"Room slots: {item.roomSlots}";
+        if (ownedHouse)
+            housePrice.text = "Owned";
+        else
+        {
+            housePrice.text = $"{item.SCPrice}";
+            houseBuyButton.onClick.AddListener(() => BuyRealEstateItem(item, item.PriceType));
+        }
+        houseBuyButton.interactable = !ownedHouse;
+    }
 
-        houseBuyButton.onClick.AddListener(() => BuyRealEstateItem(house, house.PriceType));
+    void UpdateHouseDisplay(BuyHouseSignal signal)
+    {
+        RealEstateCustomizationItem house = shop.Houses.Where((house) => house.name == signal.houseName).FirstOrDefault();
+        SetHouseDisplay(house);
     }
 
     public void BuyHCBundle(string id)

@@ -24,6 +24,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private List<VideoQualityCustomizationItem> videoQualityRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
     [SerializeField] private List<RealEstateCustomizationItem> realEstateItems;
+    [SerializeField] private List<RealEstateCustomizationItem> equippedRealEstateItems;
 
     [SerializeField] private List<HeadItem> headItems;
     [SerializeField] private List<HairItem> hairItems;
@@ -40,6 +41,7 @@ public class PlayerInventory : MonoBehaviour
 
     public List<RealEstateCustomizationItem> RealEstateItems => realEstateItems.ToList();
 
+    public List<RealEstateCustomizationItem> EquippedRealEstateItems => equippedRealEstateItems.ToList();
 
 
     public HeadItem GetDefaultMaleHead => defaultMaleHead;
@@ -191,13 +193,47 @@ public class PlayerInventory : MonoBehaviour
              print("Failed to load Assets ");
          }
      }
+
+    async Task LoadRealEstateAddressedAssets()
+    {
+        var realEstateAddressedItems = Addressables.LoadAssetsAsync<RealEstateCustomizationItem>("house", null);
+        await realEstateAddressedItems.Task;
+        if (realEstateAddressedItems.Status == AsyncOperationStatus.Succeeded)
+        {
+            var vcItems = (List<RealEstateCustomizationItem>)realEstateAddressedItems.Result;
+
+            realEstateItems = vcItems;
+
+            // foreach (var videoQualityItemName in playerInventoryAddressedData.videoQualityItemsNames)
+            // {
+            //     videoQualityRoomItems.Add(vcItems.Find((item => item.name==videoQualityItemName)));     //todo uncomment when shop implemented
+            // }
+
+
+
+            foreach (var realStateItemName in playerInventoryAddressedData.realEstateItemsNames)
+            {
+                foreach(RealEstateCustomizationItem item in realEstateItems)
+                {
+                    if (item.name == realStateItemName)
+                        equippedRealEstateItems.Add(item);
+                }
+            }
+
+        }
+        else
+        {
+            print("Failed to load Assets ");
+        }
+    }
     async  void  OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
         playerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
         characterAvatarAddressedData = playerInventoryFetchedSignal.CharacterAvatarAddressedData;
-        await  LoadThemeEffectAddressedAssets();
-        await  LoadVideoQualityAddressedAssets();
+        await LoadThemeEffectAddressedAssets();
+        await LoadVideoQualityAddressedAssets();
         await LoadCharacterData();
+        await LoadRealEstateAddressedAssets();
 
         signalBus.Fire<AssetsLoadedSignal>();
     }
@@ -227,9 +263,10 @@ public class PlayerInventory : MonoBehaviour
    
     public void AddRealEstateItem(RealEstateCustomizationItem realEstateCustomizationItem)
     {
-        realEstateItems.Add(realEstateCustomizationItem);
-        playerInventoryAddressedData.realEstateItems.Add(realEstateCustomizationItem.name);
+        equippedRealEstateItems.Add(realEstateCustomizationItem);
+        playerInventoryAddressedData.realEstateItemsNames.Add(realEstateCustomizationItem.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+        signalBus.Fire(new BuyHouseSignal { houseName = realEstateCustomizationItem.name });
     }
 
     public void ChangeAvatar(CharacterAvatar avatar)
@@ -328,7 +365,7 @@ public class PlayerInventory : MonoBehaviour
         public List<string> roomItemsNames;
         public List<string> videoQualityItemsNames;
         public List<string> equippedVideoQualityItemsNames;
-        public List<string> realEstateItems;
+        public List<string> realEstateItemsNames;
         public RoomLayout RoomLayout;
         public  PlayerInventoryAddressedData()
         {
@@ -336,7 +373,8 @@ public class PlayerInventory : MonoBehaviour
             roomItemsNames = new List<string>();
             videoQualityItemsNames = new List<string>();
             equippedVideoQualityItemsNames = new List<string>();
-                RoomLayout = new RoomLayout();
+            realEstateItemsNames = new List<string>();
+            RoomLayout = new RoomLayout();
 
         } 
     }

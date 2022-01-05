@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
+using Customizations;
+
 public class StreetView_VC : MonoBehaviour
 {
     [Inject] SignalBus signalBus;
+    [Inject] PlayerInventory playerInventory;
 
     [SerializeField] private Camera mainCamera;
 
@@ -29,7 +32,9 @@ public class StreetView_VC : MonoBehaviour
         basicHouseButton.onClick.AddListener(()=>ShopButton("BasicHouse"));
         niceApartmentButton.onClick.AddListener(() => ShopButton("NiceApartment"));
         hugeHouseButton.onClick.AddListener(() => ShopButton("HugeHouse"));
-        StartImage ();
+        signalBus.Subscribe<BuyHouseSignal>(UpdateHouseButtons);
+        StartImage (); 
+        StartHouseButtons();
     }
     void StartImage ()
     {
@@ -38,6 +43,7 @@ public class StreetView_VC : MonoBehaviour
 
         ResizeForCameraWidth (streetViewTransform);
         MoveSpriteNextToOther (streetViewTransform, houseViewTransform);
+
     }
     // Update is called once per frame
     void Update()
@@ -105,5 +111,30 @@ public class StreetView_VC : MonoBehaviour
     void ShopButton(string houseName)
     {
         signalBus.Fire<OpenRealEstateShopSignal>(new OpenRealEstateShopSignal { houseName = houseName});
+    }
+    void StartHouseButtons()
+    {
+        foreach(RealEstateCustomizationItem item in playerInventory.EquippedRealEstateItems)
+        {
+            DeactivateButton(item.name);
+        }
+    }
+    void UpdateHouseButtons(BuyHouseSignal signal)
+    {
+        DeactivateButton(signal.houseName);
+    }
+
+    void DeactivateButton(string name)
+    {
+        if (name == "NiceApartment")
+        {
+            niceApartmentButton.gameObject.SetActive(false);
+            niceApartmentPivot.parent.gameObject.SetActive(false);
+        }
+        else if (name == "HugeHouse")
+        {
+            hugeHouseButton.gameObject.SetActive(false);
+            hugeHousePivot.parent.gameObject.SetActive(false);
+        }
     }
 }

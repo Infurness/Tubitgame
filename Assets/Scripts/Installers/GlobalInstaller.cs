@@ -22,6 +22,7 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OnPurchaseProductSignal>();
     Container.DeclareSignal<ProcessPurchaseSignal>();
     Container.DeclareSignal<ConfirmPendingPurchaseSignal>();
+    Container.DeclareSignal<BuyHouseSignal>();
     
 
     Container.DeclareSignal<SaveRoomLayoutSignal>();

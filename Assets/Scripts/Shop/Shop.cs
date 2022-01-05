@@ -33,10 +33,11 @@ public class Shop : MonoBehaviour
         LoadEquipments();
         LoadClothes();
         LoadFurniture();
+        LoadHouses();
         LoadConsumablesItems();
     }
     
-   async void  LoadEquipments()
+    async void  LoadEquipments()
     {
         var loadOP = Addressables.LoadAssetsAsync<VideoQualityCustomizationItem>(key: "roomvc",null);
         await loadOP.Task;
@@ -45,7 +46,7 @@ public class Shop : MonoBehaviour
         equipments = roomVCITems.FindAll((vc) => vc.Owned == false);
     }
 
-   async void LoadFurniture()
+    async void LoadFurniture()
     {
         var loadOP = Addressables.LoadAssetsAsync<ThemeCustomizationItem>(key: "furniture",null);
         await loadOP.Task;
@@ -54,19 +55,25 @@ public class Shop : MonoBehaviour
         furniture = roomVCITems.FindAll((vc) => vc.Owned == false);
     }
 
-   async void LoadClothes()
-   {
-       var loadOP = Addressables.LoadAssetsAsync<ThemeCustomizationItem>(key: "cloth",null);
-       await loadOP.Task;
-       var roomVCITems =(List<ThemeCustomizationItem>) loadOP.Result;
+    async void LoadClothes()
+    {
+        var loadOP = Addressables.LoadAssetsAsync<ThemeCustomizationItem>(key: "cloth",null);
+        await loadOP.Task;
+        var roomVCITems =(List<ThemeCustomizationItem>) loadOP.Result;
 
-       clothes = roomVCITems.FindAll((vc) => vc.Owned == false);
-   }
+        clothes = roomVCITems.FindAll((vc) => vc.Owned == false);
+    }
+    async void LoadHouses()
+    {
+        var loadOP = Addressables.LoadAssetsAsync<RealEstateCustomizationItem>("house", null);
+        await loadOP.Task;
+        houses = (List<RealEstateCustomizationItem>)loadOP.Result;
+    }
 
-   async void LoadConsumablesItems()
-   {
-       var loadOP = Addressables.LoadAssetsAsync<ConsumableItem>("consumable", null);
-       await loadOP.Task;
+    async void LoadConsumablesItems()
+    {
+        var loadOP = Addressables.LoadAssetsAsync<ConsumableItem>("consumable", null);
+        await loadOP.Task;
         consumableItems =(List<ConsumableItem>) loadOP.Result;
-   }
+    }
 }
