@@ -6,4 +6,7 @@ public class SoundsHolder : MonoBehaviour
 {
     public AudioClip pushButton;
     public AudioClip popUp;
+    public AudioClip rankUp;
+    public AudioClip enterShop;
+    public AudioClip buyItem;
 }

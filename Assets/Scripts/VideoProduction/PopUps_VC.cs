@@ -91,6 +91,7 @@ public class PopUps_VC : MonoBehaviour
     void OpenDefaultDisclaimer(OpenDefaultMessagePopUpSignal signal)
     {
         audioManager.PlaySound(soundsHolder.popUp, AudioType.Effect);
+        
         popUpsBlockBackgroundPanel.SetActive (true);
         defaultDisclaimerPanelPopUp.SetActive (true);
         StartCoroutine(OpenPanelAnimation (defaultDisclaimerPanelPopUp));
@@ -165,6 +166,7 @@ public class PopUps_VC : MonoBehaviour
     void OpenLevelUp ()
     {
         audioManager.PlaySound(soundsHolder.popUp, AudioType.Effect);
+        audioManager.PlaySound(soundsHolder.rankUp, AudioType.Effect);
         popUpsBlockBackgroundPanel.SetActive (true);
         LevelUpPanel.SetActive (true);
         signalBus.Fire<OpenLevelUpPanelSignal> ();
