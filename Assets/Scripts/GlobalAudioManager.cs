@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public enum AudioType {Music, Effect };
 public class GlobalAudioManager : MonoBehaviour
 {
+    [Inject] SignalBus signalBus;
+    [Inject] SoundsHolder soundsHolder;
+
     [SerializeField] private int numberOfAudioSourcesForPool;
     Queue<AudioSource> unusedAudioSources = new Queue<AudioSource>();
     float musicVolumeModifier = 1;
@@ -19,7 +23,7 @@ public class GlobalAudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        signalBus.Subscribe<BuyItemSoundSignal>(PlayBuyItemSound);
     }
 
     // Update is called once per frame
@@ -75,5 +79,10 @@ public class GlobalAudioManager : MonoBehaviour
             yield return null;
         }
         unusedAudioSources.Enqueue (aud);
+    }
+
+    void PlayBuyItemSound()
+    {
+        PlaySound(soundsHolder.buyItem, AudioType.Effect);
     }
 }

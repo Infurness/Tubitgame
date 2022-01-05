@@ -110,7 +110,10 @@ public class GlobalInstaller : MonoInstaller
     //Views signals
     Container.DeclareSignal<SnapToNeighborhoodViewSignal>();
     Container.DeclareSignal<OpenRealEstateShopSignal>();
-        
+
+    //Sound signals
+    Container.DeclareSignal<BuyItemSoundSignal>();
+
     //Dependencies
     Container.Bind<PlayerInventory>().FromInstance(PlayerInventory.Instance);
 
