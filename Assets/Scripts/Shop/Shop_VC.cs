@@ -319,6 +319,7 @@ public class Shop_VC : MonoBehaviour
         {
             productID = id
         });
+        _signalBus.Fire<BuyItemSoundSignal>();
     }
 
     public void BuyNoAds()
@@ -327,6 +328,7 @@ public class Shop_VC : MonoBehaviour
         {
             productID = "noads"
         });
+        _signalBus.Fire<BuyItemSoundSignal>();
     }
 
     void BuyClothItem(ThemeCustomizationItem item, PriceType priceType)
@@ -350,7 +352,7 @@ public class Shop_VC : MonoBehaviour
                         playerInventory.AddCharacterItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenClothingPanel();
-
+                        _signalBus.Fire<BuyItemSoundSignal>();
                     });
                 }));
 
@@ -369,7 +371,7 @@ public class Shop_VC : MonoBehaviour
                         playerInventory.AddCharacterItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenClothingPanel();
-
+                        _signalBus.Fire<BuyItemSoundSignal>();
                     });
                 }));
 
@@ -398,7 +400,7 @@ public class Shop_VC : MonoBehaviour
                         playerInventory.AddRoomItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenFurniturePanel();
-
+                        _signalBus.Fire<BuyItemSoundSignal>();
                     });
                 }));
 
@@ -417,7 +419,7 @@ public class Shop_VC : MonoBehaviour
                         playerInventory.AddRoomItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenFurniturePanel();
-
+                        _signalBus.Fire<BuyItemSoundSignal>();
 
                     });
                 }));
@@ -447,7 +449,7 @@ public class Shop_VC : MonoBehaviour
                         playerInventory.AddVCItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenEquipmentsPanel();
-
+                        _signalBus.Fire<BuyItemSoundSignal>();
                     });
                 }));
 
@@ -466,7 +468,7 @@ public class Shop_VC : MonoBehaviour
                         buyPanel.gameObject.SetActive(false);
                         OpenEquipmentsPanel();
 
-
+                        _signalBus.Fire<BuyItemSoundSignal>();
                     });
                 });
 
@@ -495,6 +497,7 @@ public class Shop_VC : MonoBehaviour
                         playerInventory.AddRealEstateItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenRealEstatePanel();
+                        _signalBus.Fire<BuyItemSoundSignal>();
                     });
                 }));
                 break;
@@ -511,6 +514,7 @@ public class Shop_VC : MonoBehaviour
                         playerInventory.AddRealEstateItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenRealEstatePanel();
+                        _signalBus.Fire<BuyItemSoundSignal>();
                     });
                 });
                 break;

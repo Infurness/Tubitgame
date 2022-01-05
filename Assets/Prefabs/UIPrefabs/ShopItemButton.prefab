@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 7906984170408505520}
   - component: {fileID: 1525747097309462018}
   - component: {fileID: 6056157745182249663}
+  - component: {fileID: 7350813610533848556}
   m_Layer: 5
   m_Name: HCButton
   m_TagString: Untagged
@@ -406,6 +407,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7350813610533848556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2220920587100620765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd4c102c3b6cfa4fb4398e52709bc87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6596734407080311383
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,6 +916,7 @@ GameObject:
   - component: {fileID: 6596734408941754759}
   - component: {fileID: 6596734408941754758}
   - component: {fileID: 2230805918975847782}
+  - component: {fileID: 335731633045776521}
   m_Layer: 5
   m_Name: SCButton
   m_TagString: Untagged
@@ -1013,3 +1027,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &335731633045776521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6596734408941754756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bd4c102c3b6cfa4fb4398e52709bc87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
