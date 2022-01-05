@@ -8,6 +8,8 @@ using Zenject;
 public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
 {
     [Inject] private SignalBus signalBus;
+    [Inject] private GlobalAudioManager audioManager;
+    [Inject] private SoundsHolder soundsHolder;
 
     [SerializeField] private RectTransform canvas;
     [SerializeField] private RectTransform contentPanel;
@@ -87,16 +89,19 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
             {
                 rightButtonPanel.SetActive(true);
                 leftButtonPanel.SetActive (false);
+                audioManager.TerminateSound(soundsHolder.streetSounds);
             }
             else if( newViewIndex == 3 - 1)
             {
                 rightButtonPanel.SetActive (false);
                 leftButtonPanel.SetActive (true);
+                audioManager.PlaySound(soundsHolder.streetSounds, AudioType.Effect, true, true);
             }
             else
             {
                 rightButtonPanel.SetActive (true);
                 leftButtonPanel.SetActive (true);
+                audioManager.PlaySound(soundsHolder.streetSounds, AudioType.Effect, true, true);
             }
                 
 

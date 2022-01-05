@@ -32,7 +32,8 @@ public class ButtonSoundTrigger : MonoBehaviour, IPointerDownHandler, IPointerUp
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioManager = GlobalAudioManager.Instance;
+        soundsHolder = SoundsHolder.Instance;
     }
     public void OnPointerDown (PointerEventData eventData)
     {

@@ -14,6 +14,8 @@ public class HUD_VC : MonoBehaviour
     [Inject] YouTubeVideoManager youTubeVideoManager;
     [Inject] private ExperienceManager xpManager;
     [Inject] private EnergyManager energyManager;
+    [Inject] private GlobalAudioManager audioManager;
+    [Inject] private SoundsHolder soundsHolder;
     GameClock gameClock;
 
     [SerializeField] private TMP_Text energyText;
@@ -148,7 +150,7 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenStorePanel ()
     {
-        OpenScreenPanel (HUDScreen.Store);
+        OpenScreenPanel (HUDScreen.Store); 
     }
     void OpenScreenPanel (HUDScreen _screenToOpen)
     {
@@ -195,11 +197,19 @@ public class HUD_VC : MonoBehaviour
 
         if (_screenToOpen == HUDScreen.Store)
         {
+            if (!storePanel.activeSelf)
+            {
+                audioManager.PlaySound(soundsHolder.enterShop, AudioType.Effect);
+                audioManager.PlaySound(soundsHolder.shopMusic, AudioType.Music, true);
+            }
+                
             storePanel.SetActive (true);
         }      
         else
         {
-            storePanel.SetActive (false);
+            if (storePanel.activeSelf)
+                audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
+            storePanel.SetActive (false);      
         }          
     }
     void SetEnergy (EnergyValueSignal _signal)
