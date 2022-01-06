@@ -28,13 +28,12 @@ public class EquipHouseTriggerButton : MonoBehaviour,IPointerClickHandler
             var houseItem = playerInventory.RealEstateItems.Find(item => item.name == houseName);
             if (houseItem)
             {
-                if (houseItem.Owned)
-                {
+             
                     signalBus.Fire(new HousePopUp()
                     {
                         realEstateCustomizationItem = houseItem
                     });   
-                }
+                
             }
            
         }

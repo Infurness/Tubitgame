@@ -34,17 +34,7 @@ public class RoomRender : MonoBehaviour
         renderCamera=Camera.main;
         currentVQItems = new List<VideoQualityCustomizationItem>();
         currentThemeItems = new List<ThemeCustomizationItem>();
-        signalBus.Subscribe<RoomZoomStateChangedSignal>((signal =>
-        {
-            if (signal.ZoomIn)
-            {
-                ZoomInRoomRender();
-            }
-            else
-            {
-                ZoomOutRoomRender();
-            }
-        }));
+       
     }
 
     void ZoomInRoomRender()
@@ -78,7 +68,6 @@ public class RoomRender : MonoBehaviour
             gameObject.SetActive(false);
             gameObject.SetActive(true);
         }));
-        ZoomInRoomRender();
     }
 
     private void OnEnable()
