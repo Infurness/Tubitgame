@@ -143,21 +143,7 @@ public class RoomInventory_VC : MonoBehaviour
 
     void Awake()
     {
-        roomInventoryPanel.OnEnableAsObservable().Subscribe((unit =>
-        {
-            signalBus.Fire(new RoomZoomStateChangedSignal()
-            {
-                ZoomIn = false
-            });
-        }));
-
-        roomInventoryPanel.OnDisableAsObservable().Subscribe((unit =>
-        {
-            signalBus.Fire(new RoomZoomStateChangedSignal()
-            {
-                ZoomIn = true
-            });
-        }));
+ 
         roomInventoryButtons = new List<InventoryButton>();
         roomInventoryPanel.OnEnableAsObservable().Subscribe((s) => CreateInventoryButtons());
         saveButton.onClick.AddListener(SaveRoomLayout);
