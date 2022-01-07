@@ -205,7 +205,8 @@ public class VideoInfo_VC : MonoBehaviour
         signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality});
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
         //InitialState (); //This line makes an android build crash when being executed after watching a reward ad
-
+        if (videoRef.isViral)
+            signalBus.Fire<OpenViralPopUpSignal>();
         UpdateVideoInfo ();
     }
 
@@ -218,7 +219,9 @@ public class VideoInfo_VC : MonoBehaviour
     void CheckVirality ()
     {
         if (videoRef!=null && videoRef.isViral)
-            viralVisual.SetActive (true);
+        {
+            viralVisual.SetActive(true);        
+        }     
     }
     public void RestartProductionBar ()
     {

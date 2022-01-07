@@ -34,12 +34,12 @@ public class Ads_VC : MonoBehaviour
     }
     void OpenSoftCurrencyNoAd ()
     {
-        signalBus.Fire (new OpenDefaultMessagePopUpSignal { message = $"You have been granted with <b><color=green>{adsRewardsManager.GetSoftCurrencyBonus ()*5}</color></b> TubeDollars!!"});
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal { title = "Get more for free!", message = "You have been rewarded", rewardType = RewardType.SoftCurrency, reward = adsRewardsManager.GetSoftCurrencyBonus()*5, rewardBonus = 0, adsActive = false });
         adsRewardsManager.SoftCurrencyRewardNoAd();
     }
     void OpenSoftCurrencyAd ()
     {
-        signalBus.Fire(new OpenAdsDefaultPopUpSignal { message = $"You have been rewarded with <b><color=green>{adsRewardsManager.GetSoftCurrencyBonus()}</color></b> TubeDollars!!\nWatch an Ad to recieve <b><color=#CFCD00FF>{adsRewardsManager.GetSoftCurrencyBonus ()*4}</color></b> more?" });
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal {title = "Get more for free!", message = "You have been rewarded", rewardType=RewardType.SoftCurrency, reward= adsRewardsManager.GetSoftCurrencyBonus(), rewardBonus = adsRewardsManager.GetSoftCurrencyBonus() * 4, adsActive = true });
         adsRewardsManager.InitialSoftCurrencyReward ();
         adPopUpConfirmButton.onClick.RemoveAllListeners ();
         adPopUpConfirmButton.onClick.AddListener (adsRewardsManager.SoftCurrencyReward);
@@ -54,12 +54,12 @@ public class Ads_VC : MonoBehaviour
     }
     void OpenHardCurrencyNoAd()
     {
-        signalBus.Fire(new OpenDefaultMessagePopUpSignal { message = $"You have been granted with <b><color=#CFCD00FF>{adsRewardsManager.GetHardCurrencyBonus() * 2}</color></b> coins!!" });
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal { title = "Get more for free!", message = "You have been rewarded", rewardType = RewardType.HardCurrency, reward = adsRewardsManager.GetHardCurrencyBonus()*2, adsActive = false });
         adsRewardsManager.HardCurrencyRewardNoAds();
     }
     void OpenHardCurrencyAd ()
     {
-        signalBus.Fire (new OpenAdsDefaultPopUpSignal { message = $"You have been rewarded with <b><color=#CFCD00FF>{adsRewardsManager.GetHardCurrencyBonus ()}</color></b> gems!!\nWatch an Ad to recieve <b><color=purple>{adsRewardsManager.GetHardCurrencyBonus () * 2}</color></b> more?" });
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal { title = "Get more for free!", message = "You have been rewarded", rewardType = RewardType.HardCurrency, reward = adsRewardsManager.GetHardCurrencyBonus(), rewardBonus = adsRewardsManager.GetHardCurrencyBonus() * 2, adsActive = true });
         adsRewardsManager.InitialHardCurrencyReward ();
         adPopUpConfirmButton.onClick.RemoveAllListeners ();
         adPopUpConfirmButton.onClick.AddListener (adsRewardsManager.HardCurrencyReward);
@@ -74,12 +74,12 @@ public class Ads_VC : MonoBehaviour
     }
     void OpenThemeBonusNoAd()
     {
-        signalBus.Fire(new OpenDefaultMessagePopUpSignal { message = $"You have been granted with a <b><color=purple>{(float)adsRewardsManager.GetThemeBonusReward(2)}</color></b> popularity bonus on your next theme!!" });
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal { title = "Theme bonus reward!", message = "Your next video will be more popular!", rewardType = RewardType.Theme, reward = adsRewardsManager.GetThemeBonusReward(1), rewardBonus = 0, adsActive = false });
         adsRewardsManager.ThemeBonusRewardNoAds();
     }
     void OpenThemeBonusAd ()
     {
-        signalBus.Fire (new OpenAdsDefaultPopUpSignal { message = $"You have been rewarded with a <b><color=purple>{(float)adsRewardsManager.GetThemeBonusReward (2)}</color></b> popularity bonus on your next theme!!\nWatch an Ad to recieve <b><color=green>{(float)adsRewardsManager.GetThemeBonusReward (1)}</color></b> more?" });
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal { title = "Theme bonus reward!", message = "Your next video will be more popular!", rewardType = RewardType.Theme, reward = adsRewardsManager.GetThemeBonusReward(2), rewardBonus = adsRewardsManager.GetThemeBonusReward(1), adsActive = true});
         adPopUpConfirmButton.onClick.RemoveAllListeners ();
         adsRewardsManager.InitialThemeBonusReward ();
         adPopUpConfirmButton.onClick.AddListener (adsRewardsManager.ThemeBonusReward);
@@ -94,12 +94,12 @@ public class Ads_VC : MonoBehaviour
     }
     void OpenEnergyNoAd()
     {
-        signalBus.Fire(new OpenDefaultMessagePopUpSignal { message = $"You seem a bit short on energy for that video, this <b><color=red>{adsRewardsManager.GetEnergyBonus() * 2}</color> energy recharge is for you!" });
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal { title = "You are low on energy!", message = "This is for you!", rewardType = RewardType.Energy, reward = adsRewardsManager.GetEnergyBonus() * 2, rewardBonus = 0,adsActive=false });
         adsRewardsManager.EnergyRewardNoAds();
     }
     void OpenEnergyAd ()
     {
-        signalBus.Fire (new OpenAdsDefaultPopUpSignal { message = $"You seem a bit short on energy for that video, do you want to see an ad to recieve <b><color=red>{adsRewardsManager.GetEnergyBonus() * 2}</color> energy"});
+        signalBus.Fire(new OpenAdsDefaultPopUpSignal { title = "You are low on energy!", message = "Watch an ad to receive more", rewardType = RewardType.Energy, reward = adsRewardsManager.GetEnergyBonus() * 2, rewardBonus = 0, adsActive = true });
         adPopUpConfirmButton.onClick.RemoveAllListeners ();
         adPopUpConfirmButton.onClick.AddListener (adsRewardsManager.EnergyReward);
         adPopUpConfirmButton.onClick.AddListener (ClosePopUp);

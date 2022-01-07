@@ -155,9 +155,18 @@ public class OpenDefaultMessagePopUpSignal
 
 public class OpenAdsDefaultPopUpSignal
 {
+    public string title;
+    public RewardType rewardType;
     public string message;
+    public float reward;
+    public float rewardBonus;
+    public bool adsActive;
 }
 public class CloseAdsDefaultPopUpSignal
+{
+
+}
+public class OpenViralPopUpSignal
 {
 
 }

@@ -17,6 +17,7 @@ public class SoundsHolder : MonoBehaviour
     public AudioClip enterShop;
     public AudioClip buyItem;
     public AudioClip streetSounds;
+    public AudioClip viralPopUp;
     private void Start()
     {
         if (Instance)
