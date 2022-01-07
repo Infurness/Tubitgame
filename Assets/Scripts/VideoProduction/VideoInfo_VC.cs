@@ -33,6 +33,7 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private GameObject subscribersPanel;
     [SerializeField] private GameObject viralVisual;
     [SerializeField] private TMP_Text qualityText;
+    int energyCost;
     [SerializeField] private TMP_Text energyCostText;
 
     [SerializeField] GameObject[] themeHolders;
@@ -62,6 +63,7 @@ public class VideoInfo_VC : MonoBehaviour
         publishButton.onClick.AddListener (AdBeforeVideoPublish);
         cancelButton.onClick.AddListener (CancelVideo);
         moneyButton.onClick.AddListener (RecollectMoney);
+        skipButton.onClick.AddListener(SkipVideoProduction);
 
         hasBeenInitialized = true;
     }
@@ -125,7 +127,8 @@ public class VideoInfo_VC : MonoBehaviour
         maxInternalRecordTime = recordTime;
         internalRecordTime = maxInternalRecordTime;
         qualityText.text =  string.Concat (Enum.GetName (quality.GetType (), quality).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
-        energyCostText.text =$"{energyManger.GetVideoEnergyCost (quality)}";
+        energyCost = energyManger.GetVideoEnergyCost(quality);
+        energyCostText.text =$"{energyCost}";
 
         SetThemes (themeTypes);
     }
@@ -170,7 +173,10 @@ public class VideoInfo_VC : MonoBehaviour
         statsPanel.SetActive (false);
         cancelButton.gameObject.SetActive (true);
         if (gameObject.activeSelf)
+        {
+            StopAllCoroutines();
             StartCoroutine(FillTheRecordImage(maxInternalRecordTime, internalRecordTime));
+        }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
     }
@@ -213,6 +219,8 @@ public class VideoInfo_VC : MonoBehaviour
     void CancelVideo ()
     {
         signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
+        int energyLeftToSpend = (int)(energyCost *(internalRecordTime / maxInternalRecordTime)); 
+        signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
         Destroy (gameObject);
     }
 
@@ -223,11 +231,16 @@ public class VideoInfo_VC : MonoBehaviour
             viralVisual.SetActive(true);        
         }     
     }
+    void SkipVideoProduction()
+    {
+        internalRecordTime = 0;
+        StartRecordingVideo();
+    }
     public void RestartProductionBar ()
     {
         float seconds = (float)(GameClock.Instance.Now - createdTime).TotalSeconds;
         internalRecordTime = Mathf.Max (maxInternalRecordTime - seconds, 0);
-        StartRecordingVideo ();
+        StartRecordingVideo();
     }
     IEnumerator FillTheRecordImage (float maxTime, float internalTime)
     {  
@@ -240,6 +253,8 @@ public class VideoInfo_VC : MonoBehaviour
             tACC += Time.deltaTime;
             videoProgressBar.fillAmount = tACC / maxTime;
         }
+        videoProgressBarCountText.text = $"{0}s";
+        videoProgressBar.fillAmount = 1;
         VideoReadyToPublish ();
     }
 }

@@ -5,13 +5,14 @@ using UnityEngine.UI;
 using TMPro;
 using Zenject;
 
-public enum RewardType { SoftCurrency, HardCurrency, Energy, Theme};
+public enum RewardType { SoftCurrency, HardCurrency, Energy, Theme, ShortenProduction};
 public class AdPopUp_VC : MonoBehaviour
 {
     [Inject] SignalBus signalBus;
 
     [SerializeField] private TMP_Text adsTitleText;
     [SerializeField] private TMP_Text adsPanelText;
+    [SerializeField] private TMP_Text adsFullPanelText;
     [SerializeField] private Image bigIcon;
     [SerializeField] private TMP_Text bigReward;
     [SerializeField] private Image smallIcon;
@@ -20,6 +21,7 @@ public class AdPopUp_VC : MonoBehaviour
 
     [SerializeField] private GameObject watchAnAdText;
     [SerializeField] private GameObject videoIcon;
+    [SerializeField] private GameObject bgIcon;
 
     [SerializeField] private Sprite SCBigIcon;
     [SerializeField] private Sprite SCSmallIcon;
@@ -36,13 +38,9 @@ public class AdPopUp_VC : MonoBehaviour
     {
         signalBus.Subscribe<OpenAdsDefaultPopUpSignal>(SetPanelUp);
     }
-    public void SetPanelUp(OpenAdsDefaultPopUpSignal signal)
+    void InitialState(bool adsActive)
     {
-        adsTitleText.text = signal.title;
-        adsPanelText.text = signal.message;
-        bigReward.text = $"x{signal.reward}";
-        smallReward.text = $"x{signal.rewardBonus}";
-        if (signal.adsActive)
+        if (adsActive)
         {
             watchAnAdText.SetActive(true);
             smallIcon.gameObject.SetActive(true);
@@ -58,6 +56,20 @@ public class AdPopUp_VC : MonoBehaviour
             videoIcon.SetActive(false);
             acceptButton.text = "Claim";
         }
+        adsFullPanelText.gameObject.SetActive(false);
+        adsPanelText.gameObject.SetActive(true);
+        bigIcon.gameObject.SetActive(true);
+        bigReward.gameObject.SetActive(true);
+        bgIcon.SetActive(true);
+    }
+    public void SetPanelUp(OpenAdsDefaultPopUpSignal signal)
+    {
+        adsTitleText.text = signal.title;
+        adsPanelText.text = signal.message;
+        bigReward.text = $"x{signal.reward}";
+        smallReward.text = $"x{signal.rewardBonus}";
+
+        InitialState(signal.adsActive);
 
         switch (signal.rewardType)
         {
@@ -82,6 +94,19 @@ public class AdPopUp_VC : MonoBehaviour
             case RewardType.Theme:
                 bigIcon.sprite = themeBigIcon;
                 smallIcon.sprite = themeSmallIcon;
+                break;
+
+            case RewardType.ShortenProduction:
+                watchAnAdText.SetActive(false);
+                smallIcon.gameObject.SetActive(false);
+                smallReward.gameObject.SetActive(false);
+                adsPanelText.gameObject.SetActive(false);
+                bigIcon.gameObject.SetActive(false);
+                bigReward.gameObject.SetActive(false);
+                bgIcon.SetActive(false);
+
+                adsFullPanelText.gameObject.SetActive(true);
+                adsFullPanelText.text = signal.message;
                 break;
         }
     }

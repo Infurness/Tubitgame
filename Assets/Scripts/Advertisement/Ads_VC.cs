@@ -113,12 +113,12 @@ public class Ads_VC : MonoBehaviour
     }
     void OpenVideoShortenNoAd(OpenTimeShortenAdSignal signal)
     {
-        signalBus.Fire(new OpenDefaultMessagePopUpSignal { message = $"The video production time has been automatically shortened" });
+        signalBus.Fire(new OpenDefaultMessagePopUpSignal {message = $"The video production time has been automatically shortened" });
         adsRewardsManager.VideoShortenRewardNoAds(signal.video);
     }
     void OpenVideoShortenAd (OpenTimeShortenAdSignal signal)
     {
-        signalBus.Fire (new OpenAdsDefaultPopUpSignal { message = $"Watch an Ad to shorten the production time of this video"});
+        signalBus.Fire (new OpenAdsDefaultPopUpSignal { title = "Speed up!", message = $"Watch an Ad to shorten the production time of this video",rewardType=RewardType.ShortenProduction, adsActive = true});
         adPopUpConfirmButton.onClick.RemoveAllListeners ();
         adPopUpConfirmButton.onClick.AddListener (()=>adsRewardsManager.VideoShortenReward(signal.video));
         adPopUpConfirmButton.onClick.AddListener (ClosePopUp);
@@ -137,7 +137,7 @@ public class Ads_VC : MonoBehaviour
     }
     void OpenDoubleViewsAd ()
     {
-        signalBus.Fire (new OpenAdsDefaultPopUpSignal { message = "Watch an Ad to double the views for this video" });
+        signalBus.Fire (new OpenAdsDefaultPopUpSignal { title = "Boost views!", message = "Watch an Ad to double the views for this video", rewardType = RewardType.ShortenProduction, adsActive = true});
         adPopUpConfirmButton.onClick.RemoveAllListeners ();
         adPopUpConfirmButton.onClick.AddListener (adsRewardsManager.ViewsBonusReward);
         adPopUpConfirmButton.onClick.AddListener (ClosePopUp);

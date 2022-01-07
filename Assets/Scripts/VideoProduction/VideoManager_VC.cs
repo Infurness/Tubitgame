@@ -487,7 +487,11 @@ public class VideoManager_VC : MonoBehaviour
             pagesCount.text = "1/1";
             return;
         }
-        int maxPage = (int)Mathf.Ceil(numberOfTotalVideos / videosPerPage)+1;
+        float maxPageFloat = (float)numberOfTotalVideos / (float)videosPerPage;
+        if (maxPageFloat % 1 != 0)
+            maxPageFloat += 1;
+        int maxPage = (int)maxPageFloat;
+        
         if (pageNumber > maxPage)
             return;
 
