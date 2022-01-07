@@ -5,6 +5,8 @@ using System.Linq;
 using Customizations;
 using ModestTree;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using Zenject;
 
@@ -12,46 +14,17 @@ public class RoomRender : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory PlayerInventory;
-    [SerializeField] private SpriteRenderer computerSlot;
-    [SerializeField] private SpriteRenderer cameraSlot;
-    [SerializeField] private SpriteRenderer microphoneSlot;
-    [SerializeField] private SpriteRenderer greenScreenSlot;
-    [SerializeField] private List<WallSlotData> wallSlots;
-    [SerializeField] private List<FloorSlotData> floorSlots;
-    [SerializeField] private List<ObjectSlotData> roomObjectSlots;
 
-    [SerializeField] private List<Image> floorItems;
     [SerializeField] List<VideoQualityCustomizationItem> currentVQItems;
     [SerializeField] List<ThemeCustomizationItem> currentThemeItems;
     [SerializeField] private RoomLayout DefaultRoomLayout;
     [SerializeField] private RoomLayout RoomLayout;
-    private Camera renderCamera;
-    [SerializeField] private float zoomInValue, ZoomOutValue;
-    [SerializeField] private Vector3 zoomInPosition, zoomOutPosition;
-
+    [SerializeField] private GameObject floorObject, rightWall, leftWall,desk,chair,seatedCharacter;
     private void Awake()
     {
-        renderCamera=Camera.main;
         currentVQItems = new List<VideoQualityCustomizationItem>();
         currentThemeItems = new List<ThemeCustomizationItem>();
        
-    }
-
-    void ZoomInRoomRender()
-    {
-        renderCamera.orthographicSize = zoomInValue;
-        transform.localPosition = zoomInPosition;
-        print("ZOOM IN");
-
-    }
-
-    void ZoomOutRoomRender()
-    {
-        renderCamera.orthographicSize = ZoomOutValue;
-        transform.localPosition = zoomOutPosition;
-
-        print("ZOOM OUT");
-
     }
 
     void Start()
@@ -73,361 +46,169 @@ public class RoomRender : MonoBehaviour
     private void OnEnable()
     {
         RoomLayout = new RoomLayout(PlayerInventory.GetRoomLayout());
-        if (RoomLayout.FloorLayoutSlots.IsEmpty() && RoomLayout.WallLayoutSlots.IsEmpty())
+        if (RoomLayout.roomSlots.Count==0)
         {
-            currentVQItems = PlayerInventory.VideoQualityRoomItems;
-            currentThemeItems = PlayerInventory.RoomThemeEffectItems;
-            RoomLayout = new RoomLayout(DefaultRoomLayout);
-            print("Using Default Layout");
+            RoomLayout = DefaultRoomLayout;
         }
-        else
-        {
-            currentVQItems = PlayerInventory.EquippedVideoQualityRoomItems;
-            currentThemeItems = PlayerInventory.EquippedThemeEffectRoomItems;
-           
-        }
+        PopulateRoomLayout();
         print("Room Enabled");
-            ProcessCurrentVCItems();
-            ProcessCurrentThemeItems();
+        
     }
 
-    public void ProcessCurrentThemeItems()
+    async void  PopulateRoomLayout()
     {
-   
-        foreach (var wallSlot in RoomLayout.WallLayoutSlots)
+        foreach (var roomSlot in RoomLayout.roomSlots)
         {
-           var item= currentThemeItems.Find((it)=>it.name==wallSlot.ItemName);
-            wallSlots[wallSlot.SlotID].Image.sprite =
-                ((WallOrnament) item).sprite;
-            wallSlots[wallSlot.SlotID].Image.gameObject.SetActive(true);
-            wallSlots[wallSlot.SlotID].Image.gameObject.transform.localPosition = wallSlot.Position;
-         //   wallSlots[wallSlot.SlotID].Image.gameObject.transform.localScale = wallSlot.Scale;
-        }
+            AsyncOperationHandle<GameObject> loadOp;
 
-        foreach (var floorLayoutSlot in RoomLayout.FloorLayoutSlots)
-        {
-            var item= currentThemeItems.Find((it)=>it.name==floorLayoutSlot.ItemName);
-
-            if (item!=null)
+            switch (roomSlot.customizationType)
             {
-                floorSlots[floorLayoutSlot.SlotID].Image.sprite =
-
-                    ((FloorOrnament) item).sprite;
-                floorSlots[floorLayoutSlot.SlotID].Image.gameObject.SetActive(true);
-                floorSlots[floorLayoutSlot.SlotID].Image.gameObject.transform.localPosition = floorLayoutSlot.Position;
-                print("Floor ITem " + floorLayoutSlot.ItemName +" Found");
-
-
-            }
-            else
-            {
-                print("Floor ITem " + floorLayoutSlot.ItemName +"Not Found");
-            }
-           
-        }
-
-        foreach (var objectLayoutSlot in RoomLayout.ObjectsLayoutSlots)
-        {
-            var item= currentThemeItems.Find((it)=>it.name==objectLayoutSlot.ItemName);
-
-            roomObjectSlots[objectLayoutSlot.SlotID].Image.sprite =
-                ((RoomObject) item).sprite;
-            
-            roomObjectSlots[objectLayoutSlot.SlotID].Image.gameObject.SetActive(true);
-            roomObjectSlots[objectLayoutSlot.SlotID].Image.transform.localPosition = objectLayoutSlot.Position;
-        }
-    }
-
-    void SetRoomLayoutPositions()
-    {
-        RoomLayout.ComputerSlot.Position= computerSlot.transform.localPosition;
-        RoomLayout.CameraSlot.Position = cameraSlot.transform.localPosition;
-        RoomLayout.MicrophoeSlot.Position = microphoneSlot.transform.localPosition;
-        RoomLayout.GreenScreenSlot.Position = greenScreenSlot.transform.localPosition;
-
-        for (int i = 0; i < RoomLayout.WallLayoutSlots.Count; i++)
-        {
-            RoomLayout.WallLayoutSlots[i]=new RoomLayoutSerializedSlot( RoomLayout.WallLayoutSlots[i].ItemName, RoomLayout.WallLayoutSlots[i].SlotID,
-                wallSlots[ RoomLayout.WallLayoutSlots[i].SlotID].Image.transform.localPosition,Vector3.one, 0);
-
-        }
-      
-        for (int i = 0; i < RoomLayout.FloorLayoutSlots.Count; i++)
-        {
-            RoomLayout.FloorLayoutSlots[i]=new RoomLayoutSerializedSlot( RoomLayout.FloorLayoutSlots[i].ItemName, RoomLayout.FloorLayoutSlots[i].SlotID,
-                floorSlots[ RoomLayout.FloorLayoutSlots[i].SlotID].Image.transform.localPosition,Vector3.one, 0);
-
-        }
-        for (int i = 0; i < RoomLayout.ObjectsLayoutSlots.Count; i++)
-        {
-            RoomLayout.ObjectsLayoutSlots[i]=new RoomLayoutSerializedSlot( RoomLayout.ObjectsLayoutSlots[i].ItemName, RoomLayout.ObjectsLayoutSlots[i].SlotID,
-                roomObjectSlots[ RoomLayout.WallLayoutSlots[i].SlotID].Image.transform.localPosition,Vector3.one, 0);
-
-        }
-
-       
-
-    }
-
-    public void ProcessCurrentVCItems()
-    {
-        foreach (var vqItem in currentVQItems)
-        {
-            
-            switch (vqItem.videoQualityItemType)
-            {
-                case VideoQualityItemType.Computer:
-                    computerSlot.gameObject.SetActive(true);
-                    computerSlot.sprite = vqItem.itemSprite;
-                    computerSlot.transform.localPosition = RoomLayout.ComputerSlot.Position;
-                    
+                case CustomizationType.Theme:
+                     var themItem = PlayerInventory.RoomThemeEffectItems.Find((item => roomSlot.ItemName == item.name));
+                      loadOp = Addressables.InstantiateAsync(themItem.itemPrefab);
+                     await loadOp.Task;
                     break;
-                case VideoQualityItemType.Camera:
-                    cameraSlot.gameObject.SetActive(true);
-                    cameraSlot.sprite = vqItem.itemSprite;
-                    cameraSlot.transform.localPosition = RoomLayout.ComputerSlot.Position;
-                    break;
-                case VideoQualityItemType.Microphone:
-                    microphoneSlot.gameObject.SetActive(true);
-                    microphoneSlot.sprite = vqItem.itemSprite;
-                    microphoneSlot.transform.localPosition = RoomLayout.MicrophoeSlot.Position;
-                  
-                    break;
-                case VideoQualityItemType.GreenScreen:
-                    greenScreenSlot.gameObject.SetActive(true);
-                    greenScreenSlot.sprite = vqItem.itemSprite;
-                    greenScreenSlot.transform.localPosition = RoomLayout.GreenScreenSlot.Position;
-                
+                case CustomizationType.VideoQuality:
+                     var vcItem = PlayerInventory.VideoQualityRoomItems.Find((item => roomSlot.ItemName == item.name));
+                      loadOp = Addressables.InstantiateAsync(vcItem.itemPrefab);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            var go = loadOp.Result;
+            switch (roomSlot.ParentType)
+            {
+                case RoomParentType.Floor:
+                    go.transform.parent = floorObject.transform;
+                    break;
+                case RoomParentType.RightWall:
+                    go.transform.parent = rightWall.transform;
+                    break;
+                case RoomParentType.LeftWall:
+                    go.transform.parent = leftWall.transform;
+                    break;
+                case RoomParentType.Desk:
+                    go.transform.parent = desk.transform;
+                    break;
+                case RoomParentType.Chair:
+                    go.transform.parent = chair.transform;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            go.transform.localPosition = roomSlot.Position;
+            go.transform.localScale = roomSlot.Scale;
+
+            var objectdata = go.GetComponent<RoomObjectData>();
+            objectdata.assetName = roomSlot.ItemName;
+   
         }
     }
 
-    public void OnTestVideoQualityItem(TestRoomVideoQualityITemSignal testRoomVideoQualityITemSignal)
+   
+    async void OnTestVideoQualityItem(TestRoomVideoQualityITemSignal testRoomVideoQualityITemSignal)
     {
         var item = testRoomVideoQualityITemSignal.VideoQualityCustomizationItem;
-        switch (item.videoQualityItemType)
+        var loadOp = Addressables.InstantiateAsync(item.itemPrefab);
+        await loadOp.Task;
+        var go = loadOp.Result;
+        var objecdata = go.GetComponent<RoomObjectData>();
+        switch (objecdata.parentType)
         {
-            case VideoQualityItemType.Computer:
-                computerSlot.gameObject.SetActive(true);
-                computerSlot.sprite = item.itemSprite;
-                var computer=   currentVQItems.Find((vci) => vci.videoQualityItemType == VideoQualityItemType.Computer);
-                if (computer!=null)
-                {
-                    currentVQItems.Remove(computer);
-                }
-                currentVQItems.Add(item);
+            case RoomParentType.Floor:
+                go.transform.parent = floorObject.transform;
                 break;
-            case VideoQualityItemType.Camera:
-                cameraSlot.gameObject.SetActive(true);
-                cameraSlot.sprite = item.itemSprite;
-                var camera = currentVQItems.Find(vci => vci.videoQualityItemType == VideoQualityItemType.Camera);
-                if (camera!=null)
-                {
-                    currentVQItems.Remove(camera);
-                }
-                currentVQItems.Add(item);
+            case RoomParentType.RightWall:
+                go.transform.parent = rightWall.transform;
                 break;
-            case VideoQualityItemType.Microphone:
-                microphoneSlot.gameObject.SetActive(true);
-                microphoneSlot.sprite = item.itemSprite;
-                var mic = currentVQItems.Find(vci => vci.videoQualityItemType == VideoQualityItemType.Microphone);
-                if (mic!=null)
-                {
-                    currentVQItems.Remove(mic);
-                }
-                currentVQItems.Add(item);
+            case RoomParentType.LeftWall:
+                go.transform.parent = leftWall.transform;
                 break;
-            case VideoQualityItemType.GreenScreen:
-                greenScreenSlot.gameObject.SetActive(true);
-                greenScreenSlot.sprite = item.itemSprite;
-                var greenScreen = currentVQItems.Find(vci => vci.videoQualityItemType == VideoQualityItemType.Microphone);
-                if (greenScreen!=null)
-                {
-                    currentVQItems.Remove(greenScreen);
-                }
-                currentVQItems.Add(item);
+            case RoomParentType.Desk:
+                go.transform.parent = desk.transform;
+                break;
+            case RoomParentType.Chair:
+                go.transform.parent = chair.transform;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
+        objecdata.assetName = item.name;
     }
 
-    public void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
+    async void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
     {
-        switch (testRoomThemeItem.ThemeCustomizationItem)
+        var item = testRoomThemeItem.ThemeCustomizationItem;
+        var loadOp = Addressables.InstantiateAsync(item.itemPrefab);
+        await loadOp.Task;
+        var go = loadOp.Result;
+        var objecdata = go.GetComponent<RoomObjectData>();
+        switch (objecdata.parentType)
         {
-            case WallOrnament wallOrnament : AddWallOrnament(wallOrnament); break;
-            case FloorOrnament floorOrnament: AddFloorOrnament(floorOrnament); break;
-            case RoomObject roomObject : AddRoomObject(roomObject); break;
-            
+            case RoomParentType.Floor:
+                go.transform.parent = floorObject.transform;
+                break;
+            case RoomParentType.RightWall:
+                go.transform.parent = rightWall.transform;
+                break;
+            case RoomParentType.LeftWall:
+                go.transform.parent = leftWall.transform;
+                break;
+            case RoomParentType.Desk:
+                go.transform.parent = desk.transform;
+                break;
+            case RoomParentType.Chair:
+                go.transform.parent = chair.transform;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+
+        objecdata.assetName = item.name;
     }
 
-    void AddWallOrnament(WallOrnament wallOrnament)
-    {
-        print("Item Received "+wallOrnament.name);
-
-        var slot = wallSlots.Find((item =>(item.WallOrnamentType == wallOrnament.WallOrnamentType)));
-        
-        if (slot==null)
-        {
-            print("Slot Not founded");
-
-            return;
-        }
-        
-        slot.Image.sprite = wallOrnament.sprite;
-        slot.Empty = false;
-        slot.roomLayoutSerializedSlot.ItemName = wallOrnament.name;
-        slot.Image.gameObject.SetActive(true);
-        var trans = slot.Image.gameObject.transform;
-        RoomLayout.WallLayoutSlots[slot.roomLayoutSerializedSlot.SlotID] = new RoomLayoutSerializedSlot(wallOrnament.name, slot.roomLayoutSerializedSlot.SlotID,transform.position,trans.lossyScale,0);
-
-    }
-
-    void AddFloorOrnament(FloorOrnament floorOrnament)
-    {
-        print("Item Received "+floorOrnament.name);
-       var slot=floorSlots.Find((item =>(item.FloorOrnamentType == floorOrnament.floorOrnamentType)));
-       if (slot==null)
-       {
-           print("Slot Not founded");
-           return;
-       }
-       slot.Image.sprite = floorOrnament.sprite;
-       slot.Empty = false;
-       slot.roomLayoutSerializedSlot.ItemName = floorOrnament.name;
-       slot.Image.gameObject.SetActive(true);
-       var trans = slot.Image.gameObject.transform;
-       RoomLayout.FloorLayoutSlots[slot.roomLayoutSerializedSlot.SlotID] =
-           new RoomLayoutSerializedSlot(floorOrnament.name, slot.roomLayoutSerializedSlot.SlotID, trans.position,
-               trans.lossyScale,0);
-
-    }
-
-    void AddRoomObject(RoomObject roomObject)
-    {
-        var slot=roomObjectSlots.Find((item =>(item.RoomObjectType == roomObject.roomObjectType)));
-        if (slot==null)
-        {
-            print("Slot Not founded");
-
-            return;
-        }
-        slot.Image.sprite = roomObject.sprite;
-        slot.Empty = false;
-        slot.roomLayoutSerializedSlot.ItemName = roomObject.name;
-        slot.Image.gameObject.SetActive(true);
-        var trans = slot.Image.gameObject.transform;
-
-        RoomLayout.ObjectsLayoutSlots[slot.roomLayoutSerializedSlot.SlotID] = new RoomLayoutSerializedSlot(roomObject.name,slot.roomLayoutSerializedSlot.SlotID,trans.position,trans.lossyScale,0);
-    }
+    
+    
 
     public  void OnSaveRoomLayout()
     {
-
-        SetRoomLayoutPositions();
+        SaveLayout();
        PlayerInventory.UpdateRoomData(RoomLayout,currentVQItems);
       gameObject.SetActive(false);
       gameObject.SetActive(true);
     }
 
+    void SaveLayout()
+    {
+        RoomLayout newLayout = new RoomLayout();
+
+        var roomObjectsData = FindObjectsOfType<RoomObjectData>();
+        if (roomObjectsData.Length==0)
+        {
+            return;
+        }
+        foreach (var ob in roomObjectsData)
+        {
+            var newslot = new RoomLayoutSerializedSlot();
+            newslot.ItemName = ob.assetName;
+            newslot.customizationType = ob.customizationType;
+            newslot.ParentType = ob.parentType;
+            newslot.Position = ob.transform.localPosition;
+            newslot.Scale = ob.transform.localScale;
+            newLayout.roomSlots.Add(newslot);
+        }
+
+        RoomLayout = newLayout;
+    }
     public void PopulateDataSlots()
     {
-        DefaultRoomLayout.FloorLayoutSlots.Clear();
-        DefaultRoomLayout.WallLayoutSlots.Clear();
-        DefaultRoomLayout.ObjectsLayoutSlots.Clear();
-
-        for (int i = 0; i < wallSlots.Count; i++)
-        {
-            RoomLayoutSerializedSlot serializedSlot = new RoomLayoutSerializedSlot();
-            serializedSlot.ItemName = wallSlots[i].WallOrnamentType.ToString();
-            serializedSlot.SlotID =  i;
-            var imgTransform = wallSlots[i].Image.transform;
-            serializedSlot.Position = imgTransform.localPosition;
-            serializedSlot.Scale = imgTransform.lossyScale;
-            DefaultRoomLayout.WallLayoutSlots.Add(serializedSlot);
-            
-        }
-        for (int i = 0; i < floorSlots.Count; i++)
-        {
-            RoomLayoutSerializedSlot serializedSlot = new RoomLayoutSerializedSlot();
-            serializedSlot.ItemName = floorSlots[i].FloorOrnamentType.ToString();
-            serializedSlot.SlotID =  i;
-            var imgTransform = floorSlots[i].Image.transform;
-            serializedSlot.Position = imgTransform.localPosition;
-            serializedSlot.Scale = imgTransform.lossyScale;
-            DefaultRoomLayout.FloorLayoutSlots.Add(serializedSlot);
-        }
-        for (int i = 0; i < roomObjectSlots.Count; i++)
-        {
-            RoomLayoutSerializedSlot serializedSlot = new RoomLayoutSerializedSlot();
-            serializedSlot.ItemName = roomObjectSlots[i].RoomObjectType.ToString();
-            serializedSlot.SlotID =  i;
-            var imgTransform = roomObjectSlots[i].Image.transform;
-            serializedSlot.Position = imgTransform.localPosition;
-            serializedSlot.Scale = imgTransform.lossyScale;
-            DefaultRoomLayout.ObjectsLayoutSlots.Add(serializedSlot);
-        }
-
-        RoomLayoutSerializedSlot pcSlot = new RoomLayoutSerializedSlot();
-        pcSlot.Position = computerSlot.transform.localPosition;
-        pcSlot.Scale = cameraSlot.transform.lossyScale;
-        pcSlot.RotaionId = 0;
-        DefaultRoomLayout.ComputerSlot = pcSlot;
-
-        RoomLayoutSerializedSlot camSlot = new RoomLayoutSerializedSlot();
-
-        camSlot.Position = cameraSlot.transform.localPosition;
-        camSlot.Scale = cameraSlot.transform.lossyScale;
-        camSlot.RotaionId = 0;
-        DefaultRoomLayout.CameraSlot = camSlot;
-
-        RoomLayoutSerializedSlot micSlot = new RoomLayoutSerializedSlot();
-
-        micSlot.Position = microphoneSlot.transform.localPosition;
-        micSlot.Scale = microphoneSlot.transform.lossyScale;
-        micSlot.RotaionId = 0;
-        DefaultRoomLayout.MicrophoeSlot = micSlot;
-        DefaultRoomLayout.GreenScreenSlot= new RoomLayoutSerializedSlot(" 0",0,greenScreenSlot.transform.localPosition,
-            greenScreenSlot.transform.lossyScale,0);
-        
+       
     }
 }
 
-[System.Serializable]
-public class WallSlotData
-{
-    public SpriteRenderer Image;
-    public WallOrnamentType WallOrnamentType;
-    public bool Empty=true;
-    public RoomLayoutSerializedSlot roomLayoutSerializedSlot;
-
-
-}
-[System.Serializable]
-public class FloorSlotData
-{
-    public SpriteRenderer Image;
-    public FloorOrnamentType FloorOrnamentType;
-    public bool Empty=true;
-    public RoomLayoutSerializedSlot roomLayoutSerializedSlot;
-
-
-
-}
-[System.Serializable]
-public class ObjectSlotData
-{
-    public SpriteRenderer Image;
-    public RoomObjectType RoomObjectType;
-    public bool Empty=true;
-    public RoomLayoutSerializedSlot roomLayoutSerializedSlot;
-
-}
 
 
 

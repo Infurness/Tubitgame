@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8057985030234358968}
   - component: {fileID: 6837944720169239999}
   - component: {fileID: 6950940940818854583}
+  - component: {fileID: 8192440915397240124}
   m_Layer: 12
   m_Name: flowerpot
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 6174920495699084551}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 3.86, y: 3.01, z: 0.34999996}
-  m_LocalScale: {x: 0.6086, y: 0.6086, z: 0.6086}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -110,6 +111,7 @@ MonoBehaviour:
   speed: 10
   editMode: 0
   collider: {fileID: 6837944720169239999}
+  overlapCollider: {fileID: 0}
   stackOrder: 0
   stackCount: 0
 --- !u!50 &8057985030234358968
@@ -373,3 +375,18 @@ PolygonCollider2D:
       - {x: -1.054231, y: 2.357251}
       - {x: -1.054231, y: 2.339793}
       - {x: -1.054231, y: 2.357251}
+--- !u!114 &8192440915397240124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6174920495699084551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e03a57a78543a5aa1a9f6164303116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customizationType: 0
+  parentType: 0
+  assetName: 

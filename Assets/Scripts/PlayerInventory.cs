@@ -137,24 +137,19 @@ public class PlayerInventory : MonoBehaviour
         {
             var themeEffectItems= (List<ThemeCustomizationItem>) themeEffectAssets.Result;
             roomThemeEffectItems = themeEffectItems;
-            // foreach (var characterItemName in playerInventoryAddressedData.characterItemsNames)
-            // {
-            //     characterItems.Add(themeEffectItems.Find((item => item.name == characterItemName)));      //todo uncomment when shop implemented
-            // }
+       
             var roomLayout = playerInventoryAddressedData.RoomLayout;
-            foreach (var floorItem in roomLayout.FloorLayoutSlots)
-            { 
-                equippedThemeEffectRoomItems.Add(themeEffectItems.Find((it) => it.name == floorItem.ItemName));
-      
+            foreach (var slot in roomLayout.roomSlots)
+            {
+                var item = themeEffectItems.Find((it) => it.name == slot.ItemName);
+                if (item)
+                {
+                    equippedThemeEffectRoomItems.Add(item);
+   
+                }
             }
-            foreach (var wallItem in roomLayout.WallLayoutSlots)
-            { 
-                equippedThemeEffectRoomItems.Add(themeEffectItems.Find((it) => it.name == wallItem.ItemName));
-            }
-            foreach (var objectItem in roomLayout.ObjectsLayoutSlots)
-            { 
-                equippedThemeEffectRoomItems.Add(themeEffectItems.Find((it) => it.name == objectItem.ItemName));
-            }
+           
+            
         }
         else
         {
@@ -306,19 +301,19 @@ public class PlayerInventory : MonoBehaviour
         
         playerInventoryAddressedData.RoomLayout = roomLayout;
         equippedThemeEffectRoomItems.Clear();
-        foreach (var floorItem in roomLayout.FloorLayoutSlots)
-        { 
-           equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == floorItem.ItemName));
-      
-        }
-        foreach (var wallItem in roomLayout.WallLayoutSlots)
-        { 
-            equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == wallItem.ItemName));
-        }
-        foreach (var objectItem in roomLayout.ObjectsLayoutSlots)
-        { 
-            equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == objectItem.ItemName));
-        }
+        // foreach (var floorItem in roomLayout.FloorLayoutSlots)
+        // { 
+        //    equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == floorItem.ItemName));
+        //
+        // }
+        // foreach (var wallItem in roomLayout.WallLayoutSlots)
+        // { 
+        //     equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == wallItem.ItemName));
+        // }
+        // foreach (var objectItem in roomLayout.ObjectsLayoutSlots)
+        // { 
+        //     equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == objectItem.ItemName));
+        // }
         equippedVideoQualityRoomItems.Clear();
         equippedVideoQualityRoomItems = vCItems;
         playerInventoryAddressedData.equippedVideoQualityItemsNames.Clear();

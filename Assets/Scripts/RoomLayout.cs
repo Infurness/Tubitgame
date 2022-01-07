@@ -7,41 +7,18 @@ using UnityEngine;
 [System.Serializable]
 public class RoomLayout
 {
-    public List<RoomLayoutSerializedSlot> WallLayoutSlots;
-
-
-    public List<RoomLayoutSerializedSlot> FloorLayoutSlots;
-
-    public List<RoomLayoutSerializedSlot> ObjectsLayoutSlots;
-
-    public RoomLayoutSerializedSlot ComputerSlot;
-    public RoomLayoutSerializedSlot CameraSlot;
-    public RoomLayoutSerializedSlot MicrophoeSlot;
-    public RoomLayoutSerializedSlot GreenScreenSlot;
-
+    public List<RoomLayoutSerializedSlot> roomSlots;
 
 
     public RoomLayout(RoomLayout roomLayout)
- {
-     WallLayoutSlots = new List<RoomLayoutSerializedSlot>(roomLayout.WallLayoutSlots);
-     FloorLayoutSlots = new List<RoomLayoutSerializedSlot>(roomLayout.FloorLayoutSlots);
-     ObjectsLayoutSlots = new List<RoomLayoutSerializedSlot>(roomLayout.ObjectsLayoutSlots);
-     ComputerSlot = roomLayout.ComputerSlot;
-     CameraSlot = roomLayout.CameraSlot;
-     MicrophoeSlot = roomLayout.MicrophoeSlot;
-     GreenScreenSlot = roomLayout.GreenScreenSlot;
+    {
 
- }
+        roomSlots = new List<RoomLayoutSerializedSlot>(roomLayout.roomSlots);
+    }
 
     public RoomLayout()
     {
-        WallLayoutSlots = new List<RoomLayoutSerializedSlot>();
-        FloorLayoutSlots = new List<RoomLayoutSerializedSlot>();
-        ObjectsLayoutSlots = new List<RoomLayoutSerializedSlot>();
-        ComputerSlot = new RoomLayoutSerializedSlot();
-        CameraSlot =new RoomLayoutSerializedSlot();
-        MicrophoeSlot =new RoomLayoutSerializedSlot();
-        GreenScreenSlot =new RoomLayoutSerializedSlot();
+        roomSlots = new List<RoomLayoutSerializedSlot>();
 
     }
 }
@@ -51,16 +28,33 @@ public struct RoomLayoutSerializedSlot
     public RoomLayoutSerializedSlot(string itemName, int slotID,Vector3 position,Vector3 scale,int rotaionId)
     {
         ItemName = itemName;
-        SlotID = slotID;
         Scale = scale;
         Position = position;
         RotaionId = rotaionId;
+        ParentType = RoomParentType.Floor;
+        customizationType = CustomizationType.Theme;
     } 
     public string ItemName;
-    public int SlotID; 
     public Vector3 Position;
     public Vector3 Scale;
     public int RotaionId;
+    public RoomParentType ParentType;
+    public CustomizationType customizationType;
+}
 
 
+public enum RoomParentType
+{
+    Floor,
+    RightWall,
+    LeftWall,
+    Desk,
+    Chair,
+    
+}
+
+public enum CustomizationType
+{
+    Theme,
+    VideoQuality
 }

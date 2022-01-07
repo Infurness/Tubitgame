@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2667242727203933524}
   - component: {fileID: 6055691123065887410}
   - component: {fileID: 5744954095056327517}
+  - component: {fileID: 6552895187724540363}
   m_Layer: 12
   m_Name: Bed
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 7796454509762405488}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6.35, y: -0.48, z: 0.35}
-  m_LocalScale: {x: 0.6269121, y: 0.6269121, z: 0.6269121}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -109,6 +110,7 @@ MonoBehaviour:
   speed: 10
   editMode: 0
   collider: {fileID: 5744954095056327517}
+  overlapCollider: {fileID: 0}
   stackOrder: 0
   stackCount: 0
 --- !u!50 &6055691123065887410
@@ -232,3 +234,18 @@ PolygonCollider2D:
       - {x: -0.2607751, y: -3.352915}
       - {x: -0.2607751, y: -3.0735877}
       - {x: -0.086195484, y: -2.9862978}
+--- !u!114 &6552895187724540363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7796454509762405488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e03a57a78543a5aa1a9f6164303116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customizationType: 0
+  parentType: 0
+  assetName: 
