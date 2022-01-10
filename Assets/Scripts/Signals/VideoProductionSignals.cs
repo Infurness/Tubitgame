@@ -15,7 +15,10 @@ public class StartRecordingSignal //Dummy - Deprecated, this is done in VideoMan
     public ThemeType[] recordedThemes;
     public string videoName;
 }
-
+public class VideoStartedSignal
+{
+    public UnpublishedVideo startedVideo;
+}
 public class StartPublishSignal //Dummy - Not used
 {
 }
