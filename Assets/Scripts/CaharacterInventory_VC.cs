@@ -225,7 +225,9 @@ public class CaharacterInventory_VC : MonoBehaviour
             }
 
             var cell = Instantiate(effectCellPrefab, effectsPanel.transform);
-                cell.SetText(themeBouns.Key + "  : " + themeBouns.Value * 100 + "%" + "\n");
+            var value = themeBouns.Value * 100;
+            
+                cell.SetText(themeBouns.Key + "  : " + (int)value + "%" + "\n");
         }
     }
 
