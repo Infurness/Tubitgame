@@ -105,6 +105,7 @@ public class HUD_VC : MonoBehaviour
         });
         //StopAllCoroutines ();
         //StartCoroutine (DecreaseSeconds());
+        audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
     }
 
     // Update is called once per frame

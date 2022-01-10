@@ -40,11 +40,14 @@ public class EnergyInventory_VC : MonoBehaviour
         foreach (EnergyItemData item in items)
         {
             int quantity = item.quantity;
-            GameObject itemSpawned = Instantiate (energyItemPrefab, itemsHolder.transform);
-            if (!firstItemAdded)
-                firstItemAdded = itemSpawned.GetComponent<EnergyInventoryItem_VC> ();
-            itemSpawned.GetComponent<EnergyInventoryItem_VC> ().SetUpItem (signalBus, energyInventoryManager, item, quantity, this);
-            energyItemsSpawned.Add (itemSpawned);
+            if (quantity > 0)
+            {
+                GameObject itemSpawned = Instantiate(energyItemPrefab, itemsHolder.transform);
+                if (!firstItemAdded)
+                    firstItemAdded = itemSpawned.GetComponent<EnergyInventoryItem_VC>();
+                itemSpawned.GetComponent<EnergyInventoryItem_VC>().SetUpItem(signalBus, energyInventoryManager, item, quantity, this);
+                energyItemsSpawned.Add(itemSpawned);
+            }            
         }
         if (firstItemAdded)
             firstItemAdded.SelectItem ();
