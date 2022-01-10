@@ -178,6 +178,7 @@ public class VideoInfo_VC : MonoBehaviour
         {
             StopAllCoroutines();
             StartCoroutine(FillTheRecordImage(maxInternalRecordTime, internalRecordTime));
+            signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = youTubeVideoManager.GetUnpublishedVideoByName(videoName) });
         }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
