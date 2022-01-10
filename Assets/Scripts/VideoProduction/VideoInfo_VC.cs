@@ -33,6 +33,7 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private GameObject subscribersPanel;
     [SerializeField] private GameObject viralVisual;
     [SerializeField] private TMP_Text qualityText;
+    int energyCost;
     [SerializeField] private TMP_Text energyCostText;
 
     [SerializeField] GameObject[] themeHolders;
@@ -47,6 +48,8 @@ public class VideoInfo_VC : MonoBehaviour
 
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button skipButton;
+    [SerializeField] private TMP_Text skipMoneyText;
+    private float skipMoney;
     [SerializeField] private Button publishButton;
     [SerializeField] private GameObject moneyButtonPanel;
     [SerializeField] private Button moneyButton;
@@ -62,6 +65,7 @@ public class VideoInfo_VC : MonoBehaviour
         publishButton.onClick.AddListener (AdBeforeVideoPublish);
         cancelButton.onClick.AddListener (CancelVideo);
         moneyButton.onClick.AddListener (RecollectMoney);
+        skipButton.onClick.AddListener(SkipVideoProduction);
 
         hasBeenInitialized = true;
     }
@@ -125,7 +129,8 @@ public class VideoInfo_VC : MonoBehaviour
         maxInternalRecordTime = recordTime;
         internalRecordTime = maxInternalRecordTime;
         qualityText.text =  string.Concat (Enum.GetName (quality.GetType (), quality).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
-        energyCostText.text =$"{energyManger.GetVideoEnergyCost (quality)}";
+        energyCost = energyManger.GetVideoEnergyCost(quality);
+        energyCostText.text =$"{energyCost}";
 
         SetThemes (themeTypes);
     }
@@ -170,7 +175,10 @@ public class VideoInfo_VC : MonoBehaviour
         statsPanel.SetActive (false);
         cancelButton.gameObject.SetActive (true);
         if (gameObject.activeSelf)
+        {
+            StopAllCoroutines();
             StartCoroutine(FillTheRecordImage(maxInternalRecordTime, internalRecordTime));
+        }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
     }
@@ -205,26 +213,43 @@ public class VideoInfo_VC : MonoBehaviour
         signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality});
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
         //InitialState (); //This line makes an android build crash when being executed after watching a reward ad
-
+        if (videoRef.isViral)
+            signalBus.Fire<OpenViralPopUpSignal>();
         UpdateVideoInfo ();
     }
 
     void CancelVideo ()
     {
         signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
+        int energyLeftToSpend = (int)(energyCost *(internalRecordTime / maxInternalRecordTime)); 
+        signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
         Destroy (gameObject);
     }
 
     void CheckVirality ()
     {
         if (videoRef!=null && videoRef.isViral)
-            viralVisual.SetActive (true);
+        {
+            viralVisual.SetActive(true);        
+        }     
+    }
+    void SkipVideoProduction()
+    {
+        if(youTubeVideoManager.ConsumeHardCurrency((int)skipMoney))
+        {
+            youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
+            createdTime = new DateTime(2000, 1, 1); //Set to the past
+            youTubeVideoManager.UpdateUnpublishedVideos();
+            RestartProductionBar();
+        }
+ 
     }
     public void RestartProductionBar ()
     {
         float seconds = (float)(GameClock.Instance.Now - createdTime).TotalSeconds;
-        internalRecordTime = Mathf.Max (maxInternalRecordTime - seconds, 0);
-        StartRecordingVideo ();
+        if(internalRecordTime>0)
+            internalRecordTime = Mathf.Max (maxInternalRecordTime - seconds, 0);
+        StartRecordingVideo();
     }
     IEnumerator FillTheRecordImage (float maxTime, float internalTime)
     {  
@@ -236,7 +261,20 @@ public class VideoInfo_VC : MonoBehaviour
             yield return new WaitForEndOfFrame ();
             tACC += Time.deltaTime;
             videoProgressBar.fillAmount = tACC / maxTime;
+
+            if(secondsLeft<60)
+                skipMoney = secondsLeft / 10;
+            else if(secondsLeft < 300)
+                skipMoney = secondsLeft / 6;
+            else if (secondsLeft < 600)
+                skipMoney = secondsLeft / 5;
+            else
+                skipMoney = secondsLeft / 4;
+
+            skipMoneyText.text = $"{skipMoney}";
         }
+        videoProgressBarCountText.text = $"{0}s";
+        videoProgressBar.fillAmount = 1;
         VideoReadyToPublish ();
     }
 }

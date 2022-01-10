@@ -9,10 +9,13 @@ public class AdsRewardsManager : MonoBehaviour
     [Inject] SignalBus signalBus;
     [Inject] ExperienceManager xpManager;
     [Inject] AlgorithmManager algorithmManager;
+
+    [SerializeField] float rewardsStartDelaySeconds;
+    [SerializeField] float rewardsSecondsFrequency;
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating ("RandomReward", 60, 300);
+        InvokeRepeating ("RandomReward", rewardsStartDelaySeconds, rewardsSecondsFrequency);
     }
 
     public int GetSoftCurrencyBonus ()
