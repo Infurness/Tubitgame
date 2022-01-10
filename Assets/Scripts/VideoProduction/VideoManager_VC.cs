@@ -289,6 +289,7 @@ public class VideoManager_VC : MonoBehaviour
         UnpublishedVideo unpublishedVideo = new UnpublishedVideo (newVideoName,selectedThemes,selectedQuality, secondsToProduce, GameClock.Instance.Now);
         PlayerDataManager.Instance.SetUnpublishedVideo (unpublishedVideo);
         _signalBus.Fire<OpenTimeShortenAdSignal> (new OpenTimeShortenAdSignal {video = unpublishedVideo });
+        OpenVideosPage(currentPageNumber);
     }
     void CreateUnpublishedVideos ()
     {
