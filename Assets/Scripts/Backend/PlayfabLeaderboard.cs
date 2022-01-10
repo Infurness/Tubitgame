@@ -83,14 +83,10 @@ public class PlayfabLeaderboard : MonoBehaviour
                 players = bestPlayers
             });
         }
-        else
+        signalBus.Fire<RecieveTop10Leaderboard>(new RecieveTop10Leaderboard()
         {
-            signalBus.Fire<RecieveTop10Leaderboard> (new RecieveTop10Leaderboard ()
-            {
-                players = bestPlayers
-            });
-        }
-         
+            players = bestPlayers
+        });   
     }
 
     public void GetPlayerPositionInLeaderboard ()
