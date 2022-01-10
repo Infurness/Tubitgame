@@ -48,6 +48,8 @@ public class VideoInfo_VC : MonoBehaviour
 
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button skipButton;
+    [SerializeField] private TMP_Text skipMoneyText;
+    private float skipMoney;
     [SerializeField] private Button publishButton;
     [SerializeField] private GameObject moneyButtonPanel;
     [SerializeField] private Button moneyButton;
@@ -233,13 +235,20 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void SkipVideoProduction()
     {
-        internalRecordTime = 0;
-        StartRecordingVideo();
+        if(youTubeVideoManager.ConsumeHardCurrency((int)skipMoney))
+        {
+            youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
+            createdTime = new DateTime(2000, 1, 1); //Set to the past
+            youTubeVideoManager.UpdateUnpublishedVideos();
+            RestartProductionBar();
+        }
+ 
     }
     public void RestartProductionBar ()
     {
         float seconds = (float)(GameClock.Instance.Now - createdTime).TotalSeconds;
-        internalRecordTime = Mathf.Max (maxInternalRecordTime - seconds, 0);
+        if(internalRecordTime>0)
+            internalRecordTime = Mathf.Max (maxInternalRecordTime - seconds, 0);
         StartRecordingVideo();
     }
     IEnumerator FillTheRecordImage (float maxTime, float internalTime)
@@ -252,6 +261,17 @@ public class VideoInfo_VC : MonoBehaviour
             yield return new WaitForEndOfFrame ();
             tACC += Time.deltaTime;
             videoProgressBar.fillAmount = tACC / maxTime;
+
+            if(secondsLeft<60)
+                skipMoney = secondsLeft / 10;
+            else if(secondsLeft < 300)
+                skipMoney = secondsLeft / 6;
+            else if (secondsLeft < 600)
+                skipMoney = secondsLeft / 5;
+            else
+                skipMoney = secondsLeft / 4;
+
+            skipMoneyText.text = $"{skipMoney}";
         }
         videoProgressBarCountText.text = $"{0}s";
         videoProgressBar.fillAmount = 1;
