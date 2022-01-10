@@ -14,6 +14,7 @@ public class ShopCategoryButton : MonoBehaviour
     [SerializeField] private Image iconImage;
     [SerializeField] private Color highlightColor;
     [SerializeField] private Image highlightImage;
+    [SerializeField] private Image bgImage;
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class ShopCategoryButton : MonoBehaviour
         buttonText.color = highlightColor;
         iconImage.color = highlightColor;
         highlightImage.gameObject.SetActive(true);
+        bgImage.gameObject.SetActive(false);
     }
 
     public void SetButtonUnSelected()
@@ -39,6 +41,7 @@ public class ShopCategoryButton : MonoBehaviour
         buttonText.color = Color.gray;
         iconImage.color = Color.gray;
         highlightImage.gameObject.SetActive(false);
+        bgImage.gameObject.SetActive(true);
 
     }
 
