@@ -17,15 +17,21 @@ public class HomePanel_VC : MonoBehaviour
     [SerializeField] private Button playerIconButton;
 
     [SerializeField] private Button restButton; 
-       [SerializeField] GameObject shopButtonPanel;
+    [SerializeField] GameObject shopButtonPanel;
     [SerializeField] private GameObject videoMangerButtonPanel;
     [SerializeField] private GameObject customizationButtonsPanel;
     [SerializeField] private Canvas mainCanvas;
+
+    [SerializeField] private GameObject productionBar;
+    [SerializeField] private Image productionBarFilling;
+    private UnpublishedVideo videoBeingRecorded;
+
     ThemeType[] selectedThemeTypes; //Dummy unused code
     // Start is called before the first frame update
     void Start ()
     {
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
+        _signalBus.Subscribe<VideoStartedSignal>(SetVideoForRecordingBar);
         _signalBus.Subscribe<ChangeRestStateSignal> (RestButtonBehaviour);
        // publishButton.onClick.AddListener (OnPublishVideoPressed);
      //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
@@ -84,12 +90,24 @@ public class HomePanel_VC : MonoBehaviour
 
             }
         });
+
+        productionBar.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (videoBeingRecorded!=null)
+        {
+            float secondsPassed = Mathf.Abs((int)(videoBeingRecorded.createdTime - GameClock.Instance.Now).TotalSeconds);
+            float secondsLeft = videoBeingRecorded.secondsToBeProduced - secondsPassed;
+            productionBarFilling.fillAmount = 1-(secondsLeft / videoBeingRecorded.secondsToBeProduced);
+            if (productionBarFilling.fillAmount <= 0)
+            {
+                videoBeingRecorded = null;
+                productionBar.SetActive(false);
+            }         
+        }
     }
 
     void InitialScreenState ()
@@ -103,8 +121,11 @@ public class HomePanel_VC : MonoBehaviour
         //StartCoroutine (FillTheRecordImage (_recordingSignal.recordingTime));   
     }
 
-
-
+    void SetVideoForRecordingBar(VideoStartedSignal signal)
+    {
+        videoBeingRecorded = signal.startedVideo;
+        productionBar.SetActive(true);
+    }
     //void OnPublishVideoPressed ()
     //{
     //    publishButton.gameObject.SetActive (false);

@@ -349,6 +349,10 @@ public class PlayerDataManager : MonoBehaviour
         unpublishedvideos.RemoveAt(index);
         UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
     }
+    public void UpdateUnpublishedVideos()
+    {
+        UpdateUserDatabase(new[] { "UnpublishedVideos" }, new[] { playerData.unpublishedVideos });
+    }
     public Video GetVideoByName(string _name)
     {
         foreach (Video video in playerData.videos)
@@ -362,7 +366,20 @@ public class PlayerDataManager : MonoBehaviour
         Debug.LogError($"Video named -{_name}- does not exist");
         return null;
     }
+    public UnpublishedVideo GetUnpublishedVideoByName(string _name)
+    {
+        foreach (UnpublishedVideo video in playerData.unpublishedVideos)
+        {
+            if (video.videoName == _name)
+            {
+                return video;
+            }
+        }
 
+        Debug.LogError($"Video named -{_name}- does not exist");
+        return null;
+    }
+    
     public int GetNumberOfVideoByThemes(ThemeType[] _themeTypes)
     {
         int videoCounter = 0;
@@ -530,6 +547,22 @@ public class PlayerDataManager : MonoBehaviour
             onRedeemed?.Invoke();
         }));
 
+    }
+
+    public bool CanConsumeHardCurrency(ulong amount)
+    {
+        if (amount > playerData.hardCurrency)
+        {
+            signalBus.Fire(new OpenDefaultMessagePopUpSignal()
+            {
+                message = "Can't Purchase Not Enough coins"
+            });
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public void ConsumeSoftCurrency(ulong amount, Action onRedeemed)

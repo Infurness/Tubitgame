@@ -37,6 +37,10 @@ public class ButtonSoundTrigger : MonoBehaviour, IPointerDownHandler, IPointerUp
     }
     public void OnPointerDown (PointerEventData eventData)
     {
+        if(!audioManager)
+            audioManager = GlobalAudioManager.Instance;
+        if (!soundsHolder)
+            soundsHolder = SoundsHolder.Instance;
         audioManager.PlaySound(soundsHolder.pushButton, AudioType.Effect);
     }
 
