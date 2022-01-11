@@ -492,8 +492,6 @@ public class Shop_VC : MonoBehaviour
                 {
                     playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
-                        item.Owned = true;
-
                         playerInventory.AddRealEstateItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenRealEstatePanel();
@@ -510,7 +508,6 @@ public class Shop_VC : MonoBehaviour
                 {
                     playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
-                        item.Owned = true;
                         playerInventory.AddRealEstateItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenRealEstatePanel();
