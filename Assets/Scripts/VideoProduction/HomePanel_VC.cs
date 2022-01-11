@@ -22,6 +22,9 @@ public class HomePanel_VC : MonoBehaviour
     [SerializeField] private GameObject customizationButtonsPanel;
     [SerializeField] private Canvas mainCanvas;
 
+
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject productionBarInGamePivot;
     [SerializeField] private GameObject productionBar;
     [SerializeField] private Image productionBarFilling;
@@ -38,8 +41,9 @@ public class HomePanel_VC : MonoBehaviour
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
         _signalBus.Subscribe<VideoStartedSignal>(SetVideoForRecordingBar);
         _signalBus.Subscribe<ChangeRestStateSignal> (RestButtonBehaviour);
-       // publishButton.onClick.AddListener (OnPublishVideoPressed);
-     //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+        _signalBus.Subscribe<SnapToNeighborhoodViewSignal>(SetProductionBarPosition);
+        // publishButton.onClick.AddListener (OnPublishVideoPressed);
+        //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
        // closeSettingsButton.onClick.AddListener (OpenSettingsPanel );
    //     viewsScroll.onValueChanged.AddListener (OnViewsScroll);
@@ -99,6 +103,7 @@ public class HomePanel_VC : MonoBehaviour
         productionBar.SetActive(false);
         buttonsHidden = true;
         HideButtons();
+        SetProductionBarPosition();
     }
 
     // Update is called once per frame
@@ -109,7 +114,7 @@ public class HomePanel_VC : MonoBehaviour
             float secondsPassed = Mathf.Abs((int)(videoBeingRecorded.createdTime - GameClock.Instance.Now).TotalSeconds);
             float secondsLeft = videoBeingRecorded.secondsToBeProduced - secondsPassed;
             productionBarFilling.fillAmount = 1-(secondsLeft / videoBeingRecorded.secondsToBeProduced);
-            if (productionBarFilling.fillAmount <= 0)
+            if (productionBarFilling.fillAmount >=1)
             {
                 videoBeingRecorded = null;
                 productionBar.SetActive(false);
@@ -179,5 +184,12 @@ public class HomePanel_VC : MonoBehaviour
         {
             gO.SetActive(!buttonsHidden);
         }  
+    }
+
+    void SetProductionBarPosition()
+    {
+        Vector2 viewportPosition = mainCamera.WorldToViewportPoint(productionBarInGamePivot.transform.position);
+        viewportPosition *= canvas.GetComponent<RectTransform>().sizeDelta;
+        productionBar.GetComponent<RectTransform>().anchoredPosition = viewportPosition;
     }
 }

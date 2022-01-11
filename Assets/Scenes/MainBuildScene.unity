@@ -16832,7 +16832,9 @@ MonoBehaviour:
   videoMangerButtonPanel: {fileID: 1935885465}
   customizationButtonsPanel: {fileID: 1439173865}
   mainCanvas: {fileID: 264705098}
-  productionBarInGamePivot: {fileID: 0}
+  mainCamera: {fileID: 1554687322}
+  canvas: {fileID: 264705098}
+  productionBarInGamePivot: {fileID: 1765802829}
   productionBar: {fileID: 2040481731}
   productionBarFilling: {fileID: 1291820477}
   hideUIButton: {fileID: 117882947}
@@ -62706,6 +62708,36 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &1765802829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1765802830}
+  m_Layer: 6
+  m_Name: RecordingBarPivotAboveCharacter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1765802830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765802829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.79, y: 5.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8734662165408471387}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1765843493
 GameObject:
   m_ObjectHideFlags: 0
@@ -82252,6 +82284,7 @@ Transform:
   m_LocalScale: {x: 1.0035039, y: 1.0035039, z: 1.0035039}
   m_Children:
   - {fileID: 585143233904100555}
+  - {fileID: 1765802830}
   m_Father: {fileID: 527147299}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
