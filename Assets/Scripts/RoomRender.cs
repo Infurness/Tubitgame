@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Customizations;
 using ModestTree;
 using UnityEngine;
@@ -15,17 +16,12 @@ public class RoomRender : MonoBehaviour
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory PlayerInventory;
 
-    [SerializeField] List<VideoQualityCustomizationItem> currentVQItems;
-    [SerializeField] List<ThemeCustomizationItem> currentThemeItems;
-    [SerializeField] private RoomLayout DefaultRoomLayout;
-    [SerializeField] private RoomLayout RoomLayout;
-    [SerializeField] private GameObject floorObject, rightWall, leftWall,desk,chair,seatedCharacter;
-    private void Awake()
-    {
-        currentVQItems = new List<VideoQualityCustomizationItem>();
-        currentThemeItems = new List<ThemeCustomizationItem>();
-       
-    }
+ 
+    [SerializeField] private RoomLayout defaultRoomLayout;
+    [SerializeField] private RoomLayout currentRoomLayout;
+    private RoomLayout tempLayout;
+    [SerializeField] private Transform roomTransform;
+    private List<RoomObjectData> currentRoomObjects; 
 
     void Start()
     {
@@ -37,19 +33,17 @@ public class RoomRender : MonoBehaviour
         signalBus.Subscribe<SaveRoomLayoutSignal>((signal => { OnSaveRoomLayout(); }));
         signalBus.Subscribe<DiscardRoomLayoutSignal>((signal =>
         {
-            RoomLayout = new RoomLayout(PlayerInventory.GetRoomLayout());
             gameObject.SetActive(false);
             gameObject.SetActive(true);
         }));
+        tempLayout = currentRoomLayout;
+        currentRoomObjects = new List<RoomObjectData>();
+        roomTransform = transform;
     }
 
     private void OnEnable()
     {
-        RoomLayout = new RoomLayout(PlayerInventory.GetRoomLayout());
-        if (RoomLayout.roomSlots.Count==0)
-        {
-            RoomLayout = DefaultRoomLayout;
-        }
+     
         PopulateRoomLayout();
         print("Room Enabled");
         
@@ -57,117 +51,56 @@ public class RoomRender : MonoBehaviour
 
     async void  PopulateRoomLayout()
     {
-        foreach (var roomSlot in RoomLayout.roomSlots)
+           currentRoomObjects.ForEach((go => Destroy(go) ));
+        foreach (var themeCustomizationItem in PlayerInventory.EquippedThemeEffectRoomItems)
         {
-            AsyncOperationHandle<GameObject> loadOp;
+            var loadOp = themeCustomizationItem.itemPrefab.InstantiateAsync(roomTransform);
+            await loadOp.Task;
+            currentRoomObjects.Add(loadOp.Result.GetComponent<RoomObjectData>());
+            
+        }
 
-            switch (roomSlot.customizationType)
-            {
-                case CustomizationType.Theme:
-                     var themItem = PlayerInventory.RoomThemeEffectItems.Find((item => roomSlot.ItemName == item.name));
-                      loadOp = Addressables.InstantiateAsync(themItem.itemPrefab);
-                     await loadOp.Task;
-                    break;
-                case CustomizationType.VideoQuality:
-                     var vcItem = PlayerInventory.VideoQualityRoomItems.Find((item => roomSlot.ItemName == item.name));
-                      loadOp = Addressables.InstantiateAsync(vcItem.itemPrefab);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            var go = loadOp.Result;
-            switch (roomSlot.ParentType)
-            {
-                case RoomParentType.Floor:
-                    go.transform.parent = floorObject.transform;
-                    break;
-                case RoomParentType.RightWall:
-                    go.transform.parent = rightWall.transform;
-                    break;
-                case RoomParentType.LeftWall:
-                    go.transform.parent = leftWall.transform;
-                    break;
-                case RoomParentType.Desk:
-                    go.transform.parent = desk.transform;
-                    break;
-                case RoomParentType.Chair:
-                    go.transform.parent = chair.transform;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            go.transform.localPosition = roomSlot.Position;
-            go.transform.localScale = roomSlot.Scale;
-
-            var objectdata = go.GetComponent<RoomObjectData>();
-            objectdata.assetName = roomSlot.ItemName;
-   
+        foreach (var vqItem in PlayerInventory.EquippedVideoQualityRoomItems)
+        {
+            var loadOp = vqItem.itemPrefab.InstantiateAsync(roomTransform);
+            await loadOp.Task;
+            currentRoomObjects.Add(loadOp.Result.GetComponent<RoomObjectData>());
         }
     }
 
    
     async void OnTestVideoQualityItem(TestRoomVideoQualityITemSignal testRoomVideoQualityITemSignal)
     {
+        
         var item = testRoomVideoQualityITemSignal.VideoQualityCustomizationItem;
-        var loadOp = Addressables.InstantiateAsync(item.itemPrefab);
+        var obj = currentRoomObjects.Find(ob => ob.slotItemType == item.SlotType);
+        if (obj)
+        {
+            tempLayout.equippedVCITems.Remove(obj.assetName);
+            Destroy(obj.gameObject);
+        }
+        var loadOp = Addressables.InstantiateAsync(item.itemPrefab,roomTransform);
         await loadOp.Task;
         var go = loadOp.Result;
         var objecdata = go.GetComponent<RoomObjectData>();
-        switch (objecdata.parentType)
-        {
-            case RoomParentType.Floor:
-                go.transform.parent = floorObject.transform;
-                break;
-            case RoomParentType.RightWall:
-                go.transform.parent = rightWall.transform;
-                break;
-            case RoomParentType.LeftWall:
-                go.transform.parent = leftWall.transform;
-                break;
-            case RoomParentType.Desk:
-                go.transform.parent = desk.transform;
-                break;
-            case RoomParentType.Chair:
-                go.transform.parent = chair.transform;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
-        objecdata.assetName = item.name;
+        tempLayout.equippedVCITems.Add(objecdata.assetName);
+        
     }
 
     async void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
     {
         var item = testRoomThemeItem.ThemeCustomizationItem;
-        var loadOp = Addressables.InstantiateAsync(item.itemPrefab);
+        var obj = currentRoomObjects.Find(ob => ob.slotItemType == item.SlotType);
+        if (obj)
+        {
+            tempLayout.equippedThemeITems.Remove(obj.assetName);
+            Destroy(obj.gameObject);
+        }
+        var loadOp = Addressables.InstantiateAsync(item.itemPrefab,roomTransform);
         await loadOp.Task;
         var go = loadOp.Result;
         var objecdata = go.GetComponent<RoomObjectData>();
-        switch (objecdata.parentType)
-        {
-            case RoomParentType.Floor:
-                go.transform.parent = floorObject.transform;
-                break;
-            case RoomParentType.RightWall:
-                go.transform.parent = rightWall.transform;
-                break;
-            case RoomParentType.LeftWall:
-                go.transform.parent = leftWall.transform;
-                break;
-            case RoomParentType.Desk:
-                go.transform.parent = desk.transform;
-                break;
-            case RoomParentType.Chair:
-                go.transform.parent = chair.transform;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
-        objecdata.assetName = item.name;
+        tempLayout.equippedThemeITems.Add(objecdata.assetName);
     }
 
     
@@ -175,34 +108,17 @@ public class RoomRender : MonoBehaviour
 
     public  void OnSaveRoomLayout()
     {
-        SaveLayout();
-       PlayerInventory.UpdateRoomData(RoomLayout,currentVQItems);
+        if (tempLayout!=null)
+        {
+            currentRoomLayout = tempLayout;
+
+        }
+
+       PlayerInventory.UpdateRoomData(currentRoomLayout);
       gameObject.SetActive(false);
       gameObject.SetActive(true);
     }
-
-    void SaveLayout()
-    {
-        RoomLayout newLayout = new RoomLayout();
-
-        var roomObjectsData = FindObjectsOfType<RoomObjectData>();
-        if (roomObjectsData.Length==0)
-        {
-            return;
-        }
-        foreach (var ob in roomObjectsData)
-        {
-            var newslot = new RoomLayoutSerializedSlot();
-            newslot.ItemName = ob.assetName;
-            newslot.customizationType = ob.customizationType;
-            newslot.ParentType = ob.parentType;
-            newslot.Position = ob.transform.localPosition;
-            newslot.Scale = ob.transform.localScale;
-            newLayout.roomSlots.Add(newslot);
-        }
-
-        RoomLayout = newLayout;
-    }
+    
     public void PopulateDataSlots()
     {
        

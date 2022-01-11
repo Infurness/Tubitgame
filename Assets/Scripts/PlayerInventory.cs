@@ -18,28 +18,28 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private CharacterAvatar equippedCharacterAvatar;
     [SerializeField] private CharacterAvatar defaultMaleAvatar;
     [SerializeField] private HeadItem defaultFemaleHead,defaultMaleHead;
-    [SerializeField] private List<ThemeCustomizationItem> characterItems;
-    [SerializeField] private List<ThemeCustomizationItem> roomThemeEffectItems;
+    [SerializeField] private List<ThemeCustomizationItem> ownedCharacterItems;
+    [SerializeField] private List<ThemeCustomizationItem> ownedRoomThemeEffectItems;
     [SerializeField] private List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
-    [SerializeField] private List<VideoQualityCustomizationItem> videoQualityRoomItems;
+    [SerializeField] private List<VideoQualityCustomizationItem> ownedVideoQualityRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
-    [SerializeField] private List<RealEstateCustomizationItem> realEstateItems;
+    [SerializeField] private List<RealEstateCustomizationItem> ownedRealEstateItems;
     [SerializeField] private RealEstateCustomizationItem equippedHouse;
     [SerializeField] private RealEstateCustomizationItem defaultHouse;
     [SerializeField] private List<HeadItem> headItems;
     [SerializeField] private List<HairItem> hairItems;
 
-    public List<ThemeCustomizationItem> CharacterItems => characterItems.ToList();
+    public List<ThemeCustomizationItem> OwnedCharacterItems => ownedCharacterItems.ToList();
 
-    public List<ThemeCustomizationItem> RoomThemeEffectItems => roomThemeEffectItems.ToList();
+    public List<ThemeCustomizationItem> OwnedRoomThemeEffectItems => ownedRoomThemeEffectItems.ToList();
 
     public List<ThemeCustomizationItem> EquippedThemeEffectRoomItems => equippedThemeEffectRoomItems.ToList();
 
-    public List<VideoQualityCustomizationItem> VideoQualityRoomItems => videoQualityRoomItems.ToList();
+    public List<VideoQualityCustomizationItem> OwnedVideoQualityRoomItems => ownedVideoQualityRoomItems.ToList();
 
     public List<VideoQualityCustomizationItem> EquippedVideoQualityRoomItems => equippedVideoQualityRoomItems.ToList();
 
-    public List<RealEstateCustomizationItem> RealEstateItems => realEstateItems.ToList();
+    public List<RealEstateCustomizationItem> OwnedRealEstateItems => ownedRealEstateItems.ToList();
 
     public RealEstateCustomizationItem EquippedHouse => equippedHouse;
 
@@ -88,8 +88,8 @@ public class PlayerInventory : MonoBehaviour
         await caharacterItemsLoadOp.Task;
         if (caharacterItemsLoadOp.Status == AsyncOperationStatus.Succeeded)
         {
-            var chItems = caharacterItemsLoadOp.Result;
-            characterItems =(List<ThemeCustomizationItem>) chItems;
+            var chItems =(List<ThemeCustomizationItem>) caharacterItemsLoadOp.Result;
+            ownedCharacterItems = chItems.FindAll(item => item.Owned==true);
             if (characterAvatarAddressedData!=null)
             {
                 
@@ -107,17 +107,17 @@ public class PlayerInventory : MonoBehaviour
            
 
             equippedCharacterAvatar.bodyItem =
-                (BodyItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.BodyType);
+                (BodyItem) ownedCharacterItems.Find((it) => it.name == characterAvatarAddressedData.BodyType);
             equippedCharacterAvatar.headItem =
-                (HeadItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Head);
+                (HeadItem) ownedCharacterItems.Find((it) => it.name == characterAvatarAddressedData.Head);
             equippedCharacterAvatar.hairItem =
-                (HairItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Hair);
+                (HairItem) ownedCharacterItems.Find((it) => it.name == characterAvatarAddressedData.Hair);
             equippedCharacterAvatar.torsoItem =
-                (TorsoItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Torso);
+                (TorsoItem) ownedCharacterItems.Find((it) => it.name == characterAvatarAddressedData.Torso);
             equippedCharacterAvatar.legsItem =
-                (LegsItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Legs);
+                (LegsItem) ownedCharacterItems.Find((it) => it.name == characterAvatarAddressedData.Legs);
             equippedCharacterAvatar.feetItem =
-                (FeetItem) characterItems.Find((it) => it.name == characterAvatarAddressedData.Feet);
+                (FeetItem) ownedCharacterItems.Find((it) => it.name == characterAvatarAddressedData.Feet);
 
         }
         else
@@ -128,7 +128,7 @@ public class PlayerInventory : MonoBehaviour
          
         
     }
-    async Task LoadThemeEffectAddressedAssets()
+    async Task LoadRoomThemeEffectAssets()
     {
         
         var themeEffectAssets= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("roomtheme", null);
@@ -136,16 +136,19 @@ public class PlayerInventory : MonoBehaviour
         if (themeEffectAssets.Status == AsyncOperationStatus.Succeeded)
         {
             var themeEffectItems= (List<ThemeCustomizationItem>) themeEffectAssets.Result;
-            roomThemeEffectItems = themeEffectItems;
-       
-            var roomLayout = playerInventoryAddressedData.RoomLayout;
-            foreach (var slot in roomLayout.roomSlots)
+
+            foreach (var item in playerInventoryAddressedData.ownedRoomThemeEffectItemsNames)
             {
-                var item = themeEffectItems.Find((it) => it.name == slot.ItemName);
-                if (item)
+                ownedCharacterItems.Add(themeEffectItems.Find(customizationItem => customizationItem.name == item));
+            }
+           var roomLayoutItems = playerInventoryAddressedData.currentRoomLayout.equippedThemeITems;
+            foreach (var itemName in roomLayoutItems)
+            {
+                var eqItem = themeEffectItems.Find((it) => it.name == itemName);
+                if (eqItem)
                 {
-                    equippedThemeEffectRoomItems.Add(item);
-   
+                    equippedThemeEffectRoomItems.Add(eqItem);
+            
                 }
             }
            
@@ -168,18 +171,14 @@ public class PlayerInventory : MonoBehaviour
          {
              var vcItems= (List<VideoQualityCustomizationItem>) videoQualityItems.Result;
 
-             videoQualityRoomItems = vcItems;
-
-             // foreach (var videoQualityItemName in playerInventoryAddressedData.videoQualityItemsNames)
-             // {
-             //     videoQualityRoomItems.Add(vcItems.Find((item => item.name==videoQualityItemName)));     //todo uncomment when shop implemented
-             // }
-             
-             
-
-             foreach (var qualityItemsName in playerInventoryAddressedData.equippedVideoQualityItemsNames)
+             foreach (var itemsName in playerInventoryAddressedData.ownedVideoQualityItemsNames)
              {
-                 equippedVideoQualityRoomItems.Add(videoQualityRoomItems.Find((item => item.name==qualityItemsName)));
+                 ownedVideoQualityRoomItems.Add(vcItems.Find(item => item.name == itemsName));
+             }
+
+             foreach (var qualityItemsName in playerInventoryAddressedData.currentRoomLayout.equippedVCITems)
+             {
+                 equippedVideoQualityRoomItems.Add(ownedVideoQualityRoomItems.Find((item => item.name==qualityItemsName)));
              }
 
          }
@@ -198,10 +197,10 @@ public class PlayerInventory : MonoBehaviour
             var vcItems = (List<RealEstateCustomizationItem>)realEstateAddressedItems.Result;
 
             
-            foreach (var realStateItemName in playerInventoryAddressedData.realEstateItemsNames)
+            foreach (var realStateItemName in playerInventoryAddressedData.ownedRealEstateItemsNames)
             {
                 var item = vcItems.Find((item => item.name == realStateItemName));
-                realEstateItems.Add(item);
+                ownedRealEstateItems.Add(item);
 
             }
 
@@ -216,14 +215,14 @@ public class PlayerInventory : MonoBehaviour
         {
             print("Failed to load Assets ");
         }
-        realEstateItems.Add(defaultHouse);
+        ownedRealEstateItems.Add(defaultHouse);
 
     }
     async  void  OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
         playerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
         characterAvatarAddressedData = playerInventoryFetchedSignal.CharacterAvatarAddressedData;
-        await LoadThemeEffectAddressedAssets();
+        await LoadRoomThemeEffectAssets();
         await LoadVideoQualityAddressedAssets();
         await LoadCharacterData();
         await LoadRealEstateAddressedAssets();
@@ -234,30 +233,30 @@ public class PlayerInventory : MonoBehaviour
     {
         
         playerInventoryAddressedData.characterItemsNames.Add(themeCustomizationItem.name);
-        characterItems.Add(themeCustomizationItem);
+        ownedCharacterItems.Add(themeCustomizationItem);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         
     }
 
     public void AddVCItem(VideoQualityCustomizationItem videoQualityCustomizationItem)
     {
-        videoQualityRoomItems.Add(videoQualityCustomizationItem);
-        playerInventoryAddressedData.videoQualityItemsNames.Add(videoQualityCustomizationItem.name);
+        ownedVideoQualityRoomItems.Add(videoQualityCustomizationItem);
+        playerInventoryAddressedData.ownedVideoQualityItemsNames.Add(videoQualityCustomizationItem.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
 
     }
 
     public void AddRoomItem(ThemeCustomizationItem themeCustomizationItem)
     {
-        roomThemeEffectItems.Add(themeCustomizationItem);
-        playerInventoryAddressedData.roomItemsNames.Add(themeCustomizationItem.name);
+        ownedRoomThemeEffectItems.Add(themeCustomizationItem);
+        playerInventoryAddressedData.ownedRoomThemeEffectItemsNames.Add(themeCustomizationItem.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
     }
    
     public void AddRealEstateItem(RealEstateCustomizationItem realEstateCustomizationItem)
     {
-        realEstateItems.Add(realEstateCustomizationItem);
-        playerInventoryAddressedData.realEstateItemsNames.Add(realEstateCustomizationItem.name);
+        ownedRealEstateItems.Add(realEstateCustomizationItem);
+        playerInventoryAddressedData.ownedRealEstateItemsNames.Add(realEstateCustomizationItem.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         signalBus.Fire(new BuyHouseSignal { houseName = realEstateCustomizationItem.name });
     }
@@ -296,29 +295,22 @@ public class PlayerInventory : MonoBehaviour
 
     }
 
-    public  void UpdateRoomData(RoomLayout roomLayout,List<VideoQualityCustomizationItem> vCItems)
+    public  void UpdateRoomData( RoomLayout roomLayout)
     {
         
-        playerInventoryAddressedData.RoomLayout = roomLayout;
-        equippedThemeEffectRoomItems.Clear();
-        // foreach (var floorItem in roomLayout.FloorLayoutSlots)
-        // { 
-        //    equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == floorItem.ItemName));
-        //
-        // }
-        // foreach (var wallItem in roomLayout.WallLayoutSlots)
-        // { 
-        //     equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == wallItem.ItemName));
-        // }
-        // foreach (var objectItem in roomLayout.ObjectsLayoutSlots)
-        // { 
-        //     equippedThemeEffectRoomItems.Add(roomThemeEffectItems.Find((it) => it.name == objectItem.ItemName));
-        // }
+        playerInventoryAddressedData.currentRoomLayout = roomLayout;
+           equippedThemeEffectRoomItems.Clear();
+        foreach (var themeItemName in roomLayout.equippedThemeITems)
+        { 
+           equippedThemeEffectRoomItems.Add(ownedRoomThemeEffectItems.Find((it) => it.name == themeItemName));
+        
+        }
+      
         equippedVideoQualityRoomItems.Clear();
-        equippedVideoQualityRoomItems = vCItems;
-        playerInventoryAddressedData.equippedVideoQualityItemsNames.Clear();
-        equippedVideoQualityRoomItems.ForEach((vc) =>
-            playerInventoryAddressedData.equippedVideoQualityItemsNames.Add(vc.name));
+        foreach (var vcItemName in roomLayout.equippedVCITems)
+        {
+            equippedVideoQualityRoomItems.Add(ownedVideoQualityRoomItems.Find(item => item.name==vcItemName));
+        }
         var allThemItems = new List<ThemeCustomizationItem>();
         allThemItems.AddRange(equippedCharacterAvatar.GetThemesEffectItems());
         allThemItems.AddRange(EquippedThemeEffectRoomItems);
@@ -343,10 +335,10 @@ public class PlayerInventory : MonoBehaviour
         signalBus.Fire(new TestRoomVideoQualityITemSignal(){VideoQualityCustomizationItem = videoQualityCustomizationItem});
     }
 
-    public RoomLayout GetRoomLayout()
-    {
-        return  new RoomLayout( playerInventoryAddressedData.RoomLayout);
-    }
+    // public RoomLayout GetRoomLayout()
+    // {
+    //     return  new RoomLayout( playerInventoryAddressedData.RoomLayout);
+    // }
 
     public HairItem GetHairItem(string hairName)
     {
@@ -363,20 +355,18 @@ public class PlayerInventory : MonoBehaviour
     public class PlayerInventoryAddressedData
     {    
         public  List<string> characterItemsNames;
-        public List<string> roomItemsNames;
-        public List<string> videoQualityItemsNames;
-        public List<string> equippedVideoQualityItemsNames;
-        public List<string> realEstateItemsNames;
+        public List<string> ownedRoomThemeEffectItemsNames;
+        public List<string> ownedVideoQualityItemsNames;
+        public RoomLayout currentRoomLayout;
+        public List<string> ownedRealEstateItemsNames;
         public string equippedHouse;
-        public RoomLayout RoomLayout;
         public  PlayerInventoryAddressedData()
         {
             characterItemsNames = new List<string>();
-            roomItemsNames = new List<string>();
-            videoQualityItemsNames = new List<string>();
-            equippedVideoQualityItemsNames = new List<string>();
-            realEstateItemsNames = new List<string>();
-            RoomLayout = new RoomLayout();
+            ownedRoomThemeEffectItemsNames = new List<string>();
+            ownedVideoQualityItemsNames = new List<string>();
+            ownedRealEstateItemsNames = new List<string>();
+            currentRoomLayout = new RoomLayout();
 
         } 
     }

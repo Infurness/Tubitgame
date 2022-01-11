@@ -21,6 +21,7 @@ namespace Customizations
         public PriceType PriceType;
         public uint HCPrice;
         public uint SCPrice;
+        public ItemSlotType SlotType;
     }
 
     public enum VideoQualityItemType

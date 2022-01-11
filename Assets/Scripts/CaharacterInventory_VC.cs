@@ -296,7 +296,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         SetEquippedPanelData(equippedBody.descriptionText, equippedBody.newStatsText, equippedBody.sprite,
             equippedBody.name, equippedBody.rareness.ToString() + " " ,GetRarenessSpriteByIndex(equippedBody.rareness));
 
-        foreach (var item in m_PlayerInventory.CharacterItems)
+        foreach (var item in m_PlayerInventory.OwnedCharacterItems)
         {
             if (item.GetType() != typeof(BodyItem))
                 continue;
@@ -365,7 +365,7 @@ public class CaharacterInventory_VC : MonoBehaviour
             equippedHead.name, equippedHead.rareness.ToString() + " " +
                                equippedHead.HeadItemType.ToString(),GetRarenessSpriteByIndex(equippedHead.rareness));
 
-        foreach (var  item in m_PlayerInventory.CharacterItems)
+        foreach (var  item in m_PlayerInventory.OwnedCharacterItems)
         {
             if(item.GetType()!=typeof(HeadItem))
                 continue;
@@ -465,7 +465,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         }
        
 
-        foreach (var item in m_PlayerInventory.CharacterItems)
+        foreach (var item in m_PlayerInventory.OwnedCharacterItems)
         {
             if (item.GetType() != typeof(HairItem))
                 continue;
@@ -539,7 +539,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         }
     
 
-        foreach (var item in m_PlayerInventory.CharacterItems)
+        foreach (var item in m_PlayerInventory.OwnedCharacterItems)
         {
             if(item.GetType()!=typeof(TorsoItem))
                 continue;
@@ -613,7 +613,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         }
    
 
-        foreach (var item in m_PlayerInventory.CharacterItems)
+        foreach (var item in m_PlayerInventory.OwnedCharacterItems)
         {
             if(item.GetType()!=typeof(LegsItem))
                 continue;
@@ -688,7 +688,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         }
 
 
-        foreach (var  item in m_PlayerInventory.CharacterItems)
+        foreach (var  item in m_PlayerInventory.OwnedCharacterItems)
         {
             if(item.GetType()!=typeof(FeetItem))
                 continue;

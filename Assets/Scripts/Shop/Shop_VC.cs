@@ -85,7 +85,7 @@ public class Shop_VC : MonoBehaviour
 
         _signalBus.Subscribe<BuyHouseSignal>(UpdateHouseDisplay);
 
-        SetHouseDisplay(playerInventory.RealEstateItems[0]);
+        SetHouseDisplay(playerInventory.OwnedRealEstateItems[0]);
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -291,7 +291,7 @@ public class Shop_VC : MonoBehaviour
 
     void SetHouseDisplay(RealEstateCustomizationItem item)
     {
-        bool ownedHouse = item.Owned || playerInventory.RealEstateItems.Find(house => house.itemName == item.itemName);
+        bool ownedHouse = item.Owned || playerInventory.OwnedRealEstateItems.Find(house => house.itemName == item.itemName);
 
         houseImage.sprite = item.streetViewSprite;
         garageSlots.text = $"Garage slots: {item.garageSlots}";

@@ -10,9 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b716d47a6af4d498369f2a2c88ee040, type: 3}
-  m_Name: Chair
+  m_Name: GamerChair
   m_EditorClassIdentifier: 
-  sprite: {fileID: -7646866385175700062, guid: ce0a398630a76044fa757441f3e6f3ec, type: 3}
+  sprite: {fileID: 1901255755594663113, guid: 3d786158e0a79644bbc7ebe12afffb48, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 4
     themePopularityFactor: 0.01
@@ -23,4 +28,10 @@ MonoBehaviour:
   PriceType: 2
   HCPrice: 10
   SCPrice: 0
+  SlotType: 0
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   floorOrnamentType: 1
