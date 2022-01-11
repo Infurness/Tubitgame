@@ -22,9 +22,14 @@ public class HomePanel_VC : MonoBehaviour
     [SerializeField] private GameObject customizationButtonsPanel;
     [SerializeField] private Canvas mainCanvas;
 
+    [SerializeField] private GameObject productionBarInGamePivot;
     [SerializeField] private GameObject productionBar;
     [SerializeField] private Image productionBarFilling;
     private UnpublishedVideo videoBeingRecorded;
+
+    [SerializeField] private Button hideUIButton;
+    [SerializeField] private GameObject[] buttonsToHide;
+    bool buttonsHidden;
 
     ThemeType[] selectedThemeTypes; //Dummy unused code
     // Start is called before the first frame update
@@ -40,7 +45,7 @@ public class HomePanel_VC : MonoBehaviour
    //     viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
         restButton.onClick.AddListener (RestButtonBehaviour);
-
+        hideUIButton.onClick.AddListener(HideButtons);
         InitialScreenState ();
         _signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal =>
         {
@@ -92,6 +97,8 @@ public class HomePanel_VC : MonoBehaviour
         });
 
         productionBar.SetActive(false);
+        buttonsHidden = true;
+        HideButtons();
     }
 
     // Update is called once per frame
@@ -160,5 +167,17 @@ public class HomePanel_VC : MonoBehaviour
             restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";
 
         
+    }
+
+    void HideButtons()
+    {
+        buttonsHidden = !buttonsHidden;
+        Vector3 newSize = hideUIButton.GetComponent<Transform>().localScale;
+        newSize.y = -newSize.y;
+        hideUIButton.GetComponent<Transform>().localScale = newSize;
+        foreach (GameObject gO in buttonsToHide)
+        {
+            gO.SetActive(!buttonsHidden);
+        }  
     }
 }
