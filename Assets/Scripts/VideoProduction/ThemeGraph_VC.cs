@@ -28,7 +28,10 @@ public class ThemeGraph_VC : MonoBehaviour
             newGraphLine.transform.localPosition = Vector3.zero;
 
             LineRenderer lr = newGraphLine.GetComponent<LineRenderer> ();
-            lineRenderers.Add (lr, themedata);            
+            lineRenderers.Add (lr, themedata);
+
+            signalBus.Subscribe<SetLineColorInGraphSignal>((signal) => HighLightLineRenderer(signal.themeType, themedata.themeType, lr));
+            signalBus.Subscribe<ResetLineColorInGraphSignal>(() => ResetLineColor(lr));
         }
         signalBus.Subscribe<OpenVideoCreationSignal> (StartGraph);
         signalBus.Subscribe<CloseVideoCreationSignal> (StopGraph);
@@ -65,8 +68,11 @@ public class ThemeGraph_VC : MonoBehaviour
             int hour = GameClock.Instance.Now.Hour % 6;
             float minutes = (float)GameClock.Instance.Now.Minute * 100f / 60f;
             float limitTimeValue = (hour + (minutes / 100)) / 6f;
-            dictSlot.Key.startColor = dictSlot.Value.graphLineColor;
-            dictSlot.Key.endColor = dictSlot.Value.graphLineColor;
+            float alpha = dictSlot.Key.startColor.a;
+            Color lrColor = dictSlot.Value.graphLineColor;
+            lrColor.a = alpha;
+            dictSlot.Key.startColor = lrColor;
+            dictSlot.Key.endColor = lrColor;
             dictSlot.Key.positionCount = 0;
             int i = 0;
             foreach (Keyframe key in themeCurve.keys)
@@ -98,5 +104,41 @@ public class ThemeGraph_VC : MonoBehaviour
             UpdateGraph ();
             yield return new WaitForSecondsRealtime (refreshGraphSecondsRate);//5 minutes
         } while (true);
+    }
+
+    void HighLightLineRenderer(ThemeType signalThemeType, ThemeType themeType, LineRenderer lr)
+    {
+        Debug.Log("ResetSetColor");
+        if (themeType == signalThemeType)
+        {
+            Color startColor = lr.startColor;
+            startColor.a = 1;
+            lr.startColor = startColor;
+
+            Color endColor = lr.endColor;
+            endColor.a = 1;
+            lr.endColor = endColor;
+        }
+        else
+        {
+            Color startColor = lr.startColor;
+            startColor.a = 0.2f;
+            lr.startColor = startColor;
+
+            Color endColor = lr.endColor;
+            endColor.a = 0.2f;
+            lr.endColor = endColor;
+        }
+    }
+    void ResetLineColor(LineRenderer lr)
+    {
+        Debug.Log("ResetColor");
+        Color startColor = lr.startColor;
+        startColor.a = 1;
+        lr.startColor = startColor;
+
+        Color endColor = lr.endColor;
+        endColor.a = 1;
+        lr.endColor = endColor;
     }
 }

@@ -81,9 +81,13 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<ChangeRestStateSignal> ();
     Container.DeclareSignal<RoomCustomizationVisibilityChanged>();
     Container.DeclareSignal<CharacterCustomizationVisibilityChanged>();
+    Container.DeclareSignal<SelectThemeInGraphSignal>();
+    Container.DeclareSignal<SetLineColorInGraphSignal>();    
+    Container.DeclareSignal<ResetLineColorInGraphSignal>();
+        
 
     //Advertisement signals
-    Container.DeclareSignal<AdsInitializedSignal> ();
+        Container.DeclareSignal<AdsInitializedSignal> ();
     Container.DeclareSignal<RewardAdLoadedSignal> ();
     Container.DeclareSignal<StartShowingAdSignal> ();
     Container.DeclareSignal<GrantRewardSignal> ();

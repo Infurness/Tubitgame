@@ -1,15 +1,22 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Customizations;
 using UnityEngine;
 using Zenject;
 
+[Serializable]
+class ImagePerTheme
+{
+    public ThemeType themeType;
+    public Sprite themeImage;
+}
 public class ThemesManager : MonoBehaviour
 {
 
     [SerializeField] private ScriptableTheme themesData;
-
+    [SerializeField] private ImagePerTheme[] imagesPerTheme;
     private List<CustomizationThemeEffect> bounsEffect;
     // Start is called before the first frame update
     [Inject] private SignalBus signBus;
@@ -176,5 +183,9 @@ public class ThemesManager : MonoBehaviour
     public void UpdateThemesData (ScriptableTheme newThemesData)
     {
         themesData.themesData = newThemesData.themesData;
+    }
+    public Sprite GetThemeSprite(ThemeType themeType)
+    {
+        return imagesPerTheme.FirstOrDefault(pair => pair.themeType == themeType).themeImage;
     }
 }
