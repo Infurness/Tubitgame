@@ -373,6 +373,11 @@ public class CaharacterInventory_VC : MonoBehaviour
                 continue;
 
             HeadItem headItem = (HeadItem) item;
+
+            if (headItem.GenderItemType!=gender)
+            {
+                continue;
+            }
             
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
@@ -472,6 +477,11 @@ public class CaharacterInventory_VC : MonoBehaviour
             if (item.GetType() != typeof(HairItem))
                 continue;
             HairItem hairItem =(HairItem)item;
+
+            if (hairItem.GenderItemType!=gender)
+            {
+                continue;
+            }
                 InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
@@ -546,6 +556,11 @@ public class CaharacterInventory_VC : MonoBehaviour
             if(item.GetType()!=typeof(TorsoItem))
                 continue;
             TorsoItem torsoItem =(TorsoItem) item;
+
+            if (torsoItem.GenderItemType!=gender)
+            {
+                continue;
+            }
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
@@ -620,6 +635,11 @@ public class CaharacterInventory_VC : MonoBehaviour
             if(item.GetType()!=typeof(LegsItem))
                 continue;
             LegsItem legsItem = (LegsItem) item;
+
+            if (legsItem.GenderItemType!=gender)
+            {
+                continue;
+            }
             
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
@@ -695,6 +715,11 @@ public class CaharacterInventory_VC : MonoBehaviour
             if(item.GetType()!=typeof(FeetItem))
                 continue;
             FeetItem feetItem = (FeetItem) item;
+
+            if (feetItem.GenderItemType!=gender)
+            {
+                continue;
+            }
             InventoryButton invBt =
                 Instantiate(inventoryButtonPrefab.gameObject, inventoryTabView.buttonsView.transform)
                     .GetComponent<InventoryButton>();
