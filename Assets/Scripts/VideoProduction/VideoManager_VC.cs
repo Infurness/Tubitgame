@@ -18,6 +18,7 @@ public class VideoManager_VC : MonoBehaviour
     [Inject] private AlgorithmManager algorithmManager;
     [Inject] private AdsRewardsManager adsRewardsManager;
     [Inject] private EnergyManager energyManager;
+    [Inject] private ThemesManager themesManager;
 
     [SerializeField] private TMP_Text playerNameText;
 
@@ -39,6 +40,7 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private Button generateVideoName;
 
     [SerializeField] private Button[] themeSelectionButtons;
+    [SerializeField] private Image[] themeSelectionImage;
 
     private ThemeType lastThemePressed;
     private ThemeType[] selectedThemes;
@@ -81,6 +83,9 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private Button pageRight;
     [SerializeField] private TMP_Text pagesCount;
     private int currentPageNumber = 1;
+
+    [SerializeField] private GameObject themeGraphSelectionPrefab;
+    [SerializeField] private GameObject themeGraphSelectionHolder;
     // Start is called before the first frame update
     void Start ()
     {
@@ -118,6 +123,7 @@ public class VideoManager_VC : MonoBehaviour
 
         energyHasBeenOfferedThisSesion = false;
         UpdateVideoList();
+        StartGraphThemesSelection();
     }
     void CheckEnergyForVideo ()
     {
@@ -383,11 +389,16 @@ public class VideoManager_VC : MonoBehaviour
                 ThemeType themeType = signal.selectedThemesSlots[i];
                 themeSelectionButtons[i].GetComponentInChildren<TMP_Text>().text = string.Concat (Enum.GetName (themeType.GetType (), themeType).Select (x => char.IsUpper (x) ? " " + x : x.ToString ())).TrimStart (' ');
                 themeSelectionButtons[i].transform.GetChild (1).GetComponentInChildren<Image> ().enabled = false;
+                themeSelectionImage[i].sprite = _themesManager.GetThemeSprite(themeType);
+                themeSelectionImage[i].color = Color.white;
             }
             else
             {
                 themeSelectionButtons[i].GetComponentInChildren<TMP_Text> ().text = "";
                 themeSelectionButtons[i].transform.GetChild (1).GetComponentInChildren<Image> ().enabled = true;
+                Color transparent = Color.white;
+                transparent.a = 0;
+                themeSelectionImage[i].color = transparent;
             }
         }
         selectedThemes = signal.selectedThemesSlots.Values.ToArray();
@@ -416,6 +427,11 @@ public class VideoManager_VC : MonoBehaviour
     }
     void SetQualityTag (float value)
     {
+        if (value > 0.615)
+        {
+            qualitySelector.value = 0.615f;
+            return;
+        }
         float qualityStep = 1f / Enum.GetValues (typeof(VideoQuality)).Length;
         int qualityTagIndex = (int)(value / qualityStep);
         selectedQuality = (VideoQuality)qualityTagIndex+1;
@@ -436,6 +452,8 @@ public class VideoManager_VC : MonoBehaviour
             }       
             else
             {
+                if (qualityTag.GetComponentInChildren<Image>().sprite.name == "BG_theme") //Dummy: until implementation
+                    continue;
                 qualityTag.GetComponentInChildren<Image> ().sprite = qualityNonSelectedImage;
                 qualityTag.GetComponentInChildren<TMP_Text> ().color = qualityNonSelectedColor;
                 qualityTag.GetComponentInChildren<TMP_Text> ().font = qualityNonSelectedFont;
@@ -548,5 +566,16 @@ public class VideoManager_VC : MonoBehaviour
     {
         yield return null;
         SortVideos(currentPageNumber);
+    }
+
+    void StartGraphThemesSelection()
+    {
+        foreach (ThemeType themeType in themesManager.GetThemes())
+        {
+            GameObject themeSelector = Instantiate(themeGraphSelectionPrefab, themeGraphSelectionHolder.transform);
+            themeSelector.GetComponentInChildren<TMP_Text>().text = string.Concat(Enum.GetName(themeType.GetType(), themeType).Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+            themeSelector.GetComponentInChildren<Button>().onClick.AddListener(()=> _signalBus.Fire<SelectThemeInGraphSignal>(new SelectThemeInGraphSignal { themeType = themeType }));
+            themeSelector.GetComponent<ThemeGraphSelectorButton_VC>().SetUpReferences(_signalBus, themeType);
+        }
     }
 }
