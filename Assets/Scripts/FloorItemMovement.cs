@@ -18,7 +18,7 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
     public Collider2D Collider => collider;
 
     [SerializeField] private Collider2D collider;
-
+    [SerializeField] private Collider2D overlapCollider;
     public int StackOrder => stackOrder;
 
     [SerializeField] private int stackOrder;
@@ -61,16 +61,19 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
             if (pointerDown)
             {
                 var delta = Input.mousePosition - mospos;
-
-
+        
+        
                 rigidbody2D.AddForce(delta.normalized * speed, ForceMode2D.Force);
             }
         }
         mospos = Input.mousePosition;
 
-
+        if (overlapCollider.IsTouchingLayers(LayerMask.GetMask("Floor")))
+        {
+            print("Touching Something");
+        }
                 
-            }
+    }
 
         
 
