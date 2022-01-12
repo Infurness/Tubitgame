@@ -117,6 +117,7 @@ public class VideoManager_VC : MonoBehaviour
         pageRight.onClick.AddListener(GoToNextVideosPage);
 
         energyHasBeenOfferedThisSesion = false;
+        UpdateVideoList();
     }
     void CheckEnergyForVideo ()
     {
@@ -288,6 +289,7 @@ public class VideoManager_VC : MonoBehaviour
         UnpublishedVideo unpublishedVideo = new UnpublishedVideo (newVideoName,selectedThemes,selectedQuality, secondsToProduce, GameClock.Instance.Now);
         PlayerDataManager.Instance.SetUnpublishedVideo (unpublishedVideo);
         _signalBus.Fire<OpenTimeShortenAdSignal> (new OpenTimeShortenAdSignal {video = unpublishedVideo });
+        OpenVideosPage(currentPageNumber);
     }
     void CreateUnpublishedVideos ()
     {
@@ -305,6 +307,11 @@ public class VideoManager_VC : MonoBehaviour
                                 video.videoQuality
                                 );
             vc.SetTimeLeftToPublish (video.createdTime);
+
+            int secondsPassed = (video.createdTime - System.DateTime.Now).Seconds;
+            int secondsLeft = video.secondsToBeProduced - secondsPassed;
+            if (secondsLeft > 0)
+                _signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = video });
         }
     }
     void CreateVideo (Video video)
@@ -487,7 +494,11 @@ public class VideoManager_VC : MonoBehaviour
             pagesCount.text = "1/1";
             return;
         }
-        int maxPage = (int)Mathf.Ceil(numberOfTotalVideos / videosPerPage)+1;
+        float maxPageFloat = (float)numberOfTotalVideos / (float)videosPerPage;
+        if (maxPageFloat % 1 != 0)
+            maxPageFloat += 1;
+        int maxPage = (int)maxPageFloat;
+        
         if (pageNumber > maxPage)
             return;
 

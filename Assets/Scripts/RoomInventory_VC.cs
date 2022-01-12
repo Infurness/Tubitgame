@@ -110,7 +110,6 @@ public class RoomInventory_VC : MonoBehaviour
         {
             foreach (var themeEffect in equippedItem.affectedTheme)
             {
-                print("Theme name = " +themeEffect.ThemeType.ToString());
                 themesBounses[themeEffect.ThemeType.ToString()] += themeEffect.themePopularityFactor;
             }            
         }
@@ -124,7 +123,8 @@ public class RoomInventory_VC : MonoBehaviour
             }
 
             var themeItemTextCell = Instantiate(effectCellPrefab, effectTransform.transform);
-            themeItemTextCell.SetText(themeBouns.Key + "  : " + themeBouns.Value * 100 + "%");
+            var value = themeBouns.Value * 100;
+            themeItemTextCell.SetText(themeBouns.Key + "  : " + (int)value + "%");
         }
     }
 
@@ -137,7 +137,8 @@ public class RoomInventory_VC : MonoBehaviour
         }
 
         var vcEffectTextCell = Instantiate(effectCellPrefab, effectTransform.transform);
-        vcEffectTextCell.SetText("Video Quality +% "+sum*100);
+        var value = sum * 100;
+        vcEffectTextCell.SetText("Video Quality +% "+(int)value);
       //  equippedVideoQualityItemsEffect.text 
     }
 

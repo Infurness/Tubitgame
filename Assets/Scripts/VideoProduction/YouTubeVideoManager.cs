@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class YouTubeVideoManager : MonoBehaviour
 {
     [Inject] private SignalBus _signalBus;
-    [Inject] private PlayerDataManager playerDataManger;
+    [Inject] private PlayerDataManager playerDataManager;
     [Inject] private AlgorithmManager algorithmManager;
     [Inject] private ThemesManager themesManager;
     [Inject] private EnergyManager energyManager;
@@ -21,7 +21,7 @@ public class YouTubeVideoManager : MonoBehaviour
         _signalBus.Subscribe<StartRecordingSignal> (() => SetIsRecording (true));
         _signalBus.Subscribe<CancelVideoRecordingSignal> (() => SetIsRecording (false));
         _signalBus.Subscribe<GetMoneyFromVideoSignal> (RecollectVideoMoney);
-        _signalBus.Subscribe<LevelUpSignal> (playerDataManger.GetLevelUpRewards);
+        _signalBus.Subscribe<LevelUpSignal> (playerDataManager.GetLevelUpRewards);
         _signalBus.Subscribe<CancelVideoRecordingSignal> ((signal) => DeleteUnpublishedVideo (signal.name));
     }
 
@@ -46,38 +46,38 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.name = videoName;
         newVideo.themes = (ThemeType[]) videoThemes.Clone();
         newVideo.selectedQuality = signal.videoSelectedQuality;
-        newVideo.quality = playerDataManger.GetQuality(); //Dummy not yet implement lacks of themes quality and selected quality
+        newVideo.quality = playerDataManager.GetQuality(); //Dummy not yet implement lacks of themes quality and selected quality
         if (Random.Range (0, 101) >= 95) //5% chance of being viral
         {
             newVideo.isViral = true;
         }
-        var subscribers = playerDataManger.GetSubscribers();
+        var subscribers = playerDataManager.GetSubscribers();
         List<float> themeValues = new List<float> ();
 
         ulong videoViews = algorithmManager.GetVideoViews 
                                 (
-                                playerDataManger.GetSubscribers (), 
+                                playerDataManager.GetSubscribers (), 
                                 videoThemes, 
-                                playerDataManger.GetQuality (),
+                                playerDataManager.GetQuality (),
                                 newVideo.isViral
                                 );
 
         newVideo.maxViews = videoViews;
-        newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews, playerDataManger.GetQuality ());
+        newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews, playerDataManager.GetQuality ());
         newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
-        newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManger.GetQuality ());
+        newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManager.GetQuality ());
         newVideo.videoMaxSoftCurrency = algorithmManager.GetVideoSoftCurrency(videoViews);
         float qualityNumber = (float)newVideo.selectedQuality / (float) Enum.GetValues (typeof(VideoQuality)).Length * 2;
         newVideo.lifeTimeHours = (float)(algorithmManager.GetVideoLifetime (videoViews, qualityNumber, 0.9f))/3600f; //Fromseconds to hours
         newVideo.lastUpdateTime = GameClock.Instance.Now;
-        playerDataManger.AddVideo (newVideo);
+        playerDataManager.AddVideo (newVideo);
         DeleteUnpublishedVideo (newVideo.name);
 
         _signalBus.Fire<EndPublishVideoSignal> ();
     }
     public void DeleteUnpublishedVideo (string name)
     {
-        playerDataManger.DeleteUnpublishVideo (name);
+        playerDataManager.DeleteUnpublishVideo (name);
     }
     public string GetVideoNameByTheme (ThemeType[] _themeTypes)
     {
@@ -91,15 +91,19 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
     {
-        if (playerDataManger==null)
+        if (playerDataManager==null)
         {
             print("Player DataManger is Null");
         }
-        return playerDataManger.GetNumberOfVideoByThemes (_themeTypes);
+        return playerDataManager.GetNumberOfVideoByThemes (_themeTypes);
     }
     public Video GetVideoByName (string _name)
     {
-        return playerDataManger.GetVideoByName (_name);
+        return playerDataManager.GetVideoByName (_name);
+    }
+    public UnpublishedVideo GetUnpublishedVideoByName(string _name)
+    {
+        return playerDataManager.GetUnpublishedVideoByName(_name);
     }
     public ulong GetVideoMoneyByName (string _name)
     {
@@ -107,7 +111,7 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     void RecollectVideoMoney (GetMoneyFromVideoSignal signal)
     {
-        playerDataManger.RecollectVideoMoney (signal.videoName);
+        playerDataManager.RecollectVideoMoney (signal.videoName);
         _signalBus.Fire<UpdateSoftCurrencySignal> ();
     }
     int GetTimeHour () //Dummy Not being used
@@ -117,5 +121,16 @@ public class YouTubeVideoManager : MonoBehaviour
     public bool IsPlayerResting ()
     {
         return energyManager.GetPlayerIsResting ();
+    }
+    public void UpdateUnpublishedVideos()
+    {
+        playerDataManager.UpdateUnpublishedVideos();
+    }
+    public bool ConsumeHardCurrency( int amount)
+    {
+        bool canConsume = playerDataManager.CanConsumeHardCurrency((ulong)amount);
+        if (canConsume)
+            playerDataManager.ConsumeHardCurrency((ulong)amount,()=>{ });
+        return canConsume;
     }
 }

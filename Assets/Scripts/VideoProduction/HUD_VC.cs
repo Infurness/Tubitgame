@@ -33,7 +33,7 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private Button backButton;
     [SerializeField] private GameObject backButtonIcon;
     [SerializeField] private GameObject homeButtonIcon;
-    [SerializeField] private Button videoManagerButton;
+    [SerializeField] private Button[] videoManagerButtons;
     [SerializeField] private Button eventsButton;
     [SerializeField] private Button[] storeButtons;
     [SerializeField] private TMP_Text softCurrencyText;
@@ -64,7 +64,8 @@ public class HUD_VC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        videoManagerButton.onClick.AddListener (OpenVideoManagerPanel);
+        foreach (Button button in videoManagerButtons)
+            button.onClick.AddListener (OpenVideoManagerPanel);
         if(eventsButton)
             eventsButton.onClick.AddListener (OpenEventsPanel);
         foreach(Button button in storeButtons)
@@ -104,6 +105,7 @@ public class HUD_VC : MonoBehaviour
         });
         //StopAllCoroutines ();
         //StartCoroutine (DecreaseSeconds());
+        audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
     }
 
     // Update is called once per frame

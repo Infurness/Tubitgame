@@ -17,24 +17,39 @@ public class HomePanel_VC : MonoBehaviour
     [SerializeField] private Button playerIconButton;
 
     [SerializeField] private Button restButton; 
-       [SerializeField] GameObject shopButtonPanel;
+    [SerializeField] GameObject shopButtonPanel;
     [SerializeField] private GameObject videoMangerButtonPanel;
     [SerializeField] private GameObject customizationButtonsPanel;
     [SerializeField] private Canvas mainCanvas;
+
+
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject productionBarInGamePivot;
+    [SerializeField] private GameObject productionBar;
+    [SerializeField] private Image productionBarFilling;
+    private UnpublishedVideo videoBeingRecorded;
+
+    [SerializeField] private Button hideUIButton;
+    [SerializeField] private GameObject[] buttonsToHide;
+    bool buttonsHidden;
+
     ThemeType[] selectedThemeTypes; //Dummy unused code
     // Start is called before the first frame update
     void Start ()
     {
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
+        _signalBus.Subscribe<VideoStartedSignal>(SetVideoForRecordingBar);
         _signalBus.Subscribe<ChangeRestStateSignal> (RestButtonBehaviour);
-       // publishButton.onClick.AddListener (OnPublishVideoPressed);
-     //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
+        _signalBus.Subscribe<SnapToNeighborhoodViewSignal>(SetProductionBarPosition);
+        // publishButton.onClick.AddListener (OnPublishVideoPressed);
+        //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
        // closeSettingsButton.onClick.AddListener (OpenSettingsPanel );
    //     viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
         restButton.onClick.AddListener (RestButtonBehaviour);
-
+        hideUIButton.onClick.AddListener(HideButtons);
         InitialScreenState ();
         _signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal =>
         {
@@ -84,12 +99,27 @@ public class HomePanel_VC : MonoBehaviour
 
             }
         });
+
+        productionBar.SetActive(false);
+        buttonsHidden = true;
+        HideButtons();
+        SetProductionBarPosition();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (videoBeingRecorded!=null)
+        {
+            float secondsPassed = Mathf.Abs((int)(videoBeingRecorded.createdTime - GameClock.Instance.Now).TotalSeconds);
+            float secondsLeft = videoBeingRecorded.secondsToBeProduced - secondsPassed;
+            productionBarFilling.fillAmount = 1-(secondsLeft / videoBeingRecorded.secondsToBeProduced);
+            if (productionBarFilling.fillAmount >=1)
+            {
+                videoBeingRecorded = null;
+                productionBar.SetActive(false);
+            }         
+        }
     }
 
     void InitialScreenState ()
@@ -103,8 +133,11 @@ public class HomePanel_VC : MonoBehaviour
         //StartCoroutine (FillTheRecordImage (_recordingSignal.recordingTime));   
     }
 
-
-
+    void SetVideoForRecordingBar(VideoStartedSignal signal)
+    {
+        videoBeingRecorded = signal.startedVideo;
+        productionBar.SetActive(true);
+    }
     //void OnPublishVideoPressed ()
     //{
     //    publishButton.gameObject.SetActive (false);
@@ -139,5 +172,24 @@ public class HomePanel_VC : MonoBehaviour
             restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";
 
         
+    }
+
+    void HideButtons()
+    {
+        buttonsHidden = !buttonsHidden;
+        Vector3 newSize = hideUIButton.GetComponent<Transform>().localScale;
+        newSize.y = -newSize.y;
+        hideUIButton.GetComponent<Transform>().localScale = newSize;
+        foreach (GameObject gO in buttonsToHide)
+        {
+            gO.SetActive(!buttonsHidden);
+        }  
+    }
+
+    void SetProductionBarPosition()
+    {
+        Vector2 viewportPosition = mainCamera.WorldToViewportPoint(productionBarInGamePivot.transform.position);
+        viewportPosition *= canvas.GetComponent<RectTransform>().sizeDelta;
+        productionBar.GetComponent<RectTransform>().anchoredPosition = viewportPosition;
     }
 }

@@ -15,7 +15,10 @@ public class StartRecordingSignal //Dummy - Deprecated, this is done in VideoMan
     public ThemeType[] recordedThemes;
     public string videoName;
 }
-
+public class VideoStartedSignal
+{
+    public UnpublishedVideo startedVideo;
+}
 public class StartPublishSignal //Dummy - Not used
 {
 }
@@ -155,9 +158,18 @@ public class OpenDefaultMessagePopUpSignal
 
 public class OpenAdsDefaultPopUpSignal
 {
+    public string title;
+    public RewardType rewardType;
     public string message;
+    public float reward;
+    public float rewardBonus;
+    public bool adsActive;
 }
 public class CloseAdsDefaultPopUpSignal
+{
+
+}
+public class OpenViralPopUpSignal
 {
 
 }

@@ -40,9 +40,10 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private Button energyTimePanelButton;
 
     [SerializeField] private GameObject adsDefaultPanelPopUp;
-    [SerializeField] private TMP_Text adsPanelText;
-    [SerializeField] private Button adsDefaultPanelCancelButton;
+    [SerializeField] private Button[] adsDefaultPanelCancelButton;
 
+    [SerializeField] private GameObject viralPopUp;
+    [SerializeField] private Button viralPopUpCloseButton;
 
     Camera mainCam;
     // Start is called before the first frame update
@@ -57,9 +58,13 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Subscribe<OpenDeleteAccountSignal> (OpenDeleteAccount);
         signalBus.Subscribe<OpenLeaderboardsSignal> (OpenLeaderboards);
         signalBus.Subscribe<LevelUpSignal> (OpenLevelUp);
+        signalBus.Subscribe<OpenViralPopUpSignal>(OpenViralPopUp);
 
         defaultDisclaimerPanelCloseButton.onClick.AddListener (CloseDefaultDisclaimer);
-        adsDefaultPanelCancelButton.onClick.AddListener (CancelAdsDefaultPanel);
+        foreach (Button button in adsDefaultPanelCancelButton)
+        {
+            button.onClick.AddListener(CancelAdsDefaultPanel);
+        }
         themeSelectionPanelCloseButton.onClick.AddListener (CloseThemeSelector);
         settingsPanelCloseButton.onClick.AddListener (CloseSettings);
         foreach(Button button in deleteAccountPanelCloseButtons)
@@ -70,6 +75,7 @@ public class PopUps_VC : MonoBehaviour
         levelUpPanelCloseButton.onClick.AddListener (CloseLevelUp);
         energyInventoryPanelCloseButton.onClick.AddListener (OpenEnergyInventory);
         energyTimePanelButton.onClick.AddListener (OpenCloseEnergyTimeLeftPanel);
+        viralPopUpCloseButton.onClick.AddListener(CloseViralPopUp);
 
         mainCam = Camera.main;
 
@@ -96,6 +102,19 @@ public class PopUps_VC : MonoBehaviour
         defaultDisclaimerPanelPopUp.SetActive (true);
         StartCoroutine(OpenPanelAnimation (defaultDisclaimerPanelPopUp));
         defaultDisclaimerText.text = signal.message;
+    }
+    void OpenViralPopUp()
+    {
+        audioManager.PlaySound(soundsHolder.viralPopUp, AudioType.Effect);
+
+        popUpsBlockBackgroundPanel.SetActive(true);
+        viralPopUp.SetActive(true);
+        StartCoroutine(OpenPanelAnimation(defaultDisclaimerPanelPopUp));
+    }
+    void CloseViralPopUp()
+    {
+        popUpsBlockBackgroundPanel.SetActive(false);
+        viralPopUp.SetActive(false);
     }
     IEnumerator OpenPanelAnimation (GameObject panel)
     {
@@ -231,7 +250,7 @@ public class PopUps_VC : MonoBehaviour
         audioManager.PlaySound(soundsHolder.popUp, AudioType.Effect);
         adsDefaultPanelPopUp.SetActive (true);
         StartCoroutine (OpenPanelAnimation (adsDefaultPanelPopUp));
-        adsPanelText.text = signal.message;
+
     }
     void CloseAdsDefaultPanel ()
     {
