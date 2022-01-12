@@ -14675,13 +14675,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7546219432122397992, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_fontSize
+      value: 46.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546219432122397992, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 46.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546219432122397992, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7546219432228174107, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 132.85999
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432287469730, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 2.5020447
+      value: 2.5022888
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432366731719, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_SizeDelta.y
@@ -14734,6 +14746,10 @@ PrefabInstance:
     - target: {fileID: 7546219432522308813, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -43.565002
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546219432638118192, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432747538632, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_Name
@@ -72653,8 +72669,8 @@ MonoBehaviour:
   nameText: {fileID: 388017929}
   rarenessText: {fileID: 388017928}
   priceText: {fileID: 388017935}
-  hcCoin: {fileID: 21300000, guid: f34fc83b3a07ad74788577dd04a2112f, type: 3}
-  scCoin: {fileID: 21300000, guid: bd83661d46bc3754fb2e5322b2dcfb9f, type: 3}
+  hcCoin: {fileID: 21300000, guid: abafc68cda8ec4a40a0a32fa1a09896c, type: 3}
+  scCoin: {fileID: 21300000, guid: 46d407f095e816c41a4729a4f15723d6, type: 3}
   buyButton: {fileID: 388017936}
   softCurrencyPanel: {fileID: 388017939}
   energyPanel: {fileID: 388017938}
