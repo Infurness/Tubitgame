@@ -109,7 +109,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         feetSlot.SetButtonAction(OnFeetButtonClicked);
         inventoryButtons = new List<InventoryButton>();
         rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
-        signalBus.Subscribe<OnCharacterAvatarChanged>(UpdateItemsEffectText );
+    //    signalBus.Subscribe<OnCharacterAvatarChanged>(UpdateItemsEffectText );
     }
 
     void Start()
@@ -132,7 +132,7 @@ public class CaharacterInventory_VC : MonoBehaviour
         playerName.text = PlayerDataManager.Instance.GetPlayerName().ToUpper();
         subscribersNum.text = PlayerDataManager.Instance.GetSubscribers().ToString();
         uploadedVideosNum.text = PlayerDataManager.Instance.GetPlayerTotalVideos().ToString();
-        UpdateItemsEffectText();
+       // UpdateItemsEffectText();
 
 
     }
@@ -192,44 +192,44 @@ public class CaharacterInventory_VC : MonoBehaviour
         return rarenessSprites[(int) rareness];
     }
 
-    void UpdateItemsEffectText()
-    {
-        var themesNames = Enum.GetNames(typeof(ThemeType));
-        var themesBounses= themesNames.ToDictionary(s=>s,k=>0f);
-        
-        var equippedItems = m_PlayerInventory.EquippedAvatar().GetThemesEffectItems();
-        foreach (var equippedItem in equippedItems)
-        {
-            if (equippedItem!=null)
-            {
-                foreach (var themeEffect in equippedItem.affectedTheme)
-                {
-                
-                    themesBounses[themeEffect.ThemeType.ToString()] += themeEffect.themePopularityFactor;
-
-                
-                }    
-            }
-               
-        }
-
-        for (int i = 0; i < effectsPanel.transform.childCount; i++)
-        {
-            Destroy(effectsPanel.transform.GetChild(i).gameObject);
-        }
-        foreach (var themeBouns in themesBounses)
-        {
-            if (themeBouns.Value == 0)
-            {
-                continue;
-            }
-
-            var cell = Instantiate(effectCellPrefab, effectsPanel.transform);
-            var value = themeBouns.Value * 100;
-            
-                cell.SetText(themeBouns.Key + "  : " + (int)value + "%" + "\n");
-        }
-    }
+    // void UpdateItemsEffectText()
+    // {
+    //     var themesNames = Enum.GetNames(typeof(ThemeType));
+    //     var themesBounses= themesNames.ToDictionary(s=>s,k=>0f);
+    //     
+    //     var equippedItems = m_PlayerInventory.EquippedAvatar().GetThemesEffectItems();
+    //     foreach (var equippedItem in equippedItems)
+    //     {
+    //         if (equippedItem!=null)
+    //         {
+    //             foreach (var themeEffect in equippedItem.affectedTheme)
+    //             {
+    //             
+    //                 themesBounses[themeEffect.ThemeType.ToString()] += themeEffect.themePopularityFactor;
+    //
+    //             
+    //             }    
+    //         }
+    //            
+    //     }
+    //
+    //     for (int i = 0; i < effectsPanel.transform.childCount; i++)
+    //     {
+    //         Destroy(effectsPanel.transform.GetChild(i).gameObject);
+    //     }
+    //     foreach (var themeBouns in themesBounses)
+    //     {
+    //         if (themeBouns.Value == 0)
+    //         {
+    //             continue;
+    //         }
+    //
+    //         var cell = Instantiate(effectCellPrefab, effectsPanel.transform);
+    //         var value = themeBouns.Value * 100;
+    //         
+    //             cell.SetText(themeBouns.Key + "  : " + (int)value + "%" + "\n");
+    //     }
+    // }
 
     private void SetEquippedPanelData(string description,string newStats,Sprite logoSprite,string itemName,string rarenessText,Sprite rarenessSprite)
     {
