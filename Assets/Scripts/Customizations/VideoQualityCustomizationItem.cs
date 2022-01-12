@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Customizations
 {
@@ -7,6 +8,7 @@ namespace Customizations
     public class VideoQualityCustomizationItem : ScriptableObject
     {
         public Sprite itemSprite;
+        public AssetReference itemPrefab;
         public VideoQualityItemType videoQualityItemType;
         [Range(0.1f,0.3f)]
         public float videoQualityBonus;
@@ -19,6 +21,7 @@ namespace Customizations
         public PriceType PriceType;
         public uint HCPrice;
         public uint SCPrice;
+        public ItemSlotType SlotType;
     }
 
     public enum VideoQualityItemType

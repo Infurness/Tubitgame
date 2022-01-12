@@ -16,7 +16,7 @@ public class EquipHouseTriggerButton : MonoBehaviour,IPointerClickHandler
             print("House Visable");
          
             spriteRenderer = GetComponent<SpriteRenderer>();
-            if (playerInventory.RealEstateItems.Exists((item => item.name==houseName)))
+            if (playerInventory.OwnedRealEstateItems.Exists((item => item.name==houseName)))
             {
                 spriteRenderer.sortingOrder = 50;
             }
@@ -25,7 +25,7 @@ public class EquipHouseTriggerButton : MonoBehaviour,IPointerClickHandler
         public void OnPointerClick(PointerEventData eventData)
         {
             print(houseName+" Equipped");
-            var houseItem = playerInventory.RealEstateItems.Find(item => item.name == houseName);
+            var houseItem = playerInventory.OwnedRealEstateItems.Find(item => item.name == houseName);
             if (houseItem)
             {
              

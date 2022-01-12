@@ -147,6 +147,7 @@ public class RoomInventory_VC : MonoBehaviour
  
         roomInventoryButtons = new List<InventoryButton>();
         roomInventoryPanel.OnEnableAsObservable().Subscribe((s) => CreateInventoryButtons());
+        roomInventoryPanel.OnDisableAsObservable().Subscribe((s) => signalBus.Fire<DiscardRoomLayoutSignal>());
         saveButton.onClick.AddListener(SaveRoomLayout);
         discardButton.onClick.AddListener(DiscardRoomLayout);
         rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
@@ -176,7 +177,7 @@ public class RoomInventory_VC : MonoBehaviour
             Destroy(inventoryButton.gameObject);
         }
         roomInventoryButtons.Clear();
-        foreach (var roomItem in playerInventory.RoomThemeEffectItems)
+        foreach (var roomItem in playerInventory.OwnedRoomThemeEffectItems)
         {
             string type;
             switch (roomItem)
@@ -212,7 +213,7 @@ public class RoomInventory_VC : MonoBehaviour
             
             roomInventoryButtons.Add(bt);
         }
-        foreach (var videoQualityRoomItem in playerInventory.VideoQualityRoomItems)
+        foreach (var videoQualityRoomItem in playerInventory.OwnedVideoQualityRoomItems)
         {
             string type;
             switch (videoQualityRoomItem.videoQualityItemType)

@@ -1,12 +1,14 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Customizations
 {
     public class ThemeCustomizationItem : ScriptableObject
     {
         public Sprite sprite;
+        public AssetReference itemPrefab;
         public CustomizationThemeEffect[] affectedTheme;
         public Rareness rareness = Rareness.Common;
         [TextArea] public string descriptionText;
@@ -17,7 +19,8 @@ namespace Customizations
         public PriceType PriceType;
         public uint HCPrice;
         public uint SCPrice;
-        
+        public ItemSlotType SlotType;
+
     }
 
 
