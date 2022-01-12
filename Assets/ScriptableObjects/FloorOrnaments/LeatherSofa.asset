@@ -10,13 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b716d47a6af4d498369f2a2c88ee040, type: 3}
-  m_Name: Sofa 1
+  m_Name: LeatherSofa
   m_EditorClassIdentifier: 
-  sprite: {fileID: 7591498909272817060, guid: ce0a398630a76044fa757441f3e6f3ec, type: 3}
+  sprite: {fileID: 3796048408491245175, guid: 3d786158e0a79644bbc7ebe12afffb48, type: 3}
+  itemPrefab:
+    m_AssetGUID: a8515044e3d25bf4bb1686000269f08f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 4
     themePopularityFactor: 0.01
   rareness: 2
   descriptionText: 
   newStatsText: 
-  floorOrnamentType: 2
+  Owned: 1
+  PriceType: 0
+  HCPrice: 0
+  SCPrice: 0
+  SlotType: 3

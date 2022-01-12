@@ -7,6 +7,6 @@ using System.Collections.Generic;
 [System.Serializable]
 public class RoomLayout
 {
-    public List<string> equippedThemeITems;
-    public List<string> equippedVCITems;
+    public List<string> equippedThemeITems=new List<string>();
+    public List<string> equippedVCITems=new List<string>();
 }

@@ -16,7 +16,28 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e4d6febe3b0776845b92f60cb4028359
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: b71b2d299f8c4fb498ef0df3db7dd98b
+    m_Address: Assets/ScriptableObjects/RoomObjects
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - roomtheme
+    - furniture
+  - m_GUID: 2b0d40cfeac46714a94a00cdcfcd968a
+    m_Address: Assets/ScriptableObjects/WallOrnaments
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - roomtheme
+    - furniture
+  - m_GUID: 0be9e292c20e17b47aa872ab98aa584e
+    m_Address: Assets/ScriptableObjects/FloorOrnaments
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    - roomtheme
+    - furniture
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1bc69c4ea8e0c9e4483baab6cc5eb4ff, type: 2}
   m_SchemaSet:

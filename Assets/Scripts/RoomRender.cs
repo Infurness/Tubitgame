@@ -17,11 +17,18 @@ public class RoomRender : MonoBehaviour
     [Inject] private PlayerInventory PlayerInventory;
 
  
-    [SerializeField] private RoomLayout defaultRoomLayout;
-    [SerializeField] private RoomLayout currentRoomLayout;
+    [SerializeField] private RoomLayout currentRoomLayout=null;
     private RoomLayout tempLayout;
     [SerializeField] private Transform roomTransform;
-    private List<RoomObjectData> currentRoomObjects; 
+    private List<RoomObjectData> currentRoomObjects;
+
+    private void Awake()
+    {
+        currentRoomObjects = new List<RoomObjectData>();
+        tempLayout = currentRoomLayout;
+        roomTransform = transform;
+        currentRoomLayout = PlayerInventory.GetRoomLayout();
+    }
 
     void Start()
     {
@@ -36,9 +43,7 @@ public class RoomRender : MonoBehaviour
             gameObject.SetActive(false);
             gameObject.SetActive(true);
         }));
-        tempLayout = currentRoomLayout;
-        currentRoomObjects = new List<RoomObjectData>();
-        roomTransform = transform;
+   
     }
 
     private void OnEnable()
@@ -46,12 +51,14 @@ public class RoomRender : MonoBehaviour
      
         PopulateRoomLayout();
         print("Room Enabled");
-        
+        tempLayout = currentRoomLayout;
+
     }
 
     async void  PopulateRoomLayout()
     {
-           currentRoomObjects.ForEach((go => Destroy(go) ));
+           currentRoomObjects.ForEach((go => Destroy(go.gameObject) ));
+           currentRoomObjects.Clear();
         foreach (var themeCustomizationItem in PlayerInventory.EquippedThemeEffectRoomItems)
         {
             var loadOp = themeCustomizationItem.itemPrefab.InstantiateAsync(roomTransform);
@@ -62,9 +69,13 @@ public class RoomRender : MonoBehaviour
 
         foreach (var vqItem in PlayerInventory.EquippedVideoQualityRoomItems)
         {
-            var loadOp = vqItem.itemPrefab.InstantiateAsync(roomTransform);
-            await loadOp.Task;
-            currentRoomObjects.Add(loadOp.Result.GetComponent<RoomObjectData>());
+            if (vqItem!=null)
+            {
+                var loadOp = vqItem.itemPrefab.InstantiateAsync(roomTransform);
+                await loadOp.Task;
+                currentRoomObjects.Add(loadOp.Result.GetComponent<RoomObjectData>());  
+            }
+          
         }
     }
 
@@ -83,6 +94,7 @@ public class RoomRender : MonoBehaviour
         await loadOp.Task;
         var go = loadOp.Result;
         var objecdata = go.GetComponent<RoomObjectData>();
+        currentRoomObjects.Add(objecdata);
         tempLayout.equippedVCITems.Add(objecdata.assetName);
         
     }
@@ -93,13 +105,16 @@ public class RoomRender : MonoBehaviour
         var obj = currentRoomObjects.Find(ob => ob.slotItemType == item.SlotType);
         if (obj)
         {
+            print("Old Item Destroied");
             tempLayout.equippedThemeITems.Remove(obj.assetName);
             Destroy(obj.gameObject);
+            currentRoomObjects.Remove(obj);
         }
         var loadOp = Addressables.InstantiateAsync(item.itemPrefab,roomTransform);
         await loadOp.Task;
         var go = loadOp.Result;
         var objecdata = go.GetComponent<RoomObjectData>();
+        currentRoomObjects.Add(objecdata);
         tempLayout.equippedThemeITems.Add(objecdata.assetName);
     }
 

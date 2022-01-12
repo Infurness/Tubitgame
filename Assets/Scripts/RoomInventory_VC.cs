@@ -146,6 +146,7 @@ public class RoomInventory_VC : MonoBehaviour
  
         roomInventoryButtons = new List<InventoryButton>();
         roomInventoryPanel.OnEnableAsObservable().Subscribe((s) => CreateInventoryButtons());
+        roomInventoryPanel.OnDisableAsObservable().Subscribe((s) => signalBus.Fire<DiscardRoomLayoutSignal>());
         saveButton.onClick.AddListener(SaveRoomLayout);
         discardButton.onClick.AddListener(DiscardRoomLayout);
         rarenessSprites = new List<Sprite>() {commonSprite, uncommonSprite, rareSprite};
