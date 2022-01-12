@@ -93,7 +93,6 @@ public class ThemeGraph_VC : MonoBehaviour
                 }
                 i++;
             }
-            Debug.Log ("ReDraw Graph");
         }
     }
 
