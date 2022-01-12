@@ -89,7 +89,7 @@ public class CaharacterInventory_VC : MonoBehaviour
                 inventoryTabView.gameObject.SetActive(false);
                 infoPanel.gameObject.SetActive(true);
                 characterSlotsPanel.gameObject.SetActive(true);
-                themeEffectPanel.gameObject.SetActive(true);
+             //   themeEffectPanel.gameObject.SetActive(true);
                 OnSlotClosed();
                 
                 SetHomeButton();
@@ -267,7 +267,7 @@ public class CaharacterInventory_VC : MonoBehaviour
     {
         inventoryTabView.gameObject.SetActive(true);
         infoPanel.SetActive(false);
-        themeEffectPanel.SetActive(false);
+      //  themeEffectPanel.SetActive(false);
         characterPreview.SetActive(true);
         slotsPanel.SetActive(false);
     }
@@ -276,7 +276,7 @@ public class CaharacterInventory_VC : MonoBehaviour
     {
         inventoryTabView.gameObject.SetActive(false);
         infoPanel.SetActive(true);
-        themeEffectPanel.SetActive(true);
+        //themeEffectPanel.SetActive(true);
         characterPreview.SetActive(true);
         equipPanel.gameObject.SetActive(false);
         selectPanel.SetActive(false);
