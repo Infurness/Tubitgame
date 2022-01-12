@@ -186,3 +186,16 @@ public class ChangeRestStateSignal
 {
 
 }
+
+public class SelectThemeInGraphSignal
+{
+    public ThemeType themeType;
+}
+public class SetLineColorInGraphSignal
+{
+    public ThemeType themeType;
+}
+public class ResetLineColorInGraphSignal
+{
+
+}
