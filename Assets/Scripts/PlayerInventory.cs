@@ -215,7 +215,7 @@ public class PlayerInventory : MonoBehaviour
             
             foreach (var realStateItemName in playerInventoryAddressedData.ownedRealEstateItemsNames)
             {
-                var item = vcItems.Find((item => (item.name == realStateItemName)|| item.Owned));
+                var item = vcItems.Find((item => (item.name == realStateItemName)));
                 ownedRealEstateItems.Add(item);
 
             }
