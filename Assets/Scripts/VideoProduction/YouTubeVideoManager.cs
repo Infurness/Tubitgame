@@ -89,6 +89,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.bonusLikes = videoViews / 20; 
         newVideo.bonusComments = videoViews / 100;
         newVideo.bonusLifeTimeHours = 24 * 10; //10 days
+        newVideo.daysSinceLastUpdate = 0;
 
         playerDataManager.AddVideo (newVideo);
         DeleteUnpublishedVideo (newVideo.name);
