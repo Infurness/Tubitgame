@@ -152,6 +152,7 @@ public class PlayerInventory : MonoBehaviour
             {
                 if (item.Owned || playerInventoryAddressedData.ownedRoomThemeEffectItemsNames.Contains(item.name))
                 {
+                    item.Owned = true;
                     ownedRoomThemeEffectItems.Add(item);
 
                 }
@@ -195,6 +196,7 @@ public class PlayerInventory : MonoBehaviour
             {
                 if (item.Owned || playerInventoryAddressedData.ownedVideoQualityItemsNames.Contains(item.name))
                 {
+                    item.Owned = true;
                     ownedVideoQualityRoomItems.Add(item);
                 }
 
@@ -230,6 +232,7 @@ public class PlayerInventory : MonoBehaviour
             foreach (var realStateItemName in playerInventoryAddressedData.ownedRealEstateItemsNames)
             {
                 var item = vcItems.Find((item => (item.name == realStateItemName)));
+                item.Owned = true;
                 ownedRealEstateItems.Add(item);
 
             }
@@ -262,6 +265,7 @@ public class PlayerInventory : MonoBehaviour
                 var car = cars.Find((c => c.name == ownedCarName));
                 if (car)
                 {
+                    car.Owned = true;
                     ownedCars.Add(car);
                 }
             }

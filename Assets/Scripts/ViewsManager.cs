@@ -29,6 +29,7 @@ using Zenject;
                     {
                         visibility =false
                     }));
+            
             signalBus.Subscribe<EquipCarSignal>((signal) =>
             {
                 EqipCar(signal.car);
@@ -38,8 +39,12 @@ using Zenject;
 
         void EqipCar(Car car)
         {
-            carSpriteRenderer.sprite = car.carSprite;
-            playerInventory.SetEquippedCar(car);
+            if (car)
+            {
+                carSpriteRenderer.sprite = car.carSprite;
+                playerInventory.SetEquippedCar(car);
+            }
+       
         }
         void EquipHouse(RealEstateCustomizationItem realEstateCustomizationItem)
         {

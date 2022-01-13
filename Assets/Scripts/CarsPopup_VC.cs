@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Customizations;
+using UniRx.Triggers;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -29,7 +31,8 @@ public class CarsPopup_VC : MonoBehaviour
         popupButton.onClick.AddListener((() =>
         {
             carsPanel.gameObject.SetActive(true);
-            popupButton.gameObject.SetActive(false);
+         //   popupButton.gameObject.SetActive(false);
+            PopulateCarsButtons();
         }));
        selectButton.onClick.AddListener((() =>
        {
@@ -37,15 +40,16 @@ public class CarsPopup_VC : MonoBehaviour
            {
                car = selectedCar
            });
-       }));    
+       }));
+
+       carsPanel.OnEnableAsObservable().Subscribe((s) =>
+       {
+           selectButton.interactable = false;
+
+       });
     }
 
-    private void OnEnable()
-    {
-        selectButton.interactable = false;
-    }
-
-
+    
     void PopulateCarsButtons()
     {
         for (int i = 0; i < buttonsRoot.transform.childCount; i++)
@@ -57,7 +61,7 @@ public class CarsPopup_VC : MonoBehaviour
         foreach (var car in cars)
         {
           var bt=  Instantiate(carInventoryButton, buttonsRoot.transform);
-          bt.SetButtonData(car.carSprite,car.name, () =>
+          bt.SetButtonData(car.carSprite,car.name.ToString(), () =>
           {
               selectedCar = car;
               selectButton.interactable = true;

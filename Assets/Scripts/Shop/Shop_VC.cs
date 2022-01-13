@@ -25,8 +25,8 @@ public class Shop_VC : MonoBehaviour
         furnitureButton,
         equipmentsButton,
         currenciesButton,
-        realEstateButton;
-
+        realEstateButton,
+        vehiclesButton;
     [SerializeField] private GameObject itemsScrollView, offersButtonsScrollView, offerRedeemPanel;
 
     [SerializeField] private ShopItemSlot shopItemButton;
@@ -70,6 +70,7 @@ public class Shop_VC : MonoBehaviour
         equipmentsButton.onClick.AddListener(OpenEquipmentsPanel);
         realEstateButton.onClick.AddListener(OpenRealEstatePanel);
         currenciesButton.onClick.AddListener(OpenCurrenciesPanel);
+        vehiclesButton.onClick.AddListener(OpenVehiclesPanel);
         shopPanel.OnEnableAsObservable().Subscribe((unit =>
         {
             offersButton.onClick.Invoke();
@@ -277,6 +278,7 @@ public class Shop_VC : MonoBehaviour
         itemsPanel.gameObject.SetActive(false);
         offersPanel.gameObject.SetActive(false);
         realEstatePanel.gameObject.SetActive(true);
+        
         if (realStateButtonsContainer.transform.childCount > 1)
             return;
         List<RealEstateCustomizationItem> houses = shop.Houses;
@@ -286,6 +288,55 @@ public class Shop_VC : MonoBehaviour
             GameObject shopButton = Instantiate(realStateButton, realStateButtonsContainer.transform);
             shopButton.GetComponentInChildren<TMP_Text>().text = item.name;            
             shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => SetHouseDisplay(item));          
+        }
+    }
+
+    void OpenVehiclesPanel()
+    {
+        ClearItemsPanel();
+
+        offersPanel.gameObject.SetActive(false);
+        realEstatePanel.gameObject.SetActive(false);
+        itemsPanel.gameObject.SetActive(true);
+        currenciesPanel.SetActive(false);
+        
+        var cars = shop.Cars;
+        ;
+        foreach (var item in cars)
+        {
+            if (!item.Owned)
+            {
+                var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
+
+                switch (item.priceType)
+                {
+                    case PriceType.Free:
+                        Destroy(shopButton.gameObject);
+
+                        break;
+                    case PriceType.SC:
+                        shopButton.SetSCBuyButton(item.SCPrice, GetRarenessSpriteByIndex(item.rareness),
+                            item.carSprite,
+                            (() => BuyCar(item, PriceType.SC)));
+
+                        break;
+                    case PriceType.HC:
+                        shopButton.SetHCBuyButton(item.HCPrice, GetRarenessSpriteByIndex(item.rareness),
+                            item.carSprite,
+                            () => BuyCar(item, PriceType.HC));
+
+                        break;
+                    case PriceType.Exchangeable:
+                        shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
+                            GetRarenessSpriteByIndex(item.rareness), item.carSprite,
+                            (() => BuyCar(item, PriceType.SC)),
+                            (() => BuyCar(item, PriceType.HC)));
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
         }
     }
 
@@ -514,6 +565,54 @@ public class Shop_VC : MonoBehaviour
                         _signalBus.Fire<BuyItemSoundSignal>();
                     });
                 });
+                break;
+
+        }
+    }
+
+    void BuyCar(Car car,PriceType priceType)
+    {
+        SetBuyPanelData(car.name, car.rareness, "", "", car.carSprite);
+        buyButton.onClick.RemoveAllListeners();
+        switch (priceType)
+        {
+
+            case PriceType.SC:
+                priceText.text = car.SCPrice.ToString();
+                coinImage.sprite = scCoin;
+                buyButton.onClick.AddListener((() =>
+                {
+                    playerDataManager.ConsumeSoftCurrency((ulong) car.SCPrice, () =>
+                    {
+                        car.Owned = true;
+
+                        playerInventory.AddCar(car);
+                        buyPanel.gameObject.SetActive(false);
+                        OpenVehiclesPanel();
+                        _signalBus.Fire<BuyItemSoundSignal>();
+                    });
+                }));
+
+
+                break;
+            case PriceType.HC:
+                priceText.text = car.HCPrice.ToString();
+                coinImage.sprite = hcCoin;
+
+                buyButton.onClick.AddListener(() =>
+                {
+                    playerDataManager.ConsumeHardCurrency((ulong) car.HCPrice, () =>
+                    {
+                        car.Owned = true;
+                        playerInventory.AddCar(car);
+                        buyPanel.gameObject.SetActive(false);
+                        OpenVehiclesPanel();
+
+                        _signalBus.Fire<BuyItemSoundSignal>();
+                    });
+                });
+
+
                 break;
 
         }
