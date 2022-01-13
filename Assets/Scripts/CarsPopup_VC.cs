@@ -1,18 +1,76 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Customizations;
 using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
 
 public class CarsPopup_VC : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private Canvas carsCanvasPopUp;
+    [SerializeField] private Button popupButton;
+    [SerializeField] private GameObject carsPanel;
+    [Inject] private SignalBus signalBus;
+
+    [Inject] private PlayerInventory playerInventory;
+    [SerializeField] private CarInventoryButton carInventoryButton;
+    [SerializeField] private GameObject buttonsRoot;
+    [SerializeField] private Button selectButton;
+    private Car selectedCar;
     void Start()
     {
+        signalBus.Subscribe<SetCarsCanvasButtonVisibility>(signal =>
+        {
+            SetButtonVisibility(signal.visibility);
+        } );
         
+        
+        popupButton.onClick.AddListener((() =>
+        {
+            carsPanel.gameObject.SetActive(true);
+            popupButton.gameObject.SetActive(false);
+        }));
+       selectButton.onClick.AddListener((() =>
+       {
+           signalBus.Fire(new EquipCarSignal()
+           {
+               car = selectedCar
+           });
+       }));    
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        selectButton.interactable = false;
     }
+
+
+    void PopulateCarsButtons()
+    {
+        for (int i = 0; i < buttonsRoot.transform.childCount; i++)
+        {
+            Destroy(buttonsRoot.transform.GetChild(i).gameObject);
+        }
+        var cars = playerInventory.OwnedCars;
+        
+        foreach (var car in cars)
+        {
+          var bt=  Instantiate(carInventoryButton, buttonsRoot.transform);
+          bt.SetButtonData(car.carSprite,car.name, () =>
+          {
+              selectedCar = car;
+              selectButton.interactable = true;
+          });
+        }
+    }
+    void SetButtonVisibility(bool state)
+    {
+        print("Street View Changed "+state);
+        popupButton.gameObject.SetActive(state);
+        carsCanvasPopUp.gameObject.SetActive(state);
+
+    }
+
+  
 }

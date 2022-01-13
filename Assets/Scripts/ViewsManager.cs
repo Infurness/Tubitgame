@@ -9,6 +9,7 @@ using Zenject;
     {
         [SerializeField] private SpriteRenderer houseCloseView;
         [SerializeField] private SpriteRenderer houseStreetView;
+        [SerializeField] private SpriteRenderer carSpriteRenderer;
         [Inject] private PlayerInventory playerInventory;
         [Inject] private SignalBus signalBus;
         private void Start()
@@ -18,14 +19,33 @@ using Zenject;
             {
                 EquipHouse(signal.realEstateCustomizationItem);
             });
-          //  houseStreetView.gameObject.OnBecameVisibleAsObservable().Subscribe()
+            houseStreetView.gameObject.OnBecameVisibleAsObservable()
+                .Subscribe((s) => signalBus.Fire(new SetCarsCanvasButtonVisibility()
+                {
+                    visibility =true
+                }));
+            houseStreetView.gameObject.OnBecameInvisibleAsObservable().
+                Subscribe((s) => signalBus.Fire(new SetCarsCanvasButtonVisibility()
+                    {
+                        visibility =false
+                    }));
+            signalBus.Subscribe<EquipCarSignal>((signal) =>
+            {
+                EqipCar(signal.car);
+            });
+            EqipCar(playerInventory.EquippedCar);
         }
 
-        
+        void EqipCar(Car car)
+        {
+            carSpriteRenderer.sprite = car.carSprite;
+            playerInventory.SetEquippedCar(car);
+        }
         void EquipHouse(RealEstateCustomizationItem realEstateCustomizationItem)
         {
             houseCloseView.sprite = realEstateCustomizationItem.houseCloseSpite;
             houseStreetView.sprite = realEstateCustomizationItem.streetViewSprite;
+            carSpriteRenderer.transform.localPosition = realEstateCustomizationItem.garagePosition;
             playerInventory.SetEquippedHouse(realEstateCustomizationItem);
 
         }

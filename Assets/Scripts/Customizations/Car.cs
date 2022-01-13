@@ -6,7 +6,8 @@ namespace Customizations
     public class Car : ScriptableObject
     {
         public Sprite carSprite;
-        public int price;
+        public int HCPrice;
+        public int SCPrice;
         public PriceType priceType;
     }
 
