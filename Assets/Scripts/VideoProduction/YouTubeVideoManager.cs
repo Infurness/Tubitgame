@@ -70,6 +70,26 @@ public class YouTubeVideoManager : MonoBehaviour
         float qualityNumber = (float)newVideo.selectedQuality / (float) Enum.GetValues (typeof(VideoQuality)).Length * 2;
         newVideo.lifeTimeHours = (float)(algorithmManager.GetVideoLifetime (videoViews, qualityNumber, 0.9f))/3600f; //Fromseconds to hours
         newVideo.lastUpdateTime = GameClock.Instance.Now;
+
+        ulong currentTotalSubs = playerDataManager.GetSubscribers();
+        int percentage = 14;
+        if (currentTotalSubs < 1000)
+            percentage = 20;
+        else if (currentTotalSubs < 100000)
+            percentage = 18;
+        else if (currentTotalSubs < 1000000)
+            percentage = 16;
+        else if (currentTotalSubs < 10000000)
+            percentage = 15;
+        else
+            percentage = 14;
+
+        newVideo.bonusViews = videoViews / 100 * (ulong)percentage;
+        newVideo.bonusSubscribers = videoViews / 50;
+        newVideo.bonusLikes = videoViews / 20; 
+        newVideo.bonusComments = videoViews / 100;
+        newVideo.bonusLifeTimeHours = 24 * 10; //10 days
+
         playerDataManager.AddVideo (newVideo);
         DeleteUnpublishedVideo (newVideo.name);
 
