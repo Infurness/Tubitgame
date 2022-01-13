@@ -23,6 +23,14 @@ public class Video
     public bool IsMiningCompleted=false;
     public DateTime lastUpdateTime;
     
+    //per day quantities
+    public ulong bonusViews;
+    public ulong bonusSubscribers;
+    public ulong bonusLikes;
+    public ulong bonusComments;
+    public float bonusLifeTimeHours;
+    public DateTime finishMinningDateTime;
+    public bool isBonusStatsCompleted = false;
     public DateTime CreateDateTime
     {
         get;

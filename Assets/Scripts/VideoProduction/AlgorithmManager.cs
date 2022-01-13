@@ -129,11 +129,35 @@ public class AlgorithmManager : MonoBehaviour
                     if (completePercentage==1.0)
                     {
                         video.IsMiningCompleted = true;
+                        video.finishMinningDateTime = GameClock.Instance.Now;
                     }
                 }
-                else
+                else if(video.isBonusStatsCompleted)
                 {
+                    double dt = (double)(video.lastUpdateTime.Subtract(video.finishMinningDateTime)).TotalMinutes;
+                    //print("dt mins = "+dt);
+
+                    double completePercentage = Mathf.Min(((float)dt / (video.bonusLifeTimeHours * 60.0f)), 1.0f);
+                    //print("Complete percentage "+ completePercentage);
+
+                    ulong previousViews = video.views;
+                    video.views = (ulong)(video.bonusViews * completePercentage);
+                    signalBus.Fire<AddViewsForExperienceSignal>(new AddViewsForExperienceSignal() { views = video.views - previousViews });//Add the views gained this step for experience points calculation
+
+                    video.likes = (ulong)(video.bonusLikes * completePercentage);
+                    video.comments = (ulong)(video.bonusComments * completePercentage); 
+
+                    ulong previousSubs = video.newSubscribers;
+                    video.newSubscribers = (ulong)(video.bonusSubscribers * completePercentage);
+                    signalBus.Fire<AddSubsForExperienceSignal>(new AddSubsForExperienceSignal() { subs = video.newSubscribers - previousSubs });//Add the subs gained this step for experience points calculation
+
                     subscribers += video.newSubscribers;
+
+                    video.lastUpdateTime = GameClock.Instance.Now;
+                    if (completePercentage == 1.0)
+                    {
+                        video.isBonusStatsCompleted = true;
+                    }
                 }
             }
             signalBus.TryFire<OnVideosStatsUpdatedSignal>();
