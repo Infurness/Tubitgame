@@ -18,15 +18,15 @@ public class Shop : MonoBehaviour
     public List<RealEstateCustomizationItem> Houses => houses;
     public List<ConsumableItem> ConsumableItems => consumableItems;
 
-    
-    
+    public List<Car> Cars => cars;
+
 
     [SerializeField] private List<ThemeCustomizationItem> clothes;
     [SerializeField] private List<ThemeCustomizationItem> furniture;
     [SerializeField] private List<VideoQualityCustomizationItem> equipments;
     [SerializeField] private List<RealEstateCustomizationItem> houses;
     [SerializeField] private List<ConsumableItem> consumableItems;
-
+    [SerializeField] private List<Car> cars;
 
     void Start()
     {
@@ -35,6 +35,8 @@ public class Shop : MonoBehaviour
         LoadFurniture();
         LoadHouses();
         LoadConsumablesItems();
+        LoadCars();
+        
     }
     
     async void  LoadEquipments()
@@ -75,5 +77,12 @@ public class Shop : MonoBehaviour
         var loadOP = Addressables.LoadAssetsAsync<ConsumableItem>("consumable", null);
         await loadOP.Task;
         consumableItems =(List<ConsumableItem>) loadOP.Result;
+    }
+
+    async void LoadCars()
+    {
+        var loadOp = Addressables.LoadAssetsAsync<Car>("car", null);
+        await loadOp.Task;
+        cars = (List<Car>) loadOp.Result;
     }
 }
