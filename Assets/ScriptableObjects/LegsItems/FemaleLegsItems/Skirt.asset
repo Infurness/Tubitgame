@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: Skirt
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: f70bb01fe96445040af16037f6faec02, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0.419
@@ -21,10 +26,11 @@ MonoBehaviour:
   rareness: 2
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 2
   HCPrice: 25
   SCPrice: 0
+  SlotType: 0
   LegsType: 0
   GenderItemType: 1
   LegsVariants:

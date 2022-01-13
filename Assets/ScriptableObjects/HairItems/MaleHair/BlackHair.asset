@@ -13,16 +13,22 @@ MonoBehaviour:
   m_Name: BlackHair
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 31fb74d83758e7e4e93b36d241e0e6b6, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 8
     themePopularityFactor: 0.589
   rareness: 2
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 2
   HCPrice: 50
   SCPrice: 0
+  SlotType: 0
   hairItemType: 0
   GenderItemType: 0
   HairVariants: []

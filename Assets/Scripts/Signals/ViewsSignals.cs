@@ -21,3 +21,13 @@ public class HousePopUp
 {
     public RealEstateCustomizationItem realEstateCustomizationItem;
 }
+
+public class SetCarsCanvasButtonVisibility
+{
+    public bool visibility = false;
+}
+
+public class EquipCarSignal
+{
+    public Car car;
+}
