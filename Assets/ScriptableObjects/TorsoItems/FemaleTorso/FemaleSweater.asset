@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: FemaleSweater
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: bd627ba090f16f74583678efe2032b9d, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0
@@ -21,10 +26,11 @@ MonoBehaviour:
   rareness: 1
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 2
   HCPrice: 50
   SCPrice: 0
+  SlotType: 0
   TorsoItemType: 1
   GenderItemType: 1
   TorsoVariants:

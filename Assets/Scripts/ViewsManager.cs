@@ -1,5 +1,7 @@
 ﻿using System;
 using Customizations;
+using UniRx.Triggers;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -16,8 +18,10 @@ using Zenject;
             {
                 EquipHouse(signal.realEstateCustomizationItem);
             });
+          //  houseStreetView.gameObject.OnBecameVisibleAsObservable().Subscribe()
         }
 
+        
         void EquipHouse(RealEstateCustomizationItem realEstateCustomizationItem)
         {
             houseCloseView.sprite = realEstateCustomizationItem.houseCloseSpite;
@@ -25,4 +29,6 @@ using Zenject;
             playerInventory.SetEquippedHouse(realEstateCustomizationItem);
 
         }
+        
+        
     }

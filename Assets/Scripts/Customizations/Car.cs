@@ -3,17 +3,12 @@
 namespace Customizations
 {
     [CreateAssetMenu(fileName = "Car", menuName = "Customizations/Car")]
-    public class Car : ThemeCustomizationItem
+    public class Car : ScriptableObject
     {
-        public CarType carType;
+        public Sprite carSprite;
+        public int price;
+        public PriceType priceType;
     }
 
-    public enum CarType
-    {
-        SportsCar,
-        PickupTruck,
-        Jeep,
-        Winnebago,
-        WienerMobile
-    }
+  
 }

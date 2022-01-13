@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: FemalePants
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: d5ef0b47e80ed3f4da3f2ae464be8550, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0.419
@@ -21,10 +26,11 @@ MonoBehaviour:
   rareness: 2
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 2
   HCPrice: 25
   SCPrice: 0
+  SlotType: 0
   LegsType: 0
   GenderItemType: 1
   LegsVariants:

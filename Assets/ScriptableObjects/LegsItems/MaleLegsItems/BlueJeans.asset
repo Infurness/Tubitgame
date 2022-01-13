@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: BlueJeans
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: c29f6f9b2954e1c4bbc14747e65b89bd, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0.419
@@ -21,10 +26,11 @@ MonoBehaviour:
   rareness: 0
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 0
   HCPrice: 0
   SCPrice: 0
+  SlotType: 0
   LegsType: 0
   GenderItemType: 0
   LegsVariants:
