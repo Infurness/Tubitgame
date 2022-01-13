@@ -22,14 +22,19 @@ public class Video
     public float lifeTimeHours;
     public bool IsMiningCompleted=false;
     public DateTime lastUpdateTime;
-    
+
     //per day quantities
+    public double lastBonusViews;
     public ulong bonusViews;
+    public double lastBonusSubscribers;
     public ulong bonusSubscribers;
+    public double lastBonusLikes;
     public ulong bonusLikes;
+    public double lastBonusComments;
     public ulong bonusComments;
     public float bonusLifeTimeHours;
     public DateTime finishMinningDateTime;
+    public int daysSinceLastUpdate;
     public bool isBonusStatsCompleted = false;
     public DateTime CreateDateTime
     {

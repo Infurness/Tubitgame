@@ -11,6 +11,8 @@ public class AlgorithmManager : MonoBehaviour
 {
     [Inject] private ThemesManager themesManager;
     [Inject] private SignalBus signalBus;
+    [Inject] private PlayerDataManager playerDataManager;
+
     private bool shouldUpdate=true;
     [SerializeField] private float updateTime = 15;
     [SerializeField] public int baseNum=800;
@@ -132,29 +134,59 @@ public class AlgorithmManager : MonoBehaviour
                         video.finishMinningDateTime = GameClock.Instance.Now;
                     }
                 }
-                else if(video.isBonusStatsCompleted)
+                else if(!video.isBonusStatsCompleted)
                 {
-                    double dt = (double)(video.lastUpdateTime.Subtract(video.finishMinningDateTime)).TotalMinutes;
-                    //print("dt mins = "+dt);
+                    int daysSinceMiningWasCompleted = (int)video.lastUpdateTime.Subtract(video.finishMinningDateTime).TotalDays;
 
-                    double completePercentage = Mathf.Min(((float)dt / (video.bonusLifeTimeHours * 60.0f)), 1.0f);
-                    //print("Complete percentage "+ completePercentage);
+                    if (video.daysSinceLastUpdate < daysSinceMiningWasCompleted) //Update bonuses
+                    {
+                        video.daysSinceLastUpdate = daysSinceMiningWasCompleted;
 
+                        ulong currentTotalSubs = playerDataManager.GetSubscribers();
+                        int percentage = 14;
+                        if (currentTotalSubs < 1000)
+                            percentage = 20;
+                        else if (currentTotalSubs < 100000)
+                            percentage = 18;
+                        else if (currentTotalSubs < 1000000)
+                            percentage = 16;
+                        else if (currentTotalSubs < 10000000)
+                            percentage = 15;
+                        else
+                            percentage = 14;
+
+                        video.bonusViews = video.views / 100 * (ulong)percentage;
+                        video.bonusSubscribers = video.views / 50;
+                        video.bonusLikes = video.views / 20;
+                        video.bonusComments = video.views / 100;
+                    }
+
+                    double hoursSinceLastUpdate = (double)GameClock.Instance.Now.Subtract(video.lastUpdateTime).TotalHours;
+                    hoursSinceLastUpdate = Mathf.Min((float)hoursSinceLastUpdate, video.bonusLifeTimeHours); // this hours cant be more than 240, since the max days for the bonus are 10, (just in case de game is reopened 1 month later)
+                    double bonusMultiplier = hoursSinceLastUpdate / 24;
+
+                    video.lastBonusViews += video.bonusViews * bonusMultiplier;
                     ulong previousViews = video.views;
-                    video.views = (ulong)(video.bonusViews * completePercentage);
+                    video.views = video.maxViews + (ulong)video.lastBonusViews;
                     signalBus.Fire<AddViewsForExperienceSignal>(new AddViewsForExperienceSignal() { views = video.views - previousViews });//Add the views gained this step for experience points calculation
 
-                    video.likes = (ulong)(video.bonusLikes * completePercentage);
-                    video.comments = (ulong)(video.bonusComments * completePercentage); 
+                    video.lastBonusLikes += video.bonusLikes * bonusMultiplier;
+                    video.likes = video.maxLikes + (ulong)video.lastBonusLikes;
 
+                    video.lastBonusComments += video.bonusComments * bonusMultiplier;
+                    video.comments = video.maxComments + (ulong)video.lastBonusComments;
+
+                    video.lastBonusSubscribers +=video.bonusSubscribers * bonusMultiplier;
                     ulong previousSubs = video.newSubscribers;
-                    video.newSubscribers = (ulong)(video.bonusSubscribers * completePercentage);
+                    video.newSubscribers = video.maxNewSubscribers + (ulong)video.lastBonusSubscribers;
                     signalBus.Fire<AddSubsForExperienceSignal>(new AddSubsForExperienceSignal() { subs = video.newSubscribers - previousSubs });//Add the subs gained this step for experience points calculation
 
                     subscribers += video.newSubscribers;
 
+                    video.videoSoftCurrency = (video.views/100) - video.collectedCurrencies;
+
                     video.lastUpdateTime = GameClock.Instance.Now;
-                    if (completePercentage == 1.0)
+                    if (daysSinceMiningWasCompleted >= video.bonusLifeTimeHours/24)
                     {
                         video.isBonusStatsCompleted = true;
                     }
