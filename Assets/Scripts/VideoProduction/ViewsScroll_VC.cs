@@ -112,15 +112,27 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         if (currentViewIndex == 2)
         {
             float movementLength = viewsHolder.position.x - streetView.position.x;
+            signalBus.Fire(new SetCarsCanvasButtonVisibility()
+            {
+                visibility = false
+            });
             StartCoroutine (SmoothSnapTo (new Vector3 (movementLength, 0, 0)));
         }
         else if (currentViewIndex == 1)
         {
+            signalBus.Fire(new SetCarsCanvasButtonVisibility()
+            {
+                visibility = true
+            });
             float movementLength = viewsHolder.position.x - houseView.position.x;
             StartCoroutine (SmoothSnapTo (new Vector3 (movementLength, 0, 0)));
         }
         else
         {
+            signalBus.Fire(new SetCarsCanvasButtonVisibility()
+            {
+                visibility = false
+            });
             StartCoroutine (SmoothSnapTo (Vector3.zero));
         }
     }

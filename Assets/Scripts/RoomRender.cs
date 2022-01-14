@@ -89,6 +89,8 @@ public class RoomRender : MonoBehaviour
         {
             tempLayout.equippedVCITems.Remove(obj.assetName);
             Destroy(obj.gameObject);
+            currentRoomObjects.Remove(obj);
+
         }
         var loadOp = Addressables.InstantiateAsync(item.itemPrefab,roomTransform);
         await loadOp.Task;
