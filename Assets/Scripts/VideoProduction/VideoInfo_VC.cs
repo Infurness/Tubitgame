@@ -255,9 +255,10 @@ public class VideoInfo_VC : MonoBehaviour
             youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
             createdTime = new DateTime(2000, 1, 1); //Set to the past
             youTubeVideoManager.UpdateUnpublishedVideos();
-            RestartProductionBar();
+            //RestartProductionBar();
         }
- 
+        GetComponent<Animator>().Play("Haste_Video");
+        StartCoroutine(AutoFillProductionBar());
     }
     public void RestartProductionBar ()
     {
@@ -296,5 +297,20 @@ public class VideoInfo_VC : MonoBehaviour
     public void StartMovingCoins()
     {
         signalBus.Fire<VFX_StartMovingCoinsSignal>(new VFX_StartMovingCoinsSignal { origin = energyCoinsAppearOrigin.GetComponent<RectTransform>().position});
+    }
+
+    IEnumerator AutoFillProductionBar()
+    {
+        float currentAmount = videoProgressBar.fillAmount;
+        float lerp = 0;
+        videoProgressBarCountText.text = $"{0}s";
+        while (lerp < 1)
+        {
+            lerp += Time.deltaTime * 5;
+            videoProgressBar.fillAmount = Mathf.Lerp(currentAmount, 1, lerp);
+            yield return null;
+        }
+        videoProgressBar.fillAmount = 1;
+        RestartProductionBar();
     }
 }
