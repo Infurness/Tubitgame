@@ -273,14 +273,24 @@ public class VideoManager_VC : MonoBehaviour
         });
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -videoCreationEnergyCost });
         StartRecordingVideo ();
+        recordVideoButton.GetComponent<Animator>().Play("Start_Recording");
+        StartCoroutine(WaitAnimToOpenVideoManager());
+    }
+    IEnumerator WaitAnimToOpenVideoManager()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Animator anim = recordVideoButton.GetComponent<Animator>();
+        while (anim.GetCurrentAnimatorStateInfo(0).length +0.5f > anim.GetCurrentAnimatorStateInfo(0).normalizedTime)
+        {
+            yield return null;
+        }
+        OpenManageVideosPanel();
     }
     
     void StartRecordingVideo ()
     {
         //Create video info in the video manager screen
-        CreateVideoToRecord ();
-        //Change to video manager screen
-        OpenManageVideosPanel ();
+        CreateVideoToRecord ();        
     }
     void CreateVideoToRecord ()
     {
