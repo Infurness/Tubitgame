@@ -19,16 +19,8 @@ using Zenject;
             {
                 EquipHouse(signal.realEstateCustomizationItem);
             });
-            houseStreetView.gameObject.OnBecameVisibleAsObservable()
-                .Subscribe((s) => signalBus.Fire(new SetCarsCanvasButtonVisibility()
-                {
-                    visibility =true
-                }));
-            houseStreetView.gameObject.OnBecameInvisibleAsObservable().
-                Subscribe((s) => signalBus.Fire(new SetCarsCanvasButtonVisibility()
-                    {
-                        visibility =false
-                    }));
+         
+    
             
             signalBus.Subscribe<EquipCarSignal>((signal) =>
             {
