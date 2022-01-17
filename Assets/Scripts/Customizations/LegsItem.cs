@@ -9,6 +9,7 @@ namespace Customizations
         public GenderItemType GenderItemType;
         public Sprite[] LegsVariants;
         public Sprite SeatedLegs;
+        public int FeetSoringLayers;
     }
     public enum LegsItemType
     {

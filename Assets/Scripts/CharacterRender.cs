@@ -51,6 +51,11 @@ public class CharacterRender : MonoBehaviour
         legsRender.transform.localPosition = body.legsPosition;
         feetRender.sprite = avatar.feetItem == null ? null:avatar.feetItem.sprite;
         feetRender.transform.localPosition = body.feetPosition;
+        if (avatar.feetItem && avatar.legsItem)
+        {
+            feetRender.sortingOrder =  avatar.legsItem.FeetSoringLayers;
+ 
+        }
 
     }
     
