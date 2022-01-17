@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: MalePants
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 9e90ebdd9a40c214882845a8f5044f54, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0.419
@@ -21,10 +26,11 @@ MonoBehaviour:
   rareness: 2
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 1
   HCPrice: 0
   SCPrice: 100
+  SlotType: 0
   LegsType: 0
   GenderItemType: 0
   LegsVariants:

@@ -13,14 +13,20 @@ MonoBehaviour:
   m_Name: RareShoes
   m_EditorClassIdentifier: 
   sprite: {fileID: 5063790381159815847, guid: 92bada1c776d40f448fc0e1f5b2ccfd0, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme: []
   rareness: 2
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 3
   HCPrice: 90
   SCPrice: 250
+  SlotType: 0
   FeetItemType: 0
   GenderItemType: 0
   FeetVariants: []

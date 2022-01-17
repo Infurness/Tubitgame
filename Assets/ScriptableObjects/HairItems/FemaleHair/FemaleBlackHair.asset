@@ -13,16 +13,22 @@ MonoBehaviour:
   m_Name: FemaleBlackHair
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 7e304f116618394479a32a277ce003bf, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 8
     themePopularityFactor: 0.589
   rareness: 2
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 0
   HCPrice: 0
   SCPrice: 0
+  SlotType: 0
   hairItemType: 0
   GenderItemType: 1
   HairVariants: []

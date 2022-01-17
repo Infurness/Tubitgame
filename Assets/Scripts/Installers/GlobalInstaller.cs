@@ -118,7 +118,8 @@ public class GlobalInstaller : MonoInstaller
     //Views signals
         Container.DeclareSignal<SnapToNeighborhoodViewSignal>();
     Container.DeclareSignal<OpenRealEstateShopSignal>();
-
+    Container.DeclareSignal<SetCarsCanvasButtonVisibility>();
+    Container.DeclareSignal<EquipCarSignal>();
     //Sound signals
     Container.DeclareSignal<BuyItemSoundSignal>();
 

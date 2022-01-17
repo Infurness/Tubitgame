@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: FemaleHoodie
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 4a70be8bff8097e4e9e2beca93e2357a, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0
@@ -21,10 +26,11 @@ MonoBehaviour:
   rareness: 1
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 2
   HCPrice: 50
   SCPrice: 0
+  SlotType: 0
   TorsoItemType: 2
   GenderItemType: 1
   TorsoVariants:

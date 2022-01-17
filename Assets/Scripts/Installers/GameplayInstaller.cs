@@ -7,7 +7,6 @@ public class GameplayInstaller : MonoInstaller
     public override void InstallBindings()
     {
 
-       
         //Dependencies
 
         Container.Bind<PlayerData> ().AsSingle();

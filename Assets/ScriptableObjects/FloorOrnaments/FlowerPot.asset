@@ -12,15 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b716d47a6af4d498369f2a2c88ee040, type: 3}
   m_Name: FlowerPot
   m_EditorClassIdentifier: 
-  sprite: {fileID: 7761393684298137807, guid: ce0a398630a76044fa757441f3e6f3ec, type: 3}
+  sprite: {fileID: 5630272144435315364, guid: 3d786158e0a79644bbc7ebe12afffb48, type: 3}
+  itemPrefab:
+    m_AssetGUID: 24723a9b01aa7694792bb0461f33770e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 4
     themePopularityFactor: 0.01
   rareness: 1
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 1
   HCPrice: 0
-  SCPrice: 50
-  floorOrnamentType: 7
+  SCPrice: 200
+  SlotType: 10

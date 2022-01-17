@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: FemaleTShirt
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 0ef3f75a43fe116478de8123b6d884b9, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0
@@ -21,10 +26,11 @@ MonoBehaviour:
   rareness: 1
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 1
   HCPrice: 0
   SCPrice: 300
+  SlotType: 0
   TorsoItemType: 0
   GenderItemType: 1
   TorsoVariants:

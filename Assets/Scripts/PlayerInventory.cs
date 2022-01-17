@@ -17,13 +17,18 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private CharacterAvatarAddressedData characterAvatarAddressedData;
     [SerializeField] private CharacterAvatar equippedCharacterAvatar;
     [SerializeField] private CharacterAvatar defaultMaleAvatar;
-    [SerializeField] private HeadItem defaultFemaleHead,defaultMaleHead;
+    [SerializeField] private HeadItem defaultFemaleHead, defaultMaleHead;
     [SerializeField] private List<ThemeCustomizationItem> ownedCharacterItems;
     [SerializeField] private List<ThemeCustomizationItem> ownedRoomThemeEffectItems;
     [SerializeField] private List<ThemeCustomizationItem> equippedThemeEffectRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> ownedVideoQualityRoomItems;
     [SerializeField] private List<VideoQualityCustomizationItem> equippedVideoQualityRoomItems;
     [SerializeField] private List<RealEstateCustomizationItem> ownedRealEstateItems;
+
+
+
+    [SerializeField] private List<Car> ownedCars;
+    private Car equippedCar;
     [SerializeField] private RealEstateCustomizationItem equippedHouse;
     [SerializeField] private RealEstateCustomizationItem defaultHouse;
     [SerializeField] private RoomLayout defaultRoomLayout;
@@ -43,13 +48,18 @@ public class PlayerInventory : MonoBehaviour
     public RealEstateCustomizationItem EquippedHouse => equippedHouse;
 
 
+    public List<Car> OwnedCars => ownedCars;
+
+    public Car EquippedCar => equippedCar;
+
+
     public HeadItem GetDefaultMaleHead => defaultMaleHead;
 
     public HeadItem GetDefaultFemaleHead => defaultFemaleHead;
 
     public CharacterAvatar EquippedAvatar()
     {
-        if (equippedCharacterAvatar==null)
+        if (equippedCharacterAvatar == null)
         {
             equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
             return equippedCharacterAvatar;
@@ -59,9 +69,10 @@ public class PlayerInventory : MonoBehaviour
             return equippedCharacterAvatar;
         }
     }
+
     private void Awake()
     {
-        if (Instance==null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
@@ -70,28 +81,28 @@ public class PlayerInventory : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        
+
     }
 
     void Start()
     {
-      signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
-      
-      playerDataManager = PlayerDataManager.Instance;
+        signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
+
+        playerDataManager = PlayerDataManager.Instance;
 
     }
 
     async Task LoadCharacterData()
     {
-        var caharacterItemsLoadOp= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("character", null);
+        var caharacterItemsLoadOp = Addressables.LoadAssetsAsync<ThemeCustomizationItem>("character", null);
         await caharacterItemsLoadOp.Task;
         if (caharacterItemsLoadOp.Status == AsyncOperationStatus.Succeeded)
         {
-            var chItems =(List<ThemeCustomizationItem>) caharacterItemsLoadOp.Result;
-            ownedCharacterItems = chItems.FindAll(item => item.Owned==true);
-            if (characterAvatarAddressedData!=null)
+            var chItems = (List<ThemeCustomizationItem>) caharacterItemsLoadOp.Result;
+            ownedCharacterItems = chItems.FindAll(item => item.Owned == true);
+            if (characterAvatarAddressedData != null)
             {
-                
+
                 if (string.IsNullOrEmpty(characterAvatarAddressedData.BodyType))
                 {
                     equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
@@ -103,7 +114,7 @@ public class PlayerInventory : MonoBehaviour
                 equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
                 return;
             }
-           
+
 
             equippedCharacterAvatar.bodyItem =
                 (BodyItem) ownedCharacterItems.Find((it) => it.name == characterAvatarAddressedData.BodyType);
@@ -124,85 +135,90 @@ public class PlayerInventory : MonoBehaviour
             equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
         }
 
-         
-        
+
+
     }
+
     async Task LoadRoomThemeEffectAssets()
     {
-        
-        var themeEffectAssets= Addressables.LoadAssetsAsync<ThemeCustomizationItem>("roomtheme", null);
+
+        var themeEffectAssets = Addressables.LoadAssetsAsync<ThemeCustomizationItem>("roomtheme", null);
         await themeEffectAssets.Task;
         if (themeEffectAssets.Status == AsyncOperationStatus.Succeeded)
         {
-            var themeEffectItems= (List<ThemeCustomizationItem>) themeEffectAssets.Result;
+            var themeEffectItems = (List<ThemeCustomizationItem>) themeEffectAssets.Result;
 
             foreach (var item in themeEffectItems)
             {
                 if (item.Owned || playerInventoryAddressedData.ownedRoomThemeEffectItemsNames.Contains(item.name))
                 {
+                    item.Owned = true;
                     ownedRoomThemeEffectItems.Add(item);
 
                 }
             }
-           var roomLayoutItems = playerInventoryAddressedData.currentRoomLayout.equippedThemeITems;
-           if (roomLayoutItems!=null)
-           {
-               foreach (var itemName in roomLayoutItems)
-               {
-                   var eqItem = themeEffectItems.Find((it) => it.name == itemName);
-                   if (eqItem)
-                   {
-                       equippedThemeEffectRoomItems.Add(eqItem);
-            
-                   }
-               }  
-           }
-        
-           
-            
+
+            var roomLayoutItems = playerInventoryAddressedData.currentRoomLayout.equippedThemeITems;
+            if (roomLayoutItems != null)
+            {
+                foreach (var itemName in roomLayoutItems)
+                {
+                    var eqItem = themeEffectItems.Find((it) => it.name == itemName);
+                    if (eqItem)
+                    {
+                        equippedThemeEffectRoomItems.Add(eqItem);
+
+                    }
+                }
+            }
+
+
+
         }
         else
         {
             print("Failed to load Assets ");
         }
-        
-     
+
+
 
     }
 
-     async Task LoadVideoQualityAddressedAssets()
-     {
-         var videoQualityItems= Addressables.LoadAssetsAsync<VideoQualityCustomizationItem>("default", null);
-         await videoQualityItems.Task;
-         if (videoQualityItems.Status == AsyncOperationStatus.Succeeded)
-         {
-             var vcItems= (List<VideoQualityCustomizationItem>) videoQualityItems.Result;
+    async Task LoadVideoQualityAddressedAssets()
+    {
+        var videoQualityItems = Addressables.LoadAssetsAsync<VideoQualityCustomizationItem>("default", null);
+        await videoQualityItems.Task;
+        if (videoQualityItems.Status == AsyncOperationStatus.Succeeded)
+        {
+            var vcItems = (List<VideoQualityCustomizationItem>) videoQualityItems.Result;
 
-             foreach (var item in vcItems)
-             {
-                 if (item.Owned || playerInventoryAddressedData.ownedVideoQualityItemsNames.Contains(item.name))
-                 {
-                     ownedVideoQualityRoomItems.Add(item);
-                 }
-               
-             }
+            foreach (var item in vcItems)
+            {
+                if (item.Owned || playerInventoryAddressedData.ownedVideoQualityItemsNames.Contains(item.name))
+                {
+                    item.Owned = true;
+                    ownedVideoQualityRoomItems.Add(item);
+                }
 
-             var vcitemnames = playerInventoryAddressedData.currentRoomLayout.equippedVCITems;
-             if (vcitemnames!=null)
-             {
-                 foreach (var qualityItemsName in vcitemnames)
-                 {
-                     equippedVideoQualityRoomItems.Add(ownedVideoQualityRoomItems.Find((it => it.name==qualityItemsName)));
-                 }
-             }
-          
+            }
 
-         }
-         else
-         {
-             print("Failed to load Assets ");
-         }
-     }
+            var vcitemnames = playerInventoryAddressedData.currentRoomLayout.equippedVCITems;
+            if (vcitemnames != null)
+            {
+                foreach (var qualityItemsName in vcitemnames)
+                {
+                    equippedVideoQualityRoomItems.Add(
+                        ownedVideoQualityRoomItems.Find((it => it.name == qualityItemsName)));
+                }
+            }
+
+
+        }
+        else
+        {
+            print("Failed to load Assets ");
+        }
+    }
 
     async Task LoadRealEstateAddressedAssets()
     {
@@ -210,30 +226,54 @@ public class PlayerInventory : MonoBehaviour
         await realEstateAddressedItems.Task;
         if (realEstateAddressedItems.Status == AsyncOperationStatus.Succeeded)
         {
-            var vcItems = (List<RealEstateCustomizationItem>)realEstateAddressedItems.Result;
+            var vcItems = (List<RealEstateCustomizationItem>) realEstateAddressedItems.Result;
 
-            
+
             foreach (var realStateItemName in playerInventoryAddressedData.ownedRealEstateItemsNames)
             {
                 var item = vcItems.Find((item => (item.name == realStateItemName)));
+                item.Owned = true;
                 ownedRealEstateItems.Add(item);
 
             }
 
-          equippedHouse=  vcItems.Find((rsItem => rsItem.name == playerInventoryAddressedData.equippedHouse));
-          if (equippedHouse==null)
-          {
-              equippedHouse = defaultHouse;
-          }
+            equippedHouse = vcItems.Find((rsItem => rsItem.name == playerInventoryAddressedData.equippedHouse));
+            if (equippedHouse == null)
+            {
+                equippedHouse = defaultHouse;
+            }
 
         }
         else
         {
             print("Failed to load Assets ");
         }
+
         ownedRealEstateItems.Add(defaultHouse);
 
     }
+
+    async Task LoadCarsAssets()
+    {
+        var carsLoadOp = Addressables.LoadAssetsAsync<Car>("car", null);
+        await carsLoadOp.Task;
+        if (carsLoadOp.Status==AsyncOperationStatus.Succeeded)
+        {
+            var cars = (List<Car>) carsLoadOp.Result;
+            foreach (var ownedCarName in playerInventoryAddressedData.ownedCarNames)
+            {
+                var car = cars.Find((c => c.name == ownedCarName));
+                if (car)
+                {
+                    car.Owned = true;
+                    ownedCars.Add(car);
+                }
+            }
+
+            equippedCar = cars.Find((c) => c.name == playerInventoryAddressedData.equippedCarName);
+        }
+    }
+
     async  void  OnPlayerInventoryFetched(OnPlayerInventoryFetchedSignal playerInventoryFetchedSignal)
     {
         playerInventoryAddressedData = playerInventoryFetchedSignal.PlayerInventoryAddressedData;
@@ -247,6 +287,7 @@ public class PlayerInventory : MonoBehaviour
         await LoadVideoQualityAddressedAssets();
         await LoadCharacterData();
         await LoadRealEstateAddressedAssets();
+        await LoadCarsAssets();
 
         signalBus.Fire<AssetsLoadedSignal>();
     }
@@ -280,6 +321,22 @@ public class PlayerInventory : MonoBehaviour
         playerInventoryAddressedData.ownedRealEstateItemsNames.Add(realEstateCustomizationItem.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         signalBus.Fire(new BuyHouseSignal { houseName = realEstateCustomizationItem.name });
+    }
+
+    public void AddCar(Car car)
+    {
+        ownedCars.Add(car);
+        playerInventoryAddressedData.ownedCarNames.Add(car.name);
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+        
+    }
+
+    public void SetEquippedCar(Car car)
+    {
+        equippedCar = car;
+        playerInventoryAddressedData.equippedCarName = car.name;
+        playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+
     }
 
     public void SetEquippedHouse(RealEstateCustomizationItem realEstateCustomizationItem)
@@ -373,12 +430,15 @@ public class PlayerInventory : MonoBehaviour
         public RoomLayout currentRoomLayout;
         public List<string> ownedRealEstateItemsNames;
         public string equippedHouse;
+        public List<string> ownedCarNames;
+        public string equippedCarName;
         public  PlayerInventoryAddressedData()
         {
             characterItemsNames = new List<string>();
             ownedRoomThemeEffectItemsNames = new List<string>();
             ownedVideoQualityItemsNames = new List<string>();
             ownedRealEstateItemsNames = new List<string>();
+            ownedCarNames = new List<string>();
             currentRoomLayout = new RoomLayout();
 
         } 

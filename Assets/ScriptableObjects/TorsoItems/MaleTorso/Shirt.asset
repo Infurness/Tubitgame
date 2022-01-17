@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: Shirt
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 8fbdaa6111ead3949a22410dcd237c39, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   affectedTheme:
   - ThemeType: 0
     themePopularityFactor: 0
@@ -21,10 +26,11 @@ MonoBehaviour:
   rareness: 1
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 1
   HCPrice: 0
   SCPrice: 100
+  SlotType: 0
   TorsoItemType: 0
   GenderItemType: 0
   TorsoVariants:

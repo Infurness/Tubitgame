@@ -23,7 +23,7 @@ public enum ItemSlotType
     Package,
     Shelf,
     Books,
-    Painting,
+    Curtains,
     FlowerPot,
     Bin,
     Tv,
@@ -34,5 +34,8 @@ public enum ItemSlotType
     GreenScreen,
     Lamps,
     CatTree,
+    PhotoFrame,
+    WallDecal,
+    Pillow
 
 }
