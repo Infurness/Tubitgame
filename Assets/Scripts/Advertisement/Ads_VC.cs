@@ -106,6 +106,11 @@ public class Ads_VC : MonoBehaviour
     }
     void VideoShortenAd(OpenTimeShortenAdSignal signal)
     {
+        StartCoroutine(WaitToShowAd(signal));
+    }
+    IEnumerator WaitToShowAd(OpenTimeShortenAdSignal signal)
+    {
+        yield return new WaitForSeconds(0.5f);
         if (AdsManager.Instance.AreAdsDeactive())
             OpenVideoShortenNoAd(signal);
         else

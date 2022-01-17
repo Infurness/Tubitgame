@@ -53,6 +53,8 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private Button publishButton;
     [SerializeField] private GameObject moneyButtonPanel;
     [SerializeField] private Button moneyButton;
+
+    [SerializeField] private GameObject energyCoinsAppearOrigin;
     // Start is called before the first frame update
     void Start ()
     {
@@ -221,11 +223,23 @@ public class VideoInfo_VC : MonoBehaviour
 
     void CancelVideo ()
     {
-        signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
-        int energyLeftToSpend = (int)(energyCost *(internalRecordTime / maxInternalRecordTime)); 
-        signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
-        Destroy (gameObject);
+        //signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
+        //int energyLeftToSpend = (int)(energyCost *(internalRecordTime / maxInternalRecordTime)); 
+        //signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
+        GetComponent<Animator>().Play("Cancel_Video");
+        signalBus.Fire<VFX_CancelVideoAnimationSignal>(new VFX_CancelVideoAnimationSignal
+        {
+            anim = GetComponent<Animator>(),
+            onEndAnimation = () =>
+            {
+                signalBus.Fire<CancelVideoRecordingSignal>(new CancelVideoRecordingSignal() { name = videoName });
+                int energyLeftToSpend = (int)(energyCost * (internalRecordTime / maxInternalRecordTime));
+                signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
+                Destroy(gameObject);
+            }
+        });
     }
+    
 
     void CheckVirality ()
     {
@@ -241,9 +255,10 @@ public class VideoInfo_VC : MonoBehaviour
             youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
             createdTime = new DateTime(2000, 1, 1); //Set to the past
             youTubeVideoManager.UpdateUnpublishedVideos();
-            RestartProductionBar();
+            //RestartProductionBar();
         }
- 
+        GetComponent<Animator>().Play("Haste_Video");
+        StartCoroutine(AutoFillProductionBar());
     }
     public void RestartProductionBar ()
     {
@@ -277,5 +292,25 @@ public class VideoInfo_VC : MonoBehaviour
         videoProgressBarCountText.text = $"{0}s";
         videoProgressBar.fillAmount = 1;
         VideoReadyToPublish ();
+    }
+
+    public void StartMovingCoins()
+    {
+        signalBus.Fire<VFX_StartMovingCoinsSignal>(new VFX_StartMovingCoinsSignal { origin = energyCoinsAppearOrigin.GetComponent<RectTransform>().position});
+    }
+
+    IEnumerator AutoFillProductionBar()
+    {
+        float currentAmount = videoProgressBar.fillAmount;
+        float lerp = 0;
+        videoProgressBarCountText.text = $"{0}s";
+        while (lerp < 1)
+        {
+            lerp += Time.deltaTime * 5;
+            videoProgressBar.fillAmount = Mathf.Lerp(currentAmount, 1, lerp);
+            yield return null;
+        }
+        videoProgressBar.fillAmount = 1;
+        RestartProductionBar();
     }
 }
