@@ -24,3 +24,8 @@ public class BuyHouseSignal
 {
     public string houseName;
 }
+
+public class ShopPanelOpened
+{
+    
+}

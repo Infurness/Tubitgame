@@ -117,11 +117,23 @@ public class CaharacterInventory_VC : MonoBehaviour
 
         inventoryCanvas.OnEnableAsObservable().Subscribe((unit => { OnSlotClosed(); }));
         characterPanel.OnEnableAsObservable().Subscribe((unit => OnCharacterPanelEnabled()));
+        characterPanel.OnDisableAsObservable().Subscribe((unit =>
+        {
+
+            signalBus.Fire<CharacterCustomizationVisibilityChanged>(new CharacterCustomizationVisibilityChanged()
+            {
+                Visibility = false
+            });
+        }));
         CharacterCustomizationButton.onClick.AddListener(OpenCharacterPanel);
         signalBus.Subscribe<RoomCustomizationVisibilityChanged>((() =>
         {
             characterPanel.gameObject.SetActive(false);
         }));
+        signalBus.Subscribe<ShopPanelOpened>((signal =>
+        {
+            characterPanel.SetActive(false);
+        } ));
     }
 
 
@@ -134,7 +146,10 @@ public class CaharacterInventory_VC : MonoBehaviour
         uploadedVideosNum.text = PlayerDataManager.Instance.GetPlayerTotalVideos().ToString();
        // UpdateItemsEffectText();
 
-
+       signalBus.Fire<CharacterCustomizationVisibilityChanged>(new CharacterCustomizationVisibilityChanged()
+       {
+           Visibility = true
+       });
     }
 
     private void UpdateSlots()

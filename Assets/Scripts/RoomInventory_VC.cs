@@ -38,10 +38,7 @@ public class RoomInventory_VC : MonoBehaviour
     {
         inventoryCanvas.gameObject.SetActive(true);
         roomInventoryPanel.gameObject.SetActive(true);
-        signalBus.Fire(new RoomCustomizationVisibilityChanged()
-        {
-            Visibility = true
-        });
+ 
         signalBus.Fire(new ChangeBackButtonSignal()
         {
             changeToHome = true,
@@ -70,7 +67,17 @@ public class RoomInventory_VC : MonoBehaviour
         }));
 
         roomInventoryPanel.OnEnableAsObservable().Subscribe((unit => { OnRoomPanelOpened(); }));
-
+        roomInventoryPanel.OnDisableAsObservable().Subscribe((unit =>
+        {
+            signalBus.Fire(new RoomCustomizationVisibilityChanged()
+            {
+                Visibility = false
+            });
+        }));
+        signalBus.Subscribe<ShopPanelOpened>((signal =>
+        {
+            roomInventoryPanel.SetActive(false);
+        } ));
 
     }
     void CleanEffectsCells(){
@@ -97,6 +104,10 @@ public class RoomInventory_VC : MonoBehaviour
         CleanEffectsCells();
         UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
         UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
+        signalBus.Fire(new RoomCustomizationVisibilityChanged()
+        {
+            Visibility = true
+        });
     }
 
     void UpdateThemeEffectItemsText(List<ThemeCustomizationItem> themeCustomizationItems)
