@@ -120,6 +120,7 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OpenRealEstateShopSignal>();
     Container.DeclareSignal<SetCarsCanvasButtonVisibility>();
     Container.DeclareSignal<EquipCarSignal>();
+    Container.DeclareSignal<ShopPanelOpened>();
     //Sound signals
     Container.DeclareSignal<BuyItemSoundSignal>();
 

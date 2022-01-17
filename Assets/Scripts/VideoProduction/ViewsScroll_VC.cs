@@ -43,7 +43,22 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         {
             enabled = !signal.Visibility;
             SetButtonVisibility(!signal.Visibility);
+            if (signal.Visibility)
+            {
+                ForceHomePanel();
+            }
+            
         }));
+        
+        signalBus.Subscribe<CharacterCustomizationVisibilityChanged>((signal) =>
+        {
+            if (signal.Visibility)
+            {
+                ForceHomePanel();
+            }
+        });
+        
+        
     }
 
     void StartingState ()
