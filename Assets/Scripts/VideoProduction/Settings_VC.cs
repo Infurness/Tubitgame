@@ -18,6 +18,8 @@ public class Settings_VC : MonoBehaviour
 
     [SerializeField] Slider musicVolumeSlider;
     [SerializeField] Slider effectsVolumeSlider;
+
+    [SerializeField] private Button leaderboardsButton;
     // Start is called before the first frame update
     void Start ()
     {
@@ -29,6 +31,7 @@ public class Settings_VC : MonoBehaviour
 
         musicVolumeSlider.onValueChanged.AddListener ((value) =>  audioManager.SetMusicVolumeModifier (value));
         effectsVolumeSlider.onValueChanged.AddListener ((value) => audioManager.SetEffectsVolumeModifier (value));
+        leaderboardsButton.onClick.AddListener(OpenLeaderboards);
 
         float musicVolume = 0.5f;
         if(PlayerPrefs.HasKey("MusicVolume"))
@@ -73,6 +76,10 @@ public class Settings_VC : MonoBehaviour
     void OpenDeleteAccount ()
     {
         signalBus.Fire<OpenDeleteAccountSignal> ();
+    }
+    void OpenLeaderboards()
+    {
+        signalBus.Fire<OpenLeaderboardsSignal>();
     }
 }
 
