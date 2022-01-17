@@ -12,6 +12,7 @@ public class CarsPopup_VC : MonoBehaviour
 {
     [SerializeField] private Canvas carsCanvasPopUp;
     [SerializeField] private Button popupButton;
+    [SerializeField] private GameObject carsButtonPanel;
     [SerializeField] private GameObject carsPanel;
     [Inject] private SignalBus signalBus;
 
@@ -71,8 +72,8 @@ public class CarsPopup_VC : MonoBehaviour
     void SetButtonVisibility(bool state)
     {
         print("Street View Changed "+state);
-        popupButton.gameObject.SetActive(state);
         carsCanvasPopUp.gameObject.SetActive(state);
+        carsButtonPanel.gameObject.SetActive(state);
 
     }
 
