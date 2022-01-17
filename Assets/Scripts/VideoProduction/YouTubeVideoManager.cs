@@ -12,6 +12,7 @@ public class YouTubeVideoManager : MonoBehaviour
     [Inject] private AlgorithmManager algorithmManager;
     [Inject] private ThemesManager themesManager;
     [Inject] private EnergyManager energyManager;
+    [Inject] private ExperienceManager experienceManager;
 
     bool isRecording;
 
@@ -47,7 +48,44 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.themes = (ThemeType[]) videoThemes.Clone();
         newVideo.selectedQuality = signal.videoSelectedQuality;
         newVideo.quality = playerDataManager.GetQuality(); //Dummy not yet implement lacks of themes quality and selected quality
-        if (Random.Range (0, 101) >= 95) //5% chance of being viral
+
+        int level = experienceManager.GetPlayerLevel();
+        int percentage = 5;
+        switch (level)
+        {
+            case 1:
+                percentage = 4;
+                break;
+            case 2:
+                percentage = 7;
+                break;
+            case 3:
+                percentage = 9;
+                break;
+            case 4:
+                percentage = 11;
+                break;
+            case 5:
+                percentage = 14;
+                break;
+            case 6:
+                percentage = 17;
+                break;
+            case 7:
+                percentage = 19;
+                break;
+            case 8:
+                percentage = 21;
+                break;
+            case 9:
+                percentage = 18;
+                break;
+            case 10:
+                percentage = 17;
+                break;
+        }
+
+        if (Random.Range (0, 101) >= 100 - percentage) //5% chance of being viral
         {
             newVideo.isViral = true;
         }
