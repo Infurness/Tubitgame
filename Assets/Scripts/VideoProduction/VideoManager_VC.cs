@@ -173,7 +173,16 @@ public class VideoManager_VC : MonoBehaviour
             button.GetComponentInChildren<TMP_Text> ().text = "";
             button.transform.GetChild(1).GetComponentInChildren<Image> ().enabled = true;
         }
-           
+
+        Color transparent = Color.white;
+        transparent.a = 0;
+        
+        foreach (Image image in themeSelectionImage)
+        {
+            image.sprite = null;
+            image.color = transparent;
+        }
+
         recordVideoButton.interactable = false;
         energyCostPanel.SetActive (false);
     }
@@ -414,6 +423,7 @@ public class VideoManager_VC : MonoBehaviour
                 themeSelectionButtons[i].transform.GetChild (1).GetComponentInChildren<Image> ().enabled = true;
                 Color transparent = Color.white;
                 transparent.a = 0;
+                themeSelectionImage[i].sprite = null;
                 themeSelectionImage[i].color = transparent;
             }
         }
