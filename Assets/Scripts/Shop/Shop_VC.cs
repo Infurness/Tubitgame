@@ -81,6 +81,8 @@ public class Shop_VC : MonoBehaviour
         {
             offersButton.onClick.Invoke();
             buyPanel.gameObject.SetActive(false);
+            _signalBus.Fire<ShopPanelOpened>();
+
         }));
         _signalBus.Subscribe<OpenRealEstateShopSignal>(OpenRealEstateFromSignal);
 

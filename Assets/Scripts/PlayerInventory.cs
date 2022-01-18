@@ -453,13 +453,13 @@ public class CharacterAvatarAddressedData
     public string Legs;
     public string Feet;
 
-    // public CharacterAvatarAddressedData()
-    // {
-    //     BodyType = "BodyItem 1";
-    //     Head = "MaleHead1";
-    //     Hair = "RedHair";
-    //     Torso = "T_Shirt";
-    //     Legs = "MaleJeans";
-    //     Feet = "RareShoes";
-    // }
+    public CharacterAvatarAddressedData()
+    {
+        BodyType = "BodyItem 1";
+        Head = "MaleHead1";
+        Hair = "DefualtMale";
+        Torso = "HawaiianShirt";
+        Legs = "MaleJeans";
+        Feet = "BasicShoes";
+    }
 }

@@ -112,12 +112,15 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<VFX_EnergyChangeSignal>();
     Container.DeclareSignal<VFX_LowEnergyBlinkSignal>();
     Container.DeclareSignal<VFX_NoEnergyParticlesSignal>();
+    Container.DeclareSignal<VFX_CancelVideoAnimationSignal>();
+    Container.DeclareSignal<VFX_StartMovingCoinsSignal>(); 
 
     //Views signals
-    Container.DeclareSignal<SnapToNeighborhoodViewSignal>();
+        Container.DeclareSignal<SnapToNeighborhoodViewSignal>();
     Container.DeclareSignal<OpenRealEstateShopSignal>();
     Container.DeclareSignal<SetCarsCanvasButtonVisibility>();
     Container.DeclareSignal<EquipCarSignal>();
+    Container.DeclareSignal<ShopPanelOpened>();
     //Sound signals
     Container.DeclareSignal<BuyItemSoundSignal>();
 

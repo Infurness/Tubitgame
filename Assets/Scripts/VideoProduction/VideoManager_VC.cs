@@ -57,6 +57,8 @@ public class VideoManager_VC : MonoBehaviour
     [SerializeField] private TMP_Text uploadedVideosText;
 
     [SerializeField] private GameObject[] qualitiesTags;
+    [SerializeField] private GameObject blinkerVFX;
+    private float blinkerXPos;
     [SerializeField] private Slider qualitySelector;
     private float oldValue;
     private bool energyHasBeenOfferedThisSesion; //Dummy value for Vertical Slice, not for real release to the market
@@ -103,6 +105,8 @@ public class VideoManager_VC : MonoBehaviour
         _signalBus.Subscribe<ChangePlayerSubsSignal> (UpdateGlobalSubsFromSignal);
         _signalBus.Subscribe<UpdateThemesGraphSignal> (SetGraphHourTexts);
         _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
+        _signalBus.Subscribe<VFX_CancelVideoAnimationSignal>(WaitCancelVideo);
+
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
@@ -122,6 +126,8 @@ public class VideoManager_VC : MonoBehaviour
         pageRight.onClick.AddListener(GoToNextVideosPage);
 
         energyHasBeenOfferedThisSesion = false;
+        blinkerXPos = blinkerVFX.GetComponent<RectTransform>().anchoredPosition.x;
+
         UpdateVideoList();
         StartGraphThemesSelection();
     }
@@ -167,7 +173,16 @@ public class VideoManager_VC : MonoBehaviour
             button.GetComponentInChildren<TMP_Text> ().text = "";
             button.transform.GetChild(1).GetComponentInChildren<Image> ().enabled = true;
         }
-           
+
+        Color transparent = Color.white;
+        transparent.a = 0;
+        
+        foreach (Image image in themeSelectionImage)
+        {
+            image.sprite = null;
+            image.color = transparent;
+        }
+
         recordVideoButton.interactable = false;
         energyCostPanel.SetActive (false);
     }
@@ -267,14 +282,24 @@ public class VideoManager_VC : MonoBehaviour
         });
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -videoCreationEnergyCost });
         StartRecordingVideo ();
+        recordVideoButton.GetComponent<Animator>().Play("Start_Recording");
+        StartCoroutine(WaitAnimToOpenVideoManager());
+    }
+    IEnumerator WaitAnimToOpenVideoManager()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Animator anim = recordVideoButton.GetComponent<Animator>();
+        while (anim.GetCurrentAnimatorStateInfo(0).length +0.5f > anim.GetCurrentAnimatorStateInfo(0).normalizedTime)
+        {
+            yield return null;
+        }
+        OpenManageVideosPanel();
     }
     
     void StartRecordingVideo ()
     {
         //Create video info in the video manager screen
-        CreateVideoToRecord ();
-        //Change to video manager screen
-        OpenManageVideosPanel ();
+        CreateVideoToRecord ();        
     }
     void CreateVideoToRecord ()
     {
@@ -398,6 +423,7 @@ public class VideoManager_VC : MonoBehaviour
                 themeSelectionButtons[i].transform.GetChild (1).GetComponentInChildren<Image> ().enabled = true;
                 Color transparent = Color.white;
                 transparent.a = 0;
+                themeSelectionImage[i].sprite = null;
                 themeSelectionImage[i].color = transparent;
             }
         }
@@ -436,6 +462,8 @@ public class VideoManager_VC : MonoBehaviour
         int qualityTagIndex = (int)(value / qualityStep);
         selectedQuality = (VideoQuality)qualityTagIndex+1;
         SetQualityTagVisual (qualityTagIndex);
+        float blinkerSpeed = Math.Max(0.1f, qualitySelector.value * 2);
+        blinkerVFX.GetComponent<Animator>().speed = blinkerSpeed;
         videoCreationEnergyCost = _energyManager.GetVideoEnergyCost (selectedQuality);
         energyCostText.text = videoCreationEnergyCost.ToString();
     }
@@ -449,6 +477,10 @@ public class VideoManager_VC : MonoBehaviour
                 qualityTag.GetComponentInChildren<Image> ().sprite = qualitySelectedImage;
                 qualityTag.GetComponentInChildren<TMP_Text> ().color = qualitySelectedColor;
                 qualityTag.GetComponentInChildren<TMP_Text> ().font = qualitySelectedFont;
+                blinkerVFX.transform.parent = qualityTag.transform;
+                Vector3 pos = blinkerVFX.GetComponent<RectTransform>().anchoredPosition;
+                pos.x = blinkerXPos;
+                blinkerVFX.GetComponent<RectTransform>().anchoredPosition = pos;
             }       
             else
             {
@@ -577,5 +609,22 @@ public class VideoManager_VC : MonoBehaviour
             themeSelector.GetComponentInChildren<Button>().onClick.AddListener(()=> _signalBus.Fire<SelectThemeInGraphSignal>(new SelectThemeInGraphSignal { themeType = themeType }));
             themeSelector.GetComponent<ThemeGraphSelectorButton_VC>().SetUpReferences(_signalBus, themeType);
         }
+    }
+
+    void WaitCancelVideo(VFX_CancelVideoAnimationSignal signal)
+    {
+        StartCoroutine(CancelVideoRoutine(signal));
+    }
+    IEnumerator CancelVideoRoutine(VFX_CancelVideoAnimationSignal signal)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        while (signal.anim.GetCurrentAnimatorStateInfo(0).length > signal.anim.GetCurrentAnimatorStateInfo(0).normalizedTime /*&& signal.anim.gameObject.activeSelf*/) //Why id first statement if false and second is true, it does enter loop anyway????!!!! Is this a joke?
+        {
+            if (!signal.anim.gameObject.activeSelf)
+                break;
+            yield return null;
+        }
+        signal.onEndAnimation.Invoke();
     }
 }

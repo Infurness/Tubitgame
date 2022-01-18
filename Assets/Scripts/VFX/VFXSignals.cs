@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,4 +15,15 @@ public class VFX_LowEnergyBlinkSignal
 
 public class VFX_NoEnergyParticlesSignal
 {
+}
+
+public class VFX_CancelVideoAnimationSignal
+{
+    public Animator anim;
+    public Action onEndAnimation;
+}
+
+public class VFX_StartMovingCoinsSignal
+{
+    public Vector3 origin;
 }

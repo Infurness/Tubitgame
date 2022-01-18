@@ -20,12 +20,19 @@ public class VFX_VC : MonoBehaviour
 
     [SerializeField] private GameObject noEnergyParticlesObject;
     [SerializeField] private GameObject lowEnergyAnimationObject;
+
+    [SerializeField] private GameObject energyCoinsReturnPivot;
+    [SerializeField] private GameObject[] energyCoinsForVideoCancel;
+    [SerializeField] private float delayBetweenCoinsMin;
+    [SerializeField] private float delayBetweenCoinsMax;
+
     // Start is called before the first frame update
     void Start()
     {
         signalBus.Subscribe<VFX_EnergyChangeSignal>(ChangeEnergy);
         signalBus.Subscribe<VFX_LowEnergyBlinkSignal>(ActivateLowEnergyAnim);
         signalBus.Subscribe<VFX_NoEnergyParticlesSignal>(ActivateNoEnergyParticles);
+        signalBus.Subscribe<VFX_StartMovingCoinsSignal>(MoveCoins);
         loseEnergyObject.SetActive(false);
         getEnergyObject.SetActive(false);
         noEnergyParticlesObject.SetActive(false);
@@ -107,5 +114,18 @@ public class VFX_VC : MonoBehaviour
             yield return null;
 
         noEnergyParticlesObject.SetActive(false);
+    }
+
+    void MoveCoins(VFX_StartMovingCoinsSignal signal)
+    {
+        StartCoroutine(MoveCoinsSteps(signal.origin));
+    }
+    IEnumerator MoveCoinsSteps(Vector3 origin)
+    {
+        foreach (GameObject coin in energyCoinsForVideoCancel)
+        {  
+            coin.GetComponent<VFX_EnergyCoinVC>().SetCoinMovementValues(origin, energyCoinsReturnPivot.GetComponent<RectTransform>().position);
+            yield return new WaitForSeconds(Random.Range(delayBetweenCoinsMin,delayBetweenCoinsMax));
+        }
     }
 }
