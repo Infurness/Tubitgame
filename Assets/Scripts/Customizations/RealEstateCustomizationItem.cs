@@ -2,9 +2,11 @@
 
 namespace Customizations
 {
+    public enum RealEstateHouse { BasicHouse, NiceApartment, HugeHouse};
     [CreateAssetMenu(fileName = "RealEstate", menuName = "Customizations/RealEstateItem")]
     public class RealEstateCustomizationItem : ScriptableObject
     {
+        public RealEstateHouse realEstateHouse;
         public string itemName;
         public Sprite streetViewSprite;
         public Sprite houseCloseSpite;
