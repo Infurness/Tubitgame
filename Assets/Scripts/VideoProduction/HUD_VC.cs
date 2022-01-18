@@ -82,7 +82,7 @@ public class HUD_VC : MonoBehaviour
             }
             else
             {
-                leaderboardsPanel.gameObject.SetActive(true);
+                leaderboardsPanel.gameObject.SetActive(false);
                 playerPanel.gameObject.SetActive(true);
 
             }
@@ -98,7 +98,7 @@ public class HUD_VC : MonoBehaviour
             }
             else
             {
-                leaderboardsPanel.gameObject.SetActive(true);
+                leaderboardsPanel.gameObject.SetActive(false);
                 playerPanel.gameObject.SetActive(true);
 
             }
@@ -160,7 +160,7 @@ public class HUD_VC : MonoBehaviour
         {
             homePanel.SetActive (true);
             playerPanel.SetActive (true);
-            leaderboardsPanel.SetActive (true);
+            leaderboardsPanel.SetActive (false);
             xpBarPanel.SetActive (true);
             backButtonsPanel.SetActive (false);
             _signalBus.Fire<UpdateExperienceSignal> ();

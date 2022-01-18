@@ -34,11 +34,17 @@ public class Shop_VC : MonoBehaviour
     //RealState
     [SerializeField] private GameObject realStateButton;
     [SerializeField] private GameObject realStateButtonsContainer;
-    [SerializeField] private Image houseImage;
-    [SerializeField] private TMP_Text roomSlots;
-    [SerializeField] private TMP_Text garageSlots;
+    [SerializeField] private Image realEstateMap;
+    [SerializeField] private Vector2[] housePositions;
     [SerializeField] private Button houseBuyButton;
     [SerializeField] private TMP_Text housePrice;
+    [SerializeField] private Image housePriceCurrencyIcon;
+    [SerializeField] private Sprite selectedHouseButtonSprite;
+    [SerializeField] private Sprite unselectedHouseButtonSprite;
+    [SerializeField] private Color selectedHouseTextColor;
+    [SerializeField] private Color unselectedHouseTextColor;
+    private List<GameObject> realEstateShopButtons = new List<GameObject>();
+    //
 
     [SerializeField] private Sprite[] rarenessSprites;
     [SerializeField] private GameObject buyPanel;
@@ -86,9 +92,7 @@ public class Shop_VC : MonoBehaviour
             PopulateEnergyItems();
         }));
 
-        _signalBus.Subscribe<BuyHouseSignal>(UpdateHouseDisplay);
-
-        SetHouseDisplay(playerInventory.OwnedRealEstateItems[0]);
+        _signalBus.Subscribe<BuyHouseSignal>(UpdateHouseDisplay); 
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -111,10 +115,6 @@ public class Shop_VC : MonoBehaviour
         offersPanel.gameObject.SetActive(true);
         realEstatePanel.gameObject.SetActive(false);
         currenciesPanel.gameObject.SetActive(false);
-
-
-
-
     }
 
     void OpenClothingPanel()
@@ -269,10 +269,21 @@ public class Shop_VC : MonoBehaviour
     {
         OpenRealEstatePanel();
         realEstateButton.GetComponent<ShopCategoryButton>().SetButtonSelected();
-        realEstateButton.gameObject.transform.parent.GetComponent<RectTransform>().anchoredPosition =
-            new Vector3(0, 1000, 0);
+        realEstateButton.gameObject.transform.parent.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 1000, 0);
         RealEstateCustomizationItem house = shop.Houses.Where((house) => house.name == signal.houseName).FirstOrDefault();
         SetHouseDisplay(house);
+        switch (house.realEstateHouse)
+        {
+            case RealEstateHouse.BasicHouse:
+                RealEstateButtonPressed(realEstateShopButtons[0]);
+                break;
+            case RealEstateHouse.NiceApartment:
+                RealEstateButtonPressed(realEstateShopButtons[2]);
+                break;
+            case RealEstateHouse.HugeHouse:
+                RealEstateButtonPressed(realEstateShopButtons[1]);
+                break;
+        }    
     }
 
     void OpenRealEstatePanel()
@@ -283,14 +294,19 @@ public class Shop_VC : MonoBehaviour
         
         if (realStateButtonsContainer.transform.childCount > 1)
             return;
+
         List<RealEstateCustomizationItem> houses = shop.Houses;
 
         foreach (RealEstateCustomizationItem item in houses)
         {
             GameObject shopButton = Instantiate(realStateButton, realStateButtonsContainer.transform);
             shopButton.GetComponentInChildren<TMP_Text>().text = item.name;            
-            shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => SetHouseDisplay(item));          
+            shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => SetHouseDisplay(item));
+            shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => RealEstateButtonPressed(shopButton));
+            realEstateShopButtons.Add(shopButton);
         }
+        SetHouseDisplay(playerInventory.OwnedRealEstateItems[0]);
+        RealEstateButtonPressed(realEstateShopButtons[0]);
     }
 
     void OpenVehiclesPanel()
@@ -346,19 +362,79 @@ public class Shop_VC : MonoBehaviour
     {
         bool ownedHouse = item.Owned || playerInventory.OwnedRealEstateItems.Find(house => house.itemName == item.itemName);
 
-        houseImage.sprite = item.streetViewSprite;
-        garageSlots.text = $"Garage slots: {item.garageSlots}";
-        roomSlots.text = $"Room slots: {item.roomSlots}";
+        MoveMap(item.realEstateHouse);
+
         if (ownedHouse)
+        {
             housePrice.text = "Owned";
+            Color transparent = Color.white;
+            transparent.a = 0;
+            housePriceCurrencyIcon.color = transparent;
+        }     
         else
         {
-            housePrice.text = $"{item.SCPrice}";
+            housePriceCurrencyIcon.color = Color.white;
+
+            if (item.PriceType == PriceType.HC)
+            {
+                housePriceCurrencyIcon.sprite = hcCoin;
+                housePrice.text = $"{item.HCPrice}";
+            }
+            else if( item.PriceType == PriceType.SC)
+            {
+                housePriceCurrencyIcon.sprite = scCoin;
+                housePrice.text = $"{item.SCPrice}";
+            }
+            
             houseBuyButton.onClick.AddListener(() => BuyRealEstateItem(item, item.PriceType));
         }
         houseBuyButton.interactable = !ownedHouse;
     }
-
+    void MoveMap(RealEstateHouse realEstateHouse)
+    {
+        Vector2 newPos = housePositions[0];
+        switch (realEstateHouse)
+        {
+            case RealEstateHouse.BasicHouse:
+                newPos = housePositions[0];
+                break;
+            case RealEstateHouse.NiceApartment:
+                newPos = housePositions[1];
+                break;
+            case RealEstateHouse.HugeHouse:
+                newPos = housePositions[2];
+                break;
+        }
+        StartCoroutine(MoveMapSmooth(newPos));
+    }
+    System.Collections.IEnumerator MoveMapSmooth(Vector2 newPos)
+    {
+        Vector2 initialPos = realEstateMap.GetComponent<RectTransform>().localPosition;
+        float lerp = 0;
+        while (lerp < 1)
+        {
+            lerp += Time.deltaTime*3;
+            realEstateMap.GetComponent<RectTransform>().localPosition = Vector2.Lerp(initialPos, newPos, lerp);
+            yield return null;
+        }
+        realEstateMap.GetComponent<RectTransform>().localPosition = newPos;
+    }
+    void RealEstateButtonPressed(GameObject button)
+    {
+        foreach(GameObject shopbutton in realEstateShopButtons)
+        {
+            if(button != shopbutton)
+            {
+                shopbutton.transform.GetChild(0).GetComponent<Image>().sprite = unselectedHouseButtonSprite;
+                shopbutton.GetComponentInChildren<TMP_Text>().color = unselectedHouseTextColor;
+            }
+            else
+            {
+                shopbutton.transform.GetChild(0).GetComponent<Image>().sprite = selectedHouseButtonSprite;
+                shopbutton.GetComponentInChildren<TMP_Text>().color = selectedHouseTextColor;
+            }
+        }
+    }
     void UpdateHouseDisplay(BuyHouseSignal signal)
     {
         RealEstateCustomizationItem house = shop.Houses.Where((house) => house.name == signal.houseName).FirstOrDefault();
