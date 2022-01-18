@@ -22,6 +22,7 @@ public class GameAnalyticsManager : MonoBehaviour,IGameAnalyticsATTListener
 
     void Start()
     {
+      
         if(Application.platform == RuntimePlatform.IPhonePlayer)
         {
             GameAnalytics.RequestTrackingAuthorization(this);
