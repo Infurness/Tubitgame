@@ -110,7 +110,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.lastUpdateTime = GameClock.Instance.Now;
 
         ulong currentTotalSubs = playerDataManager.GetSubscribers();
-        int percentage = 14;
+        percentage = 14;
         if (currentTotalSubs < 1000)
             percentage = 20;
         else if (currentTotalSubs < 100000)
