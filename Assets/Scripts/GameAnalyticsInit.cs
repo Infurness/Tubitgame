@@ -8,15 +8,14 @@ public class GameAnalyticsInit : MonoBehaviour,IGameAnalyticsATTListener
 
     void Start()
     {
-        GameAnalytics.Initialize();
-        // if(Application.platform == RuntimePlatform.IPhonePlayer)
-        // {
-        //     GameAnalytics.RequestTrackingAuthorization(this);
-        // }
-        // else
-        // {
-        //     GameAnalytics.Initialize();
-        // }
+        if(Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            GameAnalytics.RequestTrackingAuthorization(this);
+        }
+        else
+        {
+            GameAnalytics.Initialize();
+        }
     }
 
     public void GameAnalyticsATTListenerNotDetermined()
