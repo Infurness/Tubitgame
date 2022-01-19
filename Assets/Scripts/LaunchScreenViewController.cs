@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +36,8 @@ public class LaunchScreenViewController : MonoBehaviour
 
     private void Start()
     {
+        GameAnalytics.StartTimer("LaunchScreenTime");
+        GameAnalytics.NewDesignEvent("LaunchScreen");
         signalBus.Subscribe<OnLoginFailedSignal>(signal =>
         {
            signInCanvas.gameObject.SetActive(true);
@@ -54,6 +57,12 @@ public class LaunchScreenViewController : MonoBehaviour
         } ));
         
         
+    }
+
+    private void OnDestroy()
+    {
+        var loadTime=  GameAnalytics.StopTimer("LaunchScreenTime");
+        GameAnalytics.NewDesignEvent("LaunchScreenTime", loadTime);
     }
 
     public void OnGoogleLoginPressed()
