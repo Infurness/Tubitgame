@@ -31,5 +31,7 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<Shop>().FromComponentInHierarchy().AsSingle();
         Container.Bind<AdsRewardsManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<IAPManager>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance).AsSingle();
+
     }
 }

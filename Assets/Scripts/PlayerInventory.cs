@@ -32,7 +32,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private RealEstateCustomizationItem equippedHouse;
     [SerializeField] private RealEstateCustomizationItem defaultHouse;
     [SerializeField] private RoomLayout defaultRoomLayout;
-
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
     public List<ThemeCustomizationItem> OwnedCharacterItems => ownedCharacterItems.ToList();
 
     public List<ThemeCustomizationItem> OwnedRoomThemeEffectItems => ownedRoomThemeEffectItems.ToList();
@@ -398,6 +398,7 @@ public class PlayerInventory : MonoBehaviour
         });
         playerDataManager.UpdatePlayerQuality(equippedVideoQualityRoomItems.Sum((item => item.videoQualityBonus)));
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
+        gameAnalyticsManager.SendCustomEvent("Room Changed");
 
     }
 
@@ -406,11 +407,14 @@ public class PlayerInventory : MonoBehaviour
     public void TestThemeEffectRoomITem(ThemeCustomizationItem themeCustomizationItem)
     {
         signalBus.Fire(new TestRoomThemeItemSignal(){ThemeCustomizationItem = themeCustomizationItem});
+        gameAnalyticsManager.SendCustomEvent("Room Theme Effect Item Equipped",new []{themeCustomizationItem.name});
     }
 
     public void TestVideoQualityRoomItem(VideoQualityCustomizationItem videoQualityCustomizationItem)
     {
         signalBus.Fire(new TestRoomVideoQualityITemSignal(){VideoQualityCustomizationItem = videoQualityCustomizationItem});
+        gameAnalyticsManager.SendCustomEvent("Room Room Video Quality Item Equipped",new []{videoQualityCustomizationItem.name});
+
     }
 
     public RoomLayout GetRoomLayout()
