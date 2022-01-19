@@ -16,7 +16,7 @@ public class PlayerDataManager : MonoBehaviour
 
     private PlayerData playerData;
     [Inject] private SignalBus signalBus;
-
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
     private void Awake()
     {
         if (Instance == null)
@@ -486,6 +486,7 @@ public class PlayerDataManager : MonoBehaviour
         UpdateUserDatabase (new[] {"SoftCurrency"}, new object[] { playerData.softCurrency }, () => 
         {
             signalBus.Fire (new UpdateSoftCurrencySignal ());
+            gameAnalyticsManager.SendCustomEvent("soft_currency_earn");
         });
     }
     public ulong GetHardCurrency ()
@@ -522,6 +523,8 @@ public class PlayerDataManager : MonoBehaviour
             print("Added HC");
             confirmPurchase?.Invoke();
             signalBus.Fire(new UpdateHardCurrencySignal());
+            gameAnalyticsManager.SendCustomEvent("hard_currency_earn");
+
         }));
     }
 
@@ -543,7 +546,10 @@ public class PlayerDataManager : MonoBehaviour
         UpdateUserDatabase(new[] {"HardCurrency"}, new object[]{hc}, (() =>
         {
             playerData.hardCurrency = hc;
+            gameAnalyticsManager.SendCustomEvent("hard_currency_spend");
+
             signalBus.Fire(new UpdateHardCurrencySignal());
+            
             onRedeemed?.Invoke();
         }));
 
@@ -582,6 +588,8 @@ public class PlayerDataManager : MonoBehaviour
 
         UpdateUserDatabase(new[] {"SoftCurrency"}, new object[]{sc}, (() =>
         {
+            gameAnalyticsManager.SendCustomEvent("soft_currency_spend");
+
             playerData.softCurrency = sc;
             signalBus.Fire(new UpdateSoftCurrencySignal());
             onRedeemed?.Invoke();

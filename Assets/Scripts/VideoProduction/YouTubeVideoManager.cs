@@ -13,7 +13,7 @@ public class YouTubeVideoManager : MonoBehaviour
     [Inject] private ThemesManager themesManager;
     [Inject] private EnergyManager energyManager;
     [Inject] private ExperienceManager experienceManager;
-
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
     bool isRecording;
 
     void Start()
@@ -88,6 +88,7 @@ public class YouTubeVideoManager : MonoBehaviour
         if (Random.Range (0, 101) >= 100 - percentage) //5% chance of being viral
         {
             newVideo.isViral = true;
+            gameAnalyticsManager.SendCustomEvent("viral_event");
         }
         var subscribers = playerDataManager.GetSubscribers();
         List<float> themeValues = new List<float> ();
@@ -170,7 +171,8 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     void RecollectVideoMoney (GetMoneyFromVideoSignal signal)
     {
-        playerDataManager.RecollectVideoMoney (signal.videoName);
+       var money= playerDataManager.RecollectVideoMoney (signal.videoName);
+       gameAnalyticsManager.SendCustomEvent("claim_button",new []{money.ToString()});
         _signalBus.Fire<UpdateSoftCurrencySignal> ();
     }
     int GetTimeHour () //Dummy Not being used
