@@ -5,19 +5,11 @@ using GameAnalyticsSDK;
 using UnityEngine;
 public class GameAnalyticsManager : MonoBehaviour,IGameAnalyticsATTListener
 {
-    public static GameAnalyticsManager Instance=null;
 
 
     private void Awake()
     {
-        if (Instance==null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+
     }
 
     void Start()
@@ -31,7 +23,6 @@ public class GameAnalyticsManager : MonoBehaviour,IGameAnalyticsATTListener
         {
             GameAnalytics.Initialize();
         }
-       GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start,"Test");
     }
 
     public void GameAnalyticsATTListenerNotDetermined()
