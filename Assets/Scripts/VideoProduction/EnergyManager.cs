@@ -72,7 +72,8 @@ public class EnergyManager : MonoBehaviour
             }
             else
             {
-                energyData = new EnergyData { energy = 0, lastTimeUpdated = gameClock.Now };
+                energyData = new EnergyData { energy = maxEnergyByLevel[0], lastTimeUpdated = gameClock.Now };
+                SaveEnergyData();
             }
         }), (error => { print ("Cant Retrieve User energy data"); }));
     }

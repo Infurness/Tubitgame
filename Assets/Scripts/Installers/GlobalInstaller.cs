@@ -64,6 +64,7 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<CloseVideoCreationSignal> ();
     Container.DeclareSignal<UpdateThemesGraphSignal> ();
     Container.DeclareSignal<OpenSettingPanelSignal> ();
+    Container.DeclareSignal<CloseSettingPanelSignal>();   
     Container.DeclareSignal<OpenDeleteAccountSignal> ();
     Container.DeclareSignal<OpenLeaderboardsSignal> ();
     Container.DeclareSignal<AddSubsForExperienceSignal> ();
@@ -137,5 +138,12 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<HouseChangedSignal>();
     Container.DeclareSignal<HousePopUp>();
 
+
+
+
+
+        //Tutorial signals
+        Container.DeclareSignal<StartTutorialPhaseSignal>();
+        
   }
 }

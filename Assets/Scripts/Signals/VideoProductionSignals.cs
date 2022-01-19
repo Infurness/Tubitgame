@@ -111,7 +111,10 @@ public class OpenSettingPanelSignal
 {
 
 }
+public class CloseSettingPanelSignal
+{
 
+}
 public class OpenDeleteAccountSignal
 {
 
