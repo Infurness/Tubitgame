@@ -12,6 +12,7 @@ public class AlgorithmManager : MonoBehaviour
     [Inject] private ThemesManager themesManager;
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerDataManager playerDataManager;
+    [Inject] private ExperienceManager experienceManager;
 
     private bool shouldUpdate=true;
     [SerializeField] private float updateTime = 15;
@@ -52,7 +53,42 @@ public class AlgorithmManager : MonoBehaviour
     }
     public ulong GetVideoSoftCurrency (ulong maxViews)
     {
-        return maxViews/100 ;
+        int level = experienceManager.GetPlayerLevel();
+        int moneyMultiplier = 3;
+        switch (level)
+        {
+            case 1:
+                moneyMultiplier = 20;
+                break;
+            case 2:
+                moneyMultiplier = 25;
+                break;
+            case 3:
+                moneyMultiplier = 30;
+                break;
+            case 4:
+                moneyMultiplier = 35;
+                break;
+            case 5:
+                moneyMultiplier = 40;
+                break;
+            case 6:
+                moneyMultiplier = 50;
+                break;
+            case 7:
+                moneyMultiplier = 70;
+                break;
+            case 8:
+                moneyMultiplier = 95;
+                break;
+            case 9:
+                moneyMultiplier = 95;
+                break;
+            case 10:
+                moneyMultiplier =95;
+                break;
+        }
+        return maxViews/1000 *(ulong)moneyMultiplier;
     }
     int GetVirality ()
     {

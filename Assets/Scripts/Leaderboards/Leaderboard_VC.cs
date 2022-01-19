@@ -17,14 +17,14 @@ public class Leaderboard_VC : MonoBehaviour
     [SerializeField] private TMP_Text currentPlayerPosition;
     [SerializeField] private TMP_Text currentPlayerName;
 
-    [SerializeField] private Button moreButton;
+
     // Start is called before the first frame update
     void Start()
     {
         signalBus.Subscribe<RecievePlayerLeaderboardPosition> (RecieveMyLeaderboardPosition);
         signalBus.Subscribe<Recieve3BestLeaderboard> (RecieveBestLeaderboardPositions);
 
-        moreButton.onClick.AddListener (OpenLeaderboards);
+
     }
 
     // Update is called once per frame
@@ -69,8 +69,5 @@ public class Leaderboard_VC : MonoBehaviour
         currentPlayerPosition.text = _position.ToString ();
         currentPlayerName.text = playerDataManager.GetPlayerName ();
     }
-    void OpenLeaderboards ()
-    {
-        signalBus.Fire<OpenLeaderboardsSignal> ();
-    }
+
 }

@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -64,6 +65,7 @@ public class HUD_VC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameAnalytics.NewDesignEvent("MainScreen");
         foreach (Button button in videoManagerButtons)
             button.onClick.AddListener (OpenVideoManagerPanel);
         if(eventsButton)
@@ -76,13 +78,14 @@ public class HUD_VC : MonoBehaviour
         {
             if (signal.Visibility)
             {
+                GameAnalytics.NewDesignEvent("RoomCustomizationScreen");
                 leaderboardsPanel.gameObject.SetActive(false);
                 playerPanel.gameObject.SetActive(false);
                 
             }
             else
             {
-                leaderboardsPanel.gameObject.SetActive(true);
+                leaderboardsPanel.gameObject.SetActive(false);
                 playerPanel.gameObject.SetActive(true);
 
             }
@@ -92,13 +95,15 @@ public class HUD_VC : MonoBehaviour
         {
             if (signal.Visibility)
             {
+                GameAnalytics.NewDesignEvent("CharacterCustomizationScreen");
+
                 leaderboardsPanel.gameObject.SetActive(false);
                 playerPanel.gameObject.SetActive(false);
                 
             }
             else
             {
-                leaderboardsPanel.gameObject.SetActive(true);
+                leaderboardsPanel.gameObject.SetActive(false);
                 playerPanel.gameObject.SetActive(true);
 
             }
@@ -144,6 +149,7 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenVideoManagerPanel ()
     {
+        GameAnalytics.NewDesignEvent("VideoMangerScreen");
         OpenScreenPanel (HUDScreen.VideoManager);
     }
     void OpenEventsPanel ()
@@ -152,6 +158,7 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenStorePanel ()
     {
+        GameAnalytics.NewDesignEvent("ShopScreen");
         OpenScreenPanel (HUDScreen.Store); 
     }
     void OpenScreenPanel (HUDScreen _screenToOpen)
@@ -160,7 +167,7 @@ public class HUD_VC : MonoBehaviour
         {
             homePanel.SetActive (true);
             playerPanel.SetActive (true);
-            leaderboardsPanel.SetActive (true);
+            leaderboardsPanel.SetActive (false);
             xpBarPanel.SetActive (true);
             backButtonsPanel.SetActive (false);
             _signalBus.Fire<UpdateExperienceSignal> ();

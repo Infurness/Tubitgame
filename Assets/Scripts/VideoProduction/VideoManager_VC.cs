@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -272,8 +273,12 @@ public class VideoManager_VC : MonoBehaviour
 
     void OnRecordButtonPressed ()
     {
-        if (_energyManager.GetEnergy () <= videoCreationEnergyCost || selectedThemes.Length==0)
+        if (_energyManager.GetEnergy() <= videoCreationEnergyCost || selectedThemes.Length == 0)
+        {
+            GameAnalytics.NewDesignEvent("OutOfEnergy");
             return;
+
+        }
 
         _signalBus.Fire<StartRecordingSignal> (new StartRecordingSignal ()
         {
@@ -298,6 +303,7 @@ public class VideoManager_VC : MonoBehaviour
     
     void StartRecordingVideo ()
     {
+        GameAnalytics.NewDesignEvent("RecordNewVideo");
         //Create video info in the video manager screen
         CreateVideoToRecord ();        
     }

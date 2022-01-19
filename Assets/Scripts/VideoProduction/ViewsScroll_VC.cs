@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -111,6 +112,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
                 rightButtonPanel.SetActive (false);
                 leftButtonPanel.SetActive (true);
                 audioManager.PlaySound(soundsHolder.streetSounds, AudioType.Effect, true, true);
+                GameAnalytics.NewDesignEvent("MainScreen");
+
             }
             else
             {
@@ -126,6 +129,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         //Dummy
         if (currentViewIndex == 2)
         {
+            GameAnalytics.NewDesignEvent("NeighbourHoodViewScreen");
+
             float movementLength = viewsHolder.position.x - streetView.position.x;
             signalBus.Fire(new SetCarsCanvasButtonVisibility()
             {
@@ -135,6 +140,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         }
         else if (currentViewIndex == 1)
         {
+            GameAnalytics.NewDesignEvent("StreetViewScreen");
+
             signalBus.Fire(new SetCarsCanvasButtonVisibility()
             {
                 visibility = true
