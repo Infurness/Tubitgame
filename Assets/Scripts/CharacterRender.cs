@@ -14,7 +14,7 @@ public class CharacterRender : MonoBehaviour
     [SerializeField] private SpriteRenderer legsRender;
     [SerializeField] private SpriteRenderer feetRender;
     [SerializeField] private SpriteRenderer seatedTorsoRender,seatedLegsRender,seatedHairRender,seatedBodyRender;
-    
+    [SerializeField] private SpriteRenderer idleBodyRender, idleTorsoRender, idleHairRender,idleLegsRender, idleFeetRender;
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory _playerInventory;
     
@@ -39,17 +39,27 @@ public class CharacterRender : MonoBehaviour
         var body = avatar.bodyItem;
         bodyRenderer.sprite = avatar.bodyItem.sprite;
         seatedBodyRender.sprite = avatar.bodyItem.SeatedBody;
+        idleBodyRender.sprite = avatar.bodyItem.IdleBody;
+        
         headRender.sprite =  avatar.headItem.sprite;
         headRender.transform.localPosition = body.headPosition;
+        
         hairRender.sprite =avatar.hairItem==null ? null: avatar.hairItem.sprite;
+        idleHairRender.sprite = avatar.hairItem == null ? null : avatar.hairItem.IdleHair;
         seatedHairRender.sprite = avatar.hairItem == null ? null : avatar.hairItem.SeatedHair;
+        
         torsoRender.sprite =avatar.torsoItem==null ? null:avatar.torsoItem.TorsoVariants[variantIndex];
         seatedTorsoRender.sprite = avatar.torsoItem == null ? null : avatar.torsoItem.SeatedTorso;
+        idleTorsoRender.sprite = avatar.torsoItem == null ? null : avatar.torsoItem.idleTorso;
         torsoRender.transform.localPosition = body.torsoPosition;
+        
         legsRender.sprite =avatar.legsItem==null?  null:avatar.legsItem.LegsVariants[variantIndex];
         seatedLegsRender.sprite = avatar.legsItem == null ? null : avatar.legsItem.SeatedLegs;
+        idleLegsRender.sprite = avatar.legsItem == null ? null : avatar.legsItem.IdleLegs;
         legsRender.transform.localPosition = body.legsPosition;
+        
         feetRender.sprite = avatar.feetItem == null ? null:avatar.feetItem.sprite;
+        idleFeetRender.sprite = avatar.feetItem == null ? null : avatar.feetItem.IdleFeet;
         feetRender.transform.localPosition = body.feetPosition;
         if (avatar.feetItem && avatar.legsItem)
         {

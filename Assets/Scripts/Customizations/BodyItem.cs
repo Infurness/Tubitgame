@@ -6,6 +6,7 @@ namespace Customizations
     public class BodyItem : ThemeCustomizationItem
     {
         public Sprite SeatedBody;
+        public Sprite IdleBody;
         public GenderItemType GenderItemType;
         public int BodyIndex;
         public Vector3 headPosition;
