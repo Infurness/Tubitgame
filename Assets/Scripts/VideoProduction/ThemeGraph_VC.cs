@@ -64,7 +64,7 @@ public class ThemeGraph_VC : MonoBehaviour
         foreach (KeyValuePair<LineRenderer,ThemeData> dictSlot in lineRenderers)
         {
             AnimationCurve themeCurve = themesManager.GetThemeAlgorithm (dictSlot.Value, GameClock.Instance.Now);
-            dictSlot.Key.startWidth = enlargerValue / 100;
+            //dictSlot.Key.startWidth = enlargerValue / 100;
             int hour = GameClock.Instance.Now.Hour % 6;
             float minutes = (float)GameClock.Instance.Now.Minute * 100f / 60f;
             float limitTimeValue = (hour + (minutes / 100)) / 6f;
