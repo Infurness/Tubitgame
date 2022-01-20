@@ -14,7 +14,9 @@ public class CharacterRender : MonoBehaviour
     [SerializeField] private SpriteRenderer legsRender;
     [SerializeField] private SpriteRenderer feetRender;
     [SerializeField] private SpriteRenderer seatedTorsoRender,seatedLegsRender,seatedHairRender,seatedBodyRender;
+    
     [SerializeField] private SpriteRenderer idleBodyRender, idleTorsoRender, idleHairRender,idleLegsRender, idleFeetRender;
+    [SerializeField] private Camera idleRenderCam;
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory _playerInventory;
     
@@ -23,6 +25,16 @@ public class CharacterRender : MonoBehaviour
     {
         signalBus.Subscribe<OnCharacterAvatarChanged>(OnAvatarChanged);
        SetCharacterSprites(_playerInventory.EquippedAvatar());
+       
+       signalBus.Subscribe<ChangeSeatedCharacterVisibilitySignal>((signal) =>
+       {
+           SetSeatedCharacterVisibility(signal.Visibility);
+       });
+       
+       signalBus.Subscribe<ChangeIdleCharacterVisibilitySignal>((signal) =>
+       {
+           SetIdleCharacterVisibility(signal.Visibility);
+       });
     }
 
     void OnAvatarChanged(OnCharacterAvatarChanged characterAvatarChanged)
@@ -64,13 +76,21 @@ public class CharacterRender : MonoBehaviour
         if (avatar.feetItem && avatar.legsItem)
         {
             feetRender.sortingOrder =  avatar.legsItem.FeetSoringLayers;
- 
+            idleFeetRender.sortingOrder= avatar.legsItem.FeetSoringLayers;
         }
 
     }
-    
-    
 
-  
+     void SetSeatedCharacterVisibility(bool state)
+    {
+        seatedBodyRender.gameObject.SetActive(state);
+    }
+
+     void SetIdleCharacterVisibility(bool state)
+    {
+        idleBodyRender.gameObject.SetActive(state);
+     //   idleRenderCam.gameObject.SetActive(state);
+        idleRenderCam.targetTexture.Release();
+    }
     
 }
