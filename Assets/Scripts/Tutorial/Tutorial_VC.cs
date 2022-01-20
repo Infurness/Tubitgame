@@ -9,6 +9,7 @@ public class Tutorial_VC : MonoBehaviour
 {
     [Inject] SignalBus signalBus;
 
+    [SerializeField] private GameObject speechBubble;
     [SerializeField] private RectTransform floatingHand;
 
     [SerializeField] private GameObject openSettingsButton;
@@ -53,6 +54,7 @@ public class Tutorial_VC : MonoBehaviour
         {
             shopButton.SetActive(false);
         }
+        speechBubble.SetActive(false);
         restButton.SetActive(false);
         customButton.SetActive(false);
         videoManagerButton.SetActive(false);
@@ -62,6 +64,7 @@ public class Tutorial_VC : MonoBehaviour
         switch (signal.phase)
         {
             case 0: //OpenSettings
+                ActivateAndSetSpeechBubble(new string[] { "Hello.", "It's me.", "Lets show you how all this works." });
 
                 SendHandTo(openSettingsHandPos.localPosition);
                 openSettingsButton.GetComponentInChildren<Button>().onClick.AddListener(()=>TutorialManager.Instance.GoToNextPhase(1));
@@ -98,6 +101,45 @@ public class Tutorial_VC : MonoBehaviour
                 SendHandTo(recordVideoButtonHandPos.localPosition);
                 break;
         }
+    }
+
+    void ActivateAndSetSpeechBubble(string[] texts)
+    {
+        speechBubble.SetActive(true);
+        StartCoroutine(SetSpeechBubble(texts));
+    }
+    IEnumerator SetSpeechBubble(string[] texts)
+    {
+        int i = 0;
+        int lengthWritten = 0;
+        speechBubble.GetComponentInChildren<TMP_Text>().text = "";
+        while (lengthWritten< texts[i].Length)
+        {
+            speechBubble.GetComponentInChildren<TMP_Text>().text += texts[i].Substring(lengthWritten,1);
+            lengthWritten++;
+            yield return new WaitForSeconds(0.05f);
+        }
+        i++;
+        while (i<=texts.Length)
+        {
+            if (Input.anyKeyDown)
+            {
+                if(i < texts.Length)
+                {
+                    speechBubble.GetComponentInChildren<TMP_Text>().text = "";
+                    lengthWritten = 0;
+                    while (lengthWritten < texts[i].Length)
+                    {
+                        speechBubble.GetComponentInChildren<TMP_Text>().text += texts[i].Substring(lengthWritten, 1);
+                        lengthWritten++;
+                        yield return new WaitForSeconds(0.05f);
+                    }
+                }
+                i++;
+            } 
+            yield return null;
+        }
+        speechBubble.SetActive(false);
     }
     void DeleteGoToNextPhaseListener(Button button)
     {
