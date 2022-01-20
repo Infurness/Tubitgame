@@ -88,6 +88,8 @@ public class VideoManager_VC : MonoBehaviour
 
     [SerializeField] private GameObject themeGraphSelectionPrefab;
     [SerializeField] private GameObject themeGraphSelectionHolder;
+
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
     // Start is called before the first frame update
     void Start ()
     {
@@ -272,14 +274,19 @@ public class VideoManager_VC : MonoBehaviour
 
     void OnRecordButtonPressed ()
     {
-        if (_energyManager.GetEnergy () <= videoCreationEnergyCost || selectedThemes.Length==0)
+        if (_energyManager.GetEnergy() <= videoCreationEnergyCost || selectedThemes.Length == 0)
+        {
+                gameAnalyticsManager.SendCustomEvent("OutOfEnergy");
             return;
+
+        }
 
         _signalBus.Fire<StartRecordingSignal> (new StartRecordingSignal ()
         {
             recordedThemes = selectedThemes,
             videoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes)
         });
+        gameAnalyticsManager.SendCustomEvent("record_start",new object[]{selectedThemes,selectedQuality});
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -videoCreationEnergyCost });
         StartRecordingVideo ();
         recordVideoButton.GetComponent<Animator>().Play("Start_Recording");

@@ -34,6 +34,8 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private EffectCell effectCellPrefab;
     [SerializeField] private GameObject effectTransform;
     [SerializeField] private Sprite selectedTabSprite, notSelectedTabSprite;
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
+
     void OpenRoomCustomizationPanel()
     {
         inventoryCanvas.gameObject.SetActive(true);

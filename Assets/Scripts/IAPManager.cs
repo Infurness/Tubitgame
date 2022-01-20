@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using Zenject;
@@ -13,7 +11,8 @@ public class IAPManager : MonoBehaviour,IStoreListener
     private IStoreController controller;
     private IExtensionProvider extensions;
     [SerializeField] private List<string> productCatalog;
-    private void Awake()
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
+    private  void Awake()
     {
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         
@@ -34,7 +33,10 @@ public class IAPManager : MonoBehaviour,IStoreListener
 
     void  ConfirmPendingPurchase(ConfirmPendingPurchaseSignal confirmPendingPurchaseSignal)
     {
-        controller.ConfirmPendingPurchase(confirmPendingPurchaseSignal.product);
+        var product = confirmPendingPurchaseSignal.product;
+        controller.ConfirmPendingPurchase(product);
+        
+        gameAnalyticsManager.SendCustomEvent("IAP item Purchased",new object[] {product.definition.id,product.metadata.localizedPriceString});
         
     }
 

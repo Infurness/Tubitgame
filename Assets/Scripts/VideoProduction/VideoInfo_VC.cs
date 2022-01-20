@@ -55,6 +55,7 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private Button moneyButton;
 
     [SerializeField] private GameObject energyCoinsAppearOrigin;
+
     // Start is called before the first frame update
     void Start ()
     {
@@ -169,6 +170,8 @@ public class VideoInfo_VC : MonoBehaviour
     {
         moneyText.text = "0";
         signalBus.Fire<GetMoneyFromVideoSignal> (new GetMoneyFromVideoSignal () { videoName = videoName});
+        
+        
     } 
     void StartRecordingVideo ()
     {
