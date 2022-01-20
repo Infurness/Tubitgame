@@ -9,6 +9,8 @@ namespace Customizations
         public GenderItemType GenderItemType;
         public Sprite[] HairVariants;
         public Sprite SeatedHair;
+        public Sprite IdleHair;
+
 
     }
 

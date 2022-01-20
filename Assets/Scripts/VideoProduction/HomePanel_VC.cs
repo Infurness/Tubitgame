@@ -118,6 +118,25 @@ public class HomePanel_VC : MonoBehaviour
             {
                 videoBeingRecorded = null;
                 productionBar.SetActive(false);
+                _signalBus.Fire(new  ChangeIdleCharacterVisibilitySignal
+                {
+                    Visibility = false
+                });
+                _signalBus.Fire(new ChangeSeatedCharacterVisibilitySignal()
+                {
+                    Visibility = true
+                });
+            }
+            else
+            {
+                _signalBus.Fire(new  ChangeIdleCharacterVisibilitySignal
+                {
+                    Visibility = true
+                });
+                _signalBus.Fire(new ChangeSeatedCharacterVisibilitySignal()
+                {
+                    Visibility = false
+                });
             }         
         }
     }

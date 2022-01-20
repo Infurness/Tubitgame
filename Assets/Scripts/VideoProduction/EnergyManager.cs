@@ -158,6 +158,15 @@ public class EnergyManager : MonoBehaviour
     public void ChangePlayerRestingState ()
     {
         isResting = !isResting;
+        _signalBus.Fire(new ChangeIdleCharacterVisibilitySignal()
+        {
+            Visibility = isResting
+        });
+        
+        _signalBus.Fire(new ChangeSeatedCharacterVisibilitySignal()
+        {
+            Visibility = !isResting
+        });
     }
     public bool GetPlayerIsResting ()
     {
