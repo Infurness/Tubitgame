@@ -44,7 +44,7 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private GameObject xpBarPanel;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private Image xpFillBar;
-
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
     private void Awake ()
     {
         _signalBus.Subscribe<EnergyValueSignal> (SetEnergy);
@@ -64,6 +64,7 @@ public class HUD_VC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameAnalyticsManager.SendCustomEvent("MainScreen");
         foreach (Button button in videoManagerButtons)
             button.onClick.AddListener (OpenVideoManagerPanel);
         if(eventsButton)
@@ -76,6 +77,7 @@ public class HUD_VC : MonoBehaviour
         {
             if (signal.Visibility)
             {
+                gameAnalyticsManager.SendCustomEvent("RoomCustomizationScreen");
                 leaderboardsPanel.gameObject.SetActive(false);
                 playerPanel.gameObject.SetActive(false);
                 
@@ -92,6 +94,8 @@ public class HUD_VC : MonoBehaviour
         {
             if (signal.Visibility)
             {
+                gameAnalyticsManager.SendCustomEvent("CharacterCustomizationScreen");
+
                 leaderboardsPanel.gameObject.SetActive(false);
                 playerPanel.gameObject.SetActive(false);
                 
@@ -144,6 +148,7 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenVideoManagerPanel ()
     {
+        gameAnalyticsManager.SendCustomEvent("VideoMangerScreen");
         OpenScreenPanel (HUDScreen.VideoManager);
     }
     void OpenEventsPanel ()
@@ -152,6 +157,7 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenStorePanel ()
     {
+        gameAnalyticsManager.SendCustomEvent("ShopScreen");
         OpenScreenPanel (HUDScreen.Store); 
     }
     void OpenScreenPanel (HUDScreen _screenToOpen)

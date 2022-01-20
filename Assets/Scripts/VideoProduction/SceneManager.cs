@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -17,6 +18,7 @@ public class SceneManager : MonoBehaviour
         } ));
     }
 
+ 
 
     IEnumerator LoadSceneAsync(int index)
     {

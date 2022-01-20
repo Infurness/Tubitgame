@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
@@ -56,6 +57,7 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     // Implement a method to execute when the user clicks the button.
     public void ShowAd ()
     {
+        GameAnalytics.NewAdEvent(GAAdAction.Clicked,GAAdType.Video,"UnityAds",_adUnitId);
         Debug.Log ("Start showing ad from logic");
         // Disable the button: 
         //_showAdButton.interactable = false;
@@ -67,17 +69,32 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
     public void OnUnityAdsShowComplete (string adUnitId, UnityAdsShowCompletionState showCompletionState)
     {
+        
         Debug.Log ("Show completed");
         if (adUnitId.Equals (_adUnitId) && showCompletionState.Equals (UnityAdsShowCompletionState.COMPLETED))
         {
+            GameAnalytics.NewDesignEvent("ad_rv_success");
+            GameAnalytics.NewAdEvent(GAAdAction.RewardReceived,GAAdType.Video,"UnityAds",_adUnitId);
+
             Debug.Log ("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
             signalBus.Fire<GrantRewardSignal> ();
             // Load another ad:
             
         }
-        else
+        else if (adUnitId.Equals (_adUnitId) && showCompletionState.Equals (UnityAdsShowCompletionState.SKIPPED))
         {
+            Debug.Log ("User Skipped the AD");
+            GameAnalytics.NewDesignEvent("ad_rv_skip");
+            GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
+
+
+            signalBus.Fire<NotGrantedRewardSignal> ();
+        }else
+        {
+            GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
+
+            GameAnalytics.NewDesignEvent("ad_retry");
             Debug.Log ("Unity Ads Rewarded Ad NOT Completed");
             signalBus.Fire<NotGrantedRewardSignal> ();
         }
@@ -87,12 +104,18 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     // Implement Load and Show Listener error callbacks:
     public void OnUnityAdsFailedToLoad (string adUnitId, UnityAdsLoadError error, string message)
     {
+        GameAnalytics.NewDesignEvent("ad_rv_fail");
+        GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
+
         Debug.Log ($"Error loading Ad Unit {adUnitId}: {error.ToString ()} - {message}");
         // Use the error details to determine whether to try to load another ad.
     }
 
     public void OnUnityAdsShowFailure (string adUnitId, UnityAdsShowError error, string message)
     {
+        GameAnalytics.NewDesignEvent("ad_rv_fail");
+        GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
+
         Debug.Log ($"Error showing Ad Unit {adUnitId}: {error.ToString ()} - {message}");
         // Use the error details to determine whether to try to load another ad.
     }
@@ -108,17 +131,14 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
 
     public void OnUnityAdsReady (string placementId)
     {
-        throw new System.NotImplementedException ();
     }
 
     public void OnUnityAdsDidError (string message)
     {
-        throw new System.NotImplementedException ();
     }
 
     public void OnUnityAdsDidStart (string placementId)
     {
-        throw new System.NotImplementedException ();
     }
 
     public void OnUnityAdsDidFinish (string placementId, ShowResult showResult)

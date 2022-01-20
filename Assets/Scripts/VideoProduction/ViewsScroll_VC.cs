@@ -29,6 +29,7 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
     [SerializeField] private Transform houseView;
     [SerializeField] private Transform streetView;
 
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -111,6 +112,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
                 rightButtonPanel.SetActive (false);
                 leftButtonPanel.SetActive (true);
                 audioManager.PlaySound(soundsHolder.streetSounds, AudioType.Effect, true, true);
+                 gameAnalyticsManager.SendCustomEvent("MainScreen");
+
             }
             else
             {
@@ -126,6 +129,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         //Dummy
         if (currentViewIndex == 2)
         {
+            gameAnalyticsManager.SendCustomEvent("NeighbourHoodViewScreen");
+
             float movementLength = viewsHolder.position.x - streetView.position.x;
             signalBus.Fire(new SetCarsCanvasButtonVisibility()
             {
@@ -135,6 +140,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         }
         else if (currentViewIndex == 1)
         {
+            gameAnalyticsManager.SendCustomEvent("StreetViewScreen");
+
             signalBus.Fire(new SetCarsCanvasButtonVisibility()
             {
                 visibility = true

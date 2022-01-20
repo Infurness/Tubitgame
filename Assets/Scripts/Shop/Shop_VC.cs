@@ -55,7 +55,7 @@ public class Shop_VC : MonoBehaviour
     [SerializeField] private GameObject softCurrencyPanel, energyPanel;
     [SerializeField] private GameObject consumablesPanel;
     [SerializeField] private ConsumableInventoryButton consumableItemButtonPrefab;
-    
+    [Inject] private GameAnalyticsManager gameAnalyticsManager;
     
     void ClearItemsPanel()
     {
@@ -464,7 +464,6 @@ public class Shop_VC : MonoBehaviour
     {
         SetBuyPanelData(item.name, item.rareness, item.descriptionText, item.newStatsText, item.sprite);
         buyButton.onClick.RemoveAllListeners();
-
         switch (priceType)
         {
 
@@ -474,6 +473,8 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener((() =>
                 {
+                    gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name, PriceType.SC,item.SCPrice});
+
                     playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
@@ -496,6 +497,7 @@ public class Shop_VC : MonoBehaviour
                     playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name,PriceType.HC,item.HCPrice});
 
                         playerInventory.AddCharacterItem(item);
                         buyPanel.gameObject.SetActive(false);
@@ -525,6 +527,7 @@ public class Shop_VC : MonoBehaviour
                     playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name,PriceType.SC,item.SCPrice});
 
                         playerInventory.AddRoomItem(item);
                         buyPanel.gameObject.SetActive(false);
@@ -544,6 +547,7 @@ public class Shop_VC : MonoBehaviour
                     playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name,PriceType.HC,item.HCPrice});
 
                         playerInventory.AddRoomItem(item);
                         buyPanel.gameObject.SetActive(false);
@@ -574,6 +578,8 @@ public class Shop_VC : MonoBehaviour
                     playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name,PriceType.SC,item.SCPrice});
+
 
                         playerInventory.AddVCItem(item);
                         buyPanel.gameObject.SetActive(false);
@@ -593,6 +599,8 @@ public class Shop_VC : MonoBehaviour
                     playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name,PriceType.HC,item.HCPrice});
+
                         playerInventory.AddVCItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenEquipmentsPanel();
@@ -621,6 +629,8 @@ public class Shop_VC : MonoBehaviour
                 {
                     playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name,PriceType.SC,item.SCPrice});
+
                         playerInventory.AddRealEstateItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenRealEstatePanel();
@@ -637,6 +647,8 @@ public class Shop_VC : MonoBehaviour
                 {
                     playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name,PriceType.HC,item.HCPrice});
+
                         playerInventory.AddRealEstateItem(item);
                         buyPanel.gameObject.SetActive(false);
                         OpenRealEstatePanel();
@@ -663,6 +675,7 @@ public class Shop_VC : MonoBehaviour
                     playerDataManager.ConsumeSoftCurrency((ulong) car.SCPrice, () =>
                     {
                         car.Owned = true;
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{car.name,PriceType.SC,car.SCPrice});
 
                         playerInventory.AddCar(car);
                         buyPanel.gameObject.SetActive(false);
@@ -682,6 +695,8 @@ public class Shop_VC : MonoBehaviour
                     playerDataManager.ConsumeHardCurrency((ulong) car.HCPrice, () =>
                     {
                         car.Owned = true;
+                        gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{car.name,PriceType.HC,car.HCPrice});
+
                         playerInventory.AddCar(car);
                         buyPanel.gameObject.SetActive(false);
                         OpenVehiclesPanel();
