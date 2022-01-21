@@ -21,3 +21,8 @@ public class OnHitPublishButtonSignal
 {
 
 }
+
+public class OnHitConfirmAdButtonSignal
+{
+
+}

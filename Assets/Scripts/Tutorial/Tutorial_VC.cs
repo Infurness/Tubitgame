@@ -158,8 +158,7 @@ public class Tutorial_VC : MonoBehaviour
                 break;
             case (TutorialPhase)11:
                 ActivateAndSetSpeechBubble(new string[] { "We dont have time to see ads, so just for you this time will be free, if you want." });
-                doubleViewsButton.GetComponentInChildren<Button>().onClick.AddListener(() => TutorialManager.Instance.GoToNextPhase(12));
-                doubleViewsButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(doubleViewsButton.GetComponentInChildren<Button>(), 12));
+                signalBus.Subscribe<OnHitConfirmAdButtonSignal>(ConfirmDoubleAd);
                 SendHandTo(doubleViewsHandPos.localPosition);
                 break;
             case (TutorialPhase)12:
@@ -309,5 +308,11 @@ public class Tutorial_VC : MonoBehaviour
     {
         signalBus.TryUnsubscribe<OnHitPublishButtonSignal>(PublishedVideo);
         TutorialManager.Instance.GoToNextPhase(11);
+    }
+    void ConfirmDoubleAd()
+    {
+        signalBus.TryUnsubscribe<OnHitConfirmAdButtonSignal>(ConfirmDoubleAd);
+        TutorialManager.Instance.GoToNextPhase(12);
+        
     }
 }

@@ -147,6 +147,7 @@ public class GlobalInstaller : MonoInstaller
         Container.DeclareSignal<DropThemeSignal>();
         Container.DeclareSignal<VideoSkippedSignal>();
         Container.DeclareSignal<OnHitPublishButtonSignal>();
+        Container.DeclareSignal<OnHitConfirmAdButtonSignal>();
         
   }
 }

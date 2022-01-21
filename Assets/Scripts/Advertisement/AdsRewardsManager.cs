@@ -203,6 +203,7 @@ public class AdsRewardsManager : MonoBehaviour
         else//Tutorial
         {
             signalBus.Fire<GrantRewardSignal>();
+            signalBus.Fire<OnHitConfirmAdButtonSignal>();
         }
     }
 
