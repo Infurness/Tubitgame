@@ -131,12 +131,12 @@ public class GlobalInstaller : MonoInstaller
     Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
     Container.Bind<IAuthenticator>().To<PlayFabAuthenticator>().AsSingle();
 
-    Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance).AsSingle();
     
     
     //views
     Container.DeclareSignal<HouseChangedSignal>();
     Container.DeclareSignal<HousePopUp>();
+    Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance);
 
   }
 }

@@ -104,7 +104,7 @@ public class RoomRender : MonoBehaviour
     async void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
     {
         var item = testRoomThemeItem.ThemeCustomizationItem;
-        var obj = currentRoomObjects.Find(ob => ob.slotItemType == item.SlotType);
+        var obj = currentRoomObjects.Find(ob => (ob.slotItemType == item.SlotType) || (ob.assetName==item.name));
         if (obj)
         {
             print("Old Item Destroied");
