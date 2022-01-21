@@ -202,7 +202,7 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if (youTubeVideoManager.IsPlayerResting ())
             return;
-
+        signalBus.Fire<OnHitPublishButtonSignal>();
         if (AdsManager.Instance.IsAdLoaded () && !AdsManager.Instance.AreAdsDeactive())
         {
             signalBus.Subscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);
@@ -253,15 +253,25 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void SkipVideoProduction()
     {
-        if(youTubeVideoManager.ConsumeHardCurrency((int)skipMoney))
+        //if (TutorialManager.Instance != null)
+        //{
+        //    youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
+        //    createdTime = new DateTime(2000, 1, 1); //Set to the past
+        //    youTubeVideoManager.UpdateUnpublishedVideos();
+        //    RestartProductionBar();
+        //    GetComponent<Animator>().Play("Haste_Video");
+        //    StartCoroutine(AutoFillProductionBar());
+        //}
+        //else 
+        if (TutorialManager.Instance != null || youTubeVideoManager.ConsumeHardCurrency((int)skipMoney))
         {
             youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
             createdTime = new DateTime(2000, 1, 1); //Set to the past
             youTubeVideoManager.UpdateUnpublishedVideos();
             //RestartProductionBar();
+            GetComponent<Animator>().Play("Haste_Video");
+            StartCoroutine(AutoFillProductionBar());
         }
-        GetComponent<Animator>().Play("Haste_Video");
-        StartCoroutine(AutoFillProductionBar());
     }
     public void RestartProductionBar ()
     {
@@ -280,17 +290,24 @@ public class VideoInfo_VC : MonoBehaviour
             yield return new WaitForEndOfFrame ();
             tACC += Time.deltaTime;
             videoProgressBar.fillAmount = tACC / maxTime;
-
-            if(secondsLeft<60)
-                skipMoney = secondsLeft / 10;
-            else if(secondsLeft < 300)
-                skipMoney = secondsLeft / 6;
-            else if (secondsLeft < 600)
-                skipMoney = secondsLeft / 5;
+            if (TutorialManager.Instance != null)
+            {
+                skipMoneyText.text = $"Free";
+            }
             else
-                skipMoney = secondsLeft / 4;
+            {
+                if (secondsLeft < 60)
+                    skipMoney = secondsLeft / 10;
+                else if (secondsLeft < 300)
+                    skipMoney = secondsLeft / 6;
+                else if (secondsLeft < 600)
+                    skipMoney = secondsLeft / 5;
+                else
+                    skipMoney = secondsLeft / 4;
 
-            skipMoneyText.text = $"{skipMoney}";
+                skipMoneyText.text = $"{skipMoney}";
+            }
+            
         }
         videoProgressBarCountText.text = $"{0}s";
         videoProgressBar.fillAmount = 1;
@@ -314,6 +331,7 @@ public class VideoInfo_VC : MonoBehaviour
             yield return null;
         }
         videoProgressBar.fillAmount = 1;
+        signalBus.TryFire<VideoSkippedSignal>(); //Tutorial
         RestartProductionBar();
     }
 }

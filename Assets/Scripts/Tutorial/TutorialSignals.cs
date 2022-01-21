@@ -6,3 +6,18 @@ public class StartTutorialPhaseSignal
 {
     public TutorialPhase phase;
 }
+
+public class DropThemeSignal
+{
+
+}
+
+public class VideoSkippedSignal
+{
+
+}
+
+public class OnHitPublishButtonSignal
+{
+
+}

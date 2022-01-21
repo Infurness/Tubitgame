@@ -47,6 +47,8 @@ public class AdPopUp_VC : MonoBehaviour
             smallReward.gameObject.SetActive(true);
             videoIcon.SetActive(true);
             acceptButton.text = "Watch ad";
+            if (TutorialManager.Instance != null)
+                acceptButton.text = "Free";
         }
         else
         {

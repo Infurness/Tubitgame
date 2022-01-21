@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public enum TutorialPhase { Phase1, Phase2, Phase3, Phase4, Phase5};
+public enum TutorialPhase {Phase0, Phase1, Phase2, Phase3, Phase4, Phase5, Phase6, Phase7, Phase8, Phase9, Phase10, Phase11, Phase12, Phase13 };
 public class TutorialManager : MonoBehaviour
 {
     [Inject] SignalBus signalBus;

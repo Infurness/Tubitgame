@@ -144,6 +144,9 @@ public class GlobalInstaller : MonoInstaller
 
         //Tutorial signals
         Container.DeclareSignal<StartTutorialPhaseSignal>();
+        Container.DeclareSignal<DropThemeSignal>();
+        Container.DeclareSignal<VideoSkippedSignal>();
+        Container.DeclareSignal<OnHitPublishButtonSignal>();
         
   }
 }
