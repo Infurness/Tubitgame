@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
 using UnityEngine;
 using Zenject;
 public class GameplayInstaller : MonoInstaller
@@ -31,7 +32,6 @@ public class GameplayInstaller : MonoInstaller
         Container.Bind<Shop>().FromComponentInHierarchy().AsSingle();
         Container.Bind<AdsRewardsManager> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<IAPManager>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance).AsSingle();
-
+        Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance);
     }
 }
