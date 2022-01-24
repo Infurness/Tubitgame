@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Customizations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,14 +13,17 @@ public class ConsumableInventoryButton : MonoBehaviour
     [SerializeField] private TMP_Text priceText;
     [SerializeField] private TMP_Text amount;
     [SerializeField] private Button buyButton;
-
-    public void SetButtonData(Sprite itemSprite,string _item_Name,int price,int _amount,UnityAction buttonAction )
+    [SerializeField] private Image currencyImage;
+    [SerializeField] private Sprite SCIcon, HCIcon;
+    public void SetButtonData(Sprite itemSprite,string _item_Name,int price,int _amount,UnityAction buttonAction,PriceType priceType )
     {
         iconImage.sprite = itemSprite;
         itemName.text = _item_Name;
         priceText.text = price.ToString();
         amount.text = "X" + _amount;
         buyButton.onClick.AddListener(buttonAction);
+
+        currencyImage.sprite = priceType == PriceType.HC ? HCIcon : SCIcon;
 
     }
 }
