@@ -136,7 +136,7 @@ public class GlobalInstaller : MonoInstaller
     //views
     Container.DeclareSignal<HouseChangedSignal>();
     Container.DeclareSignal<HousePopUp>();
-    Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance);
+    Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance).AsSingle();
 
   }
 }
