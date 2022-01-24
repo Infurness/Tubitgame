@@ -742,7 +742,7 @@ public class Shop_VC : MonoBehaviour
                     playerDataManager.AddSoftCurrency((uint)item.amount);
 
                 }));
-            });
+            },item.priceType);
         }
     }
 
@@ -759,7 +759,7 @@ public class Shop_VC : MonoBehaviour
             bt.SetButtonData(item.sprite,item.name,item.price,item.amount, () =>
             {
               energyInventoryManager.AddItem(item.specialID,item.amount);
-            });
+            },item.priceType);
         }
     }
 
