@@ -371,7 +371,7 @@ public class PlayerInventory : MonoBehaviour
             CustomizationItems =totalThemeEquippedItems
         });
        playerDataManager.UpdateCharacterAvatar(characterAvatarAddressedData);
-
+       gameAnalyticsManager.SendCustomEvent("PlayerAvatarChanged");
 
     }
 
