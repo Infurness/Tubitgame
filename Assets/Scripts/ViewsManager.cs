@@ -27,14 +27,25 @@ using Zenject;
                 EqipCar(signal.car);
             });
             EqipCar(playerInventory.EquippedCar);
+            
+            
         }
+        
 
         void EqipCar(Car car)
         {
             if (car)
             {
-                carSpriteRenderer.sprite = car.carSprite;
-                playerInventory.SetEquippedCar(car);
+                if (playerInventory.EquippedHouse.garageSlots>0)
+                {
+                    carSpriteRenderer.sprite = car.carSprite;
+                    playerInventory.SetEquippedCar(car);
+                }
+                else
+                {
+                    carSpriteRenderer.sprite = null;
+                }
+               
             }
        
         }
