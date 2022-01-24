@@ -264,7 +264,7 @@ public class Tutorial_VC : MonoBehaviour
                 break;
             case (TutorialPhase)21:
                 backButtonsPanel.SetActive(true);
-                ActivateAndSetSpeechBubble(new string[] { "Cool!", "If you have any bought items for room, you will find them here, ready to place them in the room.",
+                ActivateAndSetSpeechBubble(new string[] { "Cool!", "If you have any bought items for the room, you will find them here, ready to place them in the room.",
                                                           "If you got the free bin from before, it will be under the floor tab, since it is a item that goes on the floor.", "You will be able to place it in the room from there!",
                                                           "And once more, lets get back whenever you are ready." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(22); };
