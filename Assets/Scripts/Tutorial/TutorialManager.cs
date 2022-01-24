@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public enum TutorialPhase {Phase0, Phase1, Phase2, Phase3, Phase4, Phase5, Phase6, Phase7, Phase8, Phase9, Phase10, Phase11, Phase12, Phase13 };
 public class TutorialManager : MonoBehaviour
 {
     [Inject] SignalBus signalBus;
+    [Inject] private ExperienceManager experienceManager;
 
     public static TutorialManager Instance;
 
@@ -34,7 +36,7 @@ public class TutorialManager : MonoBehaviour
     void StartTutorial()
     {
         Debug.Log("Tutorial");
-        currentTutorialPhase = 0;
+        currentTutorialPhase = (TutorialPhase)22;
         signalBus.Fire<StartTutorialPhaseSignal>( new StartTutorialPhaseSignal { phase = currentTutorialPhase});
     }
     public void GoToNextPhase()
@@ -46,5 +48,19 @@ public class TutorialManager : MonoBehaviour
     {
         currentTutorialPhase = (TutorialPhase)forcephase;
         signalBus.Fire<StartTutorialPhaseSignal>(new StartTutorialPhaseSignal { phase = currentTutorialPhase });
+    }
+
+    public void Add1Level()
+    {
+        int level = experienceManager.GetPlayerLevel();
+        ulong currentXp = experienceManager.GetPlayerXp();
+        ulong maxLvlXp = experienceManager.GetXpThreshold(level);
+        ulong experienceToLevelUp = maxLvlXp - currentXp;
+
+        experienceManager.AddExperiencePoints(experienceToLevelUp + 1);
+    }
+    public void GoToNextScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex+1);
     }
 }

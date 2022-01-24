@@ -148,6 +148,12 @@ public class GlobalInstaller : MonoInstaller
         Container.DeclareSignal<VideoSkippedSignal>();
         Container.DeclareSignal<OnHitPublishButtonSignal>();
         Container.DeclareSignal<OnHitConfirmAdButtonSignal>();
-        
-  }
+        Container.DeclareSignal<OpenHomeScreenSignal>();
+        Container.DeclareSignal<BackButtonClickedSignal>();
+        Container.DeclareSignal<SpeechEndedSignal>();
+        //Container.DeclareSignal<BindHairStyleSignal>();
+        //Container.DeclareSignal<BindFurnitureSignal>();
+
+
+    }
 }

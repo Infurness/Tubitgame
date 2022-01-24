@@ -26,3 +26,26 @@ public class OnHitConfirmAdButtonSignal
 {
 
 }
+
+public class OpenHomeScreenSignal
+{
+
+}
+
+public class BackButtonClickedSignal
+{
+
+}
+
+public class SpeechEndedSignal
+{
+
+}
+//public class BindHairStyleSignal
+//{
+
+//}
+//public class BindFurnitureSignal
+//{
+
+//}
