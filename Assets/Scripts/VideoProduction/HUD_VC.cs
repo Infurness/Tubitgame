@@ -269,7 +269,6 @@ public class HUD_VC : MonoBehaviour
         backButtonsPanel.SetActive(true);
 
         backButton.onClick.RemoveAllListeners ();
-        backButton.onClick.AddListener(FireBackButtonSignal);
         if (signal.changeToHome)
         {
             backButtonIcon.SetActive (false);
@@ -278,6 +277,7 @@ public class HUD_VC : MonoBehaviour
             backButton.onClick.AddListener (OpenHomePanel);
             if(signal.buttonAction!=null)
                 backButton.onClick.AddListener(signal.buttonAction);
+            backButton.onClick.AddListener(FireBackButtonSignal);//Tutorial
         }
         else
         {

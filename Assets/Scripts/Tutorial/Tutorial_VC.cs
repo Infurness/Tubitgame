@@ -199,7 +199,7 @@ public class Tutorial_VC : MonoBehaviour
                 shopButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(shopButton.GetComponentInChildren<Button>(), btnAction));
                 SendHandTo(shopHandPosition.position);
-                signalBus.Fire<OpenHomeScreenSignal>();
+                OpenHomeScreen();
                 break;
             case (TutorialPhase)13:
                 ActivateAndSetSpeechBubble(new string[] { "I have been holding a free item here just for you!" });
@@ -223,6 +223,7 @@ public class Tutorial_VC : MonoBehaviour
                 SendHandTo(backButtonHandPosition.position);
                 break;
             case (TutorialPhase)16:
+                OpenHomeScreen();
                 ActivateAndSetSpeechBubble(new string[] { "Wonderful! I believe you will look great with the new Hair Style.", "Try opening the customization menu." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(17); };
                 customButton.SetActive(true);
@@ -246,7 +247,7 @@ public class Tutorial_VC : MonoBehaviour
                 SendHandTo(backButtonHandPosition.position);
                 break;
             case (TutorialPhase)19:
-                signalBus.Fire<OpenHomeScreenSignal>();
+                OpenHomeScreen();
                 ActivateAndSetSpeechBubble(new string[] { "Okay, let me now show you how to customize your room.", "Lets open the customization menu again." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(20); };
                 customButton.SetActive(true);
@@ -272,6 +273,7 @@ public class Tutorial_VC : MonoBehaviour
                 SendHandTo(backButtonHandPosition.position);
                 break;
             case (TutorialPhase)22:
+                signalBus.Fire<OpenHomeScreenSignal>();
                 ActivateAndSetSpeechBubble(new string[] { "Lets check how is the video going." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(23); };
                 videoManagerButton.SetActive(true);
@@ -415,6 +417,17 @@ public class Tutorial_VC : MonoBehaviour
         TutorialManager.Instance.GoToNextPhase(12);
 
     }
+
+    void OpenHomeScreen()
+    {
+        StartCoroutine(OpenHomeScreenNextFrame());
+    }
+    IEnumerator OpenHomeScreenNextFrame()
+    {
+        yield return null;
+        signalBus.Fire<OpenHomeScreenSignal>();
+    }
+
     void ClickBackButton(UnityEngine.Events.UnityAction btnAction)
     {
         signalBus.TryUnsubscribe<BackButtonClickedSignal>(() => ClickBackButton(btnAction));
