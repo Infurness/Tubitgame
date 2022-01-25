@@ -61,9 +61,11 @@ public class RoomRender : MonoBehaviour
            currentRoomObjects.Clear();
         foreach (var themeCustomizationItem in PlayerInventory.EquippedThemeEffectRoomItems)
         {
-            var go= (GameObject) Instantiate(themeCustomizationItem.itemPrefab.editorAsset,roomTransform);
+
+            var loadOp = themeCustomizationItem.itemPrefab.InstantiateAsync(roomTransform);
+            loadOp.WaitForCompletion();
            
-            currentRoomObjects.Add(go.GetComponent<RoomObjectData>());
+            currentRoomObjects.Add(loadOp.Result.gameObject.GetComponent<RoomObjectData>());
             
             
         }
@@ -72,17 +74,18 @@ public class RoomRender : MonoBehaviour
         {
             if (vqItem!=null)
             {
+
+                var loadOp = vqItem.itemPrefab.InstantiateAsync(roomTransform);
+                loadOp.WaitForCompletion();
                 
-                var go = (GameObject) Instantiate(vqItem.itemPrefab.editorAsset, roomTransform);
-                
-                currentRoomObjects.Add(go.GetComponent<RoomObjectData>());  
+                currentRoomObjects.Add(loadOp.Result.gameObject.GetComponent<RoomObjectData>());  
             }
           
         }
     }
 
    
-    async void OnTestVideoQualityItem(TestRoomVideoQualityITemSignal testRoomVideoQualityITemSignal)
+     void OnTestVideoQualityItem(TestRoomVideoQualityITemSignal testRoomVideoQualityITemSignal)
     {
         
         var item = testRoomVideoQualityITemSignal.VideoQualityCustomizationItem;
@@ -95,7 +98,7 @@ public class RoomRender : MonoBehaviour
 
         }
         var loadOp = Addressables.InstantiateAsync(item.itemPrefab,roomTransform);
-        await loadOp.Task;
+         loadOp.WaitForCompletion();
         var go = loadOp.Result;
         var objecdata = go.GetComponent<RoomObjectData>();
         currentRoomObjects.Add(objecdata);
@@ -103,7 +106,7 @@ public class RoomRender : MonoBehaviour
         
     }
 
-    async void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
+     void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
     {
         var item = testRoomThemeItem.ThemeCustomizationItem;
         var obj = currentRoomObjects.Find(ob => (ob.slotItemType == item.SlotType) || (ob.assetName==item.name));
@@ -115,7 +118,7 @@ public class RoomRender : MonoBehaviour
             currentRoomObjects.Remove(obj);
         }
         var loadOp = Addressables.InstantiateAsync(item.itemPrefab,roomTransform);
-        await loadOp.Task;
+         loadOp.WaitForCompletion();
         var go = loadOp.Result;
         var objecdata = go.GetComponent<RoomObjectData>();
         currentRoomObjects.Add(objecdata);
