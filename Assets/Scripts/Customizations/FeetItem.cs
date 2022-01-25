@@ -5,6 +5,7 @@ namespace Customizations
     [CreateAssetMenu(fileName = "FeetItem", menuName = "Customizations/FeetItem", order = 4)]
     public class FeetItem : ThemeCustomizationItem
     {
+        public Sprite IdleFeet;
         public FeetItemType FeetItemType;
         public GenderItemType GenderItemType;
         public Sprite[] FeetVariants;

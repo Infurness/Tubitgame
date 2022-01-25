@@ -32,6 +32,8 @@ public class LaunchScreenViewController : MonoBehaviour
             playFabIDText.gameObject.SetActive(true);
             
         }) );
+        Application.targetFrameRate = 300;
+        
     }
 
     private void Start()

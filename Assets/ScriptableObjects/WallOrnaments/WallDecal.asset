@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c7eaabf05c4d0c817583e1178f3489, type: 3}
+  m_Script: {fileID: 11500000, guid: fae297a6d837445183099777466e5257, type: 3}
   m_Name: WallDecal
   m_EditorClassIdentifier: 
-  sprite: {fileID: -3185090676807415303, guid: 3d786158e0a79644bbc7ebe12afffb48, type: 3}
+  sprite: {fileID: -2470453014124815640, guid: ac8c0df6ca142fa4f8e9a6f0c1530262, type: 3}
   itemPrefab:
     m_AssetGUID: b5616a89949bc6940842668f04b62636
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   affectedTheme:
-  - ThemeType: 7
-    themePopularityFactor: 0.015
+  - ThemeType: 10
+    themePopularityFactor: 0.02
   rareness: 1
   descriptionText: 
   newStatsText: 
@@ -28,4 +28,5 @@ MonoBehaviour:
   PriceType: 0
   HCPrice: 0
   SCPrice: 0
-  SlotType: 21
+  SlotType: 9
+  ConditionalSlot: 23

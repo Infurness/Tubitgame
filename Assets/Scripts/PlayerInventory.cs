@@ -32,7 +32,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private RealEstateCustomizationItem equippedHouse;
     [SerializeField] private RealEstateCustomizationItem defaultHouse;
     [SerializeField] private RoomLayout defaultRoomLayout;
-    [Inject] private GameAnalyticsManager gameAnalyticsManager;
+     private GameAnalyticsManager gameAnalyticsManager;
     public List<ThemeCustomizationItem> OwnedCharacterItems => ownedCharacterItems.ToList();
 
     public List<ThemeCustomizationItem> OwnedRoomThemeEffectItems => ownedRoomThemeEffectItems.ToList();
@@ -89,6 +89,8 @@ public class PlayerInventory : MonoBehaviour
         signalBus.Subscribe<OnPlayerInventoryFetchedSignal>(OnPlayerInventoryFetched);
 
         playerDataManager = PlayerDataManager.Instance;
+        
+        gameAnalyticsManager=GameAnalyticsManager.Instance;
 
     }
 
@@ -369,7 +371,7 @@ public class PlayerInventory : MonoBehaviour
             CustomizationItems =totalThemeEquippedItems
         });
        playerDataManager.UpdateCharacterAvatar(characterAvatarAddressedData);
-
+       gameAnalyticsManager.SendCustomEvent("PlayerAvatarChanged");
 
     }
 

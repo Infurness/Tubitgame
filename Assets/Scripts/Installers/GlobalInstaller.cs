@@ -108,7 +108,8 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
     Container.DeclareSignal<OnCharacterAvatarChanged>();
     Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
-
+    Container.DeclareSignal<ChangeIdleCharacterVisibilitySignal>();
+    Container.DeclareSignal<ChangeSeatedCharacterVisibilitySignal>();
     //VFX
     Container.DeclareSignal<VFX_EnergyChangeSignal>();
     Container.DeclareSignal<VFX_LowEnergyBlinkSignal>();
@@ -131,12 +132,12 @@ public class GlobalInstaller : MonoInstaller
     Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
     Container.Bind<IAuthenticator>().To<PlayFabAuthenticator>().AsSingle();
 
-    Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance).AsSingle();
     
     
     //views
     Container.DeclareSignal<HouseChangedSignal>();
     Container.DeclareSignal<HousePopUp>();
+    Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance).AsSingle();
 
 
 

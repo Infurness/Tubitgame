@@ -64,3 +64,13 @@ public class CharacterCustomizationVisibilityChanged
     public bool Visibility;
 }
 
+public class ChangeSeatedCharacterVisibilitySignal
+{
+    public bool Visibility;
+}
+
+public class ChangeIdleCharacterVisibilitySignal
+{
+    public bool Visibility;
+  
+}
