@@ -385,15 +385,25 @@ public class PlayerInventory : MonoBehaviour
         playerInventoryAddressedData.currentRoomLayout=new RoomLayout(roomLayout);
            equippedThemeEffectRoomItems.Clear();
         foreach (var themeItemName in roomLayout.equippedThemeITems)
-        { 
-           equippedThemeEffectRoomItems.Add(ownedRoomThemeEffectItems.Find((it) => it.name == themeItemName));
+        {
+            var item = ownedRoomThemeEffectItems.Find((it) => it.name == themeItemName);
+            if (item)
+            {
+                equippedThemeEffectRoomItems.Add(item);
+
+            }
         
         }
       
         equippedVideoQualityRoomItems.Clear();
         foreach (var vcItemName in roomLayout.equippedVCITems)
         {
-            equippedVideoQualityRoomItems.Add(ownedVideoQualityRoomItems.Find(item => item.name==vcItemName));
+            var item = ownedVideoQualityRoomItems.Find(item => item.name == vcItemName);
+            if (item)
+            {
+                equippedVideoQualityRoomItems.Add(item);
+
+            }
         }
         var allThemItems = new List<ThemeCustomizationItem>();
         allThemItems.AddRange(equippedCharacterAvatar.GetThemesEffectItems());
