@@ -45,6 +45,11 @@ public class EnergyManager : MonoBehaviour
         GetEnergyData ();
         StartChargingEnergy ();
         InvokeRepeating ("SaveEnergyData", 30, 30);
+        _signalBus.Subscribe<ChangeRestStateSignal>((() =>
+        {
+            ChangePlayerRestingState ();
+
+        }));
     }
 
     // Update is called once per frame

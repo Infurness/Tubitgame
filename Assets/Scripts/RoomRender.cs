@@ -55,15 +55,16 @@ public class RoomRender : MonoBehaviour
 
     }
 
-    async void  PopulateRoomLayout()
+     void  PopulateRoomLayout()
     {
            currentRoomObjects.ForEach((go => Destroy(go.gameObject) ));
            currentRoomObjects.Clear();
         foreach (var themeCustomizationItem in PlayerInventory.EquippedThemeEffectRoomItems)
         {
-            var loadOp = themeCustomizationItem.itemPrefab.InstantiateAsync(roomTransform);
-            await loadOp.Task;
-            currentRoomObjects.Add(loadOp.Result.GetComponent<RoomObjectData>());
+            var go= (GameObject) Instantiate(themeCustomizationItem.itemPrefab.editorAsset,roomTransform);
+           
+            currentRoomObjects.Add(go.GetComponent<RoomObjectData>());
+            
             
         }
 
@@ -71,9 +72,10 @@ public class RoomRender : MonoBehaviour
         {
             if (vqItem!=null)
             {
-                var loadOp = vqItem.itemPrefab.InstantiateAsync(roomTransform);
-                await loadOp.Task;
-                currentRoomObjects.Add(loadOp.Result.GetComponent<RoomObjectData>());  
+                
+                var go = (GameObject) Instantiate(vqItem.itemPrefab.editorAsset, roomTransform);
+                
+                currentRoomObjects.Add(go.GetComponent<RoomObjectData>());  
             }
           
         }

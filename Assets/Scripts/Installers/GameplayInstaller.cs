@@ -17,7 +17,7 @@ public class GameplayInstaller : MonoInstaller
 
         Container.Bind<PlayerInventory>().FromInstance(PlayerInventory.Instance);
         
-        Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsSingle ();
+        Container.Bind<EnergyManager> ().FromComponentInHierarchy ().AsCached();
         Container.Bind<PlayfabLeaderboard> ().FromComponentInHierarchy ().AsSingle ();
         Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
 

@@ -19,8 +19,8 @@ public class CharacterRender : MonoBehaviour
     [SerializeField] private Camera idleRenderCam;
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory _playerInventory;
-    
-    
+
+    [Inject] private EnergyManager energyManager;
     private void Start()
     {
         signalBus.Subscribe<OnCharacterAvatarChanged>(OnAvatarChanged);
@@ -33,8 +33,29 @@ public class CharacterRender : MonoBehaviour
        
        signalBus.Subscribe<ChangeIdleCharacterVisibilitySignal>((signal) =>
        {
-           SetIdleCharacterVisibility(signal.Visibility);
+           if (energyManager.GetPlayerIsResting())
+           {
+               SetIdleCharacterVisibility(false);
+           }
+           else
+           {
+               SetIdleCharacterVisibility(signal.Visibility);
+
+           }
        });
+       // signalBus.Subscribe<ChangeRestStateSignal>((() =>
+       // {
+       //     if (energyManager.GetPlayerIsResting())
+       //     {
+       //         seatedBodyRender.gameObject.SetActive(false);
+       //         idleBodyRender.gameObject.SetActive(false);
+       //     }
+       //     else
+       //     {
+       //         seatedBodyRender.gameObject.SetActive(true);
+       //         idleBodyRender.gameObject.SetActive(true);
+       //     }
+       // }));
     }
 
     void OnAvatarChanged(OnCharacterAvatarChanged characterAvatarChanged)
