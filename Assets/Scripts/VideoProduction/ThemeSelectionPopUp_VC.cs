@@ -145,6 +145,9 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
                 slot.GetComponent<Image> ().sprite = usedSlotImage;
                 slot.GetComponent<Animator>().Play("Drop_Theme_Animation");
                 slot.transform.GetChild (0).gameObject.SetActive (false);
+
+                //Tutorial
+                signalBus.Fire<DropThemeSignal>();
                 return;
             }
             slotIndex++;

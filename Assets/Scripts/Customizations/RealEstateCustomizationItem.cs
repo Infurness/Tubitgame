@@ -2,7 +2,7 @@
 
 namespace Customizations
 {
-    public enum RealEstateHouse { BasicHouse, NiceApartment, HugeHouse};
+    public enum RealEstateHouse { BasicHouse, ResidentialHouse, HugeHouse};
     [CreateAssetMenu(fileName = "RealEstate", menuName = "Customizations/RealEstateItem")]
     public class RealEstateCustomizationItem : ScriptableObject
     {

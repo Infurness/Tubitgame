@@ -123,10 +123,13 @@ public class Ads_VC : MonoBehaviour
     }
     void OpenVideoShortenAd (OpenTimeShortenAdSignal signal)
     {
-        signalBus.Fire (new OpenAdsDefaultPopUpSignal { title = "Speed up!", message = $"Watch an Ad to shorten the production time of this video",rewardType=RewardType.ShortenProduction, adsActive = true});
-        adPopUpConfirmButton.onClick.RemoveAllListeners ();
-        adPopUpConfirmButton.onClick.AddListener (()=>adsRewardsManager.VideoShortenReward(signal.video));
-        adPopUpConfirmButton.onClick.AddListener (ClosePopUp);
+        if(TutorialManager.Instance==null)
+        {
+            signalBus.Fire(new OpenAdsDefaultPopUpSignal { title = "Speed up!", message = $"Watch an Ad to shorten the production time of this video", rewardType = RewardType.ShortenProduction, adsActive = true });
+            adPopUpConfirmButton.onClick.RemoveAllListeners();
+            adPopUpConfirmButton.onClick.AddListener(() => adsRewardsManager.VideoShortenReward(signal.video));
+            adPopUpConfirmButton.onClick.AddListener(ClosePopUp);
+        }
     }
     void DoubleViewsAd()
     {

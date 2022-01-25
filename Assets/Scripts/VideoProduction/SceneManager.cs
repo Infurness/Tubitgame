@@ -23,8 +23,11 @@ public class SceneManager : MonoBehaviour
     IEnumerator LoadSceneAsync(int index)
     {
         yield return new WaitForSecondsRealtime(3);
-        
-      yield return  UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1);
 
+        string playerName = PlayerDataManager.Instance.GetPlayerName();
+        if (playerName == "No Data" || playerName == "Error: NoData")
+            yield return  UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1);//Tutorial
+        else
+            yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(2);
     }
 }

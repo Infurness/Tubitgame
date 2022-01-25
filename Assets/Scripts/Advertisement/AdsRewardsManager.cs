@@ -15,7 +15,8 @@ public class AdsRewardsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating ("RandomReward", rewardsStartDelaySeconds, rewardsSecondsFrequency);
+        if(TutorialManager.Instance==null)
+            InvokeRepeating ("RandomReward", rewardsStartDelaySeconds, rewardsSecondsFrequency);
     }
 
     public int GetSoftCurrencyBonus ()
@@ -197,7 +198,13 @@ public class AdsRewardsManager : MonoBehaviour
     {
         signalBus.Subscribe<GrantRewardSignal> (ViewsBonusAdCompletedReward);
         signalBus.Subscribe<NotGrantedRewardSignal> (NoViewsBonusReward);
-        AdsManager.Instance.ShowRewardedAd ();
+        if(TutorialManager.Instance==null)
+            AdsManager.Instance.ShowRewardedAd ();
+        else//Tutorial
+        {
+            signalBus.Fire<GrantRewardSignal>();
+            signalBus.Fire<OnHitConfirmAdButtonSignal>();
+        }
     }
 
     void ViewsBonusAdCompletedReward ()

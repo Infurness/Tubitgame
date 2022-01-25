@@ -55,6 +55,7 @@ public class PopUps_VC : MonoBehaviour
         signalBus.Subscribe<OpenThemeSelectorPopUpSignal> (OpenThemeSelector);
         signalBus.Subscribe<ConfirmThemesSignal> (CloseThemeSelector);
         signalBus.Subscribe<OpenSettingPanelSignal> (OpenSettings);
+        signalBus.Subscribe<CloseSettingPanelSignal>(CloseSettings);
         signalBus.Subscribe<OpenDeleteAccountSignal> (OpenDeleteAccount);
         signalBus.Subscribe<OpenLeaderboardsSignal> (OpenLeaderboards);
         signalBus.Subscribe<LevelUpSignal> (OpenLevelUp);

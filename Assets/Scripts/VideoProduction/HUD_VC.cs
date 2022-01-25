@@ -57,7 +57,7 @@ public class HUD_VC : MonoBehaviour
         _signalBus.Subscribe<LevelUpSignal> (LevelUpUpdateHUD);
         _signalBus.Subscribe<ChangeBackButtonSignal> (ChangeBackButton);
         _signalBus.Subscribe<OpenRealEstateShopSignal>(OpenStorePanel);
-
+        _signalBus.Subscribe<OpenHomeScreenSignal>(OpenHomePanel);
         gameClock = GameClock.Instance;
     }
    
@@ -275,16 +275,23 @@ public class HUD_VC : MonoBehaviour
             homeButtonIcon.SetActive (true);
             backButtonsPanel.SetActive(true);
             backButton.onClick.AddListener (OpenHomePanel);
-            backButton.onClick.AddListener(signal.buttonAction);
+            if(signal.buttonAction!=null)
+                backButton.onClick.AddListener(signal.buttonAction);
+            backButton.onClick.AddListener(FireBackButtonSignal);//Tutorial
         }
         else
         {
             backButtonIcon.SetActive (true);
             homeButtonIcon.SetActive (false);
-          //  backButton.onClick.AddListener (OpenVideoManagerPanel);
-            backButton.onClick.AddListener(signal.buttonAction);
+            //  backButton.onClick.AddListener (OpenVideoManagerPanel);
+            if (signal.buttonAction != null)
+                backButton.onClick.AddListener(signal.buttonAction);
 
         }
-            
+    }
+
+    void FireBackButtonSignal()
+    {
+        _signalBus.Fire<BackButtonClickedSignal>();
     }
 }

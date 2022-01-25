@@ -64,6 +64,7 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<CloseVideoCreationSignal> ();
     Container.DeclareSignal<UpdateThemesGraphSignal> ();
     Container.DeclareSignal<OpenSettingPanelSignal> ();
+    Container.DeclareSignal<CloseSettingPanelSignal>();   
     Container.DeclareSignal<OpenDeleteAccountSignal> ();
     Container.DeclareSignal<OpenLeaderboardsSignal> ();
     Container.DeclareSignal<AddSubsForExperienceSignal> ();
@@ -138,5 +139,22 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<HousePopUp>();
     Container.Bind<GameAnalyticsManager>().FromInstance(GameAnalyticsManager.Instance).AsSingle();
 
-  }
+
+
+
+
+        //Tutorial signals
+        Container.DeclareSignal<StartTutorialPhaseSignal>();
+        Container.DeclareSignal<DropThemeSignal>();
+        Container.DeclareSignal<VideoSkippedSignal>();
+        Container.DeclareSignal<OnHitPublishButtonSignal>();
+        Container.DeclareSignal<OnHitConfirmAdButtonSignal>();
+        Container.DeclareSignal<OpenHomeScreenSignal>();
+        Container.DeclareSignal<BackButtonClickedSignal>();
+        Container.DeclareSignal<SpeechEndedSignal>();
+        //Container.DeclareSignal<BindHairStyleSignal>();
+        //Container.DeclareSignal<BindFurnitureSignal>();
+
+
+    }
 }

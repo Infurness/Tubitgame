@@ -5,6 +5,8 @@ using Zenject;
 
 public class CheatsManager : MonoBehaviour
 {
+
+
     [Inject] private SignalBus signalBus;
     [Inject] private ExperienceManager experienceManager;
     [Inject] private EnergyInventoryManager energyInventoryManager;
