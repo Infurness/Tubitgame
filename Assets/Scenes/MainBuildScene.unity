@@ -14544,6 +14544,14 @@ PrefabInstance:
       propertyPath: m_fontStyle
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 1733946093, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1917501224, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5.889984
+      objectReference: {fileID: 0}
     - target: {fileID: 1982589082, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -14555,6 +14563,14 @@ PrefabInstance:
     - target: {fileID: 1982589082, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546219432011547534, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546219432394959466, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -500.00006
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432491235463, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchorMax.y
@@ -44048,7 +44064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0163b83eb2924d55a6c2d7c563b484ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  houseName: NiceApartment
+  houseName: ResidentialHouse
 --- !u!1 &1202581798
 GameObject:
   m_ObjectHideFlags: 0
@@ -61870,7 +61886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0163b83eb2924d55a6c2d7c563b484ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  houseName: NiceApartment
+  houseName: ResidentialHouse
 --- !u!212 &1780352587
 SpriteRenderer:
   m_ObjectHideFlags: 0
