@@ -36,14 +36,15 @@ using Zenject;
         {
             if (car)
             {
+                carSpriteRenderer.sprite = car.carSprite;
+                playerInventory.SetEquippedCar(car);
                 if (playerInventory.EquippedHouse.garageSlots>0)
                 {
-                    carSpriteRenderer.sprite = car.carSprite;
-                    playerInventory.SetEquippedCar(car);
+                    carSpriteRenderer.gameObject.SetActive(true); 
                 }
                 else
                 {
-                    carSpriteRenderer.sprite = null;
+                    carSpriteRenderer.gameObject.SetActive(false); 
                 }
                
             }
@@ -55,7 +56,15 @@ using Zenject;
             houseStreetView.sprite = realEstateCustomizationItem.streetViewSprite;
             carSpriteRenderer.transform.localPosition = realEstateCustomizationItem.garagePosition;
             playerInventory.SetEquippedHouse(realEstateCustomizationItem);
-
+            if (playerInventory.EquippedHouse.garageSlots>0)
+            {
+                carSpriteRenderer.gameObject.SetActive(true); 
+               
+            }
+            else
+            {
+                carSpriteRenderer.gameObject.SetActive(false); 
+            }
         }
         
         

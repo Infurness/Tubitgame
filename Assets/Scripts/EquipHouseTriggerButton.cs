@@ -13,11 +13,12 @@ public class EquipHouseTriggerButton : MonoBehaviour,IPointerClickHandler
 
         private void OnBecameVisible()
         {
-            print("House Visable");
          
             spriteRenderer = GetComponent<SpriteRenderer>();
             if (playerInventory.OwnedRealEstateItems.Exists((item => item.name==houseName)))
             {
+                print(houseName+ "House Visable");
+
                 spriteRenderer.sortingOrder = 50;
             }
         }
