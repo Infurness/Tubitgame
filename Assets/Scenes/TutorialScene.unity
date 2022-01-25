@@ -42252,7 +42252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shopMusic: {fileID: 8300000, guid: 902b496de469f904aac954850ec8018d, type: 3}
-  generalMusic: {fileID: 8300000, guid: e0346b7e14a412742b483c6a818a6a33, type: 3}
+  generalMusic: {fileID: 8300000, guid: 3d4b206461b8d4249b57fab604b75e82, type: 3}
   pushButton: {fileID: 8300000, guid: 682ce788b6086a942909d6caaab1d6f4, type: 3}
   popUp: {fileID: 8300000, guid: 17b1094603497334b83fc01cf84f5875, type: 3}
   rankUp: {fileID: 8300000, guid: aba5cdc7e04b90f41a0b76741b1e492e, type: 3}
@@ -72954,6 +72954,7 @@ MonoBehaviour:
   - {x: -361, y: 343}
   houseBuyButton: {fileID: 388017947}
   housePrice: {fileID: 388017946}
+  housePriceMessage: {fileID: 0}
   housePriceCurrencyIcon: {fileID: 812613846}
   selectedHouseButtonSprite: {fileID: 21300000, guid: 66681d3f1a8a2c44ca476ea930864832, type: 3}
   unselectedHouseButtonSprite: {fileID: 21300000, guid: 79e71430521189c43b2d6b079a34425e, type: 3}
@@ -72972,9 +72973,15 @@ MonoBehaviour:
   nameText: {fileID: 388017929}
   rarenessText: {fileID: 388017928}
   priceText: {fileID: 388017935}
+  realEstateBuyPanel: {fileID: 0}
+  realEstateIconImage: {fileID: 0}
+  realEstateCoinImage: {fileID: 0}
+  realEstateNameText: {fileID: 0}
+  realEstatePriceText: {fileID: 0}
   hcCoin: {fileID: 21300000, guid: abafc68cda8ec4a40a0a32fa1a09896c, type: 3}
   scCoin: {fileID: 21300000, guid: 46d407f095e816c41a4729a4f15723d6, type: 3}
   buyButton: {fileID: 388017936}
+  realEstateBuyButton: {fileID: 0}
   softCurrencyPanel: {fileID: 388017939}
   energyPanel: {fileID: 388017938}
   consumablesPanel: {fileID: 388017940}

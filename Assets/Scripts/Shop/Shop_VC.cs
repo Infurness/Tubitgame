@@ -38,6 +38,7 @@ public class Shop_VC : MonoBehaviour
     [SerializeField] private Vector2[] housePositions;
     [SerializeField] private Button houseBuyButton;
     [SerializeField] private TMP_Text housePrice;
+    [SerializeField] private TMP_Text housePriceMessage;
     [SerializeField] private Image housePriceCurrencyIcon;
     [SerializeField] private Sprite selectedHouseButtonSprite;
     [SerializeField] private Sprite unselectedHouseButtonSprite;
@@ -285,7 +286,7 @@ public class Shop_VC : MonoBehaviour
             case RealEstateHouse.BasicHouse:
                 RealEstateButtonPressed(realEstateShopButtons[0]);
                 break;
-            case RealEstateHouse.NiceApartment:
+            case RealEstateHouse.ResidentialHouse:
                 RealEstateButtonPressed(realEstateShopButtons[2]);
                 break;
             case RealEstateHouse.HugeHouse:
@@ -308,7 +309,7 @@ public class Shop_VC : MonoBehaviour
         foreach (RealEstateCustomizationItem item in houses)
         {
             GameObject shopButton = Instantiate(realStateButton, realStateButtonsContainer.transform);
-            shopButton.GetComponentInChildren<TMP_Text>().text = item.name;            
+            shopButton.GetComponentInChildren<TMP_Text>().text = string.Concat(item.name.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
             shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => SetHouseDisplay(item));
             shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => RealEstateButtonPressed(shopButton));
             realEstateShopButtons.Add(shopButton);
@@ -374,7 +375,8 @@ public class Shop_VC : MonoBehaviour
 
         if (ownedHouse)
         {
-            housePrice.text = "Owned";
+            housePriceMessage.text = "Owned";
+            housePrice.text = "";
             Color transparent = Color.white;
             transparent.a = 0;
             housePriceCurrencyIcon.color = transparent;
@@ -382,19 +384,33 @@ public class Shop_VC : MonoBehaviour
         else
         {
             housePriceCurrencyIcon.color = Color.white;
+            if(item.realEstateHouse == RealEstateHouse.HugeHouse)
+            {
+                Color transparent = Color.white;
+                transparent.a = 0;
+                housePriceCurrencyIcon.color = transparent;
+                housePriceMessage.text = "Coming soon";
+                housePrice.text = "";
+            }
+            else
+            {
+                housePriceMessage.text = "";
+                if (item.PriceType == PriceType.HC)
+                {
+                    housePriceCurrencyIcon.sprite = hcCoin;
+                    housePrice.text = $"{item.HCPrice}";
+                }
+                else if (item.PriceType == PriceType.SC)
+                {
+                    housePriceCurrencyIcon.sprite = scCoin;
+                    housePrice.text = $"{item.SCPrice}";
+                }
+                AspectRatioFitter fitter = housePriceCurrencyIcon.GetComponent<AspectRatioFitter>();
+                fitter.aspectRatio = housePriceCurrencyIcon.sprite.rect.width / housePriceCurrencyIcon.sprite.rect.height;
 
-            if (item.PriceType == PriceType.HC)
-            {
-                housePriceCurrencyIcon.sprite = hcCoin;
-                housePrice.text = $"{item.HCPrice}";
+                houseBuyButton.onClick.AddListener(() => BuyRealEstateItem(item, item.PriceType));
             }
-            else if( item.PriceType == PriceType.SC)
-            {
-                housePriceCurrencyIcon.sprite = scCoin;
-                housePrice.text = $"{item.SCPrice}";
-            }
-            
-            houseBuyButton.onClick.AddListener(() => BuyRealEstateItem(item, item.PriceType));
+          
         }
         houseBuyButton.interactable = !ownedHouse;
     }
@@ -406,7 +422,7 @@ public class Shop_VC : MonoBehaviour
             case RealEstateHouse.BasicHouse:
                 newPos = housePositions[0];
                 break;
-            case RealEstateHouse.NiceApartment:
+            case RealEstateHouse.ResidentialHouse:
                 newPos = housePositions[1];
                 break;
             case RealEstateHouse.HugeHouse:
@@ -743,7 +759,7 @@ public class Shop_VC : MonoBehaviour
     void SetRealStateBuyPanelData(string itemName, Sprite icon)
     {
         realEstateBuyPanel.gameObject.SetActive(true);
-        realEstateNameText.text = itemName;
+        realEstateNameText.text = string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '); ;
         realEstateIconImage.sprite = icon;
     }
 

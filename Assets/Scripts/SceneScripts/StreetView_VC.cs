@@ -30,7 +30,7 @@ public class StreetView_VC : MonoBehaviour
     {
         signalBus.Subscribe<SnapToNeighborhoodViewSignal>(SetButtonsPosition);
         basicHouseButton.onClick.AddListener(()=>ShopButton("BasicHouse"));
-        niceApartmentButton.onClick.AddListener(() => ShopButton("NiceApartment"));
+        niceApartmentButton.onClick.AddListener(() => ShopButton("ResidentialHouse"));
         hugeHouseButton.onClick.AddListener(() => ShopButton("HugeHouse"));
         signalBus.Subscribe<BuyHouseSignal>(UpdateHouseButtons);
         StartImage (); 
@@ -126,7 +126,7 @@ public class StreetView_VC : MonoBehaviour
 
     void DeactivateButton(string name)
     {
-        if (name == "NiceApartment")
+        if (name == "ResidentialHouse")
         {
             niceApartmentButton.gameObject.SetActive(false);
             niceApartmentPivot.parent.gameObject.SetActive(false);
