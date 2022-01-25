@@ -150,7 +150,11 @@ public class RoomInventory_VC : MonoBehaviour
         float sum = 0;
         foreach (var vCItem in videoQualityCustomizationItems)
         {
-            sum += vCItem.videoQualityBonus;
+            if (vCItem)
+            {
+                sum += vCItem.videoQualityBonus;
+
+            }
         }
 
         var vcEffectTextCell = Instantiate(effectCellPrefab, effectTransform.transform);
