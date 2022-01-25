@@ -5,9 +5,20 @@ using Zenject;
 public class ComputerBehaviour : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
+    private RoomInventory_VC roomVC;
+
+
+    private void Start()
+    {
+        roomVC = FindObjectOfType<RoomInventory_VC>();
+    }
 
     private void OnMouseDown()
     {
-        signalBus.Fire<ShowVideosStatsSignal>();
+        if (roomVC.EditModeEnabled==false)
+        {
+            signalBus.Fire<ShowVideosStatsSignal>();
+
+        }
     }
 }
