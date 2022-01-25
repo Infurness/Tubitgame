@@ -51,7 +51,7 @@ public class RoomRender : MonoBehaviour
      
         PopulateRoomLayout();
         print("Room Enabled");
-        tempLayout = currentRoomLayout;
+        tempLayout = new RoomLayout(currentRoomLayout);
 
     }
 
@@ -129,7 +129,7 @@ public class RoomRender : MonoBehaviour
     {
         if (tempLayout!=null)
         {
-            currentRoomLayout = tempLayout;
+            currentRoomLayout=new RoomLayout(tempLayout);
 
         }
 

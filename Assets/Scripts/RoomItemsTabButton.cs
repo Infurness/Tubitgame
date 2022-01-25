@@ -17,7 +17,7 @@ public class RoomItemsTabButton : MonoBehaviour
     private TMP_Text buttonText;
     
     
-    private void Start()
+    private void Awake()
     {
         tabButton = GetComponent<Button>();
         buttonText = GetComponentInChildren<TMP_Text>();

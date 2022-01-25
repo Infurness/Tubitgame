@@ -382,7 +382,7 @@ public class PlayerInventory : MonoBehaviour
     public  void UpdateRoomData( RoomLayout roomLayout)
     {
         
-        playerInventoryAddressedData.currentRoomLayout = roomLayout;
+        playerInventoryAddressedData.currentRoomLayout=new RoomLayout(roomLayout);
            equippedThemeEffectRoomItems.Clear();
         foreach (var themeItemName in roomLayout.equippedThemeITems)
         { 
