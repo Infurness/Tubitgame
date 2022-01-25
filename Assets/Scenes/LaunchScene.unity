@@ -370,7 +370,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 417.8, y: 79.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &205518383
 MonoBehaviour:
@@ -861,7 +861,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 417.8, y: 79.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &503041378
 MonoBehaviour:
@@ -1215,7 +1215,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 417.8, y: 79.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &855146854
 MonoBehaviour:
@@ -3153,6 +3153,7 @@ GameObject:
   - component: {fileID: 1882969451}
   - component: {fileID: 1882969450}
   - component: {fileID: 1882969449}
+  - component: {fileID: 1882969452}
   m_Layer: 5
   m_Name: LoginButtonPanel
   m_TagString: Untagged
@@ -3181,7 +3182,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 136}
-  m_SizeDelta: {x: 1819.503, y: 118.6459}
+  m_SizeDelta: {x: 0, y: 118.6459}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1882969449
 MonoBehaviour:
@@ -3192,21 +3193,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1882969447}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 37
+    m_Left: 0
     m_Right: 0
-    m_Top: 16
+    m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 417.8, y: 79.09}
-  m_Spacing: {x: 27.8, y: 0}
-  m_Constraint: 2
-  m_ConstraintCount: 1
+  m_ChildAlignment: 4
+  m_Spacing: 29.59
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!114 &1882969450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3245,6 +3248,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1882969447}
   m_CullTransparentMesh: 1
+--- !u!114 &1882969452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882969447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 1
+  m_VerticalFit: 0
 --- !u!1 &1994817615
 GameObject:
   m_ObjectHideFlags: 0
@@ -3386,7 +3403,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 417.8, y: 79.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2019503972
 MonoBehaviour:
