@@ -16,11 +16,7 @@ public class CarInventoryButton : MonoBehaviour
     {
         carImage.sprite = carSprite;
         carNameText.text = carName;
-        button.onClick.AddListener(buttonAction);
+        GetComponent<Button>().onClick.AddListener(buttonAction);
     }
-    void Awake()
-    {
-        button = GetComponent<Button>();
-    }
-
+    
 }
