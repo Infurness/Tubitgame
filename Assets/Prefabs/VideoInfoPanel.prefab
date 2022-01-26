@@ -1369,6 +1369,7 @@ GameObject:
   - component: {fileID: -4021958929287308761}
   - component: {fileID: -5178313870577384656}
   - component: {fileID: 4116028146817500364}
+  - component: {fileID: -7797383471951390640}
   m_Layer: 5
   m_Name: VideoInfoPanel
   m_TagString: Untagged
@@ -1545,6 +1546,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &-7797383471951390640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043154322269527583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
 --- !u!1 &1136408423334874813
 GameObject:
   m_ObjectHideFlags: 0

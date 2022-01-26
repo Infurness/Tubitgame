@@ -56,6 +56,7 @@ public class VideoInfo_VC : MonoBehaviour
 
     [SerializeField] private GameObject energyCoinsAppearOrigin;
 
+   private EnergyManager energyManager;
     // Start is called before the first frame update
     void Start ()
     {
@@ -71,6 +72,7 @@ public class VideoInfo_VC : MonoBehaviour
         skipButton.onClick.AddListener(SkipVideoProduction);
 
         hasBeenInitialized = true;
+        energyManager = FindObjectOfType<EnergyManager>();
     }
     private void OnEnable()
     {
@@ -200,8 +202,18 @@ public class VideoInfo_VC : MonoBehaviour
     }
     private void AdBeforeVideoPublish ()
     {
-        if (youTubeVideoManager.IsPlayerResting ())
+        if (energyManager.GetPlayerIsResting())
+        {
+            
+            signalBus.Fire(new OpenDefaultMessagePopUpSignal()
+            {
+                message = "Can't Publish Video While Resting"
+            });
             return;
+            ;
+        }
+      
+        
         signalBus.Fire<OnHitPublishButtonSignal>();
         if (AdsManager.Instance.IsAdLoaded () && !AdsManager.Instance.AreAdsDeactive())
         {
@@ -215,6 +227,7 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void PublishVideo ()
     {
+     
         signalBus.TryUnsubscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);       
         signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality});
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
