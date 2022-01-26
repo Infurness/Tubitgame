@@ -391,6 +391,7 @@ public class Shop_VC : MonoBehaviour
                 housePriceCurrencyIcon.color = transparent;
                 housePriceMessage.text = "Coming soon";
                 housePrice.text = "";
+                buyButton.onClick.RemoveAllListeners();
             }
             else
             {

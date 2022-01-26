@@ -582,9 +582,9 @@ public class PlayerDataManager : MonoBehaviour
             return;
         }
 
-        ulong sc = playerData.hardCurrency;
+        ulong sc = playerData.softCurrency;
 
-        sc -= amount;
+        sc -=  (ulong)amount;
 
         UpdateUserDatabase(new[] {"SoftCurrency"}, new object[]{sc}, (() =>
         {
