@@ -360,6 +360,7 @@ public class VideoManager_VC : MonoBehaviour
         vc.SetVideoInfoUp (video);
         videosShown.Add (video.name, videoInfoObject);
         vc.UpdateVideoInfo ();
+        vc.SetViralCheck();
     }
 
     void UpdateVideoList ()

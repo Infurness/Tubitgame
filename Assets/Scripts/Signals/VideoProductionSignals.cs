@@ -174,7 +174,7 @@ public class CloseAdsDefaultPopUpSignal
 }
 public class OpenViralPopUpSignal
 {
-
+    public string videoName;
 }
 public class ChangeBackButtonSignal
 {

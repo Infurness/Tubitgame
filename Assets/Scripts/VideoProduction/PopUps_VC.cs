@@ -44,6 +44,7 @@ public class PopUps_VC : MonoBehaviour
 
     [SerializeField] private GameObject viralPopUp;
     [SerializeField] private Button viralPopUpCloseButton;
+    string nameViralVideo;
 
     Camera mainCam;
     // Start is called before the first frame update
@@ -104,18 +105,21 @@ public class PopUps_VC : MonoBehaviour
         StartCoroutine(OpenPanelAnimation (defaultDisclaimerPanelPopUp));
         defaultDisclaimerText.text = signal.message;
     }
-    void OpenViralPopUp()
+    void OpenViralPopUp(OpenViralPopUpSignal signal)
     {
+        nameViralVideo = signal.videoName;
         audioManager.PlaySound(soundsHolder.viralPopUp, AudioType.Effect);
 
         popUpsBlockBackgroundPanel.SetActive(true);
         viralPopUp.SetActive(true);
         StartCoroutine(OpenPanelAnimation(defaultDisclaimerPanelPopUp));
+        viralPopUp.GetComponentInChildren<Animator>().Play("Viral_Charge");
     }
     void CloseViralPopUp()
     {
         popUpsBlockBackgroundPanel.SetActive(false);
         viralPopUp.SetActive(false);
+        signalBus.Fire<VFX_ActivateViralAnimation>(new VFX_ActivateViralAnimation {videoName = nameViralVideo });
     }
     IEnumerator OpenPanelAnimation (GameObject panel)
     {

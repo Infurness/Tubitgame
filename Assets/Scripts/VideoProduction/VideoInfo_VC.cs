@@ -55,6 +55,12 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private Button moneyButton;
 
     [SerializeField] private GameObject energyCoinsAppearOrigin;
+    [SerializeField] private GameObject SCBillsAppearOrigin;
+
+    [SerializeField] private ParticleSystem viewsParticles;
+    [SerializeField] private ParticleSystem commentsParticles;
+    [SerializeField] private ParticleSystem likesParticles;
+    [SerializeField] private GameObject subsIconHolder;
 
     // Start is called before the first frame update
     void Start ()
@@ -122,6 +128,10 @@ public class VideoInfo_VC : MonoBehaviour
         energyManger = _energyManager;
         adsRewardsManager = _adsRewardsManager;
     }
+    public void SetViralCheck()
+    {
+        signalBus.Subscribe<VFX_ActivateViralAnimation>(ActivateVirality);
+    }
     public void SetVideoInfoUp (string _name, float recordTime, ThemeType[] videoThemes, VideoQuality quality)
     {
         videoRef = null;
@@ -153,6 +163,36 @@ public class VideoInfo_VC : MonoBehaviour
         {
             videoName = videoRef.name;
             nameText.text = videoName;
+
+            //VFX
+            ParticleSystem.EmissionModule emissionModule;
+            int viewsEarned = (int)videoRef.views - int.Parse(viewsText.text);
+            if (viewsEarned > 0)
+            {
+                emissionModule = viewsParticles.emission;
+                emissionModule.rateOverTime = Mathf.Min(viewsEarned, 20);
+                viewsParticles.Play();
+            }
+            int commentsEarned = (int)videoRef.comments - int.Parse(commentsText.text);
+            if (commentsEarned > 0)
+            {
+                emissionModule = commentsParticles.emission;
+                emissionModule.rateOverTime = Mathf.Min(commentsEarned, 20);
+                commentsParticles.Play();
+            }
+            int likesEarned = (int)videoRef.likes - int.Parse(likesText.text);
+            if (likesEarned > 0)
+            {
+                emissionModule = likesParticles.emission;
+                emissionModule.rateOverTime = Mathf.Min(likesEarned, 20);
+                likesParticles.Play();
+            }
+            int subsEarned = (int)videoRef.newSubscribers - int.Parse(subscribersText.text);
+            if (subsEarned > 0)
+            {
+                subsIconHolder.GetComponent<Animator>().Play("NewSubscriber_Stack");
+            }
+
             moneyText.text = $"{videoRef.videoSoftCurrency}";
             viewsText.text = $"{videoRef.views}";
             likesText.text = $"{videoRef.likes}";
@@ -168,9 +208,12 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void RecollectMoney ()
     {
+        int moneyAvailable = int.Parse(moneyText.text);
+        if (moneyAvailable <= 0)
+            return;
+        StartMovingSCBills(moneyAvailable);
         moneyText.text = "0";
         signalBus.Fire<GetMoneyFromVideoSignal> (new GetMoneyFromVideoSignal () { videoName = videoName});
-        
         
     } 
     void StartRecordingVideo ()
@@ -220,7 +263,7 @@ public class VideoInfo_VC : MonoBehaviour
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
         //InitialState (); //This line makes an android build crash when being executed after watching a reward ad
         if (videoRef.isViral)
-            signalBus.Fire<OpenViralPopUpSignal>();
+            signalBus.Fire<OpenViralPopUpSignal>(new OpenViralPopUpSignal { videoName = videoRef.name });
         UpdateVideoInfo ();
     }
 
@@ -248,8 +291,17 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if (videoRef!=null && videoRef.isViral)
         {
-            viralVisual.SetActive(true);        
+            viralVisual.SetActive(true);
         }     
+    }
+    void ActivateVirality(VFX_ActivateViralAnimation signal)
+    {
+        if(videoName == signal.videoName)
+        {
+            viralVisual.SetActive(true);
+            viralVisual.GetComponent<Animator>().Play("Viral_Appear");
+            signalBus.TryUnsubscribe<VFX_ActivateViralAnimation>(ActivateVirality);
+        }
     }
     void SkipVideoProduction()
     {
@@ -318,7 +370,10 @@ public class VideoInfo_VC : MonoBehaviour
     {
         signalBus.Fire<VFX_StartMovingCoinsSignal>(new VFX_StartMovingCoinsSignal { origin = energyCoinsAppearOrigin.GetComponent<RectTransform>().position});
     }
-
+    void StartMovingSCBills(int quantity)
+    {
+        signalBus.Fire<VFX_StartMovingSCBillsSignal>(new VFX_StartMovingSCBillsSignal { origin = SCBillsAppearOrigin.GetComponent<RectTransform>().position, quantity = quantity});
+    }
     IEnumerator AutoFillProductionBar()
     {
         float currentAmount = videoProgressBar.fillAmount;
