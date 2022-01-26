@@ -10,7 +10,9 @@ namespace Customizations
         public string itemName;
         public Sprite streetViewSprite;
         public Sprite houseCloseSpite;
+        public Sprite rightWall, leftWall, floor;
         public Vector3 garagePosition;
+        public Vector3 rightWallPosition, leftWallPosition, floorPosition;
         public Rareness rareness=Rareness.Common;
         public uint roomSlots;
         public uint garageSlots;
