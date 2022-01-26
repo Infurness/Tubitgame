@@ -1523,6 +1523,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8784818459770028964, guid: a5ba8337bd2e9eb41ab895acb886af8c, type: 3}
+      propertyPath: defaultMaleAvatar.legsItem
+      value: 
+      objectReference: {fileID: 11400000, guid: cb1236f582016482faa4b4d67f963cd9, type: 2}
+    - target: {fileID: 8784818459770028964, guid: a5ba8337bd2e9eb41ab895acb886af8c, type: 3}
+      propertyPath: defaultMaleAvatar.torsoItem
+      value: 
+      objectReference: {fileID: 11400000, guid: c4649ff696398314f86bcfb440cbba80, type: 2}
+    - target: {fileID: 8784818459770028964, guid: a5ba8337bd2e9eb41ab895acb886af8c, type: 3}
+      propertyPath: defaultRoomLayout.equippedVCITems.Array.data[0]
+      value: OldCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784818459770028964, guid: a5ba8337bd2e9eb41ab895acb886af8c, type: 3}
+      propertyPath: defaultRoomLayout.equippedVCITems.Array.data[1]
+      value: OldMic
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784818459770028964, guid: a5ba8337bd2e9eb41ab895acb886af8c, type: 3}
+      propertyPath: defaultRoomLayout.equippedVCITems.Array.data[2]
+      value: OldComputer
+      objectReference: {fileID: 0}
     - target: {fileID: 8784818459770028965, guid: a5ba8337bd2e9eb41ab895acb886af8c, type: 3}
       propertyPath: m_RootOrder
       value: 11
