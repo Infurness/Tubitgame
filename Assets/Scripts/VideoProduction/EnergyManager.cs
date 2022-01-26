@@ -163,6 +163,11 @@ public class EnergyManager : MonoBehaviour
     }
     public void ChangePlayerRestingState ()
     {
+
+        if (youTubeVideoManager.IsRecording())
+            return;
+
+
         isResting = !isResting;
         _signalBus.Fire(new ChangeIdleCharacterVisibilitySignal()
         {
