@@ -190,6 +190,11 @@ public class ChangeRestStateSignal
 
 }
 
+public class RestStateChangedSignal
+{
+    public bool isResting = false;
+}
+
 public class SelectThemeInGraphSignal
 {
     public ThemeType themeType;

@@ -175,6 +175,10 @@ public class EnergyManager : MonoBehaviour
             {
                 state = CharacterState.Sleeping
             });
+            _signalBus.Fire(new RestStateChangedSignal()
+            {
+                isResting = true
+            });
         }
         else
         {
@@ -182,6 +186,10 @@ public class EnergyManager : MonoBehaviour
             {
                 state = CharacterState.Idle
             });  
+            _signalBus.Fire(new RestStateChangedSignal()
+            {
+                isResting = false
+            });
         }
    
         
