@@ -150,7 +150,7 @@ public class Tutorial_VC : MonoBehaviour
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(5); };
                 openVideoCreatorButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 openVideoCreatorButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(openVideoCreatorButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(recordVideoButtonHandPos.localPosition);
+                SendHandTo(recordVideoButtonHandPos.position);
                 break;
             case (TutorialPhase)5:
                 ActivateAndSetSpeechBubble(new string[] { "Select the themes your video is about", "Click the + icon." });
