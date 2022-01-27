@@ -44,6 +44,10 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
         
         avatarHead.sprite = HeadAssets.Instance.GetHeadSprite(avatarData.Head);
         avatarHair.sprite = HeadAssets.Instance.GetHairSprite(avatarData.Hair);
+        if (avatarHair.sprite == null)
+            avatarHair.gameObject.SetActive(false);
+        else
+            avatarHair.gameObject.SetActive(true);
     }
     void GetUserFaceData (string name)
     {
