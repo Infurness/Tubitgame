@@ -106,14 +106,7 @@ public class RoomRender : MonoBehaviour
         currentRoomObjects.Add(objecdata);
         tempLayout.equippedVCITems.Add(objecdata.assetName);
 
-        VFX_placementObjectEffect.SetActive(true);
-        VFX_scaler.transform.position = go.transform.position;
-        VFX_scaler.transform.localScale = new Vector3(1,1,1) + ( go.transform.localScale - new Vector3(0.7330219f, 0.7330219f, 0.7330219f));
-        Sprite goSprite = go.GetComponent<SpriteRenderer>().sprite;
-        VFX_placementObjectEffect.GetComponent<SpriteRenderer>().sprite = goSprite;
-        VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = goSprite;
-        VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteMask>().sprite = goSprite;
-        VFX_placementObjectEffect.GetComponent<Animator>().Play("Apearing Object");
+        PlacementVFX(go);
     }
 
      void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
@@ -133,18 +126,45 @@ public class RoomRender : MonoBehaviour
         var objecdata = go.GetComponent<RoomObjectData>();
         currentRoomObjects.Add(objecdata);
         tempLayout.equippedThemeITems.Add(objecdata.assetName);
+        
+        PlacementVFX(go);
+    }
 
+    void PlacementVFX( GameObject go)
+    {
+        go.SetActive(false);
         VFX_placementObjectEffect.SetActive(true);
-        VFX_scaler.transform.position = go.transform.position;
-        VFX_scaler.transform.localScale = new Vector3(1, 1, 1) + (go.transform.localScale - new Vector3(0.7330219f, 0.7330219f, 0.7330219f));
-        Sprite goSprite = go.GetComponent<SpriteRenderer>().sprite;
+        SpriteRenderer goSpriteRenderer = go.GetComponentInChildren<SpriteRenderer>();
+        VFX_scaler.transform.position = goSpriteRenderer.gameObject.transform.position;
+        Vector3 absScale = new Vector3(Mathf.Abs(go.transform.localScale.x), Mathf.Abs(go.transform.localScale.y), Mathf.Abs(go.transform.localScale.z));
+        Vector3 realScale = new Vector3(1, 1, 1) + (absScale - new Vector3(0.7330219f, 0.7330219f, 0.7330219f));
+        if (go.transform.localScale.x < 0)
+            realScale.x *= -1;
+        if (go.transform.localScale.y < 0)
+            realScale.y *= -1;
+        if (go.transform.localScale.z < 0)
+            realScale.z *= -1;
+        VFX_scaler.transform.localScale = realScale;
+        Sprite goSprite = goSpriteRenderer.sprite;
+        VFX_placementObjectEffect.GetComponent<SpriteRenderer>().sortingOrder = goSpriteRenderer.sortingOrder;
         VFX_placementObjectEffect.GetComponent<SpriteRenderer>().sprite = goSprite;
+        VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = goSpriteRenderer.sortingOrder-1;
         VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = goSprite;
         VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteMask>().sprite = goSprite;
         VFX_placementObjectEffect.GetComponent<Animator>().Play("Apearing Object");
+        StartCoroutine(WaitVFXAnimation(VFX_placementObjectEffect.GetComponent<Animator>(), go));
     }
 
-    
+    IEnumerator WaitVFXAnimation(Animator anim, GameObject realGo)
+    {
+        yield return null;
+        while (anim.GetCurrentAnimatorStateInfo(0).IsName("Apearing Object"))
+        {
+            yield return null;
+        }
+        VFX_placementObjectEffect.SetActive(false);
+        realGo.SetActive(true);
+    }
     
 
     public  void OnSaveRoomLayout()
