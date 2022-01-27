@@ -10,7 +10,7 @@ namespace Customizations
         public Sprite itemSprite;
         public AssetReference itemPrefab;
         public VideoQualityItemType videoQualityItemType;
-        [Range(0.1f,0.3f)]
+        [Range(0.0f,0.3f)]
         public float videoQualityBonus;
         public Rareness rareness=Rareness.Common;
         [TextArea]

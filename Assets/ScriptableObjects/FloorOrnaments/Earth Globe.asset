@@ -9,22 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ab72039a3d943588b20d0ec6958ff27, type: 3}
-  m_Name: BrokenCamera
+  m_Script: {fileID: 11500000, guid: 6b716d47a6af4d498369f2a2c88ee040, type: 3}
+  m_Name: Earth Globe
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: -7529023364266864213, guid: 78be52ee30ff5df479f14172875a565e, type: 3}
+  sprite: {fileID: 1208513845401101757, guid: ac8c0df6ca142fa4f8e9a6f0c1530262, type: 3}
   itemPrefab:
-    m_AssetGUID: cf82e5c1299e1574dba4bbb3ebd31965
+    m_AssetGUID: b6b92a19ed2994d48895816e1dc4305b
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  videoQualityItemType: 1
-  videoQualityBonus: 0.3
-  rareness: 2
+  affectedTheme:
+  - ThemeType: 5
+    themePopularityFactor: 0.2
+  rareness: 1
   descriptionText: 
   newStatsText: 
   Owned: 0
   PriceType: 1
-  HCPrice: 800
-  SCPrice: 800
-  SlotType: 17
+  HCPrice: 0
+  SCPrice: 2000
+  SlotType: 6
+  ConditionalSlot: 23

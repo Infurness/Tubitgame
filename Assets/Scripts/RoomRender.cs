@@ -111,7 +111,25 @@ public class RoomRender : MonoBehaviour
 
      void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
     {
-        var item = testRoomThemeItem.ThemeCustomizationItem;
+        
+            var item = testRoomThemeItem.ThemeCustomizationItem;
+           
+            if (item.GetType()==typeof(RoomObject))
+            {
+                var condObj = (RoomObject) item;
+                if (condObj.ConditionalSlot!=ItemSlotType.none)
+                {
+                    if (!currentRoomObjects.Exists((obj) => obj.slotItemType == condObj.ConditionalSlot))
+                    {
+                        signalBus.Fire(new OpenDefaultMessagePopUpSignal()
+                        {
+                            message = "Can't Place This Object Please Place  "+ condObj.ConditionalSlot.ToString()  
+                        });
+                        return;
+
+                    };
+                }
+            }
         var obj = currentRoomObjects.Find(ob => (ob.slotItemType == item.SlotType) || (ob.assetName==item.name));
         if (obj)
         {

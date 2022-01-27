@@ -9,22 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ab72039a3d943588b20d0ec6958ff27, type: 3}
-  m_Name: HQCamera
+  m_Script: {fileID: 11500000, guid: 6b716d47a6af4d498369f2a2c88ee040, type: 3}
+  m_Name: Electric Guitar
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: -2051361959804057851, guid: 78be52ee30ff5df479f14172875a565e, type: 3}
+  sprite: {fileID: 7038780783116377958, guid: ac8c0df6ca142fa4f8e9a6f0c1530262, type: 3}
   itemPrefab:
-    m_AssetGUID: ef0fd3f4f422fdc41a3df26c0ab04370
+    m_AssetGUID: c87a457e5ba9c5446a57474717e0d999
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  videoQualityItemType: 1
-  videoQualityBonus: 0.1053
-  rareness: 2
+  affectedTheme:
+  - ThemeType: 2
+    themePopularityFactor: 0.3
+  rareness: 0
   descriptionText: 
   newStatsText: 
   Owned: 0
   PriceType: 1
-  HCPrice: 500
-  SCPrice: 2000
-  SlotType: 17
+  HCPrice: 0
+  SCPrice: 3000
+  SlotType: 5
+  ConditionalSlot: 23
