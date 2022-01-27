@@ -22,6 +22,7 @@ public class RoomRender : MonoBehaviour
     [SerializeField] private Transform roomTransform;
     private List<RoomObjectData> currentRoomObjects;
 
+    [SerializeField] GameObject VFX_placementObjectEffect;
     private void Awake()
     {
         currentRoomObjects = new List<RoomObjectData>();
