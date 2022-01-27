@@ -142,6 +142,18 @@ public class HomePanel_VC : MonoBehaviour
                 }
             }         
         }
+        else
+        {
+            if (!energyManager.GetPlayerIsResting())
+            {
+                _signalBus.Fire<ChangeCharacterStateSignal>(new ChangeCharacterStateSignal()
+                {
+                    state = CharacterState.Idle
+                });
+                
+            }
+            productionBar.gameObject.SetActive(false);
+        }
     }
 
     void InitialScreenState ()
