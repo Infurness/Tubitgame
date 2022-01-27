@@ -45,6 +45,16 @@ public class CarsPopup_VC : MonoBehaviour
            selectButton.interactable = false;
 
        });
+       
+       signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal) =>
+       {
+           popupButton.gameObject.SetActive(!signal.Visibility);
+       });
+       
+       signalBus.Subscribe<CharacterCustomizationVisibilityChanged>((signal) =>
+       {
+           popupButton.gameObject.SetActive(!signal.Visibility);
+       });
     }
 
     
