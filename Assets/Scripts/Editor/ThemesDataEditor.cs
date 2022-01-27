@@ -15,7 +15,11 @@ public class ThemesDataEditor : Editor
         {
             myScript.UpdateAvailableThemes ();
         }
-        
+        if (GUILayout.Button("Randomize Curves"))
+        {
+            myScript.RandomizeCurves();
+        }
+
     }
 }
 #endif
