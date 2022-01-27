@@ -136,6 +136,8 @@ public class PlayFabAuthenticator : IAuthenticator
 			{
 				LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
 				req.ServerAuthCode = signal.AuthCode;
+				req.CreateAccount = true;
+				
 		 
 				PlayFabClientAPI.LoginWithGoogleAccount(req, (result =>
 				{
