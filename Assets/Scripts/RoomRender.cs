@@ -22,6 +22,7 @@ public class RoomRender : MonoBehaviour
     [SerializeField] private Transform roomTransform;
     private List<RoomObjectData> currentRoomObjects;
 
+    [SerializeField] GameObject VFX_scaler;
     [SerializeField] GameObject VFX_placementObjectEffect;
     private void Awake()
     {
@@ -99,7 +100,15 @@ public class RoomRender : MonoBehaviour
         var objecdata = go.GetComponent<RoomObjectData>();
         currentRoomObjects.Add(objecdata);
         tempLayout.equippedVCITems.Add(objecdata.assetName);
-        
+
+        VFX_placementObjectEffect.SetActive(true);
+        VFX_scaler.transform.position = go.transform.position;
+        VFX_scaler.transform.localScale = new Vector3(1,1,1) + ( go.transform.localScale - new Vector3(0.7330219f, 0.7330219f, 0.7330219f));
+        Sprite goSprite = go.GetComponent<SpriteRenderer>().sprite;
+        VFX_placementObjectEffect.GetComponent<SpriteRenderer>().sprite = goSprite;
+        VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = goSprite;
+        VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteMask>().sprite = goSprite;
+        VFX_placementObjectEffect.GetComponent<Animator>().Play("Apearing Object");
     }
 
     async void OnTestRoomThemeItem(TestRoomThemeItemSignal testRoomThemeItem)
@@ -119,6 +128,15 @@ public class RoomRender : MonoBehaviour
         var objecdata = go.GetComponent<RoomObjectData>();
         currentRoomObjects.Add(objecdata);
         tempLayout.equippedThemeITems.Add(objecdata.assetName);
+
+        VFX_placementObjectEffect.SetActive(true);
+        VFX_scaler.transform.position = go.transform.position;
+        VFX_scaler.transform.localScale = new Vector3(1, 1, 1) + (go.transform.localScale - new Vector3(0.7330219f, 0.7330219f, 0.7330219f));
+        Sprite goSprite = go.GetComponent<SpriteRenderer>().sprite;
+        VFX_placementObjectEffect.GetComponent<SpriteRenderer>().sprite = goSprite;
+        VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = goSprite;
+        VFX_placementObjectEffect.transform.GetChild(0).GetComponent<SpriteMask>().sprite = goSprite;
+        VFX_placementObjectEffect.GetComponent<Animator>().Play("Apearing Object");
     }
 
     

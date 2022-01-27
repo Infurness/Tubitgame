@@ -54860,6 +54860,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 1345454199692357004, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+      propertyPath: VFX_scaler
+      value: 
+      objectReference: {fileID: 1526995630}
     - target: {fileID: 1345454199692357005, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
       propertyPath: m_Name
       value: RoomView
@@ -54961,6 +54965,11 @@ SpriteRenderer:
 --- !u!212 &1526995629 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 7449354829137730826, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+  m_PrefabInstance: {fileID: 1526995624}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1526995630 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 659080451097752019, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
   m_PrefabInstance: {fileID: 1526995624}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1528876886
