@@ -159,6 +159,9 @@ public class HUD_VC : MonoBehaviour
     {
         gameAnalyticsManager.SendCustomEvent("ShopScreen");
         OpenScreenPanel (HUDScreen.Store); 
+        OpenScreenPanel (HUDScreen.Store); 
+
+        
     }
     void OpenScreenPanel (HUDScreen _screenToOpen)
     {
@@ -180,6 +183,7 @@ public class HUD_VC : MonoBehaviour
             xpBarPanel.SetActive (false);
             backButtonsPanel.SetActive (true);
             _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = true });
+
         }
 
 
