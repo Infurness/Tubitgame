@@ -40,7 +40,7 @@ public class HomePanel_VC : MonoBehaviour
     {
         _signalBus.Subscribe<StartRecordingSignal> (StartRecording);
         _signalBus.Subscribe<VideoStartedSignal>(SetVideoForRecordingBar);
-        _signalBus.Subscribe<ChangeRestStateSignal> (RestButtonBehaviour);
+        _signalBus.Subscribe<RestStateChangedSignal> (RestButtonBehaviour);
         _signalBus.Subscribe<SnapToNeighborhoodViewSignal>(SetProductionBarPosition);
         // publishButton.onClick.AddListener (OnPublishVideoPressed);
         //   viewsScroll.onValueChanged.AddListener (OnViewsScroll);
@@ -196,10 +196,10 @@ public class HomePanel_VC : MonoBehaviour
         _signalBus.Fire<OpenSettingPanelSignal> ();
     }
 
-    void RestButtonBehaviour ()
+    void RestButtonBehaviour (RestStateChangedSignal signal)
     {
 
-        if (!energyManager.GetPlayerIsResting ())
+        if (!signal.isResting)
             restButton.GetComponentInChildren<TMP_Text> ().text = "Rest";
         else
             restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";
