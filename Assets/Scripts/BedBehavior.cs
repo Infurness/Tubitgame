@@ -22,7 +22,7 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
     {
         energyManager = FindObjectOfType<EnergyManager>();
         roomVC = FindObjectOfType<RoomInventory_VC>();
-        signalBus.Subscribe<ChangeRestStateSignal>(OnRestChanged);
+        signalBus.Subscribe<RestStateChangedSignal>(OnRestChanged);
 
         if (energyManager.GetPlayerIsResting().Equals(true))
         {
@@ -35,11 +35,15 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
 
     }
 
-    void OnRestChanged(ChangeRestStateSignal signal)
+    void OnRestChanged(RestStateChangedSignal signal)
     {
-        if (energyManager.GetPlayerIsResting().Equals(true))
+        if (signal.isResting)
         {
             SwitchToSleepingBed();
+            signalBus.Fire<ChangeCharacterStateSignal>(new ChangeCharacterStateSignal()
+            {
+                state = CharacterState.Sleeping
+            });
         }
         else
         {
@@ -67,7 +71,6 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
             {
                 print("Bed Clicked");
                 signalBus.Fire<ChangeRestStateSignal>();
-                OnRestChanged(null);
             }
            
         
@@ -75,13 +78,13 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
 
         private void OnDestroy()
         {
-            signalBus.Unsubscribe<ChangeRestStateSignal>(OnRestChanged);
+            signalBus.Unsubscribe<RestStateChangedSignal>(OnRestChanged);
 
         }
 
         public void Dispose()
         {
-            signalBus.Unsubscribe<ChangeRestStateSignal>(OnRestChanged);
+            signalBus.Unsubscribe<RestStateChangedSignal>(OnRestChanged);
         }
 
         public void Initialize()
