@@ -123,27 +123,23 @@ public class HomePanel_VC : MonoBehaviour
                 productionBar.SetActive(false);
                 if (!energyManager.GetPlayerIsResting())
                 {
-                    _signalBus.Fire(new  ChangeIdleCharacterVisibilitySignal
+                    _signalBus.Fire<ChangeCharacterStateSignal>(new ChangeCharacterStateSignal()
                     {
-                        Visibility = false
-                    });
-                    _signalBus.Fire(new ChangeSeatedCharacterVisibilitySignal()
-                    {
-                        Visibility = true
+                        state = CharacterState.Idle
                     });
                 }
+      
               
             }
             else
             {
-                _signalBus.Fire(new  ChangeIdleCharacterVisibilitySignal
+                if (!energyManager.GetPlayerIsResting())
                 {
-                    Visibility = true
-                });
-                _signalBus.Fire(new ChangeSeatedCharacterVisibilitySignal()
-                {
-                    Visibility = false
-                });
+                    _signalBus.Fire<ChangeCharacterStateSignal>(new ChangeCharacterStateSignal()
+                    {
+                        state = CharacterState.Production
+                    });
+                }
             }         
         }
     }

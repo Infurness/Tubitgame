@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using Customizations;
 using UnityEngine;
 using Zenject;
@@ -16,6 +17,9 @@ public class CharacterRender : MonoBehaviour
     [SerializeField] private SpriteRenderer seatedTorsoRender,seatedLegsRender,seatedHairRender,seatedBodyRender;
     
     [SerializeField] private SpriteRenderer idleBodyRender, idleTorsoRender, idleHairRender,idleLegsRender, idleFeetRender;
+
+    [SerializeField] private GameObject seatedCharacter;
+    [SerializeField] private GameObject idleCharacter;
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory _playerInventory;
 
@@ -25,36 +29,27 @@ public class CharacterRender : MonoBehaviour
         signalBus.Subscribe<OnCharacterAvatarChanged>(OnAvatarChanged);
        SetCharacterSprites(_playerInventory.EquippedAvatar());
        
-       signalBus.Subscribe<ChangeSeatedCharacterVisibilitySignal>((signal) =>
+       signalBus.Subscribe<ChangeCharacterStateSignal>((signal) =>
        {
-           SetSeatedCharacterVisibility(signal.Visibility);
+           switch (signal.state)
+           {
+               case CharacterState.Idle : 
+                   SetIdleCharacterVisibility(true);
+                   SetSeatedCharacterVisibility(false);
+                   break;
+               case CharacterState.Sleeping : 
+                   SetIdleCharacterVisibility(false);
+                   SetSeatedCharacterVisibility(false);
+                   break;
+               case  CharacterState.Production :
+                   SetIdleCharacterVisibility(false);
+                   SetSeatedCharacterVisibility(true);
+                   break;
+           }
        });
        
-       signalBus.Subscribe<ChangeIdleCharacterVisibilitySignal>((signal) =>
-       {
-           if (energyManager.GetPlayerIsResting())
-           {
-               SetIdleCharacterVisibility(false);
-           }
-           else
-           {
-               SetIdleCharacterVisibility(signal.Visibility);
 
-           }
-       });
-       // signalBus.Subscribe<ChangeRestStateSignal>((() =>
-       // {
-       //     if (energyManager.GetPlayerIsResting())
-       //     {
-       //         seatedBodyRender.gameObject.SetActive(false);
-       //         idleBodyRender.gameObject.SetActive(false);
-       //     }
-       //     else
-       //     {
-       //         seatedBodyRender.gameObject.SetActive(true);
-       //         idleBodyRender.gameObject.SetActive(true);
-       //     }
-       // }));
+
     }
 
     void OnAvatarChanged(OnCharacterAvatarChanged characterAvatarChanged)
@@ -103,12 +98,19 @@ public class CharacterRender : MonoBehaviour
 
      void SetSeatedCharacterVisibility(bool state)
     {
-        seatedBodyRender.gameObject.SetActive(state);
+        seatedCharacter.SetActive(state);
     }
 
      void SetIdleCharacterVisibility(bool state)
     {
-        idleBodyRender.gameObject.SetActive(state);
+       idleCharacter.SetActive(state);
     }
     
+}
+
+public enum CharacterState
+{
+    Idle,
+    Sleeping,
+    Production
 }

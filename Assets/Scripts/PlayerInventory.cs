@@ -478,7 +478,7 @@ public class CharacterAvatarAddressedData
         BodyType = "BodyItem 1";
         Head = "MaleHead1";
         Hair = "DefualtMale";
-        Torso = "HawaiianShirt";
+        Torso = "T_Shirt";
         Legs = "MaleJeans";
         Feet = "BasicShoes";
     }
