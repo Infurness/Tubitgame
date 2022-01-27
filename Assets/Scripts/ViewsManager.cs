@@ -10,6 +10,7 @@ using Zenject;
         [SerializeField] private SpriteRenderer houseCloseView;
         [SerializeField] private SpriteRenderer houseStreetView;
         [SerializeField] private SpriteRenderer carSpriteRenderer;
+        [SerializeField] private SpriteRenderer rightWall, leftWall, floor;
         [Inject] private PlayerInventory playerInventory;
         [Inject] private SignalBus signalBus;
         private void Start()
@@ -36,14 +37,15 @@ using Zenject;
         {
             if (car)
             {
+                carSpriteRenderer.sprite = car.carSprite;
+                playerInventory.SetEquippedCar(car);
                 if (playerInventory.EquippedHouse.garageSlots>0)
                 {
-                    carSpriteRenderer.sprite = car.carSprite;
-                    playerInventory.SetEquippedCar(car);
+                    carSpriteRenderer.gameObject.SetActive(true); 
                 }
                 else
                 {
-                    carSpriteRenderer.sprite = null;
+                    carSpriteRenderer.gameObject.SetActive(false); 
                 }
                
             }
@@ -55,7 +57,23 @@ using Zenject;
             houseStreetView.sprite = realEstateCustomizationItem.streetViewSprite;
             carSpriteRenderer.transform.localPosition = realEstateCustomizationItem.garagePosition;
             playerInventory.SetEquippedHouse(realEstateCustomizationItem);
-
+            leftWall.sprite = realEstateCustomizationItem.leftWall;
+            leftWall.transform.localPosition = realEstateCustomizationItem.leftWallPosition;
+            
+            rightWall.sprite = realEstateCustomizationItem.rightWall;
+            rightWall.transform.localPosition = realEstateCustomizationItem.rightWallPosition;
+            
+            floor.sprite = realEstateCustomizationItem.floor;
+            floor.transform.localPosition = realEstateCustomizationItem.floorPosition;
+            if (playerInventory.EquippedHouse.garageSlots>0)
+            {
+                carSpriteRenderer.gameObject.SetActive(true); 
+               
+            }
+            else
+            {
+                carSpriteRenderer.gameObject.SetActive(false); 
+            }
         }
         
         

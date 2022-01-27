@@ -35,7 +35,8 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private GameObject effectTransform;
     [SerializeField] private Sprite selectedTabSprite, notSelectedTabSprite;
     [Inject] private GameAnalyticsManager gameAnalyticsManager;
-
+    [SerializeField] private Button wallItemsButton;
+    public bool EditModeEnabled;
     void OpenRoomCustomizationPanel()
     {
         inventoryCanvas.gameObject.SetActive(true);
@@ -75,6 +76,7 @@ public class RoomInventory_VC : MonoBehaviour
             {
                 Visibility = false
             });
+            EditModeEnabled = false;
         }));
         signalBus.Subscribe<ShopPanelOpened>((signal =>
         {
@@ -110,6 +112,8 @@ public class RoomInventory_VC : MonoBehaviour
         {
             Visibility = true
         });
+        wallItemsButton.onClick.Invoke();
+        EditModeEnabled = true;
     }
 
     void UpdateThemeEffectItemsText(List<ThemeCustomizationItem> themeCustomizationItems)
@@ -146,7 +150,11 @@ public class RoomInventory_VC : MonoBehaviour
         float sum = 0;
         foreach (var vCItem in videoQualityCustomizationItems)
         {
-            sum += vCItem.videoQualityBonus;
+            if (vCItem)
+            {
+                sum += vCItem.videoQualityBonus;
+
+            }
         }
 
         var vcEffectTextCell = Instantiate(effectCellPrefab, effectTransform.transform);

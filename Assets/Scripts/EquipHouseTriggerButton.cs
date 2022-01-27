@@ -13,11 +13,12 @@ public class EquipHouseTriggerButton : MonoBehaviour,IPointerClickHandler
 
         private void OnBecameVisible()
         {
-            print("House Visable");
          
             spriteRenderer = GetComponent<SpriteRenderer>();
             if (playerInventory.OwnedRealEstateItems.Exists((item => item.name==houseName)))
             {
+                print(houseName+ "House Visable");
+
                 spriteRenderer.sortingOrder = 50;
             }
         }
@@ -25,6 +26,7 @@ public class EquipHouseTriggerButton : MonoBehaviour,IPointerClickHandler
         public void OnPointerClick(PointerEventData eventData)
         {
             print(houseName+" Equipped");
+            
             var houseItem = playerInventory.OwnedRealEstateItems.Find(item => item.name == houseName);
             if (houseItem)
             {
@@ -36,5 +38,21 @@ public class EquipHouseTriggerButton : MonoBehaviour,IPointerClickHandler
                 
             }
            
+        }
+
+        private void OnMouseDown()
+        {
+            print(houseName+" Equipped");
+            
+            var houseItem = playerInventory.OwnedRealEstateItems.Find(item => item.name == houseName);
+            if (houseItem)
+            {
+             
+                signalBus.Fire(new HousePopUp()
+                {
+                    realEstateCustomizationItem = houseItem
+                });   
+                
+            }
         }
     }

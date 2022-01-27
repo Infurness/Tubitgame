@@ -48,7 +48,10 @@ public class HomePanel_VC : MonoBehaviour
        // closeSettingsButton.onClick.AddListener (OpenSettingsPanel );
    //     viewsScroll.onValueChanged.AddListener (OnViewsScroll);
         playerIconButton.onClick.AddListener (OpenSettingsPanel);
-        restButton.onClick.AddListener (RestButtonBehaviour);
+        restButton.onClick.AddListener ((() =>
+        {
+            _signalBus.Fire<ChangeRestStateSignal>();
+        }));
         hideUIButton.onClick.AddListener(HideButtons);
         InitialScreenState ();
         _signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal =>
@@ -118,14 +121,18 @@ public class HomePanel_VC : MonoBehaviour
             {
                 videoBeingRecorded = null;
                 productionBar.SetActive(false);
-                _signalBus.Fire(new  ChangeIdleCharacterVisibilitySignal
+                if (!energyManager.GetPlayerIsResting())
                 {
-                    Visibility = false
-                });
-                _signalBus.Fire(new ChangeSeatedCharacterVisibilitySignal()
-                {
-                    Visibility = true
-                });
+                    _signalBus.Fire(new  ChangeIdleCharacterVisibilitySignal
+                    {
+                        Visibility = false
+                    });
+                    _signalBus.Fire(new ChangeSeatedCharacterVisibilitySignal()
+                    {
+                        Visibility = true
+                    });
+                }
+              
             }
             else
             {
@@ -183,14 +190,11 @@ public class HomePanel_VC : MonoBehaviour
 
     void RestButtonBehaviour ()
     {
-        energyManager.ChangePlayerRestingState ();
 
         if (!energyManager.GetPlayerIsResting ())
             restButton.GetComponentInChildren<TMP_Text> ().text = "Rest";
         else
             restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";
-
-        
     }
 
     void HideButtons()

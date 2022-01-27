@@ -45,6 +45,11 @@ public class EnergyManager : MonoBehaviour
         GetEnergyData ();
         StartChargingEnergy ();
         InvokeRepeating ("SaveEnergyData", 30, 30);
+        _signalBus.Subscribe<ChangeRestStateSignal>((() =>
+        {
+            ChangePlayerRestingState ();
+
+        }));
     }
 
     // Update is called once per frame
@@ -158,6 +163,11 @@ public class EnergyManager : MonoBehaviour
     }
     public void ChangePlayerRestingState ()
     {
+
+        if (youTubeVideoManager.IsRecording())
+            return;
+
+
         isResting = !isResting;
         _signalBus.Fire(new ChangeIdleCharacterVisibilitySignal()
         {

@@ -52,6 +52,8 @@ MonoBehaviour:
       equippedVCITems: []
     ownedRealEstateItemsNames: []
     equippedHouse: 
+    ownedCarNames: []
+    equippedCarName: 
   characterAvatarAddressedData:
     BodyType: 
     Head: 
@@ -81,12 +83,14 @@ MonoBehaviour:
   ownedVideoQualityRoomItems: []
   equippedVideoQualityRoomItems: []
   ownedRealEstateItems: []
+  ownedCars: []
   equippedHouse: {fileID: 0}
   defaultHouse: {fileID: 11400000, guid: 129b12127210484439ceb6d8be049333, type: 2}
   defaultRoomLayout:
     equippedThemeITems:
     - BasicChair
     - BasicDesk
+    - BasicBed
     equippedVCITems:
     - HQCamera
     - Mic

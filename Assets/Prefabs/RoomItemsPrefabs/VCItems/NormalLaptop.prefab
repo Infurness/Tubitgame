@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 4888803076641336468}
   - component: {fileID: 1396467547072307824}
   - component: {fileID: -1212092832902298048}
+  - component: {fileID: 3428654521626408485}
+  - component: {fileID: 7615822853630255517}
+  - component: {fileID: -9077426139834219308}
   m_Layer: 12
   m_Name: NormalLaptop
   m_TagString: Untagged
@@ -98,3 +101,85 @@ MonoBehaviour:
   slotItemType: 16
   customizationType: 1
   assetName: NormalLaptop
+--- !u!114 &3428654521626408485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2308782803995368499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10225ff95f3d4c0b91c32b130e818ab8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!60 &7615822853630255517
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2308782803995368499}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.7282966, y: 1.824}
+    newSize: {x: 3.2905645, y: 3.1939998}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.56624585, y: -0.51058203}
+      - {x: 0.8414373, y: -0.34905663}
+      - {x: 0.8713494, y: -0.32512695}
+      - {x: 0.8713494, y: -0.28325}
+      - {x: 0.8354548, y: -0.25932032}
+      - {x: 0.5841931, y: -0.11574219}
+      - {x: 0.4705271, y: -0.04993555}
+      - {x: 0.34489626, y: 0.021853512}
+      - {x: 0.2491775, y: 0.075695306}
+      - {x: 0.19533572, y: 0.099625}
+      - {x: 0.19533572, y: 0.8893047}
+      - {x: 0.17738844, y: 0.91323435}
+      - {x: 0.15345876, y: 0.91323435}
+      - {x: 0.09961696, y: 0.88332224}
+      - {x: -0.026013896, y: 0.8115332}
+      - {x: -0.29522288, y: 0.65599024}
+      - {x: -0.40888888, y: 0.59018356}
+      - {x: -0.56443185, y: 0.5004473}
+      - {x: -0.70800996, y: 0.41669336}
+      - {x: -0.8336408, y: 0.3449043}
+      - {x: -0.8575705, y: 0.3149922}
+      - {x: -0.8575705, y: -0.48665234}
+      - {x: -0.8456057, y: -0.50459963}
+      - {x: -0.821676, y: -0.53451174}
+      - {x: -0.69604516, y: -0.6063008}
+      - {x: -0.6242561, y: -0.64817774}
+      - {x: -0.16959202, y: -0.9114043}
+      - {x: -0.13967991, y: -0.9114043}
+      - {x: -0.1097678, y: -0.90542185}
+      - {x: 0.0038982139, y: -0.8336328}
+      - {x: 0.08765212, y: -0.78577346}
+      - {x: 0.41070288, y: -0.6003184}
+--- !u!114 &-9077426139834219308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2308782803995368499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 1

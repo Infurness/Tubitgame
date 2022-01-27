@@ -16,11 +16,10 @@ public class CharacterRender : MonoBehaviour
     [SerializeField] private SpriteRenderer seatedTorsoRender,seatedLegsRender,seatedHairRender,seatedBodyRender;
     
     [SerializeField] private SpriteRenderer idleBodyRender, idleTorsoRender, idleHairRender,idleLegsRender, idleFeetRender;
-    [SerializeField] private Camera idleRenderCam;
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerInventory _playerInventory;
-    
-    
+
+    [Inject] private EnergyManager energyManager;
     private void Start()
     {
         signalBus.Subscribe<OnCharacterAvatarChanged>(OnAvatarChanged);
@@ -33,8 +32,29 @@ public class CharacterRender : MonoBehaviour
        
        signalBus.Subscribe<ChangeIdleCharacterVisibilitySignal>((signal) =>
        {
-           SetIdleCharacterVisibility(signal.Visibility);
+           if (energyManager.GetPlayerIsResting())
+           {
+               SetIdleCharacterVisibility(false);
+           }
+           else
+           {
+               SetIdleCharacterVisibility(signal.Visibility);
+
+           }
        });
+       // signalBus.Subscribe<ChangeRestStateSignal>((() =>
+       // {
+       //     if (energyManager.GetPlayerIsResting())
+       //     {
+       //         seatedBodyRender.gameObject.SetActive(false);
+       //         idleBodyRender.gameObject.SetActive(false);
+       //     }
+       //     else
+       //     {
+       //         seatedBodyRender.gameObject.SetActive(true);
+       //         idleBodyRender.gameObject.SetActive(true);
+       //     }
+       // }));
     }
 
     void OnAvatarChanged(OnCharacterAvatarChanged characterAvatarChanged)
@@ -76,7 +96,7 @@ public class CharacterRender : MonoBehaviour
         if (avatar.feetItem && avatar.legsItem)
         {
             feetRender.sortingOrder =  avatar.legsItem.FeetSoringLayers;
-            idleFeetRender.sortingOrder= avatar.legsItem.FeetSoringLayers;
+            idleFeetRender.sortingOrder= avatar.legsItem.FeetSoringLayers+60;
         }
 
     }
@@ -89,8 +109,6 @@ public class CharacterRender : MonoBehaviour
      void SetIdleCharacterVisibility(bool state)
     {
         idleBodyRender.gameObject.SetActive(state);
-     //   idleRenderCam.gameObject.SetActive(state);
-        idleRenderCam.targetTexture.Release();
     }
     
 }
