@@ -11,8 +11,10 @@ public class LeaderboardsPopUp_VC : MonoBehaviour
 
     [SerializeField] private GameObject leaderboardPlayerInfoPrefab;
     [SerializeField] private GameObject leaderboardPlayerInfoHolder;
+    [SerializeField] private GameObject subsLeaderboard;
+    [SerializeField] private GameObject topCreatorsLeaderboard;
     [SerializeField] private Button channelsTabButton;
-    [SerializeField] private Button themesTabButton;
+    [SerializeField] private Button topCreatorsTabButton;
     [SerializeField] private Sprite selectedSprite;
     [SerializeField] private Sprite unselectedSprite;
     [SerializeField] private Color selectedColor;
@@ -25,7 +27,7 @@ public class LeaderboardsPopUp_VC : MonoBehaviour
     {
         signalBus.Subscribe<RecieveTop10Leaderboard> (UpdateSubcribersLeaderboard);
         channelsTabButton.onClick.AddListener (() => TabSelected (true));
-        themesTabButton.onClick.AddListener (() => TabSelected (false));
+        topCreatorsTabButton.onClick.AddListener (() => TabSelected (false));
     }
 
     void TabSelected (bool channelTab)
@@ -35,16 +37,20 @@ public class LeaderboardsPopUp_VC : MonoBehaviour
             channelsTabButton.GetComponent<Image> ().sprite = selectedSprite;
             channelsTabButton.GetComponentInChildren<TMP_Text> ().color = selectedColor;
 
-            themesTabButton.GetComponent<Image> ().sprite = unselectedSprite;
-            themesTabButton.GetComponentInChildren<TMP_Text> ().color = unselectedColor;
+            topCreatorsTabButton.GetComponent<Image> ().sprite = unselectedSprite;
+            topCreatorsTabButton.GetComponentInChildren<TMP_Text> ().color = unselectedColor;
+            subsLeaderboard.SetActive(true);
+            topCreatorsLeaderboard.SetActive(false);
         }
         else
         {
-            themesTabButton.GetComponent<Image> ().sprite = selectedSprite;
-            themesTabButton.GetComponentInChildren<TMP_Text> ().color = selectedColor;
+            topCreatorsTabButton.GetComponent<Image> ().sprite = selectedSprite;
+            topCreatorsTabButton.GetComponentInChildren<TMP_Text> ().color = selectedColor;
 
             channelsTabButton.GetComponent<Image> ().sprite = unselectedSprite;
             channelsTabButton.GetComponentInChildren<TMP_Text> ().color = unselectedColor;
+            topCreatorsLeaderboard.SetActive(true);
+            subsLeaderboard.SetActive(false);
         }
     }
     // Update is called once per frame
