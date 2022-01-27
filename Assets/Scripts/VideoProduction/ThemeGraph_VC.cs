@@ -64,7 +64,8 @@ public class ThemeGraph_VC : MonoBehaviour
         foreach (KeyValuePair<LineRenderer,ThemeData> dictSlot in lineRenderers)
         {
             AnimationCurve themeCurve = themesManager.GetThemeAlgorithm (dictSlot.Value, GameClock.Instance.Now);
-            dictSlot.Key.startWidth = enlargerValue / 100;
+            dictSlot.Key.gameObject.GetComponent<VFX_GraphSelection>().SetAnimCurve(timeConversion, valueConversion, enlargerValue);
+            //dictSlot.Key.startWidth = enlargerValue / 100;
             int hour = GameClock.Instance.Now.Hour % 6;
             float minutes = (float)GameClock.Instance.Now.Minute * 100f / 60f;
             float limitTimeValue = (hour + (minutes / 100)) / 6f;
@@ -93,6 +94,18 @@ public class ThemeGraph_VC : MonoBehaviour
                 }
                 i++;
             }
+            Vector3[] newPositions = new Vector3[dictSlot.Key.positionCount];
+            dictSlot.Key.GetPositions(newPositions);
+            foreach (LineRenderer lr in dictSlot.Key.gameObject.GetComponentsInChildren<LineRenderer>())
+            {
+                lr.positionCount = dictSlot.Key.positionCount;
+                lr.SetPositions(newPositions);
+
+                Color newColor = lrColor;
+                newColor.a = lr.startColor.a;
+                lr.startColor = newColor;
+                lr.endColor = newColor;
+            }
         }
     }
 
@@ -110,34 +123,22 @@ public class ThemeGraph_VC : MonoBehaviour
         Debug.Log("ResetSetColor");
         if (themeType == signalThemeType)
         {
-            Color startColor = lr.startColor;
-            startColor.a = 1;
-            lr.startColor = startColor;
-
-            Color endColor = lr.endColor;
-            endColor.a = 1;
-            lr.endColor = endColor;
+            lr.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            lr.gameObject.transform.GetChild(1).gameObject.SetActive(true);
+            lr.gameObject.GetComponent<VFX_GraphSelection>().ThemeSelected();
         }
         else
         {
-            Color startColor = lr.startColor;
-            startColor.a = 0.2f;
-            lr.startColor = startColor;
-
-            Color endColor = lr.endColor;
-            endColor.a = 0.2f;
-            lr.endColor = endColor;
+            lr.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            lr.gameObject.transform.GetChild(1).gameObject.SetActive(false);
+            lr.gameObject.GetComponent<VFX_GraphSelection>().ThemeUnselected();
         }
     }
     void ResetLineColor(LineRenderer lr)
     {
         Debug.Log("ResetColor");
-        Color startColor = lr.startColor;
-        startColor.a = 1;
-        lr.startColor = startColor;
-
-        Color endColor = lr.endColor;
-        endColor.a = 1;
-        lr.endColor = endColor;
+        lr.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        lr.gameObject.transform.GetChild(1).gameObject.SetActive(true);
+        lr.gameObject.GetComponent<VFX_GraphSelection>().ThemeUnselected();
     }
 }

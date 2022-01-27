@@ -27,3 +27,12 @@ public class VFX_StartMovingCoinsSignal
 {
     public Vector3 origin;
 }
+public class VFX_StartMovingSCBillsSignal
+{
+    public Vector3 origin;
+    public int quantity;
+}
+public class VFX_ActivateViralAnimation
+{
+    public string videoName;
+}

@@ -36,6 +36,52 @@ public class ScriptableTheme : ScriptableObject
             }
         }
     }
+    public void RandomizeCurves()
+    {
+        for(int i=0; i<themesData.Count;i++)
+        {
+            ThemeData theme = themesData[i];
+            theme.themeAlgorithm0to6WeekDays = RandomAnimCurve();
+            theme.themeAlgorithm0to6WeekEnd = RandomAnimCurve();
+            theme.themeAlgorithm12to18WeekDays = RandomAnimCurve();
+            theme.themeAlgorithm12to18WeekEnd = RandomAnimCurve();
+            theme.themeAlgorithm18to24WeekDays = RandomAnimCurve();
+            theme.themeAlgorithm18to24WeekEnd = RandomAnimCurve();
+            theme.themeAlgorithm6to12WeekDays = RandomAnimCurve();
+            theme.themeAlgorithm6to12WeekEnd = RandomAnimCurve();
+            themesData[i] = theme;
+        }
+    }
+    AnimationCurve RandomAnimCurve()
+    {
+        AnimationCurve animCurve = new AnimationCurve();
+        int numberOfKeys = UnityEngine.Random.Range(5, 10);
+        float[] timeForEachKey = new float[numberOfKeys];
+        float timeSections = 1f / numberOfKeys;
+        for(int i=0;i<timeForEachKey.Length;i++)
+        {
+            if (i == 0)
+                timeForEachKey[i] = 0;
+            else if (i == timeForEachKey.Length - 1)
+                timeForEachKey[i] = 1;
+            else
+                timeForEachKey[i] = UnityEngine.Random.Range(timeSections * i, timeSections * (i + 1));
+        }
+        float[] valueForEachKey = new float[numberOfKeys];
+        for (int i = 0; i < timeForEachKey.Length; i++)
+        {
+            valueForEachKey[i] = UnityEngine.Random.Range(0f, 2f);
+        }
+
+        for (int i = 0; i < numberOfKeys; i++)
+        {
+            animCurve.AddKey(timeForEachKey[i], valueForEachKey[i]);
+            UnityEditor.AnimationUtility.SetKeyRightTangentMode(animCurve, i, UnityEditor.AnimationUtility.TangentMode.Linear);
+            UnityEditor.AnimationUtility.SetKeyLeftTangentMode(animCurve, i, UnityEditor.AnimationUtility.TangentMode.Linear);
+        }
+
+        return animCurve;
+    }
     bool CheckIfThemeExistsInList (ThemeType _themeType)
     {
         return themesData.Exists (x => x.themeType == _themeType);
