@@ -9,22 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ab72039a3d943588b20d0ec6958ff27, type: 3}
-  m_Name: OldGreenScreen
+  m_Script: {fileID: 11500000, guid: fae297a6d837445183099777466e5257, type: 3}
+  m_Name: RGB Lights
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 3454632678106303560, guid: 78be52ee30ff5df479f14172875a565e, type: 3}
+  sprite: {fileID: -2470453014124815640, guid: ac8c0df6ca142fa4f8e9a6f0c1530262, type: 3}
   itemPrefab:
-    m_AssetGUID: 92e4b6121a6df354eaeed4da12fe8865
+    m_AssetGUID: b5616a89949bc6940842668f04b62636
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  videoQualityItemType: 3
-  videoQualityBonus: 0.1514
-  rareness: 0
+  affectedTheme:
+  - ThemeType: 6
+    themePopularityFactor: 0.02
+  rareness: 1
   descriptionText: 
   newStatsText: 
   Owned: 0
   PriceType: 1
   HCPrice: 0
-  SCPrice: 400
-  SlotType: 18
+  SCPrice: 4000
+  SlotType: 9
+  ConditionalSlot: 23

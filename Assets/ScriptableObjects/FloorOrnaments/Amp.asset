@@ -10,21 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b716d47a6af4d498369f2a2c88ee040, type: 3}
-  m_Name: Guitar
+  m_Name: Amp
   m_EditorClassIdentifier: 
-  sprite: {fileID: 7038780783116377958, guid: ac8c0df6ca142fa4f8e9a6f0c1530262, type: 3}
+  sprite: {fileID: -2518120945058285068, guid: ac8c0df6ca142fa4f8e9a6f0c1530262, type: 3}
   itemPrefab:
-    m_AssetGUID: 2aa3d1f61a8a86a42b63c56df473ba95
+    m_AssetGUID: 695c8cdaf127a7f4aaf5f941d66fd39e
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  affectedTheme: []
-  rareness: 0
+  affectedTheme:
+  - ThemeType: 2
+    themePopularityFactor: 0.2
+  rareness: 2
   descriptionText: 
   newStatsText: 
   Owned: 0
   PriceType: 1
   HCPrice: 0
-  SCPrice: 3000
-  SlotType: 5
+  SCPrice: 2000
+  SlotType: 6
   ConditionalSlot: 23
