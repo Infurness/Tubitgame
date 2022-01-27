@@ -285,7 +285,9 @@ public class VideoInfo_VC : MonoBehaviour
         //signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
         //int energyLeftToSpend = (int)(energyCost *(internalRecordTime / maxInternalRecordTime)); 
         //signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
+
         GetComponent<Animator>().Play("Cancel_Video");
+
         signalBus.Fire<VFX_CancelVideoAnimationSignal>(new VFX_CancelVideoAnimationSignal
         {
             anim = GetComponent<Animator>(),
@@ -297,6 +299,11 @@ public class VideoInfo_VC : MonoBehaviour
                 Destroy(gameObject);
             }
         });
+        signalBus.Fire(new VideoStartedSignal()
+        {
+            startedVideo = null
+        });
+
     }
     
 

@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4783374810967330753
 Transform:
   m_ObjectHideFlags: 0
@@ -97,7 +97,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7534767668825087272
 Transform:
   m_ObjectHideFlags: 0
@@ -178,7 +178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6165458184360968769
 Transform:
   m_ObjectHideFlags: 0
@@ -254,6 +254,8 @@ GameObject:
   - component: {fileID: 7033858928996983721}
   - component: {fileID: 8178987928042648794}
   - component: {fileID: 3881886834904593310}
+  - component: {fileID: 3113797662751721860}
+  - component: {fileID: -4307584427162006356}
   m_Layer: 0
   m_Name: BasicChair
   m_TagString: Untagged
@@ -344,3 +346,28 @@ MonoBehaviour:
   slotItemType: 1
   customizationType: 0
   assetName: BasicChair
+--- !u!114 &3113797662751721860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6646617508108278231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 1
+--- !u!114 &-4307584427162006356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6646617508108278231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d08d46d2a6b95ec4c9644b321d595df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

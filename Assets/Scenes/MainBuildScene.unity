@@ -54842,6 +54842,10 @@ PrefabInstance:
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 5369247476793181067, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5369247476793181067, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -54902,6 +54906,11 @@ SpriteRenderer:
 --- !u!1 &1526995633 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 659080451097752019, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+  m_PrefabInstance: {fileID: 1526995624}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1526995634 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5369247476793181067, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
   m_PrefabInstance: {fileID: 1526995624}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1528876886
@@ -89059,6 +89068,8 @@ MonoBehaviour:
   idleHairRender: {fileID: 4586774012416760578}
   idleLegsRender: {fileID: 2252792177761133842}
   idleFeetRender: {fileID: 7030198823630913778}
+  seatedCharacter: {fileID: 1526995634}
+  idleCharacter: {fileID: 7724642267242619018}
 --- !u!1 &3835313007867261583
 GameObject:
   m_ObjectHideFlags: 0
@@ -90147,7 +90158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7738999720431385313
 Transform:
   m_ObjectHideFlags: 0
