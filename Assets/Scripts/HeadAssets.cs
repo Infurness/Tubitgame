@@ -35,6 +35,9 @@ public class HeadAssets : MonoBehaviour
 
     public Sprite GetHairSprite(string hairName)
     {
+        if (hairName == "")
+            return null;
+
         return hairItems.Find((it) => it.name == hairName).sprite;
     }
 
