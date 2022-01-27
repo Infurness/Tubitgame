@@ -22,7 +22,9 @@ public class VFX_VC : MonoBehaviour
     [SerializeField] private GameObject lowEnergyAnimationObject;
 
     [SerializeField] private GameObject energyCoinsReturnPivot;
+    [SerializeField] private GameObject SCBillsReturnPivot;
     [SerializeField] private GameObject[] energyCoinsForVideoCancel;
+    [SerializeField] private GameObject[] SCBillsForVideoCancel;
     [SerializeField] private float delayBetweenCoinsMin;
     [SerializeField] private float delayBetweenCoinsMax;
 
@@ -33,6 +35,7 @@ public class VFX_VC : MonoBehaviour
         signalBus.Subscribe<VFX_LowEnergyBlinkSignal>(ActivateLowEnergyAnim);
         signalBus.Subscribe<VFX_NoEnergyParticlesSignal>(ActivateNoEnergyParticles);
         signalBus.Subscribe<VFX_StartMovingCoinsSignal>(MoveCoins);
+        signalBus.Subscribe<VFX_StartMovingSCBillsSignal>(MoveSCBills); 
         loseEnergyObject.SetActive(false);
         getEnergyObject.SetActive(false);
         noEnergyParticlesObject.SetActive(false);
@@ -126,6 +129,22 @@ public class VFX_VC : MonoBehaviour
         {  
             coin.GetComponent<VFX_EnergyCoinVC>().SetCoinMovementValues(origin, energyCoinsReturnPivot.GetComponent<RectTransform>().position);
             yield return new WaitForSeconds(Random.Range(delayBetweenCoinsMin,delayBetweenCoinsMax));
+        }
+    }
+    void MoveSCBills(VFX_StartMovingSCBillsSignal signal)
+    {
+        StartCoroutine(MoveSCBillsSteps(signal.origin, signal.quantity));
+    }
+    IEnumerator MoveSCBillsSteps(Vector3 origin, int quantity)
+    {
+        int i = 0;
+        foreach (GameObject bill in SCBillsForVideoCancel)
+        {
+            if (i > quantity)
+                break;
+            bill.GetComponent<VFX_EnergyCoinVC>().SetCoinMovementValues(origin, SCBillsReturnPivot.GetComponent<RectTransform>().position);
+            yield return new WaitForSeconds(Random.Range(delayBetweenCoinsMin, delayBetweenCoinsMax));
+            i++;
         }
     }
 }
