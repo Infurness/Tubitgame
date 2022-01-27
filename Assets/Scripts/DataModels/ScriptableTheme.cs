@@ -6,7 +6,7 @@ using UnityEngine;
 public class ScriptableTheme : ScriptableObject
 {
     public List<ThemeData> themesData;
-
+#if UNITY_EDITOR
     public void UpdateAvailableThemes ()
     {
         if (themesData.Count != Enum.GetValues (typeof (ThemeType)).Length)
@@ -86,6 +86,7 @@ public class ScriptableTheme : ScriptableObject
     {
         return themesData.Exists (x => x.themeType == _themeType);
     }
+#endif
 }
 public enum ThemeType
 {
