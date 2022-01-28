@@ -30,7 +30,14 @@ public class HeadAssets : MonoBehaviour
 
     public Sprite GetHeadSprite(string headName)
     {
-        return headItems.Find((it) => it.name == headName).sprite;
+        HeadItem headFound = headItems.Find((it) => it.name == headName);
+        if (headFound == null)
+        {
+            Debug.LogError($"Hair style called: { headName } was not found");
+            return null;
+        }
+
+        return headFound.sprite;
     }
 
     public Sprite GetHairSprite(string hairName)
@@ -42,7 +49,7 @@ public class HeadAssets : MonoBehaviour
             return null;
         }
             
-        return hairItems.Find((it) => it.name == hairName).sprite;
+        return hairFound.sprite;
     }
 
  

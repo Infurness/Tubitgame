@@ -16,7 +16,8 @@ public class ComputerBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-       
+        if (TutorialManager.Instance != null)
+            return;
         if (!canBeUsed)
         {
             return;

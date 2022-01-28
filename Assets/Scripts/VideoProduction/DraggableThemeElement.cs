@@ -7,9 +7,15 @@ public class DraggableThemeElement : MonoBehaviour, IPointerDownHandler
 {
     ThemeSelectionPopUp_VC visualController;
     int indexInVisualController = 0;
-
+    bool isEnabled;
+    private void Start()
+    {
+        isEnabled = true;
+    }
     public void OnPointerDown (PointerEventData eventData)
     {
+        if (!isEnabled)
+            return;
         visualController.StartDraggingTheme (indexInVisualController);
     }
 
@@ -19,5 +25,8 @@ public class DraggableThemeElement : MonoBehaviour, IPointerDownHandler
         indexInVisualController = draggableIndexInVC;
     }
 
-    
+    public void DisableForTutorial()
+    {
+        isEnabled = false;
+    }
 }

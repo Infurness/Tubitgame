@@ -69,8 +69,9 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
 
         private void OnMouseDown()
         {
-
-            if(!canBeUsed)
+            if (TutorialManager.Instance != null)
+                return;
+            if (!canBeUsed)
             {
                 return;
             }

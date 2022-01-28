@@ -92,7 +92,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
             movement = 1;
         else if (scrollDir > 0)
             movement = -1;
-
+        if (TutorialManager.Instance != null)
+            return;
         ScrollView (movement);
     }
 
