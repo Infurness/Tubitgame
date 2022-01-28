@@ -105,7 +105,8 @@ public class Tutorial_VC : MonoBehaviour
             button.interactable = false;
         }
         qualitySlider.interactable = false;
-        openSettingsButton.GetComponentInChildren<Button>().interactable = false;
+        if(openSettingsButton.GetComponentInChildren<Button>()!=null)
+            openSettingsButton.GetComponentInChildren<Button>().interactable = false;
         recordVideoButton.GetComponentInChildren<Button>().interactable = false;
     }
     // Update is called once per frame

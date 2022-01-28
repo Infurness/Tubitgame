@@ -76,7 +76,7 @@ public class CharacterRender : MonoBehaviour
         seatedHairRender.sprite = avatar.hairItem == null ? null : avatar.hairItem.SeatedHair;
         
         Sprite newTorso = avatar.torsoItem == null ? null : avatar.torsoItem.TorsoVariants[variantIndex];
-        if(torsoRender.sprite != newTorso)
+        if(TutorialManager.Instance==null && torsoRender.sprite != newTorso)
         {
             signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal {oldCloth =torsoRender.sprite, newCloth = newTorso });
             UnityEngine.Events.UnityAction changeAction = () => {torsoRender.sprite = newTorso;};
@@ -90,7 +90,7 @@ public class CharacterRender : MonoBehaviour
         torsoRender.transform.localPosition = body.torsoPosition;
 
         Sprite newLegs = avatar.legsItem == null ? null : avatar.legsItem.LegsVariants[variantIndex];
-        if (legsRender.sprite != newLegs)
+        if (TutorialManager.Instance == null && legsRender.sprite != newLegs)
         {
             signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = legsRender.sprite, newCloth = newLegs });
             UnityEngine.Events.UnityAction changeAction = () => { legsRender.sprite = newLegs; };
@@ -104,7 +104,7 @@ public class CharacterRender : MonoBehaviour
         legsRender.transform.localPosition = body.legsPosition;
 
         Sprite newFeet = avatar.feetItem == null ? null : avatar.feetItem.sprite;
-        if (feetRender.sprite != newFeet)
+        if (TutorialManager.Instance == null && feetRender.sprite != newFeet)
         {
             signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = feetRender.sprite, newCloth = newFeet });
             UnityEngine.Events.UnityAction changeAction = () => { feetRender.sprite = newFeet; };
