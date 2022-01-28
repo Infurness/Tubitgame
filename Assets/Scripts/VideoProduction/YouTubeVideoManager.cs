@@ -5,6 +5,19 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
+[Serializable]
+public class NameInfoByTheme
+{
+    public ThemeType themeType;
+    public VideoNameWords words;
+}
+[Serializable]
+public class VideoNameWords
+{
+    public string[] noun1;
+    public string[] noun2;
+    public string[] adjetive;
+}
 public class YouTubeVideoManager : MonoBehaviour
 {
     [Inject] private SignalBus _signalBus;
@@ -15,6 +28,8 @@ public class YouTubeVideoManager : MonoBehaviour
     [Inject] private ExperienceManager experienceManager;
     [Inject] private GameAnalyticsManager gameAnalyticsManager;
     bool isRecording;
+
+    [SerializeField] NameInfoByTheme[] videoNamingInfo;
 
     void Start()
     {
@@ -142,21 +157,57 @@ public class YouTubeVideoManager : MonoBehaviour
     public string GetVideoNameByTheme (ThemeType[] _themeTypes)
     {
         string videoName ="";
+        int themeUsed = 0;
         foreach(ThemeType themeType in _themeTypes)
         {
-            videoName += Enum.GetName (themeType.GetType (), themeType);
+            string selectedWord = "";
+            foreach(NameInfoByTheme themeInfo in videoNamingInfo)
+            {
+                if(themeInfo.themeType == themeType)
+                {
+                    int rndIndex = 0;
+                    switch (themeUsed)
+                    {
+                        case 0:
+                            rndIndex = Random.Range(0, themeInfo.words.adjetive.Length);
+                            selectedWord = themeInfo.words.adjetive[rndIndex];
+                            break;
+                        case 1:
+                            rndIndex = Random.Range(0, themeInfo.words.adjetive.Length);
+                            selectedWord = themeInfo.words.noun2[rndIndex];
+                            break;
+                        case 2:
+                            rndIndex = Random.Range(0, themeInfo.words.adjetive.Length);
+                            selectedWord = themeInfo.words.noun1[rndIndex];
+                            break;
+                    }
+                }
+            }
+            themeUsed++;
+            videoName += $"{selectedWord} ";
         }
-        videoName += $" {GetNumberOfVideoByThemes (_themeTypes)}";
+        int videoNumber = GetNumberOfVideoByName(videoName);
+        if(videoNumber>0)
+            videoName += $"{videoNumber}";
         return videoName;
     }
-    int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
+    int GetNumberOfVideoByName(string videoName)
     {
-        if (playerDataManager==null)
+        if (playerDataManager == null)
         {
             print("Player DataManger is Null");
         }
-        return playerDataManager.GetNumberOfVideoByThemes (_themeTypes);
+        return playerDataManager.GetNumberOfVideoByName(videoName);
     }
+
+    //int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
+    //{
+    //    if (playerDataManager==null)
+    //    {
+    //        print("Player DataManger is Null");
+    //    }
+    //    return playerDataManager.GetNumberOfVideoByThemes (_themeTypes);
+    //}
     public Video GetVideoByName (string _name)
     {
         return playerDataManager.GetVideoByName (_name);
