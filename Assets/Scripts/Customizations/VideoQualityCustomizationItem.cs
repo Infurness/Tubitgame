@@ -22,6 +22,13 @@ namespace Customizations
         public uint HCPrice;
         public uint SCPrice;
         public ItemSlotType SlotType;
+        
+        public void OnEnable()
+        {
+
+            var percent = videoQualityBonus * 100;
+            descriptionText ="Video Quality Bonus : %"+ (int)(percent);
+        }
     }
 
     public enum VideoQualityItemType
