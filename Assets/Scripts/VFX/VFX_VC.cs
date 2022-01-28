@@ -54,9 +54,9 @@ public class VFX_VC : MonoBehaviour
         lowEnergyAnimationObject.SetActive(false);
 
         mainNightColorAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
-        computerLightAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
-        windowsLightAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
-        colorCorrectionAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
+        computerLightAlpha = computerLight.GetComponent<SpriteRenderer>().color.a;
+        windowsLightAlpha = windowsLight.GetComponent<SpriteRenderer>().color.a;
+        colorCorrectionAlpha = colorCorrection.GetComponent<SpriteRenderer>().color.a;
 
         //Force day
         Color tempColor;

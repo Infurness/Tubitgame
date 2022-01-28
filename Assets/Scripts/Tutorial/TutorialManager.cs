@@ -12,7 +12,7 @@ public class TutorialManager : MonoBehaviour
 
     public static TutorialManager Instance;
 
-    TutorialPhase currentTutorialPhase;
+    public TutorialPhase currentTutorialPhase;
 
     private void Awake()
     {
