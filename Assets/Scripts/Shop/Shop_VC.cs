@@ -165,18 +165,18 @@ public class Shop_VC : MonoBehaviour
 
                         break;
                     case PriceType.SC:
-                        shopButton.SetSCBuyButton(item.SCPrice, GetRarenessSpriteByIndex(item.rareness), item.sprite,
+                        shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
                             (() => BuyClothItem(item, PriceType.SC)));
 
                         break;
                     case PriceType.HC:
-                        shopButton.SetHCBuyButton(item.HCPrice, GetRarenessSpriteByIndex(item.rareness), item.sprite,
+                        shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
                             () => BuyClothItem(item, PriceType.HC));
                         break;
 
                     case PriceType.Exchangeable:
                         shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                            GetRarenessSpriteByIndex(item.rareness), item.sprite,
+                            item.name, item.sprite,
                             (() => BuyClothItem(item, PriceType.SC)),
                             (() => BuyClothItem(item, PriceType.HC)));
                         break;
@@ -216,17 +216,17 @@ public class Shop_VC : MonoBehaviour
                         break;
                         return;
                     case PriceType.SC:
-                        shopButton.SetSCBuyButton(item.SCPrice, GetRarenessSpriteByIndex(item.rareness), item.sprite,
+                        shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
                             (() => BuyRoomItem(item, PriceType.SC)));
                         break;
                     case PriceType.HC:
-                        shopButton.SetHCBuyButton(item.HCPrice, GetRarenessSpriteByIndex(item.rareness), item.sprite,
+                        shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
                             () => BuyRoomItem(item, PriceType.HC));
 
                         break;
                     case PriceType.Exchangeable:
                         shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                            GetRarenessSpriteByIndex(item.rareness), item.sprite,
+                            item.name, item.sprite,
                             (() => BuyRoomItem(item, PriceType.SC)),
                             (() => BuyRoomItem(item, PriceType.HC)));
 
@@ -262,20 +262,20 @@ public class Shop_VC : MonoBehaviour
 
                         break;
                     case PriceType.SC:
-                        shopButton.SetSCBuyButton(item.SCPrice, GetRarenessSpriteByIndex(item.rareness),
+                        shopButton.SetSCBuyButton(item.SCPrice, item.name,
                             item.itemSprite,
                             (() => BuyVCItem(item, PriceType.SC)));
 
                         break;
                     case PriceType.HC:
-                        shopButton.SetHCBuyButton(item.HCPrice, GetRarenessSpriteByIndex(item.rareness),
+                        shopButton.SetHCBuyButton(item.HCPrice, item.name,
                             item.itemSprite,
                             () => BuyVCItem(item, PriceType.HC));
 
                         break;
                     case PriceType.Exchangeable:
                         shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                            GetRarenessSpriteByIndex(item.rareness), item.itemSprite,
+                            item.name, item.itemSprite,
                             (() => BuyVCItem(item, PriceType.SC)),
                             (() => BuyVCItem(item, PriceType.HC)));
 
@@ -356,20 +356,20 @@ public class Shop_VC : MonoBehaviour
 
                         break;
                     case PriceType.SC:
-                        shopButton.SetSCBuyButton(item.SCPrice, GetRarenessSpriteByIndex(item.rareness),
+                        shopButton.SetSCBuyButton(item.SCPrice, item.name,
                             item.carSprite,
                             (() => BuyCar(item, PriceType.SC)));
 
                         break;
                     case PriceType.HC:
-                        shopButton.SetHCBuyButton(item.HCPrice, GetRarenessSpriteByIndex(item.rareness),
+                        shopButton.SetHCBuyButton(item.HCPrice, item.name,
                             item.carSprite,
                             () => BuyCar(item, PriceType.HC));
 
                         break;
                     case PriceType.Exchangeable:
                         shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                            GetRarenessSpriteByIndex(item.rareness), item.carSprite,
+                            item.name, item.carSprite,
                             (() => BuyCar(item, PriceType.SC)),
                             (() => BuyCar(item, PriceType.HC)));
 
