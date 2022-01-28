@@ -28,6 +28,7 @@ public class LeaderboardsPopUp_VC : MonoBehaviour
         signalBus.Subscribe<RecieveTop10Leaderboard> (UpdateSubcribersLeaderboard);
         channelsTabButton.onClick.AddListener (() => TabSelected (true));
         topCreatorsTabButton.onClick.AddListener (() => TabSelected (false));
+        TabSelected(true);
     }
 
     void TabSelected (bool channelTab)
