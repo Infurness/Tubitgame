@@ -124,6 +124,10 @@ public class CaharacterInventory_VC : MonoBehaviour
             {
                 Visibility = false
             });
+            signalBus.Fire(new CanUseItemsInRoom()
+            {
+                canUse =true
+            });
         }));
         CharacterCustomizationButton.onClick.AddListener(OpenCharacterPanel);
         signalBus.Subscribe<RoomCustomizationVisibilityChanged>((() =>
@@ -149,6 +153,11 @@ public class CaharacterInventory_VC : MonoBehaviour
        signalBus.Fire<CharacterCustomizationVisibilityChanged>(new CharacterCustomizationVisibilityChanged()
        {
            Visibility = true
+       });
+       
+       signalBus.Fire(new CanUseItemsInRoom()
+       {
+           canUse = false
        });
     }
 

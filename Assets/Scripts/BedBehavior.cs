@@ -1,17 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
+public class BedBehavior : MonoBehaviour 
 {
     [SerializeField] private GameObject sleepBed;
     [SerializeField] private GameObject normalBed;
     [Inject] SignalBus signalBus;
     private EnergyManager energyManager;
-    private RoomInventory_VC roomVC;
     private bool canBeUsed;
     private void Awake()
     {
@@ -22,9 +22,8 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
     void Start()
     {
         energyManager = FindObjectOfType<EnergyManager>();
-        roomVC = FindObjectOfType<RoomInventory_VC>();
         signalBus.Subscribe<RestStateChangedSignal>(OnRestChanged);
-        signalBus.Subscribe<CanUseItemsInRoom>((signal)=> canBeUsed = signal.canUse);
+        signalBus.Subscribe<CanUseItemsInRoom>(ChangeUseState);
         if (energyManager.GetPlayerIsResting().Equals(true))
         {
             SwitchToSleepingBed();
@@ -34,6 +33,11 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
             SwitchToNormalBed();
         }
 
+    }
+
+    void ChangeUseState(CanUseItemsInRoom signal)
+    {
+        canBeUsed = signal.canUse;
     }
 
     void OnRestChanged(RestStateChangedSignal signal)
@@ -74,11 +78,10 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
             {
                 return;
             }
-            if (roomVC.EditModeEnabled==false)
-            {
+           
                 print("Bed Clicked");
                 signalBus.Fire<ChangeRestStateSignal>();
-            }
+            
            
         
         }
@@ -86,16 +89,11 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
         private void OnDestroy()
         {
             signalBus.Unsubscribe<RestStateChangedSignal>(OnRestChanged);
+            signalBus.Unsubscribe<CanUseItemsInRoom>(ChangeUseState);
 
         }
 
-        public void Dispose()
-        {
-            signalBus.Unsubscribe<RestStateChangedSignal>(OnRestChanged);
-        }
+      
 
-        public void Initialize()
-        {
-            
-        }
+      
 }

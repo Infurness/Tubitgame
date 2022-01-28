@@ -23799,11 +23799,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   houseCloseView: {fileID: 7192174558990682849}
   houseStreetView: {fileID: 797003739}
-  carSpriteRendererStreetView: {fileID: 0}
-  carSpriteRendererNeighbourhoodView: {fileID: 0}
-  rightWall: {fileID: 0}
-  leftWall: {fileID: 0}
-  floor: {fileID: 0}
+  carSpriteRendererStreetView: {fileID: 1574983462}
+  carSpriteRendererNeighbourhoodView: {fileID: 1574983462}
+  rightWall: {fileID: 1526995632}
+  leftWall: {fileID: 1526995633}
+  floor: {fileID: 1526995631}
 --- !u!1 &602669060
 GameObject:
   m_ObjectHideFlags: 0
@@ -54669,6 +54669,21 @@ SpriteRenderer:
 --- !u!1 &1526995630 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 659080451097752019, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+  m_PrefabInstance: {fileID: 1526995624}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1526995631 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2509866799318193425, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+  m_PrefabInstance: {fileID: 1526995624}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1526995632 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3178181249582030545, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+  m_PrefabInstance: {fileID: 1526995624}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1526995633 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1075576538430961686, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
   m_PrefabInstance: {fileID: 1526995624}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1528876886
