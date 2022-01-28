@@ -127,9 +127,10 @@ public class HomePanel_VC : MonoBehaviour
                     {
                         state = CharacterState.Idle
                     });
+                    youTubeVideoManager.SetIsRecording(false);
+
                 }
       
-              
             }
             else
             {
@@ -139,7 +140,11 @@ public class HomePanel_VC : MonoBehaviour
                     {
                         state = CharacterState.Production
                     });
+                    
+                    youTubeVideoManager.SetIsRecording(true);
+
                 }
+                
             }         
         }
         else
@@ -150,6 +155,8 @@ public class HomePanel_VC : MonoBehaviour
                 {
                     state = CharacterState.Idle
                 });
+                youTubeVideoManager.SetIsRecording(false);
+
                 
             }
             productionBar.gameObject.SetActive(false);
