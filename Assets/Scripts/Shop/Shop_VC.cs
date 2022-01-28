@@ -155,35 +155,70 @@ public class Shop_VC : MonoBehaviour
         {
             if (!item.Owned)
             {
-
-
-                var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
-                switch (item.PriceType)
+                if (TutorialManager.Instance != null)
                 {
-                    case PriceType.Free:
-                        Destroy(shopButton.gameObject);
+                    if(item.SCPrice==0)
+                    {
+                        var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
+                        switch (item.PriceType)
+                        {
+                            case PriceType.Free:
+                                Destroy(shopButton.gameObject);
 
-                        break;
-                    case PriceType.SC:
-                        shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
-                            (() => BuyClothItem(item, PriceType.SC)));
+                                break;
+                            case PriceType.SC:
+                                shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
+                                    (() => BuyClothItem(item, PriceType.SC)));
 
-                        break;
-                    case PriceType.HC:
-                        shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
-                            () => BuyClothItem(item, PriceType.HC));
-                        break;
+                                break;
+                            case PriceType.HC:
+                                shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
+                                    () => BuyClothItem(item, PriceType.HC));
+                                break;
 
-                    case PriceType.Exchangeable:
-                        shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                            item.name, item.sprite,
-                            (() => BuyClothItem(item, PriceType.SC)),
-                            (() => BuyClothItem(item, PriceType.HC)));
-                        break;
+                            case PriceType.Exchangeable:
+                                shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
+                                    item.name, item.sprite,
+                                    (() => BuyClothItem(item, PriceType.SC)),
+                                    (() => BuyClothItem(item, PriceType.HC)));
+                                break;
 
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }   
                 }
+                else
+                {
+                    var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
+                    switch (item.PriceType)
+                    {
+                        case PriceType.Free:
+                            Destroy(shopButton.gameObject);
+
+                            break;
+                        case PriceType.SC:
+                            shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
+                                (() => BuyClothItem(item, PriceType.SC)));
+
+                            break;
+                        case PriceType.HC:
+                            shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
+                                () => BuyClothItem(item, PriceType.HC));
+                            break;
+
+                        case PriceType.Exchangeable:
+                            shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
+                                item.name, item.sprite,
+                                (() => BuyClothItem(item, PriceType.SC)),
+                                (() => BuyClothItem(item, PriceType.HC)));
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                
             }
         }
 
@@ -205,38 +240,71 @@ public class Shop_VC : MonoBehaviour
         {
             if (!item.Owned)
             {
-
-
-                var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
-                switch (item.PriceType)
+                if (TutorialManager.Instance != null)
                 {
-                    case PriceType.Free:
-                        Destroy(shopButton.gameObject);
+                    if (item.SCPrice == 0)
+                    {
+                        var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
+                        switch (item.PriceType)
+                        {
+                            case PriceType.Free:
+                                Destroy(shopButton.gameObject);
 
-                        break;
-                        return;
-                    case PriceType.SC:
-                        shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
-                            (() => BuyRoomItem(item, PriceType.SC)));
-                        break;
-                    case PriceType.HC:
-                        shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
-                            () => BuyRoomItem(item, PriceType.HC));
+                                break;
+                                return;
+                            case PriceType.SC:
+                                shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
+                                    (() => BuyRoomItem(item, PriceType.SC)));
+                                break;
+                            case PriceType.HC:
+                                shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
+                                    () => BuyRoomItem(item, PriceType.HC));
 
-                        break;
-                    case PriceType.Exchangeable:
-                        shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                            item.name, item.sprite,
-                            (() => BuyRoomItem(item, PriceType.SC)),
-                            (() => BuyRoomItem(item, PriceType.HC)));
+                                break;
+                            case PriceType.Exchangeable:
+                                shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
+                                    item.name, item.sprite,
+                                    (() => BuyRoomItem(item, PriceType.SC)),
+                                    (() => BuyRoomItem(item, PriceType.HC)));
 
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
                 }
+                else
+                {
+                    var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
+                    switch (item.PriceType)
+                    {
+                        case PriceType.Free:
+                            Destroy(shopButton.gameObject);
+
+                            break;
+                            return;
+                        case PriceType.SC:
+                            shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
+                                (() => BuyRoomItem(item, PriceType.SC)));
+                            break;
+                        case PriceType.HC:
+                            shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
+                                () => BuyRoomItem(item, PriceType.HC));
+
+                            break;
+                        case PriceType.Exchangeable:
+                            shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
+                                item.name, item.sprite,
+                                (() => BuyRoomItem(item, PriceType.SC)),
+                                (() => BuyRoomItem(item, PriceType.HC)));
+
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }         
             }
         }
-
     }
 
     void OpenEquipmentsPanel()
