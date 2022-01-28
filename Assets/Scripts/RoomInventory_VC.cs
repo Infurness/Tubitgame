@@ -146,7 +146,8 @@ public class RoomInventory_VC : MonoBehaviour
 
             var themeItemTextCell = Instantiate(effectCellPrefab, effectTransform.transform);
             var value = themeBouns.Value * 100;
-            themeItemTextCell.SetText(themeBouns.Key + "  : " + (int)value + "%");
+            var SepratedFormat=string.Concat(themeBouns.Key.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+            themeItemTextCell.SetText(SepratedFormat+ "  : " + (int)value + "%");
         }
     }
 
