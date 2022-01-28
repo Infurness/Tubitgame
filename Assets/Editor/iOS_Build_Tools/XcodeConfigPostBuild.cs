@@ -22,8 +22,8 @@ public static class XcodeConfigPostBuild {
         // Get root
         PlistElementDict rootDict = plist.root;
            
-        // background location useage key (new in iOS 8)
         rootDict.SetString("NSUserTrackingUsageDescription", "Collect Analytics Data");
+        rootDict.SetString("ITSAppUsesNonExemptEncryption", "false");
            
         // background modes
         
