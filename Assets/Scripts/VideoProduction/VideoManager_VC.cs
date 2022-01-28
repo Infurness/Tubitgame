@@ -36,6 +36,7 @@ public class VideoManager_VC : MonoBehaviour
     //private TMP_Text lastThemeButtonPressedText;
     //private int lastThemeButtonPressedIndex;
 
+    private string selectedVideoName;
     [SerializeField] private TMP_Text videoNameText;
     [SerializeField] private Button generateVideoName;
 
@@ -113,6 +114,7 @@ public class VideoManager_VC : MonoBehaviour
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
         recordVideoButton.onClick.AddListener (OnRecordButtonPressed);
+        generateVideoName.onClick.AddListener (ChangeVideoName);
 
         qualitySelector.onValueChanged.AddListener (SetQualityTag);
 
@@ -153,6 +155,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         OpenManageVideosPanel ();
         recordVideoButton.interactable = false;
+        videoNameText.text = "This is the name of my video";
         energyCostPanel.SetActive (false);
         skipRecodingPanelPopUp.SetActive (false);
         SetQualityTagVisual (0);
@@ -186,6 +189,7 @@ public class VideoManager_VC : MonoBehaviour
         }
 
         recordVideoButton.interactable = false;
+        videoNameText.text = "This is the name of my video";
         energyCostPanel.SetActive (false);
     }
     void UpdateGlobalSubsFromSignal (ChangePlayerSubsSignal signal)
@@ -284,7 +288,7 @@ public class VideoManager_VC : MonoBehaviour
         _signalBus.Fire<StartRecordingSignal> (new StartRecordingSignal ()
         {
             recordedThemes = selectedThemes,
-            videoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes)
+            videoName = selectedVideoName
         });
         gameAnalyticsManager.SendCustomEvent("record_start",new object[]{selectedThemes,selectedQuality});
         _signalBus.Fire<AddEnergySignal> (new AddEnergySignal () { energyAddition = -videoCreationEnergyCost });
@@ -311,7 +315,7 @@ public class VideoManager_VC : MonoBehaviour
     void CreateVideoToRecord ()
     {
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
-        string newVideoName = _youTubeVideoManager.GetVideoNameByTheme (selectedThemes);
+        string newVideoName = selectedVideoName;
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager, _energyManager, adsRewardsManager);
         float qualityNumber = (float)selectedQuality / (float)Enum.GetValues (typeof (VideoQuality)).Length * 2;
@@ -441,15 +445,29 @@ public class VideoManager_VC : MonoBehaviour
         {
             recordVideoButton.interactable = true;
             energyCostPanel.SetActive (true);
+            ChangeVideoName();
         } 
         else
         {
             recordVideoButton.interactable = false;
+            videoNameText.text = "This is the name of my video";
             energyCostPanel.SetActive (false);
         }
             
     }
+    void ChangeVideoName()
+    {
+        if (selectedThemes==null || selectedThemes.Length <= 0)
+            return;
 
+        string oldName = selectedVideoName;
+        do 
+        {
+            selectedVideoName = _youTubeVideoManager.GetVideoNameByTheme(selectedThemes);
+        } while (selectedVideoName == oldName);
+        
+        videoNameText.text = selectedVideoName;
+    }
     void CancelVideoRecording (CancelVideoRecordingSignal signal)
     {
         videosShown.Remove (signal.name);
