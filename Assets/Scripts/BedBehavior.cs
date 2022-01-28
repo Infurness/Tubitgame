@@ -12,6 +12,7 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
     [Inject] SignalBus signalBus;
     private EnergyManager energyManager;
     private RoomInventory_VC roomVC;
+    private bool canBeUsed;
     private void Awake()
     {
        
@@ -23,7 +24,7 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
         energyManager = FindObjectOfType<EnergyManager>();
         roomVC = FindObjectOfType<RoomInventory_VC>();
         signalBus.Subscribe<RestStateChangedSignal>(OnRestChanged);
-
+        signalBus.Subscribe<CanUseItemsInRoom>((signal)=> canBeUsed = signal.canUse);
         if (energyManager.GetPlayerIsResting().Equals(true))
         {
             SwitchToSleepingBed();
@@ -37,6 +38,7 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
 
     void OnRestChanged(RestStateChangedSignal signal)
     {
+
         if (signal.isResting)
         {
             SwitchToSleepingBed();
@@ -67,6 +69,11 @@ public class BedBehavior : MonoBehaviour ,IDisposable,IInitializable
 
         private void OnMouseDown()
         {
+
+            if(!canBeUsed)
+            {
+                return;
+            }
             if (roomVC.EditModeEnabled==false)
             {
                 print("Bed Clicked");

@@ -33,7 +33,6 @@ public class LaunchScreenViewController : MonoBehaviour
             
         }) );
         Application.targetFrameRate = 300;
-        
     }
 
     private void Start()

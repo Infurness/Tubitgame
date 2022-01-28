@@ -61,6 +61,8 @@ public class Shop_VC : MonoBehaviour
     [SerializeField] private Button buyButton;
     [SerializeField] private Button realEstateBuyButton;
     [SerializeField] private GameObject softCurrencyPanel, energyPanel;
+    [SerializeField] private Button SCButton;
+    [SerializeField] private Button HCButton;
     [SerializeField] private GameObject consumablesPanel;
     [SerializeField] private ConsumableInventoryButton consumableItemButtonPrefab;
     [Inject] private GameAnalyticsManager gameAnalyticsManager;
@@ -94,14 +96,18 @@ public class Shop_VC : MonoBehaviour
 
         }));
         _signalBus.Subscribe<OpenRealEstateShopSignal>(OpenRealEstateFromSignal);
-
+        _signalBus.Subscribe<OpenSCCurrenciesPanelSignal>(OpenCurrenciesPanel);
+        _signalBus.Subscribe<OpenHCCurrenciesPanelSignal>(OpenCurrenciesPanel);
+        _signalBus.Subscribe<OpenSCCurrenciesPanelSignal>(OpenSCPanel);
+        _signalBus.Subscribe<OpenHCCurrenciesPanelSignal>(OpenHCPanel);
         consumablesPanel.OnEnableAsObservable().Subscribe((unit =>
         {
             PopulateSoftCurrencyBundles();
             PopulateEnergyItems();
         }));
 
-        _signalBus.Subscribe<BuyHouseSignal>(UpdateHouseDisplay); 
+        _signalBus.Subscribe<BuyHouseSignal>(UpdateHouseDisplay);
+
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -116,6 +122,14 @@ public class Shop_VC : MonoBehaviour
         realEstatePanel.gameObject.SetActive(false);
         currenciesPanel.gameObject.SetActive(true);
 
+    }
+    void OpenSCPanel()
+    {
+        SCButton.onClick.Invoke();
+    }
+    void OpenHCPanel()
+    {
+        HCButton.onClick.Invoke();
     }
 
     void OpenOffersPanel()
@@ -760,7 +774,7 @@ public class Shop_VC : MonoBehaviour
     void SetRealStateBuyPanelData(string itemName, Sprite icon)
     {
         realEstateBuyPanel.gameObject.SetActive(true);
-        realEstateNameText.text = string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' '); ;
+        realEstateNameText.text = string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
         realEstateIconImage.sprite = icon;
     }
 

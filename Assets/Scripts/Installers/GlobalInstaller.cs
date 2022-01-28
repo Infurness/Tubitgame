@@ -50,7 +50,8 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<RoomZoomStateChangedSignal>();
     Container.DeclareSignal<UpdateExperienceSignal> ();
     Container.DeclareSignal<OpenVideoManagerSignal> ();
-    Container.DeclareSignal<OpenHomePanelSignal> (); 
+    Container.DeclareSignal<OpenHomePanelSignal> ();
+    Container.DeclareSignal<CanUseItemsInRoom>(); 
     Container.DeclareSignal<Recieve3BestLeaderboard> ();
     Container.DeclareSignal<RecieveTop10Leaderboard> ();
     Container.DeclareSignal<RecievePlayerLeaderboardPosition> ();
@@ -125,6 +126,8 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<SetCarsCanvasButtonVisibility>();
     Container.DeclareSignal<EquipCarSignal>();
     Container.DeclareSignal<ShopPanelOpened>();
+    Container.DeclareSignal<OpenSCCurrenciesPanelSignal>();
+    Container.DeclareSignal<OpenHCCurrenciesPanelSignal>();
     //Sound signals
     Container.DeclareSignal<BuyItemSoundSignal>();
 
