@@ -67,6 +67,10 @@ public class UpdateExperienceSignal
 public class OpenHomePanelSignal
 {
 }
+public class CanUseItemsInRoom
+{
+    public bool canUse;
+}
 public class OpenVideoManagerSignal
 {
 }

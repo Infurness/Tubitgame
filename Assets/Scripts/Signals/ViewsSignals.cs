@@ -12,6 +12,7 @@ public class OpenRealEstateShopSignal
     public string houseName;
 }
 
+
 public class HouseChangedSignal
 {
     public RealEstateCustomizationItem realEstateCustomizationItem;

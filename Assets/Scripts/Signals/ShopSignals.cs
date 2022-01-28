@@ -29,3 +29,12 @@ public class ShopPanelOpened
 {
     
 }
+
+public class OpenSCCurrenciesPanelSignal
+{
+
+}
+public class OpenHCCurrenciesPanelSignal
+{
+
+}

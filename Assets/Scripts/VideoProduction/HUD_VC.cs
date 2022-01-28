@@ -35,7 +35,9 @@ public class HUD_VC : MonoBehaviour
     [SerializeField] private GameObject homeButtonIcon;
     [SerializeField] private Button[] videoManagerButtons;
     [SerializeField] private Button eventsButton;
-    [SerializeField] private Button[] storeButtons;
+    [SerializeField] private Button storeButton;
+    [SerializeField] private Button storeSCButton;
+    [SerializeField] private Button storeHCButton;
     [SerializeField] private TMP_Text softCurrencyText;
     [SerializeField] private TMP_Text hardCurrencyText;
     [SerializeField] private TMP_Text clockTimeText;
@@ -69,8 +71,10 @@ public class HUD_VC : MonoBehaviour
             button.onClick.AddListener (OpenVideoManagerPanel);
         if(eventsButton)
             eventsButton.onClick.AddListener (OpenEventsPanel);
-        foreach(Button button in storeButtons)
-            button.onClick.AddListener (OpenStorePanel);
+
+        storeButton.onClick.AddListener (OpenStorePanel);
+        storeSCButton.onClick.AddListener(OpenStoreSC);
+        storeHCButton.onClick.AddListener(OpenStoreHC);
 
         InitialState ();
         _signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal =>
@@ -110,6 +114,9 @@ public class HUD_VC : MonoBehaviour
         //StopAllCoroutines ();
         //StartCoroutine (DecreaseSeconds());
         audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
+
+        //Sleep sound
+        _signalBus.Subscribe<RestStateChangedSignal>(() => GlobalAudioManager.Instance.PlaySound(SoundsHolder.Instance.pushButton, AudioType.Effect));
     }
 
     // Update is called once per frame
@@ -118,7 +125,7 @@ public class HUD_VC : MonoBehaviour
         if(gameClock && timeMinutes != gameClock.Now.Minute)
         {
             timeMinutes = gameClock.Now.Minute;
-            clockTimeText.text = gameClock.Now.ToString("t", CultureInfo.CreateSpecificCulture ("en-US").DateTimeFormat);
+            clockTimeText.text = gameClock.Now.ToString("H:mm");// ToString("t", CultureInfo.CreateSpecificCulture ("en-US").DateTimeFormat);
         }
     }
 
@@ -158,10 +165,19 @@ public class HUD_VC : MonoBehaviour
     void OpenStorePanel ()
     {
         gameAnalyticsManager.SendCustomEvent("ShopScreen");
-        OpenScreenPanel (HUDScreen.Store); 
-        OpenScreenPanel (HUDScreen.Store); 
-
-        
+        OpenScreenPanel (HUDScreen.Store);       
+    }
+    void OpenStoreSC()
+    {
+        gameAnalyticsManager.SendCustomEvent("ShopScreen");
+        OpenScreenPanel(HUDScreen.Store);
+        _signalBus.Fire<OpenSCCurrenciesPanelSignal>();
+    }
+    void OpenStoreHC()
+    {
+        gameAnalyticsManager.SendCustomEvent("ShopScreen");
+        OpenScreenPanel(HUDScreen.Store);
+        _signalBus.Fire<OpenHCCurrenciesPanelSignal>();
     }
     void OpenScreenPanel (HUDScreen _screenToOpen)
     {
@@ -174,6 +190,7 @@ public class HUD_VC : MonoBehaviour
             backButtonsPanel.SetActive (false);
             _signalBus.Fire<UpdateExperienceSignal> ();
             _signalBus.Fire<OpenHomePanelSignal> ();
+            _signalBus.Fire<CanUseItemsInRoom>(new CanUseItemsInRoom { canUse = true }) ;
         }
         else
         {
@@ -183,7 +200,7 @@ public class HUD_VC : MonoBehaviour
             xpBarPanel.SetActive (false);
             backButtonsPanel.SetActive (true);
             _signalBus.Fire<ChangeBackButtonSignal> (new ChangeBackButtonSignal { changeToHome = true });
-
+            _signalBus.Fire<CanUseItemsInRoom>(new CanUseItemsInRoom { canUse = false });
         }
 
 
