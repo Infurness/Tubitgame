@@ -118,7 +118,7 @@ public class CharacterRender : MonoBehaviour
         if (avatar.feetItem && avatar.legsItem)
         {
             feetRender.sortingOrder =  avatar.legsItem.FeetSoringLayers;
-            idleFeetRender.sortingOrder= avatar.legsItem.FeetSoringLayers+60;
+            idleFeetRender.sortingOrder= avatar.legsItem.FeetSoringLayers+70;
         }
 
     }
