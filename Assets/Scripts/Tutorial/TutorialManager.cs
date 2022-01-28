@@ -36,7 +36,7 @@ public class TutorialManager : MonoBehaviour
     void StartTutorial()
     {
         Debug.Log("Tutorial");
-        currentTutorialPhase = (TutorialPhase)12;
+        currentTutorialPhase = (TutorialPhase)0;
         signalBus.Fire<StartTutorialPhaseSignal>( new StartTutorialPhaseSignal { phase = currentTutorialPhase});
     }
     public void GoToNextPhase()
