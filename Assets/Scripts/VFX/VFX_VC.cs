@@ -194,6 +194,7 @@ public class VFX_VC : MonoBehaviour
     }
     void GoToSleep(VFX_GoToSleepSignal signal)
     {
+        StopAllCoroutines();
         StartCoroutine(GoToSleepSmooth(signal.goToSleep));
         sleepParticles.SetActive(signal.goToSleep);
         if(signal.goToSleep)
@@ -222,9 +223,9 @@ public class VFX_VC : MonoBehaviour
         if(goToSleep)
         {
             while (
-                nightColorAlpha < mainNightColorAlpha &&
-                computerAlpha < computerLightAlpha &&
-                windowsAlpha < windowsLightAlpha &&
+                nightColorAlpha < mainNightColorAlpha ||
+                computerAlpha < computerLightAlpha ||
+                windowsAlpha < windowsLightAlpha ||
                 correctionAlpha < colorCorrectionAlpha
             )
             {
@@ -253,13 +254,13 @@ public class VFX_VC : MonoBehaviour
                     nightColorAlpha = mainNightColorAlpha;
 
                 if (computerAlpha > computerLightAlpha)
-                    nightColorAlpha = computerLightAlpha;
+                    computerAlpha = computerLightAlpha;
 
                 if (windowsAlpha > windowsLightAlpha)
-                    nightColorAlpha = windowsLightAlpha;
+                    windowsAlpha = windowsLightAlpha;
 
                 if (correctionAlpha > colorCorrectionAlpha)
-                    nightColorAlpha = colorCorrectionAlpha;
+                    correctionAlpha = colorCorrectionAlpha;
 
                 yield return null;
             }
@@ -267,9 +268,9 @@ public class VFX_VC : MonoBehaviour
         else
         {
             while (
-                nightColorAlpha > 0 &&
-                computerAlpha > 0 &&
-                windowsAlpha > 0 &&
+                nightColorAlpha > 0 ||
+                computerAlpha > 0 ||
+                windowsAlpha > 0 ||
                 correctionAlpha > 0
             )
             {
@@ -298,13 +299,13 @@ public class VFX_VC : MonoBehaviour
                     nightColorAlpha = 0;
 
                 if (computerAlpha < 0)
-                    nightColorAlpha = 0;
+                    computerAlpha = 0;
 
                 if (windowsAlpha < 0)
-                    nightColorAlpha = 0;
+                    windowsAlpha = 0;
 
                 if (correctionAlpha < 0)
-                    nightColorAlpha = 0;
+                    correctionAlpha = 0;
 
                 yield return null;
             }
