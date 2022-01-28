@@ -108,6 +108,7 @@ public class Tutorial_VC : MonoBehaviour
         if(openSettingsButton.GetComponentInChildren<Button>()!=null)
             openSettingsButton.GetComponentInChildren<Button>().interactable = false;
         recordVideoButton.GetComponentInChildren<Button>().interactable = false;
+        openVideoCreatorButton.GetComponentInChildren<Button>().interactable = false;
     }
     // Update is called once per frame
     void Update()
@@ -117,6 +118,9 @@ public class Tutorial_VC : MonoBehaviour
 
     void ActivatePhase(StartTutorialPhaseSignal signal)
     {
+
+        UnityEngine.Events.UnityAction btnAction = null;
+        UnityEngine.Events.UnityAction<string> fieldAction = null;
 
         foreach (GameObject shopButton in shopButtons)
         {
@@ -129,8 +133,6 @@ public class Tutorial_VC : MonoBehaviour
         videoManagerButton.SetActive(false);
         backButtonsPanel.SetActive(false);
         hideUIButtons.SetActive(false);
-        UnityEngine.Events.UnityAction btnAction = null;
-        UnityEngine.Events.UnityAction<string> fieldAction = null;
 
         HidePermanently();
         NotInteractables();
@@ -180,6 +182,7 @@ public class Tutorial_VC : MonoBehaviour
                 break;
             case (TutorialPhase)4:
                 ActivateAndSetSpeechBubble(new string[] { "We are going to create your first video.", "First of all lets open the video creation window." });
+                openVideoCreatorButton.GetComponentInChildren<Button>().interactable = true;
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(5); };
                 openVideoCreatorButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 openVideoCreatorButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(openVideoCreatorButton.GetComponentInChildren<Button>(), btnAction));
@@ -224,18 +227,23 @@ public class Tutorial_VC : MonoBehaviour
                 recordVideoButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 recordVideoButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(recordVideoButton.GetComponentInChildren<Button>(), btnAction));
                 SendHandTo(recordVideoButtonHandPos.position);
+                backButtonsPanel.SetActive(false);
                 break;
             case (TutorialPhase)9:
+                backButtonsPanel.SetActive(false);
                 ActivateAndSetSpeechBubble(new string[] { "Waiting is boring, hit the skip button.", "This time will be free." });
                 signalBus.Subscribe<VideoSkippedSignal>(SkippedVideo);
                 SendHandTo(skipVideoHandPos.position);
+                backButtonsPanel.SetActive(false);
                 break;
             case (TutorialPhase)10:
+                backButtonsPanel.SetActive(false);
                 ActivateAndSetSpeechBubble(new string[] { "Now that the video is done producing, lets publish it." });
                 signalBus.Subscribe<OnHitPublishButtonSignal>(PublishedVideo);
                 SendHandTo(publishVideoHandPos.position);
                 break;
             case (TutorialPhase)11:
+                backButtonsPanel.SetActive(false);
                 ActivateAndSetSpeechBubble(new string[] { "We dont have time to see ads, so just for you this time will be free, if you want." });
                 signalBus.Subscribe<OnHitConfirmAdButtonSignal>(ConfirmDoubleAd);
                 SendHandTo(doubleViewsHandPos.position);
@@ -248,6 +256,7 @@ public class Tutorial_VC : MonoBehaviour
                 shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(shopButton.GetComponentInChildren<Button>(), btnAction));
                 SendHandTo(shopHandPosition.position);
                 OpenHomeScreen();
+                NotInteractables();
                 break;
             case (TutorialPhase)13:
                 ActivateAndSetSpeechBubble(new string[] { "I have been holding a free item here just for you!" });
@@ -283,6 +292,7 @@ public class Tutorial_VC : MonoBehaviour
                 ActivateAndSetSpeechBubble(new string[] { "Here you will be able to change your appearance." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(18); };
                 customButton.SetActive(true);
+                roomCustomizationButton.GetComponentInChildren<Button>().interactable = false;
                 playerCustomizationButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 playerCustomizationButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(playerCustomizationButton.GetComponentInChildren<Button>(), btnAction));
                 SendHandTo(playerCustomizationButtonHandPosition.position);
@@ -307,6 +317,8 @@ public class Tutorial_VC : MonoBehaviour
                 ActivateAndSetSpeechBubble(new string[] { "Now hit this button to open the room customization." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(21); };
                 customButton.SetActive(true);
+                playerCustomizationButton.GetComponentInChildren<Button>().interactable = false;
+                roomCustomizationButton.GetComponentInChildren<Button>().interactable = true;
                 roomCustomizationButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 roomCustomizationButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(roomCustomizationButton.GetComponentInChildren<Button>(), btnAction));
                 SendHandTo(roomCustomizationButtonHandPosition.position);
@@ -339,6 +351,7 @@ public class Tutorial_VC : MonoBehaviour
                 levelOkButton.GetComponentInChildren<Button>().onClick.AddListener(()=>TutorialManager.Instance.GoToNextScene());
                 break;
         }
+
     }
 
     void ActivateAndSetSpeechBubble(string[] texts)
@@ -392,6 +405,8 @@ public class Tutorial_VC : MonoBehaviour
         speechBubble.SetActive(false);
         inputBlocker.SetActive(false);
         signalBus.Fire<SpeechEndedSignal>();
+        if (TutorialManager.Instance.currentTutorialPhase == (TutorialPhase)9)
+            backButtonsPanel.SetActive(false);
     }
     void DeleteGoToNextPhaseListener(Button button)
     {
