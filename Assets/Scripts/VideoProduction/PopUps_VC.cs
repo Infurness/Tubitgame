@@ -179,11 +179,13 @@ public class PopUps_VC : MonoBehaviour
         LeaderboardManager.Instance.GetTop10InLeaderboard ();
         //popUpsBlockBackgroundPanel.SetActive (true);
         leaderboardsPanel.SetActive (true);
+        settingsPanel.SetActive(false);
     }
     void CloseLeaderboards ()
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         leaderboardsPanel.SetActive (false);
+        
     }
 
 

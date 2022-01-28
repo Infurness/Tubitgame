@@ -522,7 +522,7 @@ public class VideoManager_VC : MonoBehaviour
 
     void SetGraphHourTexts ()
     {
-        int hourPeriod = Math.DivRem (GameClock.Instance.Now.Hour-1, 6, out int remaindesr);
+        int hourPeriod = Math.DivRem (GameClock.Instance.Now.Hour, 6, out int remaindesr);
         int i = 0;
         
         int hour = GameClock.Instance.Now.Hour % 6;

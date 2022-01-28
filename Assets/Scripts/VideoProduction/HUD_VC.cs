@@ -237,6 +237,7 @@ public class HUD_VC : MonoBehaviour
             }
                 
             storePanel.SetActive (true);
+            playerPanel.SetActive(false);
         }      
         else
         {

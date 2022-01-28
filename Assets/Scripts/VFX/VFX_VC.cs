@@ -185,9 +185,12 @@ public class VFX_VC : MonoBehaviour
 
     void ActivateNight(VFX_ActivateNightSignal signal)
     {
-        computerLight.SetActive(signal.activate);
-        windowsLight.SetActive(signal.activate);
-        mainNightColor.SetActive(signal.activate);
+        if(computerLight)
+            computerLight.SetActive(signal.activate);
+        if (windowsLight)
+            windowsLight.SetActive(signal.activate);
+        if (mainNightColor)
+            mainNightColor.SetActive(signal.activate);
     }
     void GoToSleep(VFX_GoToSleepSignal signal)
     {
