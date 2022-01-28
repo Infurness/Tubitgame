@@ -36,7 +36,6 @@ public class RoomInventory_VC : MonoBehaviour
     [SerializeField] private Sprite selectedTabSprite, notSelectedTabSprite;
     [Inject] private GameAnalyticsManager gameAnalyticsManager;
     [SerializeField] private Button wallItemsButton;
-    public bool EditModeEnabled;
     void OpenRoomCustomizationPanel()
     {
         inventoryCanvas.gameObject.SetActive(true);
@@ -76,7 +75,10 @@ public class RoomInventory_VC : MonoBehaviour
             {
                 Visibility = false
             });
-            EditModeEnabled = false;
+            signalBus.Fire(new CanUseItemsInRoom()
+            {
+                canUse = true
+            });
         }));
         signalBus.Subscribe<ShopPanelOpened>((signal =>
         {
@@ -113,7 +115,10 @@ public class RoomInventory_VC : MonoBehaviour
             Visibility = true
         });
         wallItemsButton.onClick.Invoke();
-        EditModeEnabled = true;
+        signalBus.Fire(new CanUseItemsInRoom()
+        {
+            canUse = false
+        });
     }
 
     void UpdateThemeEffectItemsText(List<ThemeCustomizationItem> themeCustomizationItems)
