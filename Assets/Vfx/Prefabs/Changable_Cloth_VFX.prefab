@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -5
-  m_Sprite: {fileID: 21300000, guid: 20cc1b3647ac03c4fb07a44df552797b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 016f1991697ef1e468280cb88b592834, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -92,6 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4146988747347917957}
   - component: {fileID: 936362522618779194}
+  - component: {fileID: 1050519074}
   m_Layer: 0
   m_Name: Changable_Cloth_VFX
   m_TagString: Untagged
@@ -106,7 +107,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767975019417019931}
-  m_LocalRotation: {x: -0, y: -0, z: 0.034253947, w: 0.9994132}
+  m_LocalRotation: {x: 0, y: 0, z: 0.034254137, w: 0.9994132}
   m_LocalPosition: {x: 0.16996497, y: 0.06204738, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -116,7 +117,7 @@ Transform:
   - {fileID: 966961661787239178}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.963}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 3.926}
 --- !u!95 &936362522618779194
 Animator:
   serializedVersion: 3
@@ -136,6 +137,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1050519074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767975019417019931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bfbf8c03ec6e4f40b0cf8de323113bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldCloth: {fileID: 3224860276416134027}
+  brightNewCloth: {fileID: 4619829636566414605}
+  newCloth: {fileID: 2148611233674745547}
 --- !u!1 &2234534253403704440
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &966961661787239178
 Transform:
   m_ObjectHideFlags: 0
@@ -317,7 +333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4213522808060807021
 Transform:
   m_ObjectHideFlags: 0

@@ -36,3 +36,13 @@ public class VFX_ActivateViralAnimation
 {
     public string videoName;
 }
+
+public class ChangeClothesAnimationSignal
+{
+    public Sprite oldCloth;
+    public Sprite newCloth;
+}
+public class ChangeClothesVisualSignal
+{
+
+}
