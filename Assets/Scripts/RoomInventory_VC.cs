@@ -287,7 +287,8 @@ public class RoomInventory_VC : MonoBehaviour
 
  void SetSelectedPanelData(string _name,string _rareness,string _description,string _newStats,Sprite _logoSprite,Sprite rarenessSprite)
  {
-     itemName.text = _name;
+     itemName.text = string.Concat(_name.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+     itemName.enableAutoSizing = true;
      itemRareness.text = _rareness;
      itemDescription.text = _description;
      itemNewStats.text = _newStats;

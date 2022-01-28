@@ -763,7 +763,8 @@ public class Shop_VC : MonoBehaviour
     void SetBuyPanelData(string itemName, Rareness rareness, string description, string stats, Sprite icon)
     {
         buyPanel.gameObject.SetActive(true);
-        nameText.text = itemName;
+        nameText.text = string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+        nameText.enableAutoSizing = true;
         rarenessText.text = rareness.ToString();
         descriptionText.text = description;
         statsText.text = stats;

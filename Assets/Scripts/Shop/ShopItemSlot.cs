@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,8 +22,7 @@ public class ShopItemSlot : MonoBehaviour
         HcPriceText.text = price.ToString();
         HCBuyButton.gameObject.SetActive(true);
         SCBuyButton.gameObject.SetActive(false);
-        itemNameText.text = itemName;
-
+        itemNameText.text = string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
         HCBuyButton.onClick.AddListener(buyAction);
     }
     public void SetSCBuyButton(uint price,string itemName,Sprite iconSprite,UnityAction buyAction)
@@ -30,7 +30,7 @@ public class ShopItemSlot : MonoBehaviour
         // rarenessImage.sprite = rarenessSprite;
         iconImage.sprite = iconSprite;
         SCPriceText.text = price.ToString();
-        itemNameText.text = itemName;
+        itemNameText.text = string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
         HCBuyButton.gameObject.SetActive(false);
         SCBuyButton.gameObject.SetActive(true);
         SCBuyButton.onClick.AddListener(buyAction);
@@ -44,7 +44,7 @@ public class ShopItemSlot : MonoBehaviour
         
         HCBuyButton.gameObject.SetActive(true);
         SCBuyButton.gameObject.SetActive(true);
-        itemNameText.text = itemName;
+        itemNameText.text = string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
 
         HCBuyButton.onClick.AddListener(buyHCAction);
         SCBuyButton.onClick.AddListener(buySCAction);

@@ -260,7 +260,8 @@ public class CaharacterInventory_VC : MonoBehaviour
         equippedStatsText.text =newStats;
         equippedLogoImage.sprite = logoSprite;
         equippedRarenessImage.sprite = rarenessSprite;
-        equippedItemName.text = itemName;
+        equippedItemName.text = string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+        equippedItemName.enableAutoSizing = true;
         equippedItemRareness.text = rarenessText;
         equipPanel.SetActive(true);
     }
@@ -269,7 +270,9 @@ public class CaharacterInventory_VC : MonoBehaviour
         selectedStatsText.text =newStats;
         selectedLogoImage.sprite = logoSprite;
         selectedRarenessImgae.sprite = rarenessSprite;
-        selectedItemName.text = itemName;
+        selectedItemName.text =string.Concat(itemName.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+        selectedItemName.enableAutoSizing = true;
+
         selectedItemRareness.text = rarenessText;
         selectPanel.gameObject.SetActive(true);    }
     void ShowButtonsByItemType(string type)
