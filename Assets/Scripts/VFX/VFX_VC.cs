@@ -53,28 +53,45 @@ public class VFX_VC : MonoBehaviour
         noEnergyParticlesObject.SetActive(false);
         lowEnergyAnimationObject.SetActive(false);
 
+        if(mainNightColor!=null)
         mainNightColorAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
-        computerLightAlpha = computerLight.GetComponent<SpriteRenderer>().color.a;
-        windowsLightAlpha = windowsLight.GetComponent<SpriteRenderer>().color.a;
-        colorCorrectionAlpha = colorCorrection.GetComponent<SpriteRenderer>().color.a;
+        if (computerLight != null)
+            computerLightAlpha = computerLight.GetComponent<SpriteRenderer>().color.a;
+        if (windowsLight != null)
+            windowsLightAlpha = windowsLight.GetComponent<SpriteRenderer>().color.a;
+        if (colorCorrection != null)
+            colorCorrectionAlpha = colorCorrection.GetComponent<SpriteRenderer>().color.a;
 
         //Force day
         Color tempColor;
-        tempColor = mainNightColor.GetComponent<SpriteRenderer>().color;
-        tempColor.a = 0;
-        mainNightColor.GetComponent<SpriteRenderer>().color = tempColor;
+        if (mainNightColor != null)
+        {
+            tempColor = mainNightColor.GetComponent<SpriteRenderer>().color;
+            tempColor.a = 0;
+            mainNightColor.GetComponent<SpriteRenderer>().color = tempColor;
+        }
 
-        tempColor = computerLight.GetComponent<SpriteRenderer>().color;
-        tempColor.a = 0;
-        computerLight.GetComponent<SpriteRenderer>().color = tempColor;
+        if (computerLight != null)
+        {
+            tempColor = computerLight.GetComponent<SpriteRenderer>().color;
+            tempColor.a = 0;
+            computerLight.GetComponent<SpriteRenderer>().color = tempColor;
+        }
 
-        tempColor = windowsLight.GetComponent<SpriteRenderer>().color;
-        tempColor.a = 0;
-        windowsLight.GetComponent<SpriteRenderer>().color = tempColor;
+        if (windowsLight != null)
+        {
+            tempColor = windowsLight.GetComponent<SpriteRenderer>().color;
+            tempColor.a = 0;
+            windowsLight.GetComponent<SpriteRenderer>().color = tempColor;
+        }
 
-        tempColor = colorCorrection.GetComponent<SpriteRenderer>().color;
-        tempColor.a = 0;
-        colorCorrection.GetComponent<SpriteRenderer>().color = tempColor;
+        if (colorCorrection != null)
+        {
+            tempColor = colorCorrection.GetComponent<SpriteRenderer>().color;
+            tempColor.a = 0;
+            colorCorrection.GetComponent<SpriteRenderer>().color = tempColor;
+        }
+            
     }
 
     // Update is called once per frame
