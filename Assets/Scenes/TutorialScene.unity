@@ -15018,6 +15018,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &388017948 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7546219432491235463, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+  m_PrefabInstance: {fileID: 388017926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &388017949 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7546219433306506419, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+  m_PrefabInstance: {fileID: 388017926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &388017950 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7546219433946956497, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
@@ -60650,8 +60660,8 @@ MonoBehaviour:
   roomCustomizationButton: {fileID: 275359389}
   levelOkButton: {fileID: 1932464179}
   shopHandPosition: {fileID: 1083047463}
-  clothingTabHandPosition: {fileID: 0}
-  furnitureTabHandPosition: {fileID: 0}
+  clothingTabHandPosition: {fileID: 388017949}
+  furnitureTabHandPosition: {fileID: 388017948}
   backButtonHandPosition: {fileID: 1592366251}
   customizeButtonHandPosition: {fileID: 1726775022}
   playerCustomizationButtonHandPosition: {fileID: 1772090127}
@@ -76462,7 +76472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 949045903977347200, guid: 051286079360f274abe721b5b11cd7ef, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 949045903977347203, guid: 051286079360f274abe721b5b11cd7ef, type: 3}
       propertyPath: m_Pivot.x
