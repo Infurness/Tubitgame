@@ -379,50 +379,73 @@ public class PlayerDataManager : MonoBehaviour
         Debug.LogError($"Video named -{_name}- does not exist");
         return null;
     }
-    
-    public int GetNumberOfVideoByThemes(ThemeType[] _themeTypes)
+    public int GetNumberOfVideoByName(string videoName)
     {
         int videoCounter = 0;
         foreach (Video video in playerData.videos)
         {
-            bool sameThemes = true;
-            if (video.themes.Length == _themeTypes.Length)
-            {
-                for (int i = 0; i < video.themes.Length; i++)
+            if(video.name.Length == videoName.Length ||(video.name.Length> videoName.Length && videoName.Length+2 < video.name.Length))
+                if (video.name.Substring(0,videoName.Length) == videoName)
                 {
-                    if (video.themes[i] != _themeTypes[i])
-                    {
-                        sameThemes = false;
-                        break;
-                    }
+                        videoCounter++;
                 }
-
-                if (sameThemes)
-                    videoCounter++;
-            }
         }
 
         foreach (UnpublishedVideo video in playerData.unpublishedVideos)
         {
-            bool sameThemes = true;
-            if (video.videoThemes.Length == _themeTypes.Length)
-            {
-                for (int i = 0; i < video.videoThemes.Length; i++)
+            if (video.videoName.Length > videoName.Length || (video.videoName.Length > videoName.Length && videoName.Length + 2 < video.videoName.Length))
+                if (video.videoName.Substring(0, videoName.Length) == videoName)
                 {
-                    if (video.videoThemes[i] != _themeTypes[i])
-                    {
-                        sameThemes = false;
-                        break;
-                    }
-                }
-
-                if (sameThemes)
                     videoCounter++;
-            }
+                }
         }
 
         return videoCounter;
     }
+    
+    //public int GetNumberOfVideoByThemes(ThemeType[] _themeTypes)
+    //{
+    //    int videoCounter = 0;
+    //    foreach (Video video in playerData.videos)
+    //    {
+    //        bool sameThemes = true;
+    //        if (video.themes.Length == _themeTypes.Length)
+    //        {
+    //            for (int i = 0; i < video.themes.Length; i++)
+    //            {
+    //                if (video.themes[i] != _themeTypes[i])
+    //                {
+    //                    sameThemes = false;
+    //                    break;
+    //                }
+    //            }
+
+    //            if (sameThemes)
+    //                videoCounter++;
+    //        }
+    //    }
+
+    //    foreach (UnpublishedVideo video in playerData.unpublishedVideos)
+    //    {
+    //        bool sameThemes = true;
+    //        if (video.videoThemes.Length == _themeTypes.Length)
+    //        {
+    //            for (int i = 0; i < video.videoThemes.Length; i++)
+    //            {
+    //                if (video.videoThemes[i] != _themeTypes[i])
+    //                {
+    //                    sameThemes = false;
+    //                    break;
+    //                }
+    //            }
+
+    //            if (sameThemes)
+    //                videoCounter++;
+    //        }
+    //    }
+
+    //    return videoCounter;
+    //}
     public List<UnpublishedVideo> GetUnpublishedVideos ()
     {
         return playerData.unpublishedVideos;
