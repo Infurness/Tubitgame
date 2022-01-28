@@ -165,7 +165,7 @@ public class RoomInventory_VC : MonoBehaviour
 
         var vcEffectTextCell = Instantiate(effectCellPrefab, effectTransform.transform);
         var value = sum * 100;
-        vcEffectTextCell.SetText("Video Quality +% "+(int)value);
+        vcEffectTextCell.SetText("Video Quality: "+(int)value+"%");
       //  equippedVideoQualityItemsEffect.text 
     }
 
