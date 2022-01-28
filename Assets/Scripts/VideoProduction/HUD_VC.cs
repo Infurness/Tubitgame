@@ -171,12 +171,16 @@ public class HUD_VC : MonoBehaviour
     {
         gameAnalyticsManager.SendCustomEvent("ShopScreen");
         OpenScreenPanel(HUDScreen.Store);
+        OpenScreenPanel(HUDScreen.Store);
+
         _signalBus.Fire<OpenSCCurrenciesPanelSignal>();
     }
     void OpenStoreHC()
     {
         gameAnalyticsManager.SendCustomEvent("ShopScreen");
         OpenScreenPanel(HUDScreen.Store);
+        OpenScreenPanel(HUDScreen.Store);
+
         _signalBus.Fire<OpenHCCurrenciesPanelSignal>();
     }
     void OpenScreenPanel (HUDScreen _screenToOpen)

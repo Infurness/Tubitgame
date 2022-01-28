@@ -5,7 +5,7 @@ using Zenject;
 public class ComputerBehaviour : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
-    private bool canBeUsed;
+    private bool canBeUsed=true;
 
     private void Start()
     {
