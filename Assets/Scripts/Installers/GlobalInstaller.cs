@@ -121,6 +121,8 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<VFX_ActivateViralAnimation>();
     Container.DeclareSignal<ChangeClothesAnimationSignal>();
     Container.DeclareSignal<ChangeClothesVisualSignal>();
+    Container.DeclareSignal<VFX_ActivateNightSignal>();
+    Container.DeclareSignal<VFX_GoToSleepSignal>();
         //Views signals
         Container.DeclareSignal<SnapToNeighborhoodViewSignal>();
     Container.DeclareSignal<OpenRealEstateShopSignal>();

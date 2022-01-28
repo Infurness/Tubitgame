@@ -45,6 +45,7 @@ public class BedBehavior : MonoBehaviour
 
         if (signal.isResting)
         {
+            signalBus.Fire<VFX_GoToSleepSignal>(new VFX_GoToSleepSignal { goToSleep = true });
             SwitchToSleepingBed();
             signalBus.Fire<ChangeCharacterStateSignal>(new ChangeCharacterStateSignal()
             {
@@ -53,6 +54,7 @@ public class BedBehavior : MonoBehaviour
         }
         else
         {
+            signalBus.Fire<VFX_GoToSleepSignal>(new VFX_GoToSleepSignal { goToSleep = false });
             SwitchToNormalBed();
         }
     }

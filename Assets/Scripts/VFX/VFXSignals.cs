@@ -46,3 +46,11 @@ public class ChangeClothesVisualSignal
 {
 
 }
+public class VFX_ActivateNightSignal
+{
+    public bool activate;
+}
+public class VFX_GoToSleepSignal
+{
+    public bool goToSleep;
+}
