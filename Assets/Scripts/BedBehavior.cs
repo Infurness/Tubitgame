@@ -12,7 +12,7 @@ public class BedBehavior : MonoBehaviour
     [SerializeField] private GameObject normalBed;
     [Inject] SignalBus signalBus;
     private EnergyManager energyManager;
-    private bool canBeUsed;
+    private bool canBeUsed=true;
     private void Awake()
     {
        
