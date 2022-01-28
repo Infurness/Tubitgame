@@ -462,6 +462,7 @@ public class Shop_VC : MonoBehaviour
             Color transparent = Color.white;
             transparent.a = 0;
             housePriceCurrencyIcon.color = transparent;
+            houseBuyButton.interactable = !ownedHouse;
         }     
         else
         {
@@ -474,6 +475,7 @@ public class Shop_VC : MonoBehaviour
                 housePriceMessage.text = "Coming soon";
                 housePrice.text = "";
                 buyButton.onClick.RemoveAllListeners();
+                houseBuyButton.interactable = false;
             }
             else
             {
@@ -492,10 +494,11 @@ public class Shop_VC : MonoBehaviour
                 fitter.aspectRatio = housePriceCurrencyIcon.sprite.rect.width / housePriceCurrencyIcon.sprite.rect.height;
 
                 houseBuyButton.onClick.AddListener(() => BuyRealEstateItem(item, item.PriceType));
+                houseBuyButton.interactable = !ownedHouse;
             }
           
         }
-        houseBuyButton.interactable = !ownedHouse;
+        
     }
     void MoveMap(RealEstateHouse realEstateHouse)
     {
