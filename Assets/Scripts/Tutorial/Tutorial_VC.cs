@@ -22,6 +22,7 @@ public class Tutorial_VC : MonoBehaviour
     [SerializeField] private GameObject settingsPopUp;
     [SerializeField] private GameObject openVideoCreatorButton;
     [SerializeField] private GameObject[] themeButtons;
+    [SerializeField] private GameObject[] themeDraggables;
     [SerializeField] private GameObject confirmThemesButton;
     [SerializeField] private GameObject recordVideoButton;
     [SerializeField] private GameObject doubleViewsButton;
@@ -69,6 +70,14 @@ public class Tutorial_VC : MonoBehaviour
     [SerializeField] private RectTransform playerCustomizationButtonHandPosition;
     [SerializeField] private RectTransform roomCustomizationButtonHandPosition;
 
+    [Space]
+    [Header("Permanently hidden")]
+    [SerializeField] GameObject[] objects;
+
+    [Space]
+    [Header("Permanently not interactive")]
+    [SerializeField] Button[] buttons;
+    [SerializeField] Slider qualitySlider;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -79,8 +88,26 @@ public class Tutorial_VC : MonoBehaviour
     {
         cam = Camera.main;
         tutorialMainPanel.SetActive(true);
+       
     }
 
+    void HidePermanently()
+    {
+        foreach(GameObject obj in objects)
+        {
+            obj.SetActive(false);
+        }   
+    }
+    void NotInteractables()
+    {
+        foreach (Button button in buttons)
+        {
+            button.interactable = false;
+        }
+        qualitySlider.interactable = false;
+        openSettingsButton.GetComponentInChildren<Button>().interactable = false;
+        recordVideoButton.GetComponentInChildren<Button>().interactable = false;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -103,6 +130,10 @@ public class Tutorial_VC : MonoBehaviour
         hideUIButtons.SetActive(false);
         UnityEngine.Events.UnityAction btnAction = null;
         UnityEngine.Events.UnityAction<string> fieldAction = null;
+
+        HidePermanently();
+        NotInteractables();
+
         switch (signal.phase)
         {
             case 0: //OpenSettings
@@ -110,6 +141,7 @@ public class Tutorial_VC : MonoBehaviour
 
                 SendHandTo(openSettingsHandPos.position);
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(1); };
+                openSettingsButton.GetComponentInChildren<Button>().interactable = true;
                 openSettingsButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 openSettingsButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(openSettingsButton.GetComponentInChildren<Button>(), btnAction));
                 break;
@@ -159,20 +191,35 @@ public class Tutorial_VC : MonoBehaviour
                 SendHandTo(themeSelectionHandPos.position);
                 break;
             case (TutorialPhase)6:
+                confirmThemesButton.GetComponentInChildren<Button>().interactable = false;
                 ActivateAndSetSpeechBubble(new string[] { "Now drag one of the themes to the empty boxes above it." });
                 signalBus.Subscribe<DropThemeSignal>(ThemeDropped);
                 SendHandTo(themeDropHandPos.position);
                 break;
             case (TutorialPhase)7:
                 ActivateAndSetSpeechBubble(new string[] { "Hit the confirm button to set the themes as selected." });
+
+                foreach(GameObject draggable in themeDraggables)
+                {
+                    draggable.GetComponent<DraggableThemeElement>().DisableForTutorial();
+                }
+
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(8); };
+                confirmThemesButton.GetComponentInChildren<Button>().interactable = true;
                 confirmThemesButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 confirmThemesButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(confirmThemesButton.GetComponentInChildren<Button>(), btnAction));
                 SendHandTo(confirmThemesHandPos.position);
                 break;
             case (TutorialPhase)8:
+
+                foreach (GameObject themeButton in themeButtons)
+                {
+                    themeButton.GetComponentInChildren<Button>().interactable = false;
+                }
+
                 ActivateAndSetSpeechBubble(new string[] { "Lets not worry about the quality of the video right now, just hit Record Video." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(9); };
+                recordVideoButton.GetComponentInChildren<Button>().interactable = true;
                 recordVideoButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 recordVideoButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(recordVideoButton.GetComponentInChildren<Button>(), btnAction));
                 SendHandTo(recordVideoButtonHandPos.position);

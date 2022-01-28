@@ -75,17 +75,44 @@ public class CharacterRender : MonoBehaviour
         idleHairRender.sprite = avatar.hairItem == null ? null : avatar.hairItem.IdleHair;
         seatedHairRender.sprite = avatar.hairItem == null ? null : avatar.hairItem.SeatedHair;
         
-        torsoRender.sprite =avatar.torsoItem==null ? null:avatar.torsoItem.TorsoVariants[variantIndex];
+        Sprite newTorso = avatar.torsoItem == null ? null : avatar.torsoItem.TorsoVariants[variantIndex];
+        if(torsoRender.sprite != newTorso)
+        {
+            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal {oldCloth =torsoRender.sprite, newCloth = newTorso });
+            UnityEngine.Events.UnityAction changeAction = () => {torsoRender.sprite = newTorso;};
+            signalBus.Subscribe<ChangeClothesVisualSignal>(()=> ChangeSpriteVFX(changeAction));
+        }
+        else
+            torsoRender.sprite = newTorso;
+
         seatedTorsoRender.sprite = avatar.torsoItem == null ? null : avatar.torsoItem.SeatedTorso;
         idleTorsoRender.sprite = avatar.torsoItem == null ? null : avatar.torsoItem.idleTorso;
         torsoRender.transform.localPosition = body.torsoPosition;
-        
-        legsRender.sprite =avatar.legsItem==null?  null:avatar.legsItem.LegsVariants[variantIndex];
+
+        Sprite newLegs = avatar.legsItem == null ? null : avatar.legsItem.LegsVariants[variantIndex];
+        if (legsRender.sprite != newLegs)
+        {
+            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = legsRender.sprite, newCloth = newLegs });
+            UnityEngine.Events.UnityAction changeAction = () => { legsRender.sprite = newLegs; };
+            signalBus.Subscribe<ChangeClothesVisualSignal>(() => ChangeSpriteVFX(changeAction));
+        }
+        else
+            legsRender.sprite = newLegs;
+
         seatedLegsRender.sprite = avatar.legsItem == null ? null : avatar.legsItem.SeatedLegs;
         idleLegsRender.sprite = avatar.legsItem == null ? null : avatar.legsItem.IdleLegs;
         legsRender.transform.localPosition = body.legsPosition;
-        
-        feetRender.sprite = avatar.feetItem == null ? null:avatar.feetItem.sprite;
+
+        Sprite newFeet = avatar.feetItem == null ? null : avatar.feetItem.sprite;
+        if (feetRender.sprite != newFeet)
+        {
+            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = feetRender.sprite, newCloth = newFeet });
+            UnityEngine.Events.UnityAction changeAction = () => { feetRender.sprite = newFeet; };
+            signalBus.Subscribe<ChangeClothesVisualSignal>(() => ChangeSpriteVFX(changeAction));
+        }
+        else
+            feetRender.sprite = newFeet;
+
         idleFeetRender.sprite = avatar.feetItem == null ? null : avatar.feetItem.IdleFeet;
         feetRender.transform.localPosition = body.feetPosition;
         if (avatar.feetItem && avatar.legsItem)
@@ -106,6 +133,11 @@ public class CharacterRender : MonoBehaviour
        idleCharacter.SetActive(state);
     }
     
+    void ChangeSpriteVFX(UnityEngine.Events.UnityAction changeAction)
+    {
+        changeAction.Invoke();
+        signalBus.TryUnsubscribe<ChangeClothesVisualSignal>(() => ChangeSpriteVFX(changeAction));     
+    }
 }
 
 public enum CharacterState

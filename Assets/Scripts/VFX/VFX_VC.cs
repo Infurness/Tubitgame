@@ -28,6 +28,16 @@ public class VFX_VC : MonoBehaviour
     [SerializeField] private float delayBetweenCoinsMin;
     [SerializeField] private float delayBetweenCoinsMax;
 
+    [SerializeField] private GameObject mainNightColor;
+    private float mainNightColorAlpha;
+    [SerializeField] private GameObject computerLight;
+    private float computerLightAlpha;
+    [SerializeField] private GameObject windowsLight;
+    private float windowsLightAlpha;
+    [SerializeField] private GameObject colorCorrection;
+    private float colorCorrectionAlpha;
+    [SerializeField] private GameObject sleepParticles;
+    [SerializeField] private ParticleSystem changeSleepParticles;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +45,36 @@ public class VFX_VC : MonoBehaviour
         signalBus.Subscribe<VFX_LowEnergyBlinkSignal>(ActivateLowEnergyAnim);
         signalBus.Subscribe<VFX_NoEnergyParticlesSignal>(ActivateNoEnergyParticles);
         signalBus.Subscribe<VFX_StartMovingCoinsSignal>(MoveCoins);
-        signalBus.Subscribe<VFX_StartMovingSCBillsSignal>(MoveSCBills); 
+        signalBus.Subscribe<VFX_StartMovingSCBillsSignal>(MoveSCBills);
+        signalBus.Subscribe<VFX_ActivateNightSignal>(ActivateNight);
+        signalBus.Subscribe<VFX_GoToSleepSignal>(GoToSleep);
         loseEnergyObject.SetActive(false);
         getEnergyObject.SetActive(false);
         noEnergyParticlesObject.SetActive(false);
         lowEnergyAnimationObject.SetActive(false);
+
+        mainNightColorAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
+        computerLightAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
+        windowsLightAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
+        colorCorrectionAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
+
+        //Force day
+        Color tempColor;
+        tempColor = mainNightColor.GetComponent<SpriteRenderer>().color;
+        tempColor.a = 0;
+        mainNightColor.GetComponent<SpriteRenderer>().color = tempColor;
+
+        tempColor = computerLight.GetComponent<SpriteRenderer>().color;
+        tempColor.a = 0;
+        computerLight.GetComponent<SpriteRenderer>().color = tempColor;
+
+        tempColor = windowsLight.GetComponent<SpriteRenderer>().color;
+        tempColor.a = 0;
+        windowsLight.GetComponent<SpriteRenderer>().color = tempColor;
+
+        tempColor = colorCorrection.GetComponent<SpriteRenderer>().color;
+        tempColor.a = 0;
+        colorCorrection.GetComponent<SpriteRenderer>().color = tempColor;
     }
 
     // Update is called once per frame
@@ -146,5 +181,131 @@ public class VFX_VC : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(delayBetweenCoinsMin, delayBetweenCoinsMax));
             i++;
         }
+    }
+
+    void ActivateNight(VFX_ActivateNightSignal signal)
+    {
+        computerLight.SetActive(signal.activate);
+        windowsLight.SetActive(signal.activate);
+        mainNightColor.SetActive(signal.activate);
+    }
+    void GoToSleep(VFX_GoToSleepSignal signal)
+    {
+        StartCoroutine(GoToSleepSmooth(signal.goToSleep));
+        sleepParticles.SetActive(signal.goToSleep);
+        if(signal.goToSleep)
+        {
+            sleepParticles.GetComponent<ParticleSystem>().Play();
+            changeSleepParticles.Play();
+        }
+            
+    }
+    IEnumerator GoToSleepSmooth(bool goToSleep)
+    {
+        float nightColorAlpha = 0;
+        float computerAlpha = 0;
+        float windowsAlpha = 0;
+        float correctionAlpha = 0;
+
+        if (!goToSleep)
+        {
+            nightColorAlpha = mainNightColorAlpha;
+            computerAlpha = computerLightAlpha;
+            windowsAlpha = windowsLightAlpha;
+            correctionAlpha = colorCorrectionAlpha;
+        }
+        Color tempColor;
+
+        if(goToSleep)
+        {
+            while (
+                nightColorAlpha < mainNightColorAlpha &&
+                computerAlpha < computerLightAlpha &&
+                windowsAlpha < windowsLightAlpha &&
+                correctionAlpha < colorCorrectionAlpha
+            )
+            {
+                nightColorAlpha += Time.deltaTime;
+                computerAlpha += Time.deltaTime;
+                windowsAlpha += Time.deltaTime;
+                correctionAlpha += Time.deltaTime;
+
+                tempColor = mainNightColor.GetComponent<SpriteRenderer>().color;
+                tempColor.a = nightColorAlpha;
+                mainNightColor.GetComponent<SpriteRenderer>().color = tempColor;
+
+                tempColor = computerLight.GetComponent<SpriteRenderer>().color;
+                tempColor.a = computerAlpha;
+                computerLight.GetComponent<SpriteRenderer>().color = tempColor;
+
+                tempColor = windowsLight.GetComponent<SpriteRenderer>().color;
+                tempColor.a = windowsAlpha;
+                windowsLight.GetComponent<SpriteRenderer>().color = tempColor;
+
+                tempColor = colorCorrection.GetComponent<SpriteRenderer>().color;
+                tempColor.a = correctionAlpha;
+                colorCorrection.GetComponent<SpriteRenderer>().color = tempColor;
+
+                if (nightColorAlpha > mainNightColorAlpha)
+                    nightColorAlpha = mainNightColorAlpha;
+
+                if (computerAlpha > computerLightAlpha)
+                    nightColorAlpha = computerLightAlpha;
+
+                if (windowsAlpha > windowsLightAlpha)
+                    nightColorAlpha = windowsLightAlpha;
+
+                if (correctionAlpha > colorCorrectionAlpha)
+                    nightColorAlpha = colorCorrectionAlpha;
+
+                yield return null;
+            }
+        }
+        else
+        {
+            while (
+                nightColorAlpha > 0 &&
+                computerAlpha > 0 &&
+                windowsAlpha > 0 &&
+                correctionAlpha > 0
+            )
+            {
+                nightColorAlpha -= Time.deltaTime;
+                computerAlpha -= Time.deltaTime;
+                windowsAlpha -= Time.deltaTime;
+                correctionAlpha -= Time.deltaTime;
+
+                tempColor = mainNightColor.GetComponent<SpriteRenderer>().color;
+                tempColor.a = nightColorAlpha;
+                mainNightColor.GetComponent<SpriteRenderer>().color = tempColor;
+
+                tempColor = computerLight.GetComponent<SpriteRenderer>().color;
+                tempColor.a = computerAlpha;
+                computerLight.GetComponent<SpriteRenderer>().color = tempColor;
+
+                tempColor = windowsLight.GetComponent<SpriteRenderer>().color;
+                tempColor.a = windowsAlpha;
+                windowsLight.GetComponent<SpriteRenderer>().color = tempColor;
+
+                tempColor = colorCorrection.GetComponent<SpriteRenderer>().color;
+                tempColor.a = correctionAlpha;
+                colorCorrection.GetComponent<SpriteRenderer>().color = tempColor;
+
+                if (nightColorAlpha < 0)
+                    nightColorAlpha = 0;
+
+                if (computerAlpha < 0)
+                    nightColorAlpha = 0;
+
+                if (windowsAlpha < 0)
+                    nightColorAlpha = 0;
+
+                if (correctionAlpha < 0)
+                    nightColorAlpha = 0;
+
+                yield return null;
+            }
+        }
+        
     }
 }

@@ -92,7 +92,8 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
             movement = 1;
         else if (scrollDir > 0)
             movement = -1;
-
+        if (TutorialManager.Instance != null)
+            return;
         ScrollView (movement);
     }
 
@@ -137,6 +138,7 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
                 visibility = false
             });
             StartCoroutine (SmoothSnapTo (new Vector3 (movementLength, 0, 0)));
+            signalBus.Fire<VFX_ActivateNightSignal>(new VFX_ActivateNightSignal { activate = false });
         }
         else if (currentViewIndex == 1)
         {
@@ -148,6 +150,7 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
             });
             float movementLength = viewsHolder.position.x - houseView.position.x;
             StartCoroutine (SmoothSnapTo (new Vector3 (movementLength, 0, 0)));
+            signalBus.Fire<VFX_ActivateNightSignal>(new VFX_ActivateNightSignal { activate = false });
         }
         else
         {
@@ -156,6 +159,7 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
                 visibility = false
             });
             StartCoroutine (SmoothSnapTo (Vector3.zero));
+            signalBus.Fire<VFX_ActivateNightSignal>(new VFX_ActivateNightSignal { activate = true });
         }
     }
     void ForceHomePanel ()

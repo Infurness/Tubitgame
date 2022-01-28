@@ -282,6 +282,8 @@ public class VideoInfo_VC : MonoBehaviour
 
     void CancelVideo ()
     {
+        if (TutorialManager.Instance != null)
+            return;
         //signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
         //int energyLeftToSpend = (int)(energyCost *(internalRecordTime / maxInternalRecordTime)); 
         //signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
@@ -379,7 +381,14 @@ public class VideoInfo_VC : MonoBehaviour
 
                 skipMoneyText.text = $"{skipMoney}";
             }
-            
+            if (TutorialManager.Instance != null) //If we are in the tutorial
+            {
+                if (tACC >= maxTime - 1)
+                {
+                    tACC = maxTime - 1;
+                }
+            }
+
         }
         videoProgressBarCountText.text = $"{0}s";
         videoProgressBar.fillAmount = 1;

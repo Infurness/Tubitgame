@@ -36,3 +36,21 @@ public class VFX_ActivateViralAnimation
 {
     public string videoName;
 }
+
+public class ChangeClothesAnimationSignal
+{
+    public Sprite oldCloth;
+    public Sprite newCloth;
+}
+public class ChangeClothesVisualSignal
+{
+
+}
+public class VFX_ActivateNightSignal
+{
+    public bool activate;
+}
+public class VFX_GoToSleepSignal
+{
+    public bool goToSleep;
+}

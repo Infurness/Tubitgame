@@ -66,6 +66,8 @@ public class ExperienceManager : MonoBehaviour
         long experiencePoints = Math.DivRem ((long)totalSubs, 100, out remainder);
 
         playerDataManager.SetSubsThreshold((int)remainder);
+        if (TutorialManager.Instance != null)
+            return;
         AddExperiencePoints ((ulong)experiencePoints);
     }
     public void AddViews (AddViewsForExperienceSignal signal)
@@ -75,6 +77,8 @@ public class ExperienceManager : MonoBehaviour
         long remainder;
         long experiencePoints = Math.DivRem ((long)totalviews, 1000, out remainder);
         playerDataManager.SetViewsThreshold ((int)remainder);
+        if (TutorialManager.Instance != null)
+            return;
         AddExperiencePoints ((ulong)experiencePoints);
     }
     public void AddSoftCurrency (AddSoftCurrencyForExperienceSignal signal)
@@ -85,6 +89,8 @@ public class ExperienceManager : MonoBehaviour
         long experiencePoints = Math.DivRem ((long)totalSoftCurrency, 100, out remainder);
 
         playerDataManager.SetSoftCurrencyThreshold ((int)remainder);
+        if (TutorialManager.Instance != null)
+            return;
         AddExperiencePoints ((ulong)experiencePoints);
     }
 
