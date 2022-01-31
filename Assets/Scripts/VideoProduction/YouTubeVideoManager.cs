@@ -120,7 +120,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.maxViews = videoViews;
         newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews, playerDataManager.GetQuality ());
         newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
-        newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManager.GetQuality ());
+        newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManager.GetQuality (), newVideo.isViral);
         newVideo.videoMaxSoftCurrency = algorithmManager.GetVideoSoftCurrency(videoViews);
         float qualityNumber = (float)newVideo.selectedQuality / (float) Enum.GetValues (typeof(VideoQuality)).Length * 2;
         newVideo.lifeTimeHours = (float)(algorithmManager.GetVideoLifetime (videoViews, qualityNumber, 0.9f))/3600f; //Fromseconds to hours
@@ -192,7 +192,7 @@ public class YouTubeVideoManager : MonoBehaviour
             videoName += $"{videoNumber}";
         return videoName;
     }
-    int GetNumberOfVideoByName(string videoName)
+    public int GetNumberOfVideoByName(string videoName)
     {
         if (playerDataManager == null)
         {

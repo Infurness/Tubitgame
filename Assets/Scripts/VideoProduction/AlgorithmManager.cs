@@ -47,9 +47,12 @@ public class AlgorithmManager : MonoBehaviour
     {
         return (ulong)(_views * 0.04f);
     }
-    public ulong GetVideoSubscribers (ulong _views, float _videoQuality)
+    public ulong GetVideoSubscribers (ulong _views, float _videoQuality, bool isViral)
     {
-        return (ulong)(_views * ((_videoQuality * 0.2f) * 0.01f));
+        ulong subs = (ulong)(_views * ((_videoQuality * 0.2f) * 0.01f));
+        if(isViral)
+            subs = (ulong)(_views * ((_videoQuality * 0.2f) * 0.3f));
+        return subs;
     }
     public ulong GetVideoSoftCurrency (ulong maxViews)
     {
