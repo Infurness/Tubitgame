@@ -113,7 +113,7 @@ public class HUD_VC : MonoBehaviour
         });
         //StopAllCoroutines ();
         //StartCoroutine (DecreaseSeconds());
-        audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
+        //audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
 
         //Sleep sound
         _signalBus.Subscribe<RestStateChangedSignal>(() => GlobalAudioManager.Instance.PlaySound(SoundsHolder.Instance.pushButton, AudioType.Effect));
@@ -233,7 +233,7 @@ public class HUD_VC : MonoBehaviour
             if (!storePanel.activeSelf)
             {
                 audioManager.PlaySound(soundsHolder.enterShop, AudioType.Effect);
-                audioManager.PlaySound(soundsHolder.shopMusic, AudioType.Music, true);
+                //audioManager.PlaySound(soundsHolder.shopMusic, AudioType.Music, true);
             }
                 
             storePanel.SetActive (true);
@@ -241,8 +241,8 @@ public class HUD_VC : MonoBehaviour
         }      
         else
         {
-            if (storePanel.activeSelf)
-                audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
+            //if (storePanel.activeSelf)
+            //    audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
             storePanel.SetActive (false);      
         }          
     }
