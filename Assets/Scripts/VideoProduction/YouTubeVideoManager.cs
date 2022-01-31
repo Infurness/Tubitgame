@@ -192,7 +192,7 @@ public class YouTubeVideoManager : MonoBehaviour
             videoName += $"{videoNumber}";
         return videoName;
     }
-    int GetNumberOfVideoByName(string videoName)
+    public int GetNumberOfVideoByName(string videoName)
     {
         if (playerDataManager == null)
         {

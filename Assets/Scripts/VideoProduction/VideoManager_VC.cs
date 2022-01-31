@@ -37,7 +37,7 @@ public class VideoManager_VC : MonoBehaviour
     //private int lastThemeButtonPressedIndex;
 
     private string selectedVideoName;
-    [SerializeField] private TMP_Text videoNameText;
+    [SerializeField] private TMP_InputField videoNameinputField;
     [SerializeField] private Button generateVideoName;
 
     [SerializeField] private Button[] themeSelectionButtons;
@@ -132,6 +132,9 @@ public class VideoManager_VC : MonoBehaviour
         energyHasBeenOfferedThisSesion = false;
         blinkerXPos = blinkerVFX.GetComponent<RectTransform>().anchoredPosition.x;
 
+        videoNameinputField.onDeselect.AddListener(OnConfirmVideoName);
+        videoNameinputField.onSubmit.AddListener(OnConfirmVideoName);
+
         UpdateVideoList();
         StartGraphThemesSelection();
     }
@@ -155,7 +158,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         OpenManageVideosPanel ();
         recordVideoButton.interactable = false;
-        videoNameText.text = "This is the name of my video";
+        videoNameinputField.text = "This is the name of my video";
         energyCostPanel.SetActive (false);
         skipRecodingPanelPopUp.SetActive (false);
         SetQualityTagVisual (0);
@@ -189,7 +192,7 @@ public class VideoManager_VC : MonoBehaviour
         }
 
         recordVideoButton.interactable = false;
-        videoNameText.text = "This is the name of my video";
+        videoNameinputField.text = "This is the name of my video";
         energyCostPanel.SetActive (false);
     }
     void UpdateGlobalSubsFromSignal (ChangePlayerSubsSignal signal)
@@ -450,7 +453,7 @@ public class VideoManager_VC : MonoBehaviour
         else
         {
             recordVideoButton.interactable = false;
-            videoNameText.text = "This is the name of my video";
+            videoNameinputField.text = "This is the name of my video";
             energyCostPanel.SetActive (false);
         }
             
@@ -465,8 +468,8 @@ public class VideoManager_VC : MonoBehaviour
         {
             selectedVideoName = _youTubeVideoManager.GetVideoNameByTheme(selectedThemes);
         } while (selectedVideoName == oldName);
-        
-        videoNameText.text = selectedVideoName;
+
+        videoNameinputField.text = selectedVideoName;
     }
     void CancelVideoRecording (CancelVideoRecordingSignal signal)
     {
@@ -652,5 +655,13 @@ public class VideoManager_VC : MonoBehaviour
             yield return null;
         }
         signal.onEndAnimation.Invoke();
+    }
+    void OnConfirmVideoName(string value)
+    {
+        Debug.Log(value);
+        selectedVideoName = $"{value}";
+        int videoNumber = _youTubeVideoManager.GetNumberOfVideoByName(value);
+        if (videoNumber > 0)
+            selectedVideoName += $" {videoNumber}";
     }
 }
