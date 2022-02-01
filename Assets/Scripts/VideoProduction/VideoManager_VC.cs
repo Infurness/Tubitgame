@@ -52,6 +52,8 @@ public class VideoManager_VC : MonoBehaviour
     private Dictionary<string, GameObject> videosShown = new Dictionary<string, GameObject>();
 
     [SerializeField] private GameObject skipRecodingPanelPopUp;
+    [SerializeField] private TMP_Text skipCurrencyText;
+    [SerializeField] private Button skipRecodingPopUpConfirmButton;
     [SerializeField] private Button skipRecodingPopUpCancelButton;
 
     [SerializeField] private TMP_Text subsText;
@@ -109,12 +111,13 @@ public class VideoManager_VC : MonoBehaviour
         _signalBus.Subscribe<UpdateThemesGraphSignal> (SetGraphHourTexts);
         _signalBus.Subscribe<ChangeUsernameSignal> (UpdateUsername);
         _signalBus.Subscribe<VFX_CancelVideoAnimationSignal>(WaitCancelVideo);
-
+        _signalBus.Subscribe<RecieveSkipCuantitySignal>(SetVideoSkipMoney);
 
         makeAVideoButton.onClick.AddListener (OpenMakeAVideoPanel);
         manageVideosButton.onClick.AddListener (OpenManageVideosPanel);
         recordVideoButton.onClick.AddListener (OnRecordButtonPressed);
         generateVideoName.onClick.AddListener (ChangeVideoName);
+        skipRecodingPopUpConfirmButton.onClick.AddListener(SkipVideo);
 
         qualitySelector.onValueChanged.AddListener (SetQualityTag);
 
@@ -232,6 +235,19 @@ public class VideoManager_VC : MonoBehaviour
     void OpenSkipRecordginPopUp (bool open)
     {
         skipRecodingPanelPopUp.SetActive (open);
+        if(open == true)
+        {
+            _signalBus.Fire<AskForSkipCuantitySignal>();
+        }
+    }
+    void SetVideoSkipMoney(RecieveSkipCuantitySignal signal)
+    {
+        skipCurrencyText.text = signal.skipMoney;
+    }
+    void SkipVideo()
+    {
+        _signalBus.Fire<SkipRecordingVideo>();
+        skipRecodingPanelPopUp.SetActive(false);
     }
     void OpenManageVideosPanel ()
     {

@@ -237,6 +237,9 @@ public class VideoInfo_VC : MonoBehaviour
         }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
+
+        signalBus.Subscribe<AskForSkipCuantitySignal>(SendSkipMoney);
+        signalBus.Subscribe<SkipRecordingVideo>(SkipVideoFromSignal);
     }
     void VideoReadyToPublish ()
     {
@@ -399,7 +402,16 @@ public class VideoInfo_VC : MonoBehaviour
         videoProgressBar.fillAmount = 1;
         VideoReadyToPublish ();
     }
-
+    void SendSkipMoney()
+    {
+        if (videoRef == null && maxInternalRecordTime - internalRecordTime < maxInternalRecordTime)
+            signalBus.Fire<RecieveSkipCuantitySignal>(new RecieveSkipCuantitySignal { skipMoney = skipMoneyText.text });
+    }
+    void SkipVideoFromSignal()
+    {
+        if (videoRef == null && maxInternalRecordTime - internalRecordTime < maxInternalRecordTime)
+            SkipVideoProduction();
+    }
     public void StartMovingCoins()
     {
         signalBus.Fire<VFX_StartMovingCoinsSignal>(new VFX_StartMovingCoinsSignal { origin = energyCoinsAppearOrigin.GetComponent<RectTransform>().position});

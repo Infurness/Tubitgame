@@ -251,4 +251,5 @@ public class YouTubeVideoManager : MonoBehaviour
             playerDataManager.ConsumeHardCurrency((ulong)amount,()=>{ });
         return canConsume;
     }
+    
 }

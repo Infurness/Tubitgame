@@ -211,3 +211,15 @@ public class ResetLineColorInGraphSignal
 {
 
 }
+public class AskForSkipCuantitySignal
+{
+
+}
+public class RecieveSkipCuantitySignal
+{
+    public string skipMoney;
+}
+public class SkipRecordingVideo
+{
+
+}

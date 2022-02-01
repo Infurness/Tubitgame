@@ -6978,7 +6978,7 @@ GameObject:
   - component: {fileID: 188965440}
   - component: {fileID: 188965439}
   m_Layer: 5
-  m_Name: EnergyPanel
+  m_Name: CurrencyPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23438,6 +23438,8 @@ MonoBehaviour:
   videoInfoHolder: {fileID: 299772114}
   videoInfoPrefab: {fileID: 1043154322269527583, guid: 917a085c9c2c72548848501c493b7682, type: 3}
   skipRecodingPanelPopUp: {fileID: 442631108}
+  skipCurrencyText: {fileID: 1336915322}
+  skipRecodingPopUpConfirmButton: {fileID: 1183944249}
   skipRecodingPopUpCancelButton: {fileID: 425255815}
   subsText: {fileID: 1837291196}
   uploadedVideosText: {fileID: 371296535}
@@ -28099,7 +28101,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -14.677223, y: 0}
+  m_SizeDelta: {x: 0, y: -1.0872803}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &789411231
 MonoBehaviour:
@@ -48995,7 +48997,7 @@ GameObject:
   - component: {fileID: 1336915323}
   - component: {fileID: 1336915322}
   m_Layer: 5
-  m_Name: EnergyText
+  m_Name: CurrencyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84164,7 +84166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &1751130154808186390
 CanvasRenderer:
   m_ObjectHideFlags: 0
