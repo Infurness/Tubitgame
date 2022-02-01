@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8814ae8fea24a1b9314e4eaf3061680, type: 3}
+  m_Name: Female T-Shirt
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 0ef3f75a43fe116478de8123b6d884b9, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  affectedTheme: []
+  rareness: 1
+  descriptionText: 
+  newStatsText: 
+  Owned: 0
+  PriceType: 1
+  HCPrice: 0
+  SCPrice: 300
+  SlotType: 23
+  TorsoItemType: 0
+  GenderItemType: 1
+  TorsoVariants:
+  - {fileID: 21300000, guid: 0ef3f75a43fe116478de8123b6d884b9, type: 3}
+  - {fileID: 21300000, guid: 0841d385e25a5be448fdba9ccf85354c, type: 3}
+  - {fileID: 21300000, guid: e92fd9aab34a82345adbd1f322d14792, type: 3}
+  - {fileID: 21300000, guid: 9878a7394ab44774fae8013208da62de, type: 3}
+  - {fileID: 21300000, guid: bf8949c22ef859745aa79c2c9e30c3cf, type: 3}
+  SeatedTorso: {fileID: 21300000, guid: 9446c55dd413eec40aac6beae213a627, type: 3}
+  idleTorso: {fileID: 21300000, guid: 5d12babd8435425498fabe1781c564f9, type: 3}

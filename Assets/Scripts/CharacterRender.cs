@@ -24,6 +24,8 @@ public class CharacterRender : MonoBehaviour
     [Inject] private PlayerInventory _playerInventory;
 
     [Inject] private EnergyManager energyManager;
+
+    [SerializeField] private ParticleSystem idleDustParticle;
     private void Start()
     {
         signalBus.Subscribe<OnCharacterAvatarChanged>(OnAvatarChanged);
@@ -36,6 +38,7 @@ public class CharacterRender : MonoBehaviour
                case CharacterState.Idle : 
                    SetIdleCharacterVisibility(true);
                    SetSeatedCharacterVisibility(false);
+                   idleDustParticle.Play();
                    break;
                case CharacterState.Sleeping : 
                    SetIdleCharacterVisibility(false);

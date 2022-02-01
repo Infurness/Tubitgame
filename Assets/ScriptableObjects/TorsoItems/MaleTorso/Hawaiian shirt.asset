@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8814ae8fea24a1b9314e4eaf3061680, type: 3}
+  m_Name: Hawaiian shirt
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 11f1bc974d90eec4db162ed123d76a28, type: 3}
+  itemPrefab:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  affectedTheme: []
+  rareness: 1
+  descriptionText: 
+  newStatsText: 
+  Owned: 0
+  PriceType: 1
+  HCPrice: 10
+  SCPrice: 300
+  SlotType: 23
+  TorsoItemType: 0
+  GenderItemType: 0
+  TorsoVariants:
+  - {fileID: 21300000, guid: 11f1bc974d90eec4db162ed123d76a28, type: 3}
+  - {fileID: 21300000, guid: deb83fd9041c2b24aaa7b8676f7caddc, type: 3}
+  - {fileID: 21300000, guid: d1cc17f724e955643af1e730c4153791, type: 3}
+  - {fileID: 21300000, guid: 0b59ec440a0dcea4c9de255957f9ec83, type: 3}
+  - {fileID: 21300000, guid: d90993c85228423409eda848570683cb, type: 3}
+  SeatedTorso: {fileID: 21300000, guid: 47b34934a95646c4999f8fb737ac82a9, type: 3}
+  idleTorso: {fileID: 21300000, guid: 12fffec42a3670f4789df6ba40d17908, type: 3}

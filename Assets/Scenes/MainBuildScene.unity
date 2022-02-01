@@ -58870,7 +58870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4885732134278444265, guid: d41c05c6fe7419f4c9adc6fd4aac7ab9, type: 3}
       propertyPath: playOnAwake
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5465201388469181437, guid: d41c05c6fe7419f4c9adc6fd4aac7ab9, type: 3}
       propertyPath: m_RootOrder
@@ -58930,6 +58930,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d41c05c6fe7419f4c9adc6fd4aac7ab9, type: 3}
+--- !u!198 &1609056927 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4885732134278444265, guid: d41c05c6fe7419f4c9adc6fd4aac7ab9, type: 3}
+  m_PrefabInstance: {fileID: 1609056926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1618032475
 GameObject:
   m_ObjectHideFlags: 0
@@ -99574,6 +99579,7 @@ MonoBehaviour:
   idleFeetRender: {fileID: 1526995633}
   seatedCharacter: {fileID: 1526995634}
   idleCharacter: {fileID: 1526995638}
+  idleDustParticle: {fileID: 1609056927}
 --- !u!1 &3835313007867261583
 GameObject:
   m_ObjectHideFlags: 0
