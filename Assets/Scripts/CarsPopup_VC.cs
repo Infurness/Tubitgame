@@ -49,11 +49,13 @@ public class CarsPopup_VC : MonoBehaviour
        signalBus.Subscribe<RoomCustomizationVisibilityChanged>((signal) =>
        {
            popupButton.gameObject.SetActive(!signal.Visibility);
+           
        });
        
        signalBus.Subscribe<CharacterCustomizationVisibilityChanged>((signal) =>
        {
-           popupButton.gameObject.SetActive(!signal.Visibility);
+           popupButton.gameObject.SetActive(!signal.Visibility); 
+           SetButtonVisibility(!signal.Visibility);
        });
     }
 

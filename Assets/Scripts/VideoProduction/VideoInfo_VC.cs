@@ -148,6 +148,11 @@ public class VideoInfo_VC : MonoBehaviour
         energyCostText.text =$"{energyCost}";
 
         SetThemes (themeTypes);
+
+        if(youTubeVideoManager.GetVideoByName(_name) != null) //IF the video that we want to record already exists, abort
+        {
+            CancelVideo();
+        }
     }
     public void SetTimeLeftToPublish (DateTime videoCreationTime)
     {

@@ -185,11 +185,16 @@ public class YouTubeVideoManager : MonoBehaviour
                 }
             }
             themeUsed++;
-            videoName += $"{selectedWord} ";
+            if (themeUsed > 1)
+                videoName += $" ";
+            videoName += $"{selectedWord}";
         }
         int videoNumber = GetNumberOfVideoByName(videoName);
-        if(videoNumber>0)
-            videoName += $"{videoNumber}";
+        if (videoNumber>0)
+        {
+            videoName += $" {videoNumber}";
+        }
+            
         return videoName;
     }
     public int GetNumberOfVideoByName(string videoName)
