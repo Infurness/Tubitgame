@@ -35,10 +35,11 @@ public class CharacterRender : MonoBehaviour
        {
            switch (signal.state)
            {
-               case CharacterState.Idle : 
+               case CharacterState.Idle :
+                   if (!idleCharacter.activeSelf)
+                       idleDustParticle.Play();
                    SetIdleCharacterVisibility(true);
                    SetSeatedCharacterVisibility(false);
-                   idleDustParticle.Play();
                    break;
                case CharacterState.Sleeping : 
                    SetIdleCharacterVisibility(false);
