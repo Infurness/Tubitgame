@@ -14,6 +14,8 @@ public class PlayerData
     public bool noAds = false;
 
     public bool hasDoubleEnergy = false;
+
+    public bool isResting=false;
     //Leveling System 
     public ExperienceData xpData;
 }
