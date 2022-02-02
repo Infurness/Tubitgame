@@ -225,7 +225,7 @@ public class AlgorithmManager : MonoBehaviour
 
                     subscribers += video.newSubscribers;
 
-                    video.videoSoftCurrency = (video.views/100) - video.collectedCurrencies;
+                    video.videoSoftCurrency = ((video.views/100) + video.videoMaxSoftCurrency) - video.collectedCurrencies;
 
                     video.lastUpdateTime = GameClock.Instance.Now;
                     if (daysSinceMiningWasCompleted >= video.bonusLifeTimeHours/24)
