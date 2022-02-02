@@ -43,7 +43,7 @@ public class BedBehavior : MonoBehaviour
     void OnRestChanged(RestStateChangedSignal signal)
     {
 
-        if (signal.isResting)
+        if (signal.IsResting)
         {
             signalBus.Fire<VFX_GoToSleepSignal>(new VFX_GoToSleepSignal { goToSleep = true });
             SwitchToSleepingBed();

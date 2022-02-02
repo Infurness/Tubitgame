@@ -206,7 +206,7 @@ public class HomePanel_VC : MonoBehaviour
     void RestButtonBehaviour (RestStateChangedSignal signal)
     {
 
-        if (!signal.isResting)
+        if (!signal.IsResting)
             restButton.GetComponentInChildren<TMP_Text> ().text = "Rest";
         else
             restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";

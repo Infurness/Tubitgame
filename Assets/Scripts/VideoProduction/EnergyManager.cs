@@ -19,6 +19,7 @@ public class EnergyManager : MonoBehaviour
     [Inject] SignalBus _signalBus;
     [Inject] private YouTubeVideoManager youTubeVideoManager;
     [Inject] private ExperienceManager xpManager;
+    [Inject] private PlayerDataManager playerDataManager;
     private GameClock gameClock;
 
     private EnergyData energyData;
@@ -50,7 +51,14 @@ public class EnergyManager : MonoBehaviour
             ChangePlayerRestingState ();
 
         }));
+        isResting = playerDataManager.GetPlayerRestState();
+        _signalBus.Fire<RestStateChangedSignal>(new RestStateChangedSignal()
+        {
+            IsResting = isResting
+        });
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -169,6 +177,7 @@ public class EnergyManager : MonoBehaviour
 
 
         isResting = !isResting;
+        playerDataManager.UpdatePlayerRestState(isResting);
         if (isResting)
         {
             _signalBus.Fire(new ChangeCharacterStateSignal()
@@ -177,7 +186,7 @@ public class EnergyManager : MonoBehaviour
             });
             _signalBus.Fire(new RestStateChangedSignal()
             {
-                isResting = true
+                IsResting = true
             });
         }
         else
@@ -188,7 +197,7 @@ public class EnergyManager : MonoBehaviour
             });  
             _signalBus.Fire(new RestStateChangedSignal()
             {
-                isResting = false
+                IsResting = false
             });
         }
    
