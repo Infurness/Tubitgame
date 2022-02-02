@@ -253,6 +253,11 @@ public class PlayerDataManager : MonoBehaviour
             {
                 playerData.hardCurrency = 0;
             }
+
+            if (result.Data.TryGetValue("IsResting",out datarecord))
+            {
+                playerData.isResting = JsonConvert.DeserializeObject<bool>(datarecord.Value);
+            }
         }), (error => { print("Cant Retrieve User data"); }));
     }
 
@@ -706,5 +711,15 @@ public class PlayerDataManager : MonoBehaviour
     public bool GetDoubleEnergyState()
     {
         return playerData.hasDoubleEnergy;
+    }
+
+    public void UpdatePlayerRestState(bool isRest)
+    {
+        UpdateUserDatabase(new string[]{"IsResting"},new object[]{ isRest},(() => { playerData.isResting = isRest;}));
+    }
+
+    public bool GetPlayerRestState()
+    {
+        return playerData.isResting;
     }
 }
