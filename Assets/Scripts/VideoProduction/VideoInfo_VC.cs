@@ -129,6 +129,10 @@ public class VideoInfo_VC : MonoBehaviour
         youTubeVideoManager = _youTubeVideoManager;
         energyManger = _energyManager;
         adsRewardsManager = _adsRewardsManager;
+
+
+        signalBus.Subscribe<AskForSkipCuantitySignal>(SendSkipMoney);
+        signalBus.Subscribe<SkipRecordingVideo>(SkipVideoFromSignal);
     }
     public void SetViralCheck()
     {
@@ -237,9 +241,6 @@ public class VideoInfo_VC : MonoBehaviour
         }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
-
-        signalBus.Subscribe<AskForSkipCuantitySignal>(SendSkipMoney);
-        signalBus.Subscribe<SkipRecordingVideo>(SkipVideoFromSignal);
     }
     void VideoReadyToPublish ()
     {
