@@ -9,6 +9,7 @@ public class EnergyInventory_VC : MonoBehaviour
 {
     [Inject] SignalBus signalBus;
     [Inject] EnergyInventoryManager energyInventoryManager;
+    [Inject] EnergyManager energyManager;
 
     [SerializeField] private GameObject energyItemPrefab;
     [SerializeField] private GameObject itemsHolder;
@@ -45,7 +46,7 @@ public class EnergyInventory_VC : MonoBehaviour
                 GameObject itemSpawned = Instantiate(energyItemPrefab, itemsHolder.transform);
                 if (!firstItemAdded)
                     firstItemAdded = itemSpawned.GetComponent<EnergyInventoryItem_VC>();
-                itemSpawned.GetComponent<EnergyInventoryItem_VC>().SetUpItem(signalBus, energyInventoryManager, item, quantity, this);
+                itemSpawned.GetComponent<EnergyInventoryItem_VC>().SetUpItem(signalBus, energyInventoryManager, item, quantity, this, energyManager);
                 energyItemsSpawned.Add(itemSpawned);
             }            
         }

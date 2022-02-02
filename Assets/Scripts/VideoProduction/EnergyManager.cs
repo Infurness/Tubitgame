@@ -88,7 +88,10 @@ public class EnergyManager : MonoBehaviour
                 energyData = new EnergyData { energy = maxEnergyByLevel[0], lastTimeUpdated = gameClock.Now };
                 SaveEnergyData();
             }
+            _signalBus.Fire<HUDStartingEnergySignal>(new HUDStartingEnergySignal { energy = energyData.energy });
         }), (error => { print ("Cant Retrieve User energy data"); }));
+
+        
     }
     void SaveEnergyData ()
     {
@@ -112,6 +115,10 @@ public class EnergyManager : MonoBehaviour
     public int GetMaxEnergy ()
     {
         return maxEnergyByLevel[Mathf.Max(0, xpManager.GetPlayerLevel () - 1)];
+    }
+    public float GetEnergyLeft()
+    {
+        return GetMaxEnergy() - GetEnergy();
     }
     void AddEnergy (AddEnergySignal _signal)
     {

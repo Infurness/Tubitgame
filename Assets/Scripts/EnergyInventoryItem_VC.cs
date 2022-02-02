@@ -9,6 +9,7 @@ public class EnergyInventoryItem_VC : MonoBehaviour
 {
     private SignalBus signalBus;
     private EnergyInventoryManager energyInventoryManager;
+    private EnergyManager energyManager;
 
     [SerializeField] Image selecetedFrame;
     [SerializeField] Color selectedIconColor;
@@ -25,12 +26,13 @@ public class EnergyInventoryItem_VC : MonoBehaviour
         button.onClick.AddListener (SelectItem);
     }
 
-    public void SetUpItem (SignalBus signalBusRef, EnergyInventoryManager energyInventoryManagerRef, EnergyItemData item, int quantity, EnergyInventory_VC vc)
+    public void SetUpItem (SignalBus signalBusRef, EnergyInventoryManager energyInventoryManagerRef, EnergyItemData item, int quantity, EnergyInventory_VC vc, EnergyManager manager)
     {
         signalBus = signalBusRef;
         itemData = item;
         energyInventoryManager = energyInventoryManagerRef;
         myVc = vc;
+        energyManager = manager;
         icon.sprite = energyInventoryManager.GetIcon (item.label);
         countText.text = $"{quantity}";
         DeselectItem ();
@@ -52,6 +54,9 @@ public class EnergyInventoryItem_VC : MonoBehaviour
     }
     public void UseItem ()
     {
+        if (energyManager.GetEnergyLeft() < 1)
+            return;
+
         signalBus.Fire<UseEnergyItemSignal> (new UseEnergyItemSignal { label = itemData.label});
         int quantity = int.Parse (countText.text);
         quantity--;

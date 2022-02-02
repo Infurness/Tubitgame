@@ -60,6 +60,7 @@ public class HUD_VC : MonoBehaviour
         _signalBus.Subscribe<ChangeBackButtonSignal> (ChangeBackButton);
         _signalBus.Subscribe<OpenRealEstateShopSignal>(OpenStorePanel);
         _signalBus.Subscribe<OpenHomeScreenSignal>(OpenHomePanel);
+        _signalBus.Subscribe<HUDStartingEnergySignal>(StartEnergy);
         gameClock = GameClock.Instance;
     }
    
@@ -117,6 +118,7 @@ public class HUD_VC : MonoBehaviour
 
         //Sleep sound
         _signalBus.Subscribe<RestStateChangedSignal>(() => GlobalAudioManager.Instance.PlaySound(SoundsHolder.Instance.pushButton, AudioType.Effect));
+
     }
 
     // Update is called once per frame
@@ -245,6 +247,10 @@ public class HUD_VC : MonoBehaviour
             //    audioManager.PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
             storePanel.SetActive (false);      
         }          
+    }
+    void StartEnergy(HUDStartingEnergySignal signal)
+    {
+        SetEnergy(new EnergyValueSignal { energy = signal.energy });
     }
     void SetEnergy (EnergyValueSignal _signal)
     {
