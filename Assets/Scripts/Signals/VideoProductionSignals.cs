@@ -223,3 +223,7 @@ public class SkipRecordingVideo
 {
 
 }
+public class HUDStartingEnergySignal
+{
+    public float energy;
+}

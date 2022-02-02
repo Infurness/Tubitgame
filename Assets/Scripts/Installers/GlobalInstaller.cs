@@ -90,6 +90,7 @@ public class GlobalInstaller : MonoInstaller
         Container.DeclareSignal<AskForSkipCuantitySignal>();
         Container.DeclareSignal<RecieveSkipCuantitySignal>();
         Container.DeclareSignal<SkipRecordingVideo>();
+        Container.DeclareSignal<HUDStartingEnergySignal>();
 
         //Advertisement signals
         Container.DeclareSignal<AdsInitializedSignal> ();
