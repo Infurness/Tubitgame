@@ -384,7 +384,7 @@ public class PlayerDataManager : MonoBehaviour
         int videoCounter = 0;
         foreach (Video video in playerData.videos)
         {
-            if(video.name.Length == videoName.Length ||(video.name.Length> videoName.Length && videoName.Length+2 < video.name.Length))
+            if(video.name.Length == videoName.Length ||(video.name.Length> videoName.Length && videoName.Length+2 <= video.name.Length))
                 if (video.name.Substring(0,videoName.Length) == videoName)
                 {
                         videoCounter++;

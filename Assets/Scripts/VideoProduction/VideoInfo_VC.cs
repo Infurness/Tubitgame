@@ -129,6 +129,10 @@ public class VideoInfo_VC : MonoBehaviour
         youTubeVideoManager = _youTubeVideoManager;
         energyManger = _energyManager;
         adsRewardsManager = _adsRewardsManager;
+
+
+        signalBus.Subscribe<AskForSkipCuantitySignal>(SendSkipMoney);
+        signalBus.Subscribe<SkipRecordingVideo>(SkipVideoFromSignal);
     }
     public void SetViralCheck()
     {
@@ -148,6 +152,11 @@ public class VideoInfo_VC : MonoBehaviour
         energyCostText.text =$"{energyCost}";
 
         SetThemes (themeTypes);
+
+        if(youTubeVideoManager.GetVideoByName(_name) != null) //IF the video that we want to record already exists, abort
+        {
+            CancelVideo();
+        }
     }
     public void SetTimeLeftToPublish (DateTime videoCreationTime)
     {
@@ -394,7 +403,16 @@ public class VideoInfo_VC : MonoBehaviour
         videoProgressBar.fillAmount = 1;
         VideoReadyToPublish ();
     }
-
+    void SendSkipMoney()
+    {
+        if (videoRef == null && maxInternalRecordTime - internalRecordTime < maxInternalRecordTime)
+            signalBus.Fire<RecieveSkipCuantitySignal>(new RecieveSkipCuantitySignal { skipMoney = skipMoneyText.text });
+    }
+    void SkipVideoFromSignal()
+    {
+        if (videoRef == null && maxInternalRecordTime - internalRecordTime < maxInternalRecordTime)
+            SkipVideoProduction();
+    }
     public void StartMovingCoins()
     {
         signalBus.Fire<VFX_StartMovingCoinsSignal>(new VFX_StartMovingCoinsSignal { origin = energyCoinsAppearOrigin.GetComponent<RectTransform>().position});

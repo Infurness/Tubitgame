@@ -87,9 +87,11 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<SelectThemeInGraphSignal>();
     Container.DeclareSignal<SetLineColorInGraphSignal>();    
     Container.DeclareSignal<ResetLineColorInGraphSignal>();
-        
+        Container.DeclareSignal<AskForSkipCuantitySignal>();
+        Container.DeclareSignal<RecieveSkipCuantitySignal>();
+        Container.DeclareSignal<SkipRecordingVideo>();
 
-    //Advertisement signals
+        //Advertisement signals
         Container.DeclareSignal<AdsInitializedSignal> ();
     Container.DeclareSignal<RewardAdLoadedSignal> ();
     Container.DeclareSignal<StartShowingAdSignal> ();

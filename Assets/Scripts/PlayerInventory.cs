@@ -475,11 +475,11 @@ public class CharacterAvatarAddressedData
 
     public CharacterAvatarAddressedData()
     {
-        BodyType = "BodyItem 1";
-        Head = "MaleHead1";
-        Hair = "BrownishHair";
-        Torso = "T_Shirt";
-        Legs = "MaleJeans";
-        Feet = "BasicShoes";
+        BodyType = "Male body 1";
+        Head = "Male face 1";
+        Hair = "Grey hair";
+        Torso = "Male T-Shirt";
+        Legs = "Black denim jeans";
+        Feet = "White sneakers";
     }
 }
