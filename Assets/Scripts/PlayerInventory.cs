@@ -101,7 +101,9 @@ public class PlayerInventory : MonoBehaviour
         if (caharacterItemsLoadOp.Status == AsyncOperationStatus.Succeeded)
         {
             var chItems = (List<ThemeCustomizationItem>) caharacterItemsLoadOp.Result;
-            ownedCharacterItems = chItems.FindAll(item => item.Owned == true);
+            ownedCharacterItems = chItems.FindAll(item => item.Owned || playerInventoryAddressedData.characterItemsNames.Contains(item.name) );
+            
+            ownedCharacterItems.ForEach((it)=>it.Owned=true);
             if (characterAvatarAddressedData != null)
             {
 
@@ -159,6 +161,7 @@ public class PlayerInventory : MonoBehaviour
 
                 }
             }
+            ownedRoomThemeEffectItems.ForEach((it)=>it.Owned=true);
 
             var roomLayoutItems = playerInventoryAddressedData.currentRoomLayout.equippedThemeITems;
             if (roomLayoutItems != null)
@@ -203,6 +206,7 @@ public class PlayerInventory : MonoBehaviour
                 }
 
             }
+            ownedVideoQualityRoomItems.ForEach((it)=>it.Owned=true);
 
             var vcitemnames = playerInventoryAddressedData.currentRoomLayout.equippedVCITems;
             if (vcitemnames != null)

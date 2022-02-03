@@ -135,6 +135,8 @@ public class PlayerDataManager : MonoBehaviour
                          PlayerInventoryAddressedData = inventorydata,
                          CharacterAvatarAddressedData = avatarData
                      });
+
+               
                  }
                  else
                  {
@@ -164,7 +166,7 @@ public class PlayerDataManager : MonoBehaviour
 
 
 
-        }), (error => { print("Cant Retrieve Inventorey data"); }));
+        }), (error => { Debug.LogError("Cant Retrieve Inventorey data"); }));
     }
 
     private void GetUserData()
