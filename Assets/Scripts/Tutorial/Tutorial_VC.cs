@@ -169,7 +169,7 @@ public class Tutorial_VC : MonoBehaviour
 
                 break;
             case (TutorialPhase)3: //Open video manager
-                ActivateAndSetSpeechBubble(new string[] { "Cool", "Lets start managing your new YouChannel.", "Click on the Video Manager button to open the Video Manager." });
+                ActivateAndSetSpeechBubble(new string[] { "Cool", "Lets start managing your new Tubit channel.", "Click on the Video Manager button to open the Video Manager." });
 
                 signalBus.Fire<CloseSettingPanelSignal>();
                 videoManagerButton.SetActive(true);
