@@ -27225,8 +27225,8 @@ MonoBehaviour:
   computerLight: {fileID: 0}
   windowsLight: {fileID: 0}
   colorCorrection: {fileID: 0}
-  sleepParticles: {fileID: 0}
-  changeSleepParticles: {fileID: 0}
+  sleepParticles: {fileID: 1526995641}
+  changeSleepParticles: {fileID: 1526995642}
 --- !u!1 &731920666
 GameObject:
   m_ObjectHideFlags: 0
@@ -60088,6 +60088,16 @@ SpriteRenderer:
 --- !u!4 &1526995640 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 955007891245125560, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+  m_PrefabInstance: {fileID: 1526995624}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1526995641 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8286623832381575037, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
+  m_PrefabInstance: {fileID: 1526995624}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1526995642 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5800888429125520882, guid: 21a7b3c6236e5c8418f28329f4ddde80, type: 3}
   m_PrefabInstance: {fileID: 1526995624}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1528876886
