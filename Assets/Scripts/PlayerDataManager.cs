@@ -398,7 +398,7 @@ public class PlayerDataManager : MonoBehaviour
 
         foreach (UnpublishedVideo video in playerData.unpublishedVideos)
         {
-            if (video.videoName.Length > videoName.Length || (video.videoName.Length > videoName.Length && videoName.Length + 2 < video.videoName.Length))
+            if (video.videoName.Length == videoName.Length || (video.videoName.Length > videoName.Length && videoName.Length + 2 <= video.videoName.Length))
                 if (video.videoName.Substring(0, videoName.Length) == videoName)
                 {
                     videoCounter++;
