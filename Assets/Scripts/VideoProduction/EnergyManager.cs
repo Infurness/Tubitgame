@@ -40,6 +40,11 @@ public class EnergyManager : MonoBehaviour
     void Start()
     {
         isResting = false;
+        isResting = playerDataManager.GetPlayerRestState();
+        _signalBus.Fire<RestStateChangedSignal>(new RestStateChangedSignal()
+        {
+            IsResting = isResting
+        });
         gameClock = GameClock.Instance;
         _signalBus.Subscribe<AddEnergySignal> (AddEnergy);
 
@@ -51,11 +56,7 @@ public class EnergyManager : MonoBehaviour
             ChangePlayerRestingState ();
 
         }));
-        isResting = playerDataManager.GetPlayerRestState();
-        _signalBus.Fire<RestStateChangedSignal>(new RestStateChangedSignal()
-        {
-            IsResting = isResting
-        });
+      
     }
 
 
