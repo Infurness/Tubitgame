@@ -51,7 +51,7 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     public void SetIsRecording (bool recording)
     {
-        print("iS Recorded S");
+        //print("iS Recorded S");
         isRecording = recording;
     }
    
