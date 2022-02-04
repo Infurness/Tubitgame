@@ -82,7 +82,7 @@ public class CharacterRender : MonoBehaviour
         Sprite newTorso = avatar.torsoItem == null ? null : avatar.torsoItem.TorsoVariants[variantIndex];
         if(TutorialManager.Instance==null && torsoRender.sprite != newTorso)
         {
-            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal {oldCloth =torsoRender.sprite, newCloth = newTorso });
+            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal {oldCloth =torsoRender.sprite, newCloth = newTorso, layerOrder=torsoRender.sortingOrder, worldPos=torsoRender.gameObject.transform.position, rotation = torsoRender.gameObject.transform.rotation });
             UnityEngine.Events.UnityAction changeAction = () => {torsoRender.sprite = newTorso;};
             signalBus.Subscribe<ChangeClothesVisualSignal>(()=> ChangeSpriteVFX(changeAction));
         }
@@ -96,7 +96,7 @@ public class CharacterRender : MonoBehaviour
         Sprite newLegs = avatar.legsItem == null ? null : avatar.legsItem.LegsVariants[variantIndex];
         if (TutorialManager.Instance == null && legsRender.sprite != newLegs)
         {
-            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = legsRender.sprite, newCloth = newLegs });
+            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = legsRender.sprite, newCloth = newLegs, layerOrder = legsRender.sortingOrder, worldPos = legsRender.gameObject.transform.position, rotation = legsRender.gameObject.transform.rotation });
             UnityEngine.Events.UnityAction changeAction = () => { legsRender.sprite = newLegs; };
             signalBus.Subscribe<ChangeClothesVisualSignal>(() => ChangeSpriteVFX(changeAction));
         }
@@ -110,7 +110,7 @@ public class CharacterRender : MonoBehaviour
         Sprite newFeet = avatar.feetItem == null ? null : avatar.feetItem.sprite;
         if (TutorialManager.Instance == null && feetRender.sprite != newFeet)
         {
-            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = feetRender.sprite, newCloth = newFeet });
+            signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = feetRender.sprite, newCloth = newFeet, layerOrder = feetRender.sortingOrder, worldPos = feetRender.gameObject.transform.position, rotation = feetRender.gameObject.transform.rotation });
             UnityEngine.Events.UnityAction changeAction = () => { feetRender.sprite = newFeet; };
             signalBus.Subscribe<ChangeClothesVisualSignal>(() => ChangeSpriteVFX(changeAction));
         }

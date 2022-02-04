@@ -38167,6 +38167,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1692761929298740681}
     m_Modifications:
+    - target: {fileID: 1050519074, guid: 55d768abda3234a478787aa0d30ca42b, type: 3}
+      propertyPath: lightEffect
+      value: 
+      objectReference: {fileID: 1050519073}
     - target: {fileID: 767975019417019931, guid: 55d768abda3234a478787aa0d30ca42b, type: 3}
       propertyPath: m_Name
       value: Changable_Cloth_VFX
@@ -38220,6 +38224,11 @@ PrefabInstance:
 --- !u!4 &1050519072 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4146988747347917957, guid: 55d768abda3234a478787aa0d30ca42b, type: 3}
+  m_PrefabInstance: {fileID: 1050519071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1050519073 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5981776568246122649, guid: 55d768abda3234a478787aa0d30ca42b, type: 3}
   m_PrefabInstance: {fileID: 1050519071}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1060927523

@@ -33,7 +33,7 @@ namespace Customizations
                 var themeText = string
                     .Concat(effect.ThemeType.ToString().Select(x => char.IsUpper(x) ? " " + x : x.ToString()))
                     .TrimStart(' ');
-                themeEffectText += "\n" +   themeText + " : " + (int) factor + "%";
+                themeEffectText += "\n" +   themeText + ": " + (int) factor + "%";
             }
 
             descriptionText = themeEffectText.ToUpper();

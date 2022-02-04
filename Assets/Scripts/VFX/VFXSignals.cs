@@ -41,6 +41,9 @@ public class ChangeClothesAnimationSignal
 {
     public Sprite oldCloth;
     public Sprite newCloth;
+    public int layerOrder;
+    public Vector3 worldPos;
+    public Quaternion rotation;
 }
 public class ChangeClothesVisualSignal
 {

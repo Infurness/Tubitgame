@@ -111,5 +111,9 @@ public class AdPopUp_VC : MonoBehaviour
                 adsFullPanelText.text = signal.message;
                 break;
         }
+        AspectRatioFitter fitter = smallIcon.GetComponent<AspectRatioFitter>();
+        fitter.aspectRatio = smallIcon.sprite.rect.width / smallIcon.sprite.rect.height;
+        fitter = bigIcon.GetComponent<AspectRatioFitter>();
+        fitter.aspectRatio = bigIcon.sprite.rect.width / bigIcon.sprite.rect.height;
     }
 }
