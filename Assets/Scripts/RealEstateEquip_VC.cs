@@ -24,7 +24,7 @@ using Zenject;
         {
             realEstateUICanvas.gameObject.SetActive(true);
             roomSlotsText.text = housePopUp.realEstateCustomizationItem.roomSlots.ToString();
-            houseName.text = housePopUp.realEstateCustomizationItem.name;
+            houseName.text = housePopUp.realEstateCustomizationItem.itemName;
             houseViewImage.sprite = housePopUp.realEstateCustomizationItem.streetViewSprite;
             garageSlotsText.text = housePopUp.realEstateCustomizationItem.garageSlots.ToString();
             moveButton.onClick.AddListener((() =>
