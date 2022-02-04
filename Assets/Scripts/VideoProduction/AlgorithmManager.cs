@@ -16,7 +16,7 @@ public class AlgorithmManager : MonoBehaviour
 
     private bool shouldUpdate=true;
     [SerializeField] private float updateTime = 15;
-    [SerializeField] public int baseNum=800;
+    [SerializeField] public int baseNum=500;
     private float themeBonus = 0;
     private int viewsBonus = 1;
     [SerializeField] int[] baseTimeToBeProduced;
