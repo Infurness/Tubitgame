@@ -108,6 +108,11 @@ public class Shop_VC : MonoBehaviour
 
         _signalBus.Subscribe<BuyHouseSignal>(UpdateHouseDisplay);
 
+        buyPanel.OnEnableAsObservable().Subscribe((unit =>
+        {
+            buyButton.interactable = true;
+        }));
+
     }
 
     Sprite GetRarenessSpriteByIndex(Rareness rareness)
@@ -583,6 +588,8 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener((() =>
                 {
+                    buyButton.interactable = false;
+
                     gameAnalyticsManager.SendCustomEvent("purchase_item",new object[]{item.name, PriceType.SC,item.SCPrice});
 
                     playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
@@ -605,6 +612,8 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener((() =>
                 {
+                    buyButton.interactable = false;
+
                     playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
@@ -636,6 +645,7 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener((() =>
                 {
+                    buyButton.interactable = false;
                     playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
@@ -657,6 +667,8 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener((() =>
                 {
+                    buyButton.interactable = false;
+
                     playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
@@ -689,6 +701,8 @@ public class Shop_VC : MonoBehaviour
                 coinImage.sprite = scCoin;
                 buyButton.onClick.AddListener((() =>
                 {
+                    buyButton.interactable = false;
+
                     playerDataManager.ConsumeSoftCurrency((ulong) item.SCPrice, () =>
                     {
                         item.Owned = true;
@@ -711,6 +725,8 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener(() =>
                 {
+                    buyButton.interactable = false;
+
                     playerDataManager.ConsumeHardCurrency((ulong) item.HCPrice, () =>
                     {
                         item.Owned = true;
@@ -790,6 +806,8 @@ public class Shop_VC : MonoBehaviour
                 coinImage.sprite = scCoin;
                 buyButton.onClick.AddListener((() =>
                 {
+                    buyButton.interactable = false;
+
                     playerDataManager.ConsumeSoftCurrency((ulong) car.SCPrice, () =>
                     {
                         car.Owned = true;
@@ -811,6 +829,8 @@ public class Shop_VC : MonoBehaviour
 
                 buyButton.onClick.AddListener(() =>
                 {
+                    buyButton.interactable = false;
+
                     playerDataManager.ConsumeHardCurrency((ulong) car.HCPrice, () =>
                     {
                         car.Owned = true;
