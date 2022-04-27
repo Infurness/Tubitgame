@@ -27,9 +27,11 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
     public void SetInfo(int rank ,Sprite rankIcon, int levels, string name, string title, ulong subscribers)
     {
         rankNumber.text = rank.ToString();
+        
         if (rankImage != null)
             rankImage.sprite = rankIcon;
         else
+        
             rankImage.gameObject.SetActive (false);
         playerLevels.text = levels.ToString ();
         playerName.text = name;
@@ -55,6 +57,7 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
         LookupUserAccountInfoRequest request = new LookupUserAccountInfoRequest { TitleDisplayName = name };
         PlayFabAdminAPI.GetUserAccountInfo (request, OnGetUsersFaceData, ErrorGetUsersFaceData);
     }
+    
     void OnGetUsersFaceData (LookupUserAccountInfoResult result)
     {
         Debug.Log (result.UserInfo.PlayFabId);
@@ -64,6 +67,7 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
         };
         PlayFabClientAPI.GetUserData (request, GetUsersPublicData, ErrorGetUsersFaceData);
     }
+    
     void ErrorGetUsersFaceData (PlayFabError error)
     {
         Debug.LogError (error.ErrorDetails);
