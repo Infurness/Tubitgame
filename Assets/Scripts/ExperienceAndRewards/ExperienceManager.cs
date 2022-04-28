@@ -60,7 +60,6 @@ public class ExperienceManager : MonoBehaviour
 
     public void AddSubs (AddSubsForExperienceSignal signal)
     {
-        Debug.Log ("CheckSubs Threshold");
         ulong totalSubs = signal.subs + (ulong)playerDataManager.GetSubsThreshold ();
         long remainder;
         long experiencePoints = Math.DivRem ((long)totalSubs, 100, out remainder);
@@ -72,7 +71,6 @@ public class ExperienceManager : MonoBehaviour
     }
     public void AddViews (AddViewsForExperienceSignal signal)
     {
-        Debug.Log ("CheckViews Threshold");
         ulong totalviews = signal.views + (ulong)playerDataManager.GetViewsThreshold ();
         long remainder;
         long experiencePoints = Math.DivRem ((long)totalviews, 1000, out remainder);
@@ -83,7 +81,6 @@ public class ExperienceManager : MonoBehaviour
     }
     public void AddSoftCurrency (AddSoftCurrencyForExperienceSignal signal)
     {
-        Debug.Log ("CheckSoftCurrency Threshold");
         ulong totalSoftCurrency = signal.softCurrency + (ulong)playerDataManager.GetSoftCurrencyThreshold ();
         long remainder;
         long experiencePoints = Math.DivRem ((long)totalSoftCurrency, 100, out remainder);

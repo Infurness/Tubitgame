@@ -34,23 +34,15 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     public void LoadAd ()
     {
         // IMPORTANT! Only load content AFTER initialization (in this example, initialization is handled in a different script).
-        Debug.Log ("Loading Ad: " + _adUnitId);
         Advertisement.Load (_adUnitId, this);
     }
 
     // If the ad successfully loads, add a listener to the button and enable it:
     public void OnUnityAdsAdLoaded (string adUnitId)
     {
-        Debug.Log ("Ad Loaded: " + adUnitId);
-
         if (adUnitId.Equals (_adUnitId))
         {
-            Debug.Log ("Ad Ready to be shown");
             signalBus.Fire<RewardAdLoadedSignal> ();
-            // Configure the button to call the ShowAd() method when clicked:
-            //_showAdButton.onClick.AddListener (ShowAd);
-            // Enable the button for users to click:
-            // _showAdButton.interactable = true;
         }
     }
 
@@ -58,11 +50,7 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     public void ShowAd ()
     {
         GameAnalytics.NewAdEvent(GAAdAction.Clicked,GAAdType.Video,"UnityAds",_adUnitId);
-        Debug.Log ("Start showing ad from logic");
-        // Disable the button: 
-        //_showAdButton.interactable = false;
         signalBus.Fire<StartShowingAdSignal> ();
-        // Then show the ad:
         Advertisement.Show (_adUnitId, this);
     }
 
@@ -70,13 +58,11 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     public void OnUnityAdsShowComplete (string adUnitId, UnityAdsShowCompletionState showCompletionState)
     {
         
-        Debug.Log ("Show completed");
         if (adUnitId.Equals (_adUnitId) && showCompletionState.Equals (UnityAdsShowCompletionState.COMPLETED))
         {
             GameAnalytics.NewDesignEvent("ad_rv_success");
             GameAnalytics.NewAdEvent(GAAdAction.RewardReceived,GAAdType.Video,"UnityAds",_adUnitId);
 
-            Debug.Log ("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
             signalBus.Fire<GrantRewardSignal> ();
             // Load another ad:
@@ -84,7 +70,6 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         }
         else if (adUnitId.Equals (_adUnitId) && showCompletionState.Equals (UnityAdsShowCompletionState.SKIPPED))
         {
-            Debug.Log ("User Skipped the AD");
             GameAnalytics.NewDesignEvent("ad_rv_skip");
             GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
 
@@ -95,7 +80,7 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
             GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
 
             GameAnalytics.NewDesignEvent("ad_retry");
-            Debug.Log ("Unity Ads Rewarded Ad NOT Completed");
+            Debug.LogWarning ("Unity Ads Rewarded Ad NOT Completed");
             signalBus.Fire<NotGrantedRewardSignal> ();
         }
         Advertisement.Load (_adUnitId, this);
@@ -107,7 +92,7 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         GameAnalytics.NewDesignEvent("ad_rv_fail");
         GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
 
-        Debug.Log ($"Error loading Ad Unit {adUnitId}: {error.ToString ()} - {message}");
+        Debug.LogError ($"Error loading Ad Unit {adUnitId}: {error.ToString ()} - {message}");
         // Use the error details to determine whether to try to load another ad.
     }
 
@@ -116,7 +101,7 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         GameAnalytics.NewDesignEvent("ad_rv_fail");
         GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
 
-        Debug.Log ($"Error showing Ad Unit {adUnitId}: {error.ToString ()} - {message}");
+        Debug.LogError ($"Error showing Ad Unit {adUnitId}: {error.ToString ()} - {message}");
         // Use the error details to determine whether to try to load another ad.
     }
 
@@ -125,8 +110,6 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
 
     void OnDestroy ()
     {
-        // Clean up the button listeners:
-        //_showAdButton.onClick.RemoveAllListeners ();
     }
 
     public void OnUnityAdsReady (string placementId)
@@ -143,6 +126,5 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
 
     public void OnUnityAdsDidFinish (string placementId, ShowResult showResult)
     {
-        Debug.Log ("Add finished");
     }
 }

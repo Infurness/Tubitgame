@@ -249,7 +249,7 @@ public class Tutorial_VC : MonoBehaviour
                 SendHandTo(doubleViewsHandPos.position);
                 break;
             case (TutorialPhase)12:
-                ActivateAndSetSpeechBubble(new string[] { "Congratulations!!! You have uploaded your first video!", "In the mean time, why don’t we go shopping? " });
+                ActivateAndSetSpeechBubble(new string[] { "Congratulations!!! You have uploaded your first video!", "In the mean time, why donï¿½t we go shopping? " });
                 shopButton.SetActive(true);
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(13); };
                 shopButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
@@ -429,7 +429,7 @@ public class Tutorial_VC : MonoBehaviour
         floatingHand.position = position;
 
         Vector2 viewportCoordinates = cam.ScreenToViewportPoint(floatingHand.localPosition);
-        Debug.Log(viewportCoordinates);
+
         Vector2 handRotation = new Vector2(Mathf.Abs(floatingHand.localScale.x), Mathf.Abs(floatingHand.localScale.y));
         if (viewportCoordinates.x < 0)
             handRotation.x *= -1;
