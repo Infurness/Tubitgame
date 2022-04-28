@@ -10,16 +10,7 @@ public class VFX_GraphSelection : MonoBehaviour
     float timeConversion;
     float valueConversion;
     float enlargerValue;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void SetAnimCurve(float time, float value, float enlarger)
     {
         timeConversion = time;
