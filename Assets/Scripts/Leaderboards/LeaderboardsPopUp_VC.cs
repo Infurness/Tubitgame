@@ -54,14 +54,9 @@ public class LeaderboardsPopUp_VC : MonoBehaviour
             subsLeaderboard.SetActive(false);
         }
     }
-    // Update is called once per frame
-    void Update ()
-    {
 
-    }
     void UpdateSubcribersLeaderboard (RecieveTop10Leaderboard signal)
     {
-        Debug.Log ($"UpdateSubsLeaderboard: {signal.players.Count}");
         int rank = 1;
         foreach (KeyValuePair<string, ulong> entry in signal.players)
         {
