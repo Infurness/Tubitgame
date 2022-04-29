@@ -13,11 +13,6 @@ public class BedBehavior : MonoBehaviour
     [Inject] SignalBus signalBus;
     private EnergyManager energyManager;
     private bool canBeUsed=true;
-    private void Awake()
-    {
-       
-        
-    }
 
     void Start()
     {
@@ -32,7 +27,6 @@ public class BedBehavior : MonoBehaviour
         {
             SwitchToNormalBed();
         }
-
     }
 
     void ChangeUseState(CanUseItemsInRoom signal)
@@ -70,9 +64,6 @@ public class BedBehavior : MonoBehaviour
             normalBed.gameObject.SetActive(true);
         }
 
-    
-
-
         private void OnMouseDown()
         {
             if (TutorialManager.Instance != null)
@@ -82,11 +73,7 @@ public class BedBehavior : MonoBehaviour
                 return;
             }
            
-                print("Bed Clicked");
-                signalBus.Fire<ChangeRestStateSignal>();
-            
-           
-        
+            signalBus.Fire<ChangeRestStateSignal>();
         }
 
         private void OnDestroy()
@@ -94,9 +81,5 @@ public class BedBehavior : MonoBehaviour
             signalBus.Unsubscribe<RestStateChangedSignal>(OnRestChanged);
             signalBus.Unsubscribe<CanUseItemsInRoom>(ChangeUseState);
 
-        }
-
-      
-
-      
+        }      
 }

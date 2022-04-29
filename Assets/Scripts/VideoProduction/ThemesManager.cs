@@ -164,18 +164,8 @@ public class ThemesManager : MonoBehaviour
         float hourInGraph =date.Hour * themeCurve[themeCurve.length-1].time / 24; //Since last number in time would be the hour 24, hourInGraph gets the value for the expected hour in the graph, no matter if the max time value is 1 or 37
 
         float themPopularity = themeCurve.Evaluate(hourInGraph);
-        Debug.Log ($"Theme popularity is: {themPopularity}");
         return themPopularity;
     }
-    //public AnimationCurve[] GetThemesPopuarityData ()
-    //{
-    //    List<AnimationCurve> curves = new List<AnimationCurve>();
-    //    foreach(ThemeData data in themesData.themesData)
-    //    {
-    //        curves.Add (data.themeAlgorithm);
-    //    }
-    //    return curves.ToArray ();
-    //}
     public ThemeData[] GetThemesData ()
     {
         return themesData.themesData.ToArray ();

@@ -48,7 +48,6 @@ public class EnergyInventoryManager : MonoBehaviour
             if (result.Data.TryGetValue ("EnergyItems", out datarecord))
             {
                 inventoryData = JsonConvert.DeserializeObject<EnergyInventoryData> (datarecord.Value);
-                Debug.Log ($"Items Gotten: { inventoryData.items.Length}");
             }
             else
             {
@@ -147,9 +146,7 @@ public class EnergyInventoryManager : MonoBehaviour
 
     public void SetEnergyItem (ScriptableEnergyItem itemRecieved)
     {
-        Debug.Log ("Label: " + itemRecieved.IDLable + itemRecieved.energyRecover + itemRecieved.ObjectIcon.name);
         ScriptableEnergyItem itemFound = allEnergyItems.Find ((item) => item.IDLable == itemRecieved.IDLable);
-        Debug.Log ("Found Label: " + itemFound.IDLable + itemFound.energyRecover);
         itemFound.ObjectIcon = Resources.Load<Sprite>( "EnergySprites/"+ itemRecieved.ObjectIcon.name);
         itemFound.energyRecover = itemRecieved.energyRecover;
     }

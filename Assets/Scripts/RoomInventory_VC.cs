@@ -124,7 +124,6 @@ public class RoomInventory_VC : MonoBehaviour
     void UpdateThemeEffectItemsText(List<ThemeCustomizationItem> themeCustomizationItems)
     {
         var themesNames = Enum.GetNames(typeof(ThemeType));
-        themesNames.ToList().ForEach((s)=>print(s));   
         var themesBounses= themesNames.ToDictionary(s=>s,k=>0f);
         
        
@@ -220,7 +219,6 @@ public class RoomInventory_VC : MonoBehaviour
             }
             var bt = Instantiate(inventoryButtonPrefab, buttonsTransform.transform);
             bt.Type = type;
-            print("Item Name" + roomItem.name);
             bt.SetButtonSprites(roomItem.sprite,GetRarenessSpriteByIndex(roomItem.rareness));
             bt.SetButtonAction(()=>
             {
