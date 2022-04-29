@@ -140,7 +140,7 @@ public class Tutorial_VC : MonoBehaviour
         switch (signal.phase)
         {
             case 0: //OpenSettings
-                ActivateAndSetSpeechBubble(new string[] { "Hello.", "It's me.", "Lets show you how all this works.", "Okay, start by clicking on your profile picture, top left corner." });
+                ActivateAndSetSpeechBubble(new string[] { "Hello.", "It's me.", "Let's show you how all this works.", "Okay, start by clicking on your profile picture, in the top left corner." });
 
                 SendHandTo(openSettingsHandPos.position);
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(1); };
@@ -150,7 +150,7 @@ public class Tutorial_VC : MonoBehaviour
                 break;
 
             case (TutorialPhase)1: //SetName
-                ActivateAndSetSpeechBubble(new string[] { "This is the settings menu.", "Lets change your player name.", "Touch the current name, and then write your own." });
+                ActivateAndSetSpeechBubble(new string[] { "This is the settings menu.", "Let's change your player name.", "Touch the current name, and then write your own." });
                 SendHandTo(inputNameHandPos.position);
                 TMP_InputField inputField = inputNameField.GetComponentInChildren<TMP_InputField>();
                 fieldAction = (inputString) => { TutorialManager.Instance.GoToNextPhase(2); };
@@ -169,7 +169,7 @@ public class Tutorial_VC : MonoBehaviour
 
                 break;
             case (TutorialPhase)3: //Open video manager
-                ActivateAndSetSpeechBubble(new string[] { "Cool", "Lets start managing your new Tubit channel.", "Click on the Video Manager button to open the Video Manager." });
+                ActivateAndSetSpeechBubble(new string[] { "Cool!", "Let's start managing your new Tubit channel.", "Click on the Video Manager button to open the Video Manager." });
 
                 signalBus.Fire<CloseSettingPanelSignal>();
                 videoManagerButton.SetActive(true);
@@ -181,7 +181,7 @@ public class Tutorial_VC : MonoBehaviour
 
                 break;
             case (TutorialPhase)4:
-                ActivateAndSetSpeechBubble(new string[] { "We are going to create your first video.", "First of all lets open the video creation window." });
+                ActivateAndSetSpeechBubble(new string[] { "We are going to create your first video.", "First of all, let's open the video creation window." });
                 openVideoCreatorButton.GetComponentInChildren<Button>().interactable = true;
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(5); };
                 openVideoCreatorButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
@@ -221,7 +221,7 @@ public class Tutorial_VC : MonoBehaviour
                     themeButton.GetComponentInChildren<Button>().interactable = false;
                 }
 
-                ActivateAndSetSpeechBubble(new string[] { "Lets not worry about the quality of the video right now, just hit Record Video." });
+                ActivateAndSetSpeechBubble(new string[] { "Let's not worry about the quality of the video right now, just hit Record Video." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(9); };
                 recordVideoButton.GetComponentInChildren<Button>().interactable = true;
                 recordVideoButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
@@ -238,18 +238,18 @@ public class Tutorial_VC : MonoBehaviour
                 break;
             case (TutorialPhase)10:
                 backButtonsPanel.SetActive(false);
-                ActivateAndSetSpeechBubble(new string[] { "Now that the video is done producing, lets publish it." });
+                ActivateAndSetSpeechBubble(new string[] { "Now that the video is done production, let's publish it." });
                 signalBus.Subscribe<OnHitPublishButtonSignal>(PublishedVideo);
                 SendHandTo(publishVideoHandPos.position);
                 break;
             case (TutorialPhase)11:
                 backButtonsPanel.SetActive(false);
-                ActivateAndSetSpeechBubble(new string[] { "We dont have time to see ads, so just for you this time will be free, if you want." });
+                ActivateAndSetSpeechBubble(new string[] { "We don't have time to see ads, so just for you, this time will be free, if you want." });
                 signalBus.Subscribe<OnHitConfirmAdButtonSignal>(ConfirmDoubleAd);
                 SendHandTo(doubleViewsHandPos.position);
                 break;
             case (TutorialPhase)12:
-                ActivateAndSetSpeechBubble(new string[] { "Congratulations!!! You have uploaded your first video!", "In the mean time, why don’t we go shopping? " });
+                ActivateAndSetSpeechBubble(new string[] { "Congratulations!!! You have uploaded your first video!", "In the meantime, why don't we go shopping?" });
                 shopButton.SetActive(true);
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(13); };
                 shopButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
@@ -274,7 +274,7 @@ public class Tutorial_VC : MonoBehaviour
                 break;
             case (TutorialPhase)15:
                 backButtonsPanel.SetActive(true);
-                ActivateAndSetSpeechBubble(new string[] { "Lets get back to the room whenever you are finished." });
+                ActivateAndSetSpeechBubble(new string[] { "Let's get back to the room whenever you are finished." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(16); };
                 signalBus.Subscribe<BackButtonClickedSignal>(() => ClickBackButton(btnAction));
                 SendHandTo(backButtonHandPosition.position);
@@ -299,14 +299,14 @@ public class Tutorial_VC : MonoBehaviour
                 break;
             case (TutorialPhase)18:
                 backButtonsPanel.SetActive(true);
-                ActivateAndSetSpeechBubble(new string[] { "Lets get back to the room whenever you are finished." });
+                ActivateAndSetSpeechBubble(new string[] { "Let's get back to the room whenever you are finished." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(19); };
                 signalBus.Subscribe<BackButtonClickedSignal>(() => ClickBackButton(btnAction));
                 SendHandTo(backButtonHandPosition.position);
                 break;
             case (TutorialPhase)19:
                 OpenHomeScreen();
-                ActivateAndSetSpeechBubble(new string[] { "Okay, let me now show you how to customize your room.", "Lets open the customization menu again." });
+                ActivateAndSetSpeechBubble(new string[] { "Okay, let me now show you how to customize your room.", "Let's open the customization menu again." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(20); };
                 customButton.SetActive(true);
                 customizeButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
@@ -326,15 +326,15 @@ public class Tutorial_VC : MonoBehaviour
             case (TutorialPhase)21:
                 backButtonsPanel.SetActive(true);
                 ActivateAndSetSpeechBubble(new string[] { "Cool!", "If you have any bought items for the room, you will find them here, ready to place them in the room.",
-                                                          "If you got the free bin from before, it will be under the floor tab, since it is a item that goes on the floor.", "You will be able to place it in the room from there!",
-                                                          "And once more, lets get back whenever you are ready." });
+                                                          "If you got the free bin from before, it will be under the floor tab, since it is an item that goes on the floor.", "You will be able to place it in the room from there!",
+                                                          "And once more, let's get back whenever you are ready." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(22); };
                 signalBus.Subscribe<BackButtonClickedSignal>(() => ClickBackButton(btnAction));
                 SendHandTo(backButtonHandPosition.position);
                 break;
             case (TutorialPhase)22:
                 signalBus.Fire<OpenHomeScreenSignal>();
-                ActivateAndSetSpeechBubble(new string[] { "Lets check how is the video going." });
+                ActivateAndSetSpeechBubble(new string[] { "Let's check how is the video going." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(23); };
                 videoManagerButton.SetActive(true);
                 videoManagerButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
