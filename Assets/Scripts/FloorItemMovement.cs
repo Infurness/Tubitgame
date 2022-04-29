@@ -28,13 +28,9 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
        signalBus.Subscribe<RoomZoomStateChangedSignal>(((signal) =>
        {
            editMode = !signal.ZoomIn;
-           print("Room Edit Mode ON");
        }));
    }
 
-
-
-   
    void Start()
     {
 
@@ -54,8 +50,6 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
     // Update is called once per frame
     void FixedUpdate()
     {
-
-
         if (editMode)
         {
             if (pointerDown)
@@ -71,8 +65,7 @@ public class FloorItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHan
         if (overlapCollider.IsTouchingLayers(LayerMask.GetMask("Floor")))
         {
             print("Touching Something");
-        }
-                
+        }     
     }
 
         
