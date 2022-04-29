@@ -36,7 +36,7 @@ public class EnergyInventory_VC : MonoBehaviour
         }
         energyItemsSpawned.Clear ();
         EnergyItemData[] items = energyInventoryManager.GetEnergyItems ();
-        Debug.Log ($"items{items.Length}");
+
         EnergyInventoryItem_VC firstItemAdded = null;
         foreach (EnergyItemData item in items)
         {

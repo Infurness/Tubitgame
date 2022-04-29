@@ -44,12 +44,6 @@ public class GlobalAudioManager : MonoBehaviour
         PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SetMusicVolumeModifier (float value)
     {
         musicVolumeModifier = value;

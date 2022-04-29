@@ -10,10 +10,6 @@ public class ShopItemSlot : MonoBehaviour
     [SerializeField] private Image  iconImage;
     [SerializeField] private Button HCBuyButton, SCBuyButton;
     [SerializeField] private TMP_Text itemNameText;
-    void Start()
-    {
-        
-    }
 
     public void SetHCBuyButton(uint price,string itemName,Sprite iconSprite,UnityAction buyAction)
     {

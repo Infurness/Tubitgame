@@ -52,7 +52,6 @@ public class RoomRender : MonoBehaviour
     {
      
         PopulateRoomLayout();
-        print("Room Enabled");
         tempLayout = new RoomLayout(currentRoomLayout);
 
     }
@@ -133,7 +132,6 @@ public class RoomRender : MonoBehaviour
         var obj = currentRoomObjects.Find(ob => (ob.slotItemType == item.SlotType) || (ob.assetName==item.name));
         if (obj)
         {
-            print("Old Item Destroied");
             tempLayout.equippedThemeITems.Remove(obj.assetName);
             Destroy(obj.gameObject);
             currentRoomObjects.Remove(obj);

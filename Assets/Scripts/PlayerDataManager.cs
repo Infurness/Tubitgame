@@ -55,7 +55,6 @@ public class PlayerDataManager : MonoBehaviour
 
     void ProcessSuccessesPurchases(ProcessPurchaseSignal purchaseSignal)
     {
-        print("Process Currencies");
         var confirmAction = new Action(() =>
         {
             signalBus.Fire<ConfirmPendingPurchaseSignal>(new ConfirmPendingPurchaseSignal()
@@ -178,11 +177,6 @@ public class PlayerDataManager : MonoBehaviour
         {
             UserDataRecord datarecord;
 
-            foreach (var pair in result.Data.ToList())
-            {
-                print("Data pair " + pair.Key + " " + pair.Value.Value);
-            }
-
             if (result.Data.TryGetValue("Videos", out datarecord))
             {
 
@@ -282,7 +276,6 @@ public class PlayerDataManager : MonoBehaviour
         dataRequest.Permission = permission;
         PlayFabClientAPI.UpdateUserData(dataRequest, (result =>
             {
-                print(keys[0] + "Updated");
                 onsuccess?.Invoke();
 
             }),
@@ -352,7 +345,6 @@ public class PlayerDataManager : MonoBehaviour
                 break;
             index++;
         }
-        Debug.Log("OUT OF INDEX ERROR: " + index);
         unpublishedvideos.RemoveAt(index);
         UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
     }
@@ -410,49 +402,6 @@ public class PlayerDataManager : MonoBehaviour
         return videoCounter;
     }
     
-    //public int GetNumberOfVideoByThemes(ThemeType[] _themeTypes)
-    //{
-    //    int videoCounter = 0;
-    //    foreach (Video video in playerData.videos)
-    //    {
-    //        bool sameThemes = true;
-    //        if (video.themes.Length == _themeTypes.Length)
-    //        {
-    //            for (int i = 0; i < video.themes.Length; i++)
-    //            {
-    //                if (video.themes[i] != _themeTypes[i])
-    //                {
-    //                    sameThemes = false;
-    //                    break;
-    //                }
-    //            }
-
-    //            if (sameThemes)
-    //                videoCounter++;
-    //        }
-    //    }
-
-    //    foreach (UnpublishedVideo video in playerData.unpublishedVideos)
-    //    {
-    //        bool sameThemes = true;
-    //        if (video.videoThemes.Length == _themeTypes.Length)
-    //        {
-    //            for (int i = 0; i < video.videoThemes.Length; i++)
-    //            {
-    //                if (video.videoThemes[i] != _themeTypes[i])
-    //                {
-    //                    sameThemes = false;
-    //                    break;
-    //                }
-    //            }
-
-    //            if (sameThemes)
-    //                videoCounter++;
-    //        }
-    //    }
-
-    //    return videoCounter;
-    //}
     public List<UnpublishedVideo> GetUnpublishedVideos ()
     {
         return playerData.unpublishedVideos;
@@ -466,7 +415,6 @@ public class PlayerDataManager : MonoBehaviour
         UpdateUserDatabase(new[] {"SoftCurrency","Videos"},new object[]{ playerData.softCurrency,playerData.videos});
         signalBus.Fire<AddSoftCurrencyForExperienceSignal> (new AddSoftCurrencyForExperienceSignal () { softCurrency = video.videoSoftCurrency });//Add the soft currency gained for experience points calculation
         video.videoSoftCurrency = 0;
-        Debug.LogError ("collectedMoney");
         return videoMoney;
     }
     public int GetPlayerTotalVideos ()
@@ -550,7 +498,6 @@ public class PlayerDataManager : MonoBehaviour
         UpdateUserDatabase(new[] {"HardCurrency"}, new object[] {hc}, (() =>
         {
             playerData.hardCurrency = hc;
-            print("Added HC");
             confirmPurchase?.Invoke();
             signalBus.Fire(new UpdateHardCurrencySignal());
             gameAnalyticsManager.SendCustomEvent("hard_currency_earn");

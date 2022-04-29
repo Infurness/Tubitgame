@@ -77,13 +77,13 @@ public class ViewsScroll_VC : MonoBehaviour,IEndDragHandler,IBeginDragHandler
         startContentPosX = scrollRect.content.position.x;
         StopAllCoroutines ();
     }
-    private void Update ()
-    {
-        if(previousScreenSize != new Vector2 (Screen.width, Screen.height))
-        {
-            ResizeContentPanel ();
-        }
-    }
+    // private void Update ()
+    // {
+    //     if(previousScreenSize != new Vector2 (Screen.width, Screen.height))
+    //     {
+    //         ResizeContentPanel ();
+    //     }
+    // }
     public void OnEndDrag (PointerEventData _eventData)
     {
         float scrollDir = scrollRect.content.position.x - startContentPosX;

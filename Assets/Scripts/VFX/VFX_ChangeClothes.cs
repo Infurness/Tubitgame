@@ -17,11 +17,6 @@ public class VFX_ChangeClothes : MonoBehaviour
         signalBus.Subscribe<ChangeClothesAnimationSignal>(StartAnimation);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void ChangeClothes()
     {
         signalBus.Fire<ChangeClothesVisualSignal>();

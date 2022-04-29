@@ -85,11 +85,7 @@ public class VideoInfo_VC : MonoBehaviour
         if(hasBeenInitialized && videoRef==null)
             RestartProductionBar();
     }
-    // Update is called once per frame
-    void Update ()
-    {
 
-    }
     void InitialState ()
     {
         CheckVirality ();

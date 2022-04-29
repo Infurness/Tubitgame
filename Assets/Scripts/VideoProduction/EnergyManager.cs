@@ -59,13 +59,6 @@ public class EnergyManager : MonoBehaviour
       
     }
 
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void GetEnergyData ()
     {
         GetUserDataRequest dataRequest = new GetUserDataRequest ();
@@ -73,11 +66,6 @@ public class EnergyManager : MonoBehaviour
         PlayFabClientAPI.GetUserData (dataRequest, (result =>
         {
             UserDataRecord datarecord;
-
-            foreach (var pair in result.Data.ToList ())
-            {
-                print ("Data pair " + pair.Key + " " + pair.Value.Value);
-            }
 
             if (result.Data.TryGetValue ("Energy", out datarecord))
             {
@@ -105,7 +93,6 @@ public class EnergyManager : MonoBehaviour
         {
             float energyGainPerSecond = GetEnergyGainedPerSecond ();
             float seconds = (float)(gameClock.Now - energyData.lastTimeUpdated).TotalSeconds;
-            Debug.Log ($"ADDITIONAL ENERGY: {energyGainPerSecond * seconds}");
             energyData.energy += energyGainPerSecond * seconds;
         }   
     }
@@ -123,7 +110,6 @@ public class EnergyManager : MonoBehaviour
     }
     void AddEnergy (AddEnergySignal _signal)
     {
-        Debug.Log ("AddEnergy");
         float previousEnergy = energyData.energy;
         energyData.energy += _signal.energyAddition;
         StartChargingEnergy ();
@@ -208,9 +194,6 @@ public class EnergyManager : MonoBehaviour
                 IsResting = false
             });
         }
-   
-        
-    
     }
     public bool GetPlayerIsResting ()
     {
