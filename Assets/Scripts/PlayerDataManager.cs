@@ -55,7 +55,6 @@ public class PlayerDataManager : MonoBehaviour
 
     void ProcessSuccessesPurchases(ProcessPurchaseSignal purchaseSignal)
     {
-        print("Process Currencies");
         var confirmAction = new Action(() =>
         {
             signalBus.Fire<ConfirmPendingPurchaseSignal>(new ConfirmPendingPurchaseSignal()

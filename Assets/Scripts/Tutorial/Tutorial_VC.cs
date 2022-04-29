@@ -110,11 +110,6 @@ public class Tutorial_VC : MonoBehaviour
         recordVideoButton.GetComponentInChildren<Button>().interactable = false;
         openVideoCreatorButton.GetComponentInChildren<Button>().interactable = false;
     }
-    // Update is called once per frame
-    void Update()
-    {
-    
-    }
 
     void ActivatePhase(StartTutorialPhaseSignal signal)
     {

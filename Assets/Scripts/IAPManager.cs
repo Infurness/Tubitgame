@@ -101,7 +101,6 @@ public class IAPManager : MonoBehaviour,IStoreListener
 
         this.controller = cont;
         this.extensions = ext;
-        print("Purchasing init");
     }
 
     public string GetPrice(string productID)
