@@ -43,13 +43,6 @@ public class GlobalAudioManager : MonoBehaviour
         signalBus.Subscribe<BuyItemSoundSignal>(PlayBuyItemSound);
         PlaySound(soundsHolder.generalMusic, AudioType.Music, true);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SetMusicVolumeModifier (float value)
     {
         musicVolumeModifier = value;

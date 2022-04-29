@@ -110,11 +110,6 @@ public class Tutorial_VC : MonoBehaviour
         recordVideoButton.GetComponentInChildren<Button>().interactable = false;
         openVideoCreatorButton.GetComponentInChildren<Button>().interactable = false;
     }
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void ActivatePhase(StartTutorialPhaseSignal signal)
     {
@@ -249,7 +244,7 @@ public class Tutorial_VC : MonoBehaviour
                 SendHandTo(doubleViewsHandPos.position);
                 break;
             case (TutorialPhase)12:
-                ActivateAndSetSpeechBubble(new string[] { "Congratulations!!! You have uploaded your first video!", "In the mean time, why don’t we go shopping? " });
+                ActivateAndSetSpeechBubble(new string[] { "Congratulations!!! You have uploaded your first video!", "In the mean time, why donï¿½t we go shopping? " });
                 shopButton.SetActive(true);
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(13); };
                 shopButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
