@@ -81,7 +81,7 @@ namespace PlayFab.Internal
                 yield return request.Send();
 #endif
 
-#if UNITY_2021_1_OR_NEWER
+#if Unity_2021_1_OR_NEWER
                 if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
 #else
                 if (request.isNetworkError || request.isHttpError)
@@ -93,8 +93,6 @@ namespace PlayFab.Internal
                 {
                     successCallback(request.downloadHandler.data);
                 }
-
-                request.Dispose();
             }
         }
 

@@ -9,8 +9,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ExecuteCloudScriptResult> OnCloudScriptExecuteEntityCloudScriptResultEvent;
         public event PlayFabRequestEvent<ExecuteFunctionRequest> OnCloudScriptExecuteFunctionRequestEvent;
         public event PlayFabResultEvent<ExecuteFunctionResult> OnCloudScriptExecuteFunctionResultEvent;
-        public event PlayFabRequestEvent<GetFunctionRequest> OnCloudScriptGetFunctionRequestEvent;
-        public event PlayFabResultEvent<GetFunctionResult> OnCloudScriptGetFunctionResultEvent;
         public event PlayFabRequestEvent<ListFunctionsRequest> OnCloudScriptListFunctionsRequestEvent;
         public event PlayFabResultEvent<ListFunctionsResult> OnCloudScriptListFunctionsResultEvent;
         public event PlayFabRequestEvent<ListFunctionsRequest> OnCloudScriptListHttpFunctionsRequestEvent;
