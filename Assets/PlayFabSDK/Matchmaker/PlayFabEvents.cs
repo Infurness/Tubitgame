@@ -11,6 +11,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<PlayerJoinedResponse> OnMatchmakerPlayerJoinedResultEvent;
         public event PlayFabRequestEvent<PlayerLeftRequest> OnMatchmakerPlayerLeftRequestEvent;
         public event PlayFabResultEvent<PlayerLeftResponse> OnMatchmakerPlayerLeftResultEvent;
+        public event PlayFabRequestEvent<StartGameRequest> OnMatchmakerStartGameRequestEvent;
+        public event PlayFabResultEvent<StartGameResponse> OnMatchmakerStartGameResultEvent;
         public event PlayFabRequestEvent<UserInfoRequest> OnMatchmakerUserInfoRequestEvent;
         public event PlayFabResultEvent<UserInfoResponse> OnMatchmakerUserInfoResultEvent;
     }

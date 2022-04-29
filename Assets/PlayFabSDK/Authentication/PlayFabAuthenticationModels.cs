@@ -65,7 +65,7 @@ namespace PlayFab.AuthenticationModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
     }
@@ -150,10 +150,6 @@ namespace PlayFab.AuthenticationModels
         /// The identity provider for this entity, for the given login
         /// </summary>
         public LoginIdentityProvider? IdentityProvider;
-        /// <summary>
-        /// The ID issued by the identity provider, e.g. a XUID on Xbox Live
-        /// </summary>
-        public string IdentityProviderIssuedId;
         /// <summary>
         /// The lineage of this profile.
         /// </summary>

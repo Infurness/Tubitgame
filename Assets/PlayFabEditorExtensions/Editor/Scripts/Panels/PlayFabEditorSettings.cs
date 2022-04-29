@@ -20,12 +20,11 @@ namespace PlayFab.PfEditor
 
         public enum WebRequestType
         {
-#if !UNITY_2018_2_OR_NEWER // Unity has deprecated Www
             UnityWww, // High compatability Unity api calls
-#endif
-            UnityWebRequest, // Modern unity HTTP component
             HttpWebRequest, // High performance multi-threaded api calls
-            CustomHttp //If this is used, you must set the Http to an IPlayFabHttp object.
+#if UNITY_2017_2_OR_NEWER
+            UnityWebRequest, // Modern unity HTTP component
+#endif
         }
 
         private static float LABEL_WIDTH = 180;
