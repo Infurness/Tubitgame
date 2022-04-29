@@ -29,8 +29,6 @@ public class IAPManager : MonoBehaviour,IStoreListener
        signalBus.Subscribe<ConfirmPendingPurchaseSignal>(ConfirmPendingPurchase);
     }
 
-
-
     void  ConfirmPendingPurchase(ConfirmPendingPurchaseSignal confirmPendingPurchaseSignal)
     {
         var product = confirmPendingPurchaseSignal.product;
@@ -51,9 +49,7 @@ public class IAPManager : MonoBehaviour,IStoreListener
     }
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
-    {
-        print("Attempting to buy "+purchaseEvent.purchasedProduct.definition.id);
-        
+    {        
         signalBus.Fire(new ProcessPurchaseSignal()
         {
             product = purchaseEvent.purchasedProduct
@@ -98,10 +94,8 @@ public class IAPManager : MonoBehaviour,IStoreListener
 
     public void OnInitialized(IStoreController cont, IExtensionProvider ext)
     {
-
         this.controller = cont;
         this.extensions = ext;
-        print("Purchasing init");
     }
 
     public string GetPrice(string productID)

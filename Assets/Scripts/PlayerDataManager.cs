@@ -281,7 +281,6 @@ public class PlayerDataManager : MonoBehaviour
             }),
             (error =>
             {
-                print("Cant update " + keys[0]);
                 onFailed?.Invoke();
             }));
 

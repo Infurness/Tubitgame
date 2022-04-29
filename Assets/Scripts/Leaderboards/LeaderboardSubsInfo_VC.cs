@@ -53,7 +53,6 @@ public class LeaderboardSubsInfo_VC : MonoBehaviour
     }
     void OnGetUsersFaceData (LookupUserAccountInfoResult result)
     {
-        Debug.Log (result.UserInfo.PlayFabId);
         PlayFab.ClientModels.GetUserDataRequest request = new PlayFab.ClientModels.GetUserDataRequest
         {
             PlayFabId = result.UserInfo.PlayFabId

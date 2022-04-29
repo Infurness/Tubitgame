@@ -29,15 +29,8 @@ public class AssetsDownloader : MonoBehaviour
        {
           var downloadOp=  Addressables.DownloadDependenciesAsync(labels,Addressables.MergeMode.Union);
           await downloadOp.Task;
-          print("Download is done "+newAssetsCheck.Result/1000 +" KB" );
        }
-       else
-       {
-           print("No update avaliable");
-       }
+
        signalBus.Fire<RemoteAssetsCheckSignal>();
-
     }
-
-   
 }
