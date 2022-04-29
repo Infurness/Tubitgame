@@ -9,6 +9,17 @@ public class PlayfabLeaderboard : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
     [Inject] private PlayerDataManager playerDataManager;
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 
     public void SendLeaderboard(string leaderboardName, int score)
     {
@@ -27,6 +38,7 @@ public class PlayfabLeaderboard : MonoBehaviour
     }
     void OnLeaderboardUpdate (UpdatePlayerStatisticsResult result)
     {
+        Debug.LogWarning ("Leaderboard Updated Successfully");
     }
     void OnLeaderboardError (PlayFabError error)
     {

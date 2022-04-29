@@ -94,6 +94,11 @@ public class VFX_VC : MonoBehaviour
             
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
     void ChangeEnergy(VFX_EnergyChangeSignal signal)
     {
         if (signal.oldFill > signal.newFill)

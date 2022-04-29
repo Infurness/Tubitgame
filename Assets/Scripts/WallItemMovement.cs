@@ -21,6 +21,7 @@ public class WallItemMovement : MonoBehaviour,IPointerDownHandler,IPointerUpHand
        signalBus.Subscribe<RoomZoomStateChangedSignal>(((signal) =>
        {
            editMode = !signal.ZoomIn;
+           print("Room Edit Mode ON");
        }));
    }
 

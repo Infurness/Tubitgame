@@ -120,6 +120,7 @@ public class ThemeGraph_VC : MonoBehaviour
 
     void HighLightLineRenderer(ThemeType signalThemeType, ThemeType themeType, LineRenderer lr)
     {
+        Debug.Log("ResetSetColor");
         if (themeType == signalThemeType)
         {
             lr.gameObject.transform.GetChild(0).gameObject.SetActive(true);
@@ -135,6 +136,7 @@ public class ThemeGraph_VC : MonoBehaviour
     }
     void ResetLineColor(LineRenderer lr)
     {
+        Debug.Log("ResetColor");
         lr.gameObject.transform.GetChild(0).gameObject.SetActive(false);
         lr.gameObject.transform.GetChild(1).gameObject.SetActive(true);
         lr.gameObject.GetComponent<VFX_GraphSelection>().ThemeUnselected();

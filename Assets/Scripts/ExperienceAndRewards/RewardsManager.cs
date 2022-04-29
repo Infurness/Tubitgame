@@ -24,6 +24,12 @@ public class RewardsManager : MonoBehaviour
         signalBus.Subscribe<ChangePlayerSubsSignal> (CheckRankUpdate);
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
     void CheckRankUpdate (ChangePlayerSubsSignal signal)
     {
         int lastRank = CheckRank (signal.previousSubs);

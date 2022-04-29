@@ -25,6 +25,11 @@ public class LeaderboardManager : MonoBehaviour
         GetTop10InLeaderboard ();
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
     public void UpdateLeaderboard(string leaderboardName, int subscribers)
     {
         leaderboardBackEnd.SendLeaderboard (leaderboardName, subscribers);
