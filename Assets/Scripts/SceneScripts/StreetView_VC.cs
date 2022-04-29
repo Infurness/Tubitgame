@@ -45,7 +45,11 @@ public class StreetView_VC : MonoBehaviour
         MoveSpriteNextToOther (streetViewTransform, houseViewTransform);
 
     }
-
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
     void ResizeForCameraHeight (Transform resizeableTransform)
     {
         SpriteRenderer sr = resizeableTransform.GetComponent<SpriteRenderer>();

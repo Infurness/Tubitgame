@@ -22,6 +22,11 @@ public class ShopCategoryButton : MonoBehaviour
         SetButtonUnSelected();
     }
 
+    void Start()
+    {
+        
+    }
+
     public void SetButtonSelected()
     {
         deSelcectAll.Invoke();

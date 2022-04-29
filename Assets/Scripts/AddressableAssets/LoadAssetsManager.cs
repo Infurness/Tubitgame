@@ -27,6 +27,7 @@ public class LoadAssetsManager : MonoBehaviour
         await catalogUpdate.Task;
         var downloadSize = Addressables.GetDownloadSizeAsync (label);
         await downloadSize.Task;
+        Debug.Log (downloadSize.Result);
 
         if(downloadSize.Result>0)//Update
         {
@@ -35,6 +36,7 @@ public class LoadAssetsManager : MonoBehaviour
 
             foreach (var location in locations)
             {
+                Debug.Log (location);
                 var data = Addressables.LoadAssetAsync<ScriptableTheme> (location);
                 if(data.IsValid())
                 {
@@ -53,6 +55,7 @@ public class LoadAssetsManager : MonoBehaviour
         await catalogUpdate.Task;
         var downloadSize = Addressables.GetDownloadSizeAsync (label);
         await downloadSize.Task;
+        Debug.Log (downloadSize.Result);
 
         if (downloadSize.Result > 0)//Update
         {
@@ -61,6 +64,7 @@ public class LoadAssetsManager : MonoBehaviour
 
             foreach (var location in locations)
             {
+                Debug.Log (location);
                 var data = Addressables.LoadAssetAsync<ScriptableEnergyItem> (location);
                 if (data.IsValid ())
                 {

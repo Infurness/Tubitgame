@@ -27,9 +27,15 @@ public class TutorialManager : MonoBehaviour
         StartTutorial();
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 
     void StartTutorial()
     {
+        Debug.Log("Tutorial");
         currentTutorialPhase = (TutorialPhase)0;
         signalBus.Fire<StartTutorialPhaseSignal>( new StartTutorialPhaseSignal { phase = currentTutorialPhase});
     }

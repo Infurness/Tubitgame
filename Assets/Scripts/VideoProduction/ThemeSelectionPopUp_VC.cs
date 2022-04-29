@@ -59,7 +59,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         usedSlotsInfo.Clear ();
         foreach (GameObject draggable in draggableThemeObjects)
             draggable.SetActive (false);
-
+        Debug.Log ("PopupCleared");
         foreach(GameObject slot in themeSlots)
         {
             slot.GetComponent<Image> ().sprite = emptySlotImage;
@@ -83,6 +83,7 @@ public class ThemeSelectionPopUp_VC : MonoBehaviour
         GameObject button = Instantiate (themeButtonPrefab, themeButtonsHolder.transform);
         button.GetComponent<ButtonThemePreProductionView> ().themeType = _themeType;
         button.GetComponent<ButtonThemePreProductionView> ().SetSignaBus (signalBus);
+        //button.GetComponent<Button> ().OnPointerDown().AddListener (() => OnThemeSelected (_themeType, button.GetComponentInChildren<TMP_Text>().text));
     }
     void StartDraggingTheme (ThemeHeldSignal signal)
     {

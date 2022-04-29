@@ -23,9 +23,13 @@ public class CarsPopup_VC : MonoBehaviour
     private Car selectedCar;
     void Start()
     {
+   
+        
+        
         popupButton.onClick.AddListener((() =>
         {
             carsPanel.gameObject.SetActive(true);
+         //   popupButton.gameObject.SetActive(false);
             PopulateCarsButtons();
         }));
        selectButton.onClick.AddListener((() =>
@@ -76,7 +80,9 @@ public class CarsPopup_VC : MonoBehaviour
     }
     void SetButtonVisibility(bool state)
     {
+        print("Street View Changed "+state);
         carsButtonPanel.gameObject.SetActive(state);
+
     }
 
   

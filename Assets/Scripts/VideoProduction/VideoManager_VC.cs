@@ -97,8 +97,9 @@ public class VideoManager_VC : MonoBehaviour
     void Start ()
     {
         minGraphX = graphHourTexts[0].gameObject.GetComponent<RectTransform> ().anchoredPosition.x;
+        Debug.Log ("RECT: " + minGraphX);
         maxGraphX = graphHourTexts[graphHourTexts.Length - 1].gameObject.GetComponent<RectTransform> ().anchoredPosition.x;
-
+        Debug.Log ("RECT Max: " + maxGraphX);
         _signalBus.Subscribe<ShowVideosStatsSignal> (OpenManageVideosPanel);
         _signalBus.Subscribe<OpenVideoManagerSignal> (InitialState);
         _signalBus.Subscribe<ConfirmThemesSignal> (SetConfirmedThemes);
@@ -125,6 +126,9 @@ public class VideoManager_VC : MonoBehaviour
             button.onClick.AddListener (OpenThemeSelectorPopUp);
         }
         skipRecodingPopUpCancelButton.onClick.AddListener (() =>  OpenSkipRecordginPopUp (false));
+        //theme1Button.onClick.AddListener (() => { OnThemeButtonPressed (1, theme1Button.GetComponentInChildren<TMP_Text>());});
+        //theme2Button.onClick.AddListener (() => { OnThemeButtonPressed (2, theme2Button.GetComponentInChildren<TMP_Text> ()); });
+        //theme3Button.onClick.AddListener (() => { OnThemeButtonPressed (3, theme3Button.GetComponentInChildren<TMP_Text> ()); });
         pageLeft.onClick.AddListener(GoToPreviousVideosPage);
         pageRight.onClick.AddListener(GoToNextVideosPage);
 
@@ -384,6 +388,7 @@ public class VideoManager_VC : MonoBehaviour
 
     void UpdateVideoList ()
     {
+        Debug.Log ("Update videos");
         Video[] playerVideos = PlayerDataManager.Instance.GetVideos ().ToArray ();
         foreach (Video video in playerVideos)
         {
@@ -669,6 +674,7 @@ public class VideoManager_VC : MonoBehaviour
     }
     void OnConfirmVideoName(string value)
     {
+        Debug.Log(value);
         selectedVideoName = $"{value}";
         int videoNumber = _youTubeVideoManager.GetNumberOfVideoByName(value);
         if (videoNumber > 0)

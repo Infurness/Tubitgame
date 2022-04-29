@@ -49,6 +49,7 @@ public class ButtonAnimationTrigger : MonoBehaviour, IPointerDownHandler, IPoint
 
     void Reset()
     {
+        Debug.Log("A");
         if(anim = GetComponent<Animator>())
         {
             RuntimeAnimatorController controller = null;
@@ -60,8 +61,13 @@ public class ButtonAnimationTrigger : MonoBehaviour, IPointerDownHandler, IPoint
                     break;
                 }    
             }
-            
+            Debug.Log(controller);
             anim.runtimeAnimatorController = controller;
+            Debug.Log("Yes anim");
+        }
+        else
+        {
+            Debug.Log("No anim");
         }
     }
 }
