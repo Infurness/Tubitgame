@@ -40,11 +40,6 @@ public class YouTubeVideoManager : MonoBehaviour
         _signalBus.Subscribe<LevelUpSignal> (playerDataManager.GetLevelUpRewards);
         _signalBus.Subscribe<CancelVideoRecordingSignal> ((signal) => DeleteUnpublishedVideo (signal.name));
     }
-
-    void Update()
-    {
-        
-    }
     public bool IsRecording ()
     {
         return isRecording;

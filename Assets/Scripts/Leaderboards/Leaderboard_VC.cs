@@ -27,11 +27,6 @@ public class Leaderboard_VC : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void RecieveBestLeaderboardPositions (Recieve3BestLeaderboard signal)
     {
         int i = 0;

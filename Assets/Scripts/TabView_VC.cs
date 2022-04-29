@@ -42,12 +42,4 @@ public class TabView_VC : MonoBehaviour
     {
         buttonsView.gameObject.SetActive(state);
     }
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-        
-    }
 }

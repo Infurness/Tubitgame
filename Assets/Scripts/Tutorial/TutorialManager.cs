@@ -27,11 +27,6 @@ public class TutorialManager : MonoBehaviour
         StartTutorial();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void StartTutorial()
     {
