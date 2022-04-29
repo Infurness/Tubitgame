@@ -400,7 +400,7 @@ namespace PlayFab.CloudScriptModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity to perform this action on.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -439,7 +439,7 @@ namespace PlayFab.CloudScriptModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity to perform this action on.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -518,6 +518,44 @@ namespace PlayFab.CloudScriptModels
     }
 
     [Serializable]
+    public class GetFunctionRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The name of the function to register
+        /// </summary>
+        public string FunctionName;
+        /// <summary>
+        /// The Id of the parent Title
+        /// </summary>
+        public string TitleId;
+    }
+
+    [Serializable]
+    public class GetFunctionResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The connection string for the storage account containing the queue for a queue trigger Azure Function.
+        /// </summary>
+        public string ConnectionString;
+        /// <summary>
+        /// The URL to be invoked to execute an HTTP triggered function.
+        /// </summary>
+        public string FunctionUrl;
+        /// <summary>
+        /// The name of the queue for a queue trigger Azure Function.
+        /// </summary>
+        public string QueueName;
+        /// <summary>
+        /// The trigger type for the function.
+        /// </summary>
+        public string TriggerType;
+    }
+
+    [Serializable]
     public class HttpFunctionModel : PlayFabBaseModel
     {
         /// <summary>
@@ -562,6 +600,10 @@ namespace PlayFab.CloudScriptModels
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The Id of the parent Title
+        /// </summary>
+        public string TitleId;
     }
 
     [Serializable]
@@ -857,7 +899,7 @@ namespace PlayFab.CloudScriptModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity to perform this action on.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -946,6 +988,10 @@ namespace PlayFab.CloudScriptModels
         /// Full URL for Azure Function that implements the function.
         /// </summary>
         public string FunctionUrl;
+        /// <summary>
+        /// The Id of the parent Title
+        /// </summary>
+        public string TitleId;
     }
 
     /// <summary>
@@ -971,6 +1017,10 @@ namespace PlayFab.CloudScriptModels
         /// The name of the queue for the Azure Function.
         /// </summary>
         public string QueueName;
+        /// <summary>
+        /// The Id of the parent Title
+        /// </summary>
+        public string TitleId;
     }
 
     [Serializable]
@@ -1076,9 +1126,13 @@ namespace PlayFab.CloudScriptModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The name of the function to unregister
+        /// The name of the function to register
         /// </summary>
         public string FunctionName;
+        /// <summary>
+        /// The Id of the parent Title
+        /// </summary>
+        public string TitleId;
     }
 
     [Serializable]
