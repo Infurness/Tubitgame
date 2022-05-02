@@ -48,43 +48,43 @@ public class ThemesManager : MonoBehaviour
                         bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.AutosAndVehicles:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.AutosAndVehicles].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.Music:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.Music].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.PetsAndAnimals:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.PetsAndAnimals].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.Sports:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.Sports].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.TravelAndEvents:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.TravelAndEvents].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.Gaming:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.Gaming].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.PeopleAndBlogs:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.PeopleAndBlogs].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.Comedy:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.Comedy].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.Entertainment:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.Entertainment].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.NewsAndPolitics:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.NewsAndPolitics].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.HowToAndStyle:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.HowToAndStyle].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.Education:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.Education].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     case ThemeType.ScienceAndTechnology:
-                        bounsEffect[(int) ThemeType.FilmsAndAnimation].themePopularityFactor += themeEffect.themePopularityFactor;
+                        bounsEffect[(int) ThemeType.ScienceAndTechnology].themePopularityFactor += themeEffect.themePopularityFactor;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
