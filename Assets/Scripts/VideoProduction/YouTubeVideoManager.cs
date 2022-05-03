@@ -59,7 +59,7 @@ public class YouTubeVideoManager : MonoBehaviour
         newVideo.name = videoName;
         newVideo.themes = (ThemeType[]) videoThemes.Clone();
         newVideo.selectedQuality = signal.videoSelectedQuality;
-        newVideo.quality = playerDataManager.GetQuality(); //Dummy not yet implement lacks of themes quality and selected quality
+        newVideo.quality = playerDataManager.GetQuality();
 
         int level = experienceManager.GetPlayerLevel();
         int percentage = 5;
@@ -170,11 +170,11 @@ public class YouTubeVideoManager : MonoBehaviour
                             selectedWord = themeInfo.words.adjetive[rndIndex];
                             break;
                         case 1:
-                            rndIndex = Random.Range(0, themeInfo.words.adjetive.Length);
+                            rndIndex = Random.Range(0, themeInfo.words.noun2.Length);
                             selectedWord = themeInfo.words.noun2[rndIndex];
                             break;
                         case 2:
-                            rndIndex = Random.Range(0, themeInfo.words.adjetive.Length);
+                            rndIndex = Random.Range(0, themeInfo.words.noun1.Length);
                             selectedWord = themeInfo.words.noun1[rndIndex];
                             break;
                     }
@@ -201,15 +201,6 @@ public class YouTubeVideoManager : MonoBehaviour
         }
         return playerDataManager.GetNumberOfVideoByName(videoName);
     }
-
-    //int GetNumberOfVideoByThemes (ThemeType[] _themeTypes)
-    //{
-    //    if (playerDataManager==null)
-    //    {
-    //        print("Player DataManger is Null");
-    //    }
-    //    return playerDataManager.GetNumberOfVideoByThemes (_themeTypes);
-    //}
     public Video GetVideoByName (string _name)
     {
         return playerDataManager.GetVideoByName (_name);
