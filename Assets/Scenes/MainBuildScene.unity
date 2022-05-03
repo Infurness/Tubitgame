@@ -5070,7 +5070,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.4
+  m_fontSize: 31.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -14687,7 +14687,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7546219432394959466, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -500.00006
+      value: -500.0001
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432747538632, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_Name
@@ -21491,6 +21491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 943a5be7b01516f498a125cbb3a5d584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nightLightsTransition: {fileID: 1837181620}
   energyText: {fileID: 486541125}
   energyTimeText: {fileID: 1552220518}
   energyFillBar: {fileID: 1015051881}
@@ -66036,21 +66037,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 71325820443499008, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
-      propertyPath: m_SortingOrder
-      value: 29
+    - target: {fileID: 1837181620, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: timeToTurnOn
+      value: 0.14
       objectReference: {fileID: 0}
     - target: {fileID: 872982438240456205, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
       propertyPath: m_Name
       value: Night_Vfx
-      objectReference: {fileID: 0}
-    - target: {fileID: 2111670219801560504, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
-      propertyPath: m_SortingOrder
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322660389898737652, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
-      propertyPath: m_SortingOrder
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
       propertyPath: m_RootOrder
@@ -66096,6 +66089,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7640495614291380101, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.05957869
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640495614291380101, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.10762732
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640495614291380101, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.11007
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640495614291380101, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.26989
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
 --- !u!1 &1837181616 stripped
@@ -66118,6 +66127,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 872982438240456205, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
   m_PrefabInstance: {fileID: 1837181615}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1837181620 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1837181620, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+  m_PrefabInstance: {fileID: 1837181615}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837181619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6461ed5dbf376d4aab5dfd5cf1e6b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1837291194
 GameObject:
   m_ObjectHideFlags: 0
