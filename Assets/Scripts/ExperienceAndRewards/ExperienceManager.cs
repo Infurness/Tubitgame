@@ -16,8 +16,7 @@ public class ExperienceManager : MonoBehaviour
     void Start()
     {
         playerDataManager = PlayerDataManager.Instance;
-        signalBus.Subscribe<AddSubsForExperienceSignal> (AddSubs);
-        signalBus.Subscribe<AddViewsForExperienceSignal> (AddViews);
+        signalBus.Subscribe<AddExperiencePointsSignal> (ModifyExperience);
         signalBus.Subscribe<AddSoftCurrencyForExperienceSignal> (AddSoftCurrency);       
     }
 
@@ -57,10 +56,16 @@ public class ExperienceManager : MonoBehaviour
         }
         return level;
     }
-
-    public void AddSubs (AddSubsForExperienceSignal signal)
+    private void ModifyExperience(AddExperiencePointsSignal signal)
     {
-        ulong totalSubs = signal.subs + (ulong)playerDataManager.GetSubsThreshold ();
+        AddSubs(signal.subs);
+        AddViews(signal.views);
+        playerDataManager.UpdateXpData();
+    }
+
+    private void AddSubs (ulong subs)
+    {
+        ulong totalSubs = subs + (ulong)playerDataManager.GetSubsThreshold ();
         long remainder;
         long experiencePoints = Math.DivRem ((long)totalSubs, 100, out remainder);
 
@@ -69,9 +74,9 @@ public class ExperienceManager : MonoBehaviour
             return;
         AddExperiencePoints ((ulong)experiencePoints);
     }
-    public void AddViews (AddViewsForExperienceSignal signal)
+    private void AddViews (ulong views)
     {
-        ulong totalviews = signal.views + (ulong)playerDataManager.GetViewsThreshold ();
+        ulong totalviews = views + (ulong)playerDataManager.GetViewsThreshold ();
         long remainder;
         long experiencePoints = Math.DivRem ((long)totalviews, 1000, out remainder);
         playerDataManager.SetViewsThreshold ((int)remainder);
@@ -89,6 +94,7 @@ public class ExperienceManager : MonoBehaviour
         if (TutorialManager.Instance != null)
             return;
         AddExperiencePoints ((ulong)experiencePoints);
+        playerDataManager.UpdateXpData();
     }
 
     public ulong GetXpThreshold(int level)

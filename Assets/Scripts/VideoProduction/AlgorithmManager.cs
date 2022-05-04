@@ -154,7 +154,6 @@ public class AlgorithmManager : MonoBehaviour
 
                     ulong previousViews = video.views;
                     video.views=(ulong)(video.maxViews*completePercentage);
-                    signalBus.Fire<AddViewsForExperienceSignal> (new AddViewsForExperienceSignal () { views = video.views - previousViews });//Add the views gained this step for experience points calculation
 
                     video.likes = (ulong)(video.maxLikes*completePercentage);
                     video.comments =(ulong) (video.maxComments*completePercentage);
@@ -162,7 +161,9 @@ public class AlgorithmManager : MonoBehaviour
 
                     ulong previousSubs = video.newSubscribers;
                     video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
-                    signalBus.Fire<AddSubsForExperienceSignal> (new AddSubsForExperienceSignal () { subs = video.newSubscribers - previousSubs });//Add the subs gained this step for experience points calculation
+
+                    if(previousSubs != video.newSubscribers || previousViews != video.views)
+                        signalBus.Fire<AddExperiencePointsSignal>(new AddExperiencePointsSignal() { subs = video.newSubscribers - previousSubs, views =  video.views - previousViews});
 
                     subscribers += video.newSubscribers;
                     video.lastUpdateTime = GameClock.Instance.Now;
@@ -206,7 +207,6 @@ public class AlgorithmManager : MonoBehaviour
                     video.lastBonusViews += video.bonusViews * bonusMultiplier;
                     ulong previousViews = video.views;
                     video.views = video.maxViews + (ulong)video.lastBonusViews;
-                    signalBus.Fire<AddViewsForExperienceSignal>(new AddViewsForExperienceSignal() { views = video.views - previousViews });//Add the views gained this step for experience points calculation
 
                     video.lastBonusLikes += video.bonusLikes * bonusMultiplier;
                     video.likes = video.maxLikes + (ulong)video.lastBonusLikes;
@@ -217,7 +217,9 @@ public class AlgorithmManager : MonoBehaviour
                     video.lastBonusSubscribers +=video.bonusSubscribers * bonusMultiplier;
                     ulong previousSubs = video.newSubscribers;
                     video.newSubscribers = video.maxNewSubscribers + (ulong)video.lastBonusSubscribers;
-                    signalBus.Fire<AddSubsForExperienceSignal>(new AddSubsForExperienceSignal() { subs = video.newSubscribers - previousSubs });//Add the subs gained this step for experience points calculation
+
+                    if(previousSubs != video.newSubscribers || previousViews != video.views)
+                        signalBus.Fire<AddExperiencePointsSignal>(new AddExperiencePointsSignal() { subs = video.newSubscribers - previousSubs, views =  video.views - previousViews});
 
                     subscribers += video.newSubscribers;
 
