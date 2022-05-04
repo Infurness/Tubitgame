@@ -18,7 +18,7 @@ public class HUD_VC : MonoBehaviour
     [Inject] private SoundsHolder soundsHolder;
     GameClock gameClock;
 
-    [SerializeField] private Night_Lights_Transition nightLightsTransition;
+    [SerializeField] private Night_Transition night_Transition;
     [SerializeField] private TMP_Text energyText;
     [SerializeField] private TMP_Text energyTimeText;
     private float energyTimeSecondsCount;
@@ -158,7 +158,7 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenVideoManagerPanel ()
     {
-        nightLightsTransition.DisableNightElements();
+        night_Transition.DisableElements();
         gameAnalyticsManager.SendCustomEvent("VideoMangerScreen");
         OpenScreenPanel (HUDScreen.VideoManager);
     }

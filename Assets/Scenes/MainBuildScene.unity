@@ -14685,9 +14685,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 301303278}
     m_Modifications:
+    - target: {fileID: 7546219432228174107, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 132.86005
+      objectReference: {fileID: 0}
     - target: {fileID: 7546219432394959466, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -500.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546219432618341593, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -45.8
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432747538632, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_Name
@@ -14776,6 +14784,10 @@ PrefabInstance:
     - target: {fileID: 7546219432747538633, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546219433648199441, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -408.3501
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
@@ -21491,7 +21503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 943a5be7b01516f498a125cbb3a5d584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nightLightsTransition: {fileID: 1837181620}
+  night_Transition: {fileID: 1837181620}
   energyText: {fileID: 486541125}
   energyTimeText: {fileID: 1552220518}
   energyFillBar: {fileID: 1015051881}
@@ -66105,7 +66117,8 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.26989
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1837181620, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
 --- !u!1 &1837181616 stripped
 GameObject:
@@ -66127,17 +66140,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 872982438240456205, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
   m_PrefabInstance: {fileID: 1837181615}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1837181620 stripped
+--- !u!114 &1837181620
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1837181620, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
-  m_PrefabInstance: {fileID: 1837181615}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837181619}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6461ed5dbf376d4aab5dfd5cf1e6b8d, type: 3}
+  m_Script: {fileID: 11500000, guid: adeee84914ccac3409941f3017cd5ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fX_VC: {fileID: 730708617}
+  vfxElements:
+  - {fileID: 1837181618}
+  - {fileID: 1837181617}
 --- !u!1 &1837291194
 GameObject:
   m_ObjectHideFlags: 0
@@ -84233,7 +84251,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 77.19885, y: -23.391895}
+  m_AnchoredPosition: {x: 77.19873, y: -23.391895}
   m_SizeDelta: {x: 154.39758, y: 46.78379}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1751130154896164661

@@ -216,6 +216,13 @@ public class VFX_VC : MonoBehaviour
         }
             
     }
+
+    public void EnableLights(bool isEnabled)
+    {
+        StopAllCoroutines();
+        StartCoroutine(GoToSleepSmooth(isEnabled));
+    }
+
     IEnumerator GoToSleepSmooth(bool goToSleep)
     {
         float nightColorAlpha = 0;
