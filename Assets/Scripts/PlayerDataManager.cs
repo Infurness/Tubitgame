@@ -271,8 +271,9 @@ public class PlayerDataManager : MonoBehaviour
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             });
             dataRequest.Data.Add(keys[i], dataJson);
-        }
 
+            Debug.Log($"UPDATEDATABASE {keys[i]} {dataJson}");
+        }
         dataRequest.Permission = permission;
         PlayFabClientAPI.UpdateUserData(dataRequest, (result =>
             {
@@ -281,6 +282,7 @@ public class PlayerDataManager : MonoBehaviour
             }),
             (error =>
             {
+                Debug.LogError($"Error updating user data in PlayFab: {error}");
                 onFailed?.Invoke();
             }));
 
@@ -344,7 +346,7 @@ public class PlayerDataManager : MonoBehaviour
                 break;
             index++;
         }
-        Debug.Log("OUT OF INDEX ERROR: " + index);
+        
         unpublishedvideos.RemoveAt(index);
         UpdateUserDatabase (new[] { "UnpublishedVideos" }, new[] { unpublishedvideos }, (() => { playerData.unpublishedVideos = unpublishedvideos; }));
     }
@@ -474,19 +476,21 @@ public class PlayerDataManager : MonoBehaviour
     }
     public void UpdatePlayerData(ulong subscribersCount,List<Video> videos)
     {
-        ulong lastSubs = playerData.subscribers;
-        UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[]
-            {
-            subscribersCount,
-            videos
-        }, (() =>
+        if(subscribersCount != playerData.subscribers || videos.Count != playerData.videos.Count)
         {
-            playerData.subscribers = subscribersCount;
-            playerData.videos = videos;
-        }));
-        LeaderboardManager.Instance.UpdateLeaderboard ("SubscribersCount", (int)subscribersCount);
-        signalBus.Fire (new ChangePlayerSubsSignal() { previousSubs= lastSubs, subs =subscribersCount});
-
+            ulong lastSubs = playerData.subscribers;
+            UpdateUserDatabase(new[] {"Subscribers","Videos"},new object[]
+                {
+                subscribersCount,
+                videos
+            }, (() =>
+            {
+                playerData.subscribers = subscribersCount;
+                playerData.videos = videos;
+            }));
+            LeaderboardManager.Instance.UpdateLeaderboard ("SubscribersCount", (int)subscribersCount);
+            signalBus.Fire (new ChangePlayerSubsSignal() { previousSubs= lastSubs, subs =subscribersCount});
+        }
     }
 
     public void AddHardCurrency(int amount, Action confirmPurchase = null)
@@ -563,7 +567,7 @@ public class PlayerDataManager : MonoBehaviour
         ulong sc = playerData.softCurrency;
 
         sc -=  (ulong)amount;
-
+        
         UpdateUserDatabase(new[] {"SoftCurrency"}, new object[]{sc}, (() =>
         {
             gameAnalyticsManager.SendCustomEvent("soft_currency_spend");
