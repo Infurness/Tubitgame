@@ -139,13 +139,9 @@ public class LevelUpSignal
     public int level;
     public RewardsData reward;
 }
-
-public class AddSubsForExperienceSignal
+public class AddExperiencePointsSignal
 {
     public ulong subs;
-}
-public class AddViewsForExperienceSignal
-{
     public ulong views;
 }
 public class AddSoftCurrencyForExperienceSignal

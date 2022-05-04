@@ -262,7 +262,6 @@ public class PlayerDataManager : MonoBehaviour
 
         var dataRequest = new UpdateUserDataRequest();
         dataRequest.Data = new Dictionary<string, string>();
-
         for (int i = 0; i < keys.Length; i++)
         {
             var dataJson = JsonConvert.SerializeObject(data[i],new JsonSerializerSettings()
@@ -271,8 +270,6 @@ public class PlayerDataManager : MonoBehaviour
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             });
             dataRequest.Data.Add(keys[i], dataJson);
-
-            Debug.Log($"UPDATEDATABASE {keys[i]} {dataJson}");
         }
         dataRequest.Permission = permission;
         PlayFabClientAPI.UpdateUserData(dataRequest, (result =>
@@ -580,7 +577,6 @@ public class PlayerDataManager : MonoBehaviour
     public void AddExperiencePoints (ulong experience)
     {
         playerData.xpData.experiencePoints += experience;
-        UpdateXpData ();
     }
     public void CheatResetXp ()
     {
@@ -607,7 +603,6 @@ public class PlayerDataManager : MonoBehaviour
     public void SetViewsThreshold (int value)
     {
         playerData.xpData.viewsThresholdCounter = value;
-        UpdateXpData ();
     }
     public int GetSoftCurrencyThreshold ()
     {
@@ -616,9 +611,8 @@ public class PlayerDataManager : MonoBehaviour
     public void SetSoftCurrencyThreshold (int value)
     {
         playerData.xpData.softCurrencyThresholdCounter = value;
-        UpdateXpData ();
     }
-    void UpdateXpData ()
+    public void UpdateXpData ()
     {
         UpdateUserDatabase (new[] { "XpData" }, new object[]
         {

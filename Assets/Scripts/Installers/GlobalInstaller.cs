@@ -68,8 +68,7 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<CloseSettingPanelSignal>();   
     Container.DeclareSignal<OpenDeleteAccountSignal> ();
     Container.DeclareSignal<OpenLeaderboardsSignal> ();
-    Container.DeclareSignal<AddSubsForExperienceSignal> ();
-    Container.DeclareSignal<AddViewsForExperienceSignal> ();
+    Container.DeclareSignal<AddExperiencePointsSignal> ();
     Container.DeclareSignal<LevelUpSignal> ();
     Container.DeclareSignal<UpdateRankSignal> ();
     Container.DeclareSignal<OpenLevelUpPanelSignal> ();
