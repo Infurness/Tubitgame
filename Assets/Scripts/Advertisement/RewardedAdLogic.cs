@@ -76,7 +76,7 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
             GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
 
             GameAnalytics.NewDesignEvent("ad_retry");
-            Debug.Log ("Unity Ads Rewarded Ad NOT Completed");
+            Debug.LogWarning("Unity Ads Rewarded Ad NOT Completed");
             signalBus.Fire<NotGrantedRewardSignal> ();
         }
         Advertisement.Load (_adUnitId, this);
@@ -88,7 +88,8 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         GameAnalytics.NewDesignEvent("ad_rv_fail");
         GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
 
-        Debug.Log ($"Error loading Ad Unit {adUnitId}: {error.ToString ()} - {message}");
+        Debug.LogError ($"Error loading Ad Unit {adUnitId}: {error.ToString ()} - {message}");
+        signalBus.Fire<NotGrantedRewardSignal> ();
         // Use the error details to determine whether to try to load another ad.
     }
 
@@ -97,8 +98,8 @@ public class RewardedAdLogic : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         GameAnalytics.NewDesignEvent("ad_rv_fail");
         GameAnalytics.NewAdEvent(GAAdAction.FailedShow,GAAdType.Video,"UnityAds",_adUnitId);
 
-        Debug.Log ($"Error showing Ad Unit {adUnitId}: {error.ToString ()} - {message}");
-        // Use the error details to determine whether to try to load another ad.
+        Debug.LogError ($"Error showing Ad Unit {adUnitId}: {error.ToString ()} - {message}");
+        signalBus.Fire<NotGrantedRewardSignal> ();
     }
 
     public void OnUnityAdsShowStart (string adUnitId) { Debug.Log ("Start Showing "); }
