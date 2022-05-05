@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Zenject;
+using UnityEngine.SceneManagement;
 
 enum HUDScreen { Home, VideoManager, Events, Store}
 public class HUD_VC : MonoBehaviour
@@ -158,7 +159,11 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenVideoManagerPanel ()
     {
-        night_Transition.DisableElements();
+        Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        if (scene.name == "MainBuildScene")
+        {
+            night_Transition.DisableElements();
+        }
         gameAnalyticsManager.SendCustomEvent("VideoMangerScreen");
         OpenScreenPanel (HUDScreen.VideoManager);
     }
