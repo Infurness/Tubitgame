@@ -384,6 +384,7 @@ public class Shop_VC : MonoBehaviour
 
     void OpenRealEstatePanel()
     {
+        consumablesPanel.gameObject.SetActive(false);
         itemsPanel.gameObject.SetActive(false);
         offersPanel.gameObject.SetActive(false);
         realEstatePanel.gameObject.SetActive(true);
