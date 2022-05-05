@@ -265,7 +265,10 @@ public class VideoInfo_VC : MonoBehaviour
         signalBus.Fire<OnHitPublishButtonSignal>();
         if (AdsManager.Instance.IsAdLoaded () && !AdsManager.Instance.AreAdsDeactive())
         {
+            signalBus.TryUnsubscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);    
+            signalBus.TryUnsubscribe<CloseAdsDefaultPopUpSignal> (PublishVideo);   
             signalBus.Subscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);
+            signalBus.Subscribe<CloseAdsDefaultPopUpSignal> (PublishVideo);
             signalBus.Fire<OpenDoubleViewsAdSignal> ();
         }
         else
@@ -276,10 +279,10 @@ public class VideoInfo_VC : MonoBehaviour
     void PublishVideo ()
     {
      
-        signalBus.TryUnsubscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);       
+        signalBus.TryUnsubscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);    
+        signalBus.TryUnsubscribe<CloseAdsDefaultPopUpSignal> (PublishVideo);   
         signalBus.Fire<PublishVideoSignal> (new PublishVideoSignal () { videoName = videoName, videoThemes = themeTypes, videoSelectedQuality = selectedQuality});
         videoRef = youTubeVideoManager.GetVideoByName (videoName);
-        //InitialState (); //This line makes an android build crash when being executed after watching a reward ad
         if (videoRef.isViral)
             signalBus.Fire<OpenViralPopUpSignal>(new OpenViralPopUpSignal { videoName = videoRef.name });
         UpdateVideoInfo ();

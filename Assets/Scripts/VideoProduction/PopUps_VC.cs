@@ -267,7 +267,7 @@ public class PopUps_VC : MonoBehaviour
     }
     void CancelAdsDefaultPanel ()
     {
-        signalBus.Fire<FinishedAdVisualitationRewardSignal> ();
+        signalBus.Fire<CloseAdsDefaultPopUpSignal> ();
         CloseAdsDefaultPanel ();
     }
 }
