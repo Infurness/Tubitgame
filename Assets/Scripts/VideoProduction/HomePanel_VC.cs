@@ -16,6 +16,7 @@ public class HomePanel_VC : MonoBehaviour
    // [SerializeField] private ScrollRect viewsScroll;
     [SerializeField] private Button playerIconButton;
 
+    [SerializeField] Night_Transition night_Transition;
     [SerializeField] private Button restButton; 
     [SerializeField] GameObject shopButtonPanel;
     [SerializeField] private GameObject videoMangerButtonPanel;
@@ -207,9 +208,15 @@ public class HomePanel_VC : MonoBehaviour
     {
 
         if (!signal.IsResting)
-            restButton.GetComponentInChildren<TMP_Text> ().text = "Rest";
+        {
+            restButton.GetComponentInChildren<TMP_Text>().text = "Rest";
+            night_Transition.ChangeIsResting(false);
+        }
         else
-            restButton.GetComponentInChildren<TMP_Text> ().text = "Stop\nResting";
+        {
+            restButton.GetComponentInChildren<TMP_Text>().text = "Stop\nResting";
+            night_Transition.ChangeIsResting(true);
+        }
     }
 
     void HideButtons()
