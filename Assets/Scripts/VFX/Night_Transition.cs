@@ -1,15 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Night_Transition : MonoBehaviour
 {
     [SerializeField] private VFX_VC fX_VC;
     [SerializeField] private GameObject [] vfxElements;
 
+    private bool isResting;
+    
+
     private void OnEnable()
     {
-        EnableElements();
+        if (isResting)
+        {
+            EnableElements();
+        }
+    }
+
+    public void ChangeIsResting(bool resting)
+    {
+        isResting = resting;
     }
 
     public void DisableElements()
@@ -21,7 +33,7 @@ public class Night_Transition : MonoBehaviour
     }
 
     public void EnableElements()
-    {
-        fX_VC.EnableLights(true);
+    {    
+       fX_VC.EnableLights(true);
     }
 }
