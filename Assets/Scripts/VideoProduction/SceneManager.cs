@@ -12,17 +12,15 @@ public class SceneManager : MonoBehaviour
 
     private void Start()
     {
-        signalBus.Subscribe<AssetsLoadedSignal>((signal =>
+        signalBus.Subscribe<OnPlayerInventoryFetchedSignal>((signal =>
         {
             StartCoroutine(LoadSceneAsync(1));
         } ));
     }
 
- 
-
     IEnumerator LoadSceneAsync(int index)
     {
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(0.5f);
 
         string playerName = PlayerDataManager.Instance.GetPlayerName();
         if (playerName == "No Data" || playerName == "Error: NoData")
