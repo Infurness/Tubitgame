@@ -152,18 +152,25 @@ public class HUD_VC : MonoBehaviour
     {
         playerSubscribers.text = PlayerDataManager.Instance.GetSubscribers ().ToString ();
     }
-    void OpenHomePanel ()
-    {
-        OpenScreenPanel (HUDScreen.Home);
-        UpdateSubs ();
-    }
-    void OpenVideoManagerPanel ()
+
+    private void DisableNightLights()
     {
         Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
         if (scene.name == "MainBuildScene")
         {
             night_Transition.DisableElements();
         }
+    }
+
+    void OpenHomePanel ()
+    {
+        OpenScreenPanel (HUDScreen.Home);
+        UpdateSubs ();
+    }
+
+    void OpenVideoManagerPanel ()
+    {
+        DisableNightLights();
         gameAnalyticsManager.SendCustomEvent("VideoMangerScreen");
         OpenScreenPanel (HUDScreen.VideoManager);
     }
@@ -171,8 +178,9 @@ public class HUD_VC : MonoBehaviour
     {
         OpenScreenPanel (HUDScreen.Events);
     }
-    void OpenStorePanel ()
+    void OpenStorePanel () 
     {
+        DisableNightLights();
         gameAnalyticsManager.SendCustomEvent("ShopScreen");
         OpenScreenPanel (HUDScreen.Store);       
     }
