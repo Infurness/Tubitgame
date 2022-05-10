@@ -207,15 +207,16 @@ public class HomePanel_VC : MonoBehaviour
     void RestButtonBehaviour (RestStateChangedSignal signal)
     {
 
+        if(TutorialManager.Instance == null)
+            night_Transition.ChangeIsResting(!signal.IsResting);
+        
         if (!signal.IsResting)
         {
             restButton.GetComponentInChildren<TMP_Text>().text = "Rest";
-            night_Transition.ChangeIsResting(false);
         }
         else
         {
             restButton.GetComponentInChildren<TMP_Text>().text = "Stop\nResting";
-            night_Transition.ChangeIsResting(true);
         }
     }
 
