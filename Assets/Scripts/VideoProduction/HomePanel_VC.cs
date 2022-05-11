@@ -208,7 +208,7 @@ public class HomePanel_VC : MonoBehaviour
     {
 
         if(TutorialManager.Instance == null)
-            night_Transition.ChangeIsResting(!signal.IsResting);
+            night_Transition.ChangeIsResting(signal.IsResting);
         
         if (!signal.IsResting)
         {
