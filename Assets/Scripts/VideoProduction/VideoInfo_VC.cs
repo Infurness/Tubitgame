@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Zenject;
+using Unity.Notifications.Android;
 
 public class VideoInfo_VC : MonoBehaviour
 {
@@ -234,10 +235,34 @@ public class VideoInfo_VC : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(FillTheRecordImage(maxInternalRecordTime, internalRecordTime));
             signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = youTubeVideoManager.GetUnpublishedVideoByName(videoName) });
+            ScheduleNotification();
         }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
     }
+    private void ScheduleNotification()
+    {
+
+        var title = "Your Video is Ready!";
+        var body = "Great job editing your video! Now, isn't it the right time to get your video published?";
+
+        var channel = new AndroidNotificationChannel()
+        {
+            Id = "channel_id",
+            Name = "Default Channel",
+            Importance = Importance.Default,
+            Description = "Generic notifications",
+        };
+        AndroidNotificationCenter.RegisterNotificationChannel(channel);
+
+        var notification = new AndroidNotification();
+        notification.Title = title;
+        notification.Text = body;
+        notification.FireTime = System.DateTime.Now.AddSeconds(maxInternalRecordTime);
+
+        AndroidNotificationCenter.SendNotification(notification, "channel_id");
+    }
+
     void VideoReadyToPublish ()
     {
         videoProgressBarCountText.text = $"Completed";
@@ -292,9 +317,6 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if (TutorialManager.Instance != null)
             return;
-        //signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
-        //int energyLeftToSpend = (int)(energyCost *(internalRecordTime / maxInternalRecordTime)); 
-        //signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
 
         GetComponent<Animator>().Play("Cancel_Video");
 
