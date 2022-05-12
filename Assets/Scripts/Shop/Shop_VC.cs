@@ -154,79 +154,73 @@ public class Shop_VC : MonoBehaviour
         currenciesPanel.gameObject.SetActive(false);
 
 
-        var clothes = shop.Clothes;
+        var allClothes = shop.Clothes.Where(x=>!x.Owned);
 
-        foreach (var item in clothes)
+        var genderCloth = GenderItemType.Female;
+        var currentGender = PlayerInventory.Instance.EquippedAvatar().bodyItem.GenderItemType;
+        var onlyGenderClothes = new List<ThemeCustomizationItem>();
+
+        foreach(var cloth in allClothes)
         {
-            if (!item.Owned)
+            if(cloth is HairItem)
             {
-                if (TutorialManager.Instance != null)
-                {
-                    if(item.SCPrice==0)
-                    {
-                        var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
-                        switch (item.PriceType)
-                        {
-                            case PriceType.Free:
-                                Destroy(shopButton.gameObject);
+                genderCloth = (cloth as HairItem).GenderItemType;
+            }
+            if(cloth is TorsoItem)
+            {
+                genderCloth = (cloth as TorsoItem).GenderItemType;
+            }
+            if(cloth is LegsItem)
+            {
+                genderCloth = (cloth as LegsItem).GenderItemType;
+            }
+            if(cloth is FeetItem)
+            {
+                genderCloth = (cloth as FeetItem).GenderItemType;
+            }
 
-                                break;
-                            case PriceType.SC:
-                                shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
-                                    (() => BuyClothItem(item, PriceType.SC)));
-
-                                break;
-                            case PriceType.HC:
-                                shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
-                                    () => BuyClothItem(item, PriceType.HC));
-                                break;
-
-                            case PriceType.Exchangeable:
-                                shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                                    item.name, item.sprite,
-                                    (() => BuyClothItem(item, PriceType.SC)),
-                                    (() => BuyClothItem(item, PriceType.HC)));
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    }   
-                }
-                else
-                {
-                    var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
-                    switch (item.PriceType)
-                    {
-                        case PriceType.Free:
-                            Destroy(shopButton.gameObject);
-
-                            break;
-                        case PriceType.SC:
-                            shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
-                                (() => BuyClothItem(item, PriceType.SC)));
-
-                            break;
-                        case PriceType.HC:
-                            shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
-                                () => BuyClothItem(item, PriceType.HC));
-                            break;
-
-                        case PriceType.Exchangeable:
-                            shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
-                                item.name, item.sprite,
-                                (() => BuyClothItem(item, PriceType.SC)),
-                                (() => BuyClothItem(item, PriceType.HC)));
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-                
+            if(genderCloth == currentGender)
+            {
+                onlyGenderClothes.Add(cloth);
             }
         }
 
+
+        if (TutorialManager.Instance != null)
+        {
+            onlyGenderClothes = onlyGenderClothes.Where(x=> x.SCPrice==0).ToList();
+        }
+
+        foreach (var item in onlyGenderClothes)
+        {
+            var shopButton = Instantiate(shopItemButton, itemsScrollView.transform);
+            switch (item.PriceType)
+            {
+                case PriceType.Free:
+                    Destroy(shopButton.gameObject);
+
+                    break;
+                case PriceType.SC:
+                    shopButton.SetSCBuyButton(item.SCPrice, item.name, item.sprite,
+                        (() => BuyClothItem(item, PriceType.SC)));
+
+                    break;
+                case PriceType.HC:
+                    shopButton.SetHCBuyButton(item.HCPrice, item.name, item.sprite,
+                        () => BuyClothItem(item, PriceType.HC));
+                    break;
+
+                case PriceType.Exchangeable:
+                    shopButton.SetBuyByBothButtons(item.HCPrice, item.SCPrice,
+                        item.name, item.sprite,
+                        (() => BuyClothItem(item, PriceType.SC)),
+                        (() => BuyClothItem(item, PriceType.HC)));
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }    
+        }
     }
 
 
