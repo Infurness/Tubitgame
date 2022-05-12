@@ -367,6 +367,7 @@ public class VideoManager_VC : MonoBehaviour
     void CreateVideo (Video video)
     {
         GameObject videoInfoObject = Instantiate (videoInfoPrefab, videoInfoHolder);
+        videoInfoObject.transform.SetAsFirstSibling();
         VideoInfo_VC vc = videoInfoObject.GetComponent<VideoInfo_VC> ();
         vc.SetReferences (_signalBus, _youTubeVideoManager,_energyManager, adsRewardsManager);
         vc.SetVideoInfoUp (video);
