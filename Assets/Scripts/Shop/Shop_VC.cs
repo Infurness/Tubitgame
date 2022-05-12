@@ -188,7 +188,7 @@ public class Shop_VC : MonoBehaviour
 
         if (TutorialManager.Instance != null)
         {
-            allClothes = onlyGenderClothes.Where(x=> x.SCPrice==0);
+            onlyGenderClothes = onlyGenderClothes.Where(x=> x.SCPrice==0).ToList();
         }
 
         foreach (var item in onlyGenderClothes)
