@@ -248,20 +248,20 @@ public class VideoInfo_VC : MonoBehaviour
 
     private void ScheduleNotification()
     {
-        var identifier = "VideoReady";
+        var id = 2;
         var title = "Your Video is Ready!";
         var subtitle = "Login to the game to publish your video.";
         var text = new string[] {"Great job editing your video! Now, isn't it the right time to get your video published?",
                                 "Those caffeines and energy drinks weren't for nothing. Your video is ready to air now!",
                                 "Hey there, your video is ready to publish!"};
-        var id = pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], maxInternalRecordTime, identifier);
-        StartCoroutine(UnscheduleNotification(identifier, id));
+        pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], maxInternalRecordTime, id);
+        StartCoroutine(UnscheduleNotification(id));
     }
 
-    private IEnumerator UnscheduleNotification(string identifier, int id)
+    private IEnumerator UnscheduleNotification(int id)
     {
         yield return new WaitForSeconds(maxInternalRecordTime-0.5f);
-        pushNotifications.UnScheduleNotification(identifier, id);
+        pushNotifications.UnScheduleNotification(id);
     }
 
     void VideoReadyToPublish ()

@@ -207,7 +207,8 @@ public class EnergyManager : MonoBehaviour
             var subtitle = "Login to create a video.";
             var text = new string[]{"Ready to create another masterpiece?", "You're ready to create another video.","You did a good job resting, it's time to get back to work again!"};
             var timeTrigger = SecondsToFillEnergy();
-            var id = pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], timeTrigger, "EnergyNotification");
+            var id = 1;
+            pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], timeTrigger, id);
             PlayerPrefs.SetInt("EnergyNotification", id);
         }
         else
@@ -215,7 +216,7 @@ public class EnergyManager : MonoBehaviour
             if(PlayerPrefs.HasKey("EnergyNotification"))
             {
                 var id = PlayerPrefs.GetInt("EnergyNotification");
-                pushNotifications.UnScheduleNotification("EnergyNotification", id);
+                pushNotifications.UnScheduleNotification(id);
                 PlayerPrefs.DeleteKey("EnergyNotification");
             }
         }

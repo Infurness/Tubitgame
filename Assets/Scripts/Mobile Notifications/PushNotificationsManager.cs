@@ -6,15 +6,15 @@
 
 public interface IPushNotificationsManager
 {
-    public int ScheduleNotification(string title, string subtitle, string text, float FireTimeSeconds, string iOsIdentifier="");
-    public void UnScheduleNotification(string identifier, int id);
+    public void ScheduleNotification(string title, string subtitle, string text, float FireTimeSeconds, int id);
+    public void UnScheduleNotification(int id);
 }
 
 public class PushNotificationsManager : IPushNotificationsManager
 {
     private bool isInitialized = false;
 
-    public int ScheduleNotification(string title, string subtitle, string text, float FireTimeSeconds, string iOsIdentifier="")
+    public void ScheduleNotification(string title, string subtitle, string text, float FireTimeSeconds, int id)
     {
 
         if(!isInitialized)
@@ -22,8 +22,6 @@ public class PushNotificationsManager : IPushNotificationsManager
             Initialize();
             isInitialized = true;
         }
-
-        int id = -1;
 
 #if UNITY_ANDROID
 
@@ -33,12 +31,9 @@ public class PushNotificationsManager : IPushNotificationsManager
         notification.FireTime = System.DateTime.Now.AddSeconds(FireTimeSeconds);
         notification.SmallIcon = "logo";
 
-        id = AndroidNotificationCenter.SendNotification(notification, "channel_id");
-
-        if(AndroidNotificationCenter.CheckScheduledNotificationStatus(id) == NotificationStatus.Scheduled)
+        if(AndroidNotificationCenter.CheckScheduledNotificationStatus(id) != NotificationStatus.Scheduled)
         {
-            AndroidNotificationCenter.CancelAllNotifications();
-            id = AndroidNotificationCenter.SendNotification(notification, "channel_id");
+            AndroidNotificationCenter.SendNotificationWithExplicitID(notification, "channel_id", id);
         }
 
 #elif UNITY_IOS
@@ -52,7 +47,7 @@ public class PushNotificationsManager : IPushNotificationsManager
         {
             // You can specify a custom identifier which can be used to manage the notification later.
             // If you don't provide one, a unique string will be generated automatically.
-            Identifier = iOsIdentifier,
+            Identifier = id.ToString(),
             Title = title,
             Body = text,
             Subtitle = subtitle,
@@ -64,8 +59,6 @@ public class PushNotificationsManager : IPushNotificationsManager
         };
         iOSNotificationCenter.ScheduleNotification(notification);
 #endif
-
-    return id;
     }
 
     private void Initialize()
@@ -85,12 +78,12 @@ public class PushNotificationsManager : IPushNotificationsManager
 #endif
     }
 
-    public void UnScheduleNotification(string identifier, int id)
+    public void UnScheduleNotification(int id)
     {
 #if UNITY_ANDROID
         AndroidNotificationCenter.CancelNotification(id);
 #elif UNITY_IOS
-        iOSNotificationCenter.RemoveScheduledNotification(identifier);
+        iOSNotificationCenter.RemoveScheduledNotification(id.ToString());
 #endif
     }
 }
