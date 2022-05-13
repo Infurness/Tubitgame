@@ -3,20 +3,23 @@ using Unity.Notifications.iOS;
 
 public interface IPushNotificationsManager
 {
-    public void ScheduleNotification(string title, string subtitle, string text, float FireTimeSeconds);
+    public int ScheduleNotification(string title, string subtitle, string text, float FireTimeSeconds, string iOsIdentifier="");
+    public void UnScheduleNotification(string identifier, int id);
 }
 
 public class PushNotificationsManager : IPushNotificationsManager
 {
     private bool isInitialized = false;
 
-    public void ScheduleNotification(string title, string subtitle, string text, float FireTimeSeconds)
+    public int ScheduleNotification(string title, string subtitle, string text, float FireTimeSeconds, string iOsIdentifier="")
     {
+
         if(!isInitialized)
         {
             Initialize();
             isInitialized = true;
         }
+        int id = -1;
 
 #if UNITY_ANDROID
         var notification = new AndroidNotification();
@@ -25,7 +28,7 @@ public class PushNotificationsManager : IPushNotificationsManager
         notification.FireTime = System.DateTime.Now.AddSeconds(FireTimeSeconds);
         notification.SmallIcon = "logo";
 
-        AndroidNotificationCenter.SendNotification(notification, "channel_id");
+        id = AndroidNotificationCenter.SendNotification(notification, "channel_id");
 #elif UNITY_IOS
         var timeTrigger = new iOSNotificationTimeIntervalTrigger()
         {
@@ -37,7 +40,7 @@ public class PushNotificationsManager : IPushNotificationsManager
         {
             // You can specify a custom identifier which can be used to manage the notification later.
             // If you don't provide one, a unique string will be generated automatically.
-            Identifier = "_notification_01",
+            Identifier = iOsIdentifier,
             Title = title,
             Body = text,
             Subtitle = subtitle,
@@ -47,9 +50,10 @@ public class PushNotificationsManager : IPushNotificationsManager
             ThreadIdentifier = "thread1",
             Trigger = timeTrigger,
         };
-
         iOSNotificationCenter.ScheduleNotification(notification);
 #endif
+
+    return id;
     }
 
     private void Initialize()
@@ -64,6 +68,15 @@ public class PushNotificationsManager : IPushNotificationsManager
         };
         AndroidNotificationCenter.RegisterNotificationChannel(channel);
 #elif UNITY_IOS
+#endif
+    }
+
+    public void UnScheduleNotification(string identifier, int id)
+    {
+#if UNITY_ANDROID
+        AndroidNotificationCenter.CancelNotification(id);
+#elif UNITY_IOS
+        iOSNotificationCenter.RemoveScheduledNotification(identifier);
 #endif
     }
 }
