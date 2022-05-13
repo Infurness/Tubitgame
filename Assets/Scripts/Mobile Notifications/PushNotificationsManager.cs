@@ -23,6 +23,7 @@ public class PushNotificationsManager : IPushNotificationsManager
         notification.Title = title;
         notification.Text = text;
         notification.FireTime = System.DateTime.Now.AddSeconds(FireTimeSeconds);
+        notification.SmallIcon = "logo";
 
         AndroidNotificationCenter.SendNotification(notification, "channel_id");
 #elif UNITY_IOS
