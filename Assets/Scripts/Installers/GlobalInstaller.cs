@@ -141,7 +141,7 @@ public class GlobalInstaller : MonoInstaller
 
     Container.Bind<PlayerDataManager>().FromInstance(PlayerDataManager.Instance);
     Container.Bind<IAuthenticator>().To<PlayFabAuthenticator>().AsSingle();
-
+    Container.Bind<IPushNotificationsManager>().To<PushNotificationsManager>().AsSingle();
     
     
     //views

@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Zenject;
-using Unity.Notifications.Android;
 
 public class VideoInfo_VC : MonoBehaviour
 {
@@ -64,7 +63,9 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private GameObject subsIconHolder;
 
    private EnergyManager energyManager;
-    // Start is called before the first frame update
+   
+    [Inject] private IPushNotificationsManager pushNotifications;
+
     void Start ()
     {
         //moneyButton.onClick.AddListener (RecollectMoney);
@@ -240,27 +241,12 @@ public class VideoInfo_VC : MonoBehaviour
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
     }
+
     private void ScheduleNotification()
     {
-
         var title = "Your Video is Ready!";
         var body = "Great job editing your video! Now, isn't it the right time to get your video published?";
-
-        var channel = new AndroidNotificationChannel()
-        {
-            Id = "channel_id",
-            Name = "Default Channel",
-            Importance = Importance.Default,
-            Description = "Generic notifications",
-        };
-        AndroidNotificationCenter.RegisterNotificationChannel(channel);
-
-        var notification = new AndroidNotification();
-        notification.Title = title;
-        notification.Text = body;
-        notification.FireTime = System.DateTime.Now.AddSeconds(maxInternalRecordTime);
-
-        AndroidNotificationCenter.SendNotification(notification, "channel_id");
+        pushNotifications.ScheduleNotification(title, string.Empty, body, maxInternalRecordTime);
     }
 
     void VideoReadyToPublish ()
