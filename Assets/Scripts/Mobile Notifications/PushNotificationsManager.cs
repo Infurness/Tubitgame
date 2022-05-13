@@ -22,9 +22,11 @@ public class PushNotificationsManager : IPushNotificationsManager
             Initialize();
             isInitialized = true;
         }
+
         int id = -1;
 
 #if UNITY_ANDROID
+
         var notification = new AndroidNotification();
         notification.Title = title;
         notification.Text = text;
@@ -32,6 +34,13 @@ public class PushNotificationsManager : IPushNotificationsManager
         notification.SmallIcon = "logo";
 
         id = AndroidNotificationCenter.SendNotification(notification, "channel_id");
+
+        if(AndroidNotificationCenter.CheckScheduledNotificationStatus(id) == NotificationStatus.Scheduled)
+        {
+            AndroidNotificationCenter.CancelAllNotifications();
+            id = AndroidNotificationCenter.SendNotification(notification, "channel_id");
+        }
+
 #elif UNITY_IOS
         var timeTrigger = new iOSNotificationTimeIntervalTrigger()
         {
@@ -62,6 +71,8 @@ public class PushNotificationsManager : IPushNotificationsManager
     private void Initialize()
     {
 #if UNITY_ANDROID
+
+        AndroidNotificationCenter.CancelAllDisplayedNotifications();
         var channel = new AndroidNotificationChannel()
         {
             Id = "channel_id",
