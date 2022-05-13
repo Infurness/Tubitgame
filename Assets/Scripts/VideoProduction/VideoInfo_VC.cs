@@ -65,10 +65,10 @@ public class VideoInfo_VC : MonoBehaviour
    private EnergyManager energyManager;
    
     [Inject] private IPushNotificationsManager pushNotifications;
+    private bool HasScheduledNotification = false;
 
     void Start ()
     {
-        //moneyButton.onClick.AddListener (RecollectMoney);
         if (videoRef == null)
             StartRecordingVideo ();
         else
@@ -236,7 +236,11 @@ public class VideoInfo_VC : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(FillTheRecordImage(maxInternalRecordTime, internalRecordTime));
             signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = youTubeVideoManager.GetUnpublishedVideoByName(videoName) });
-            ScheduleNotification();
+            if(!HasScheduledNotification)
+            {
+                ScheduleNotification();
+                HasScheduledNotification = true;
+            }
         }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
@@ -287,6 +291,7 @@ public class VideoInfo_VC : MonoBehaviour
             PublishVideo ();
         }
     }
+
     void PublishVideo ()
     {
      
@@ -324,7 +329,6 @@ public class VideoInfo_VC : MonoBehaviour
 
     }
     
-
     void CheckVirality ()
     {
         if (videoRef!=null && videoRef.isViral)
@@ -332,6 +336,7 @@ public class VideoInfo_VC : MonoBehaviour
             viralVisual.SetActive(true);
         }     
     }
+
     void ActivateVirality(VFX_ActivateViralAnimation signal)
     {
         if(videoName == signal.videoName)
@@ -343,16 +348,6 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void SkipVideoProduction()
     {
-        //if (TutorialManager.Instance != null)
-        //{
-        //    youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
-        //    createdTime = new DateTime(2000, 1, 1); //Set to the past
-        //    youTubeVideoManager.UpdateUnpublishedVideos();
-        //    RestartProductionBar();
-        //    GetComponent<Animator>().Play("Haste_Video");
-        //    StartCoroutine(AutoFillProductionBar());
-        //}
-        //else 
         if (TutorialManager.Instance != null || youTubeVideoManager.ConsumeHardCurrency((int)skipMoney))
         {
             youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
