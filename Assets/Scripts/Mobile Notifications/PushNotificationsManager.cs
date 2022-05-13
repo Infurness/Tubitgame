@@ -1,5 +1,8 @@
-using Unity.Notifications.Android;
-using Unity.Notifications.iOS;
+#if UNITY_IOS
+    using Unity.Notifications.iOS;
+#elif UNITY_ANDROID
+    using Unity.Notifications.Android;
+#endif
 
 public interface IPushNotificationsManager
 {
