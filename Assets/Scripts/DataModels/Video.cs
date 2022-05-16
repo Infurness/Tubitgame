@@ -65,4 +65,11 @@ public class UnpublishedVideo
         secondsToBeProduced = time;
         createdTime = date;
     }
+
+    public double GetSecondsLeftToPublish()
+    {
+        var secondsPassed = UnityEngine.Mathf.Abs((int)(createdTime - GameClock.Instance.Now).TotalSeconds);
+        //var secondsPassed = ( System.DateTime.Now - createdTime).TotalSeconds;
+        return secondsToBeProduced - secondsPassed;
+    }
 }

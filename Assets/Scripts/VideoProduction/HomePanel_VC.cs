@@ -115,9 +115,7 @@ public class HomePanel_VC : MonoBehaviour
     {
         if (videoBeingRecorded!=null)
         {
-            float secondsPassed = Mathf.Abs((int)(videoBeingRecorded.createdTime - GameClock.Instance.Now).TotalSeconds);
-            float secondsLeft = videoBeingRecorded.secondsToBeProduced - secondsPassed;
-            productionBarFilling.fillAmount = 1-(secondsLeft / videoBeingRecorded.secondsToBeProduced);
+            productionBarFilling.fillAmount = 1-((float)videoBeingRecorded.GetSecondsLeftToPublish() / videoBeingRecorded.secondsToBeProduced);
             if (productionBarFilling.fillAmount >=1)
             {
                 videoBeingRecorded = null;

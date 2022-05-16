@@ -65,8 +65,7 @@ public class VideoInfo_VC : MonoBehaviour
    private EnergyManager energyManager;
    
     [Inject] private IPushNotificationsManager pushNotifications;
-    private bool HasScheduledNotification = false;
-
+    private bool hasScheduledNotification = false;
     void Start ()
     {
         if (videoRef == null)
@@ -235,18 +234,23 @@ public class VideoInfo_VC : MonoBehaviour
         {
             StopAllCoroutines();
             StartCoroutine(FillTheRecordImage(maxInternalRecordTime, internalRecordTime));
-            signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = youTubeVideoManager.GetUnpublishedVideoByName(videoName) });
-            if(!HasScheduledNotification)
+            var unplublishedVideo = youTubeVideoManager.GetUnpublishedVideoByName(videoName);
+            signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = unplublishedVideo});
+
+            if(unplublishedVideo.GetSecondsLeftToPublish() > 0)
             {
-                ScheduleNotification();
-                HasScheduledNotification = true;
+                if(!hasScheduledNotification)
+                {
+                    ScheduleNotification((float)unplublishedVideo.GetSecondsLeftToPublish());
+                    hasScheduledNotification = true;
+                }
             }
         }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
     }
 
-    private void ScheduleNotification()
+    private void ScheduleNotification(float secondsLeftToPublish)
     {
         var id = 2;
         var title = "Your Video is Ready!";
@@ -254,14 +258,8 @@ public class VideoInfo_VC : MonoBehaviour
         var text = new string[] {"Great job editing your video! Now, isn't it the right time to get your video published?",
                                 "Those caffeines and energy drinks weren't for nothing. Your video is ready to air now!",
                                 "Hey there, your video is ready to publish!"};
-        pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], maxInternalRecordTime, id);
-        StartCoroutine(UnscheduleNotification(id));
-    }
 
-    private IEnumerator UnscheduleNotification(int id)
-    {
-        yield return new WaitForSeconds(maxInternalRecordTime-0.5f);
-        pushNotifications.UnScheduleNotification(id);
+        pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], secondsLeftToPublish, id);
     }
 
     void VideoReadyToPublish ()
