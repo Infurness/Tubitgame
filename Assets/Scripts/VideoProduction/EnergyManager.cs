@@ -198,6 +198,17 @@ public class EnergyManager : MonoBehaviour
         return isResting;
     }
 
+
+    float SecondsToRefillEnergy ()
+    {
+        float divisor = baseRegenerationValue;
+        if (isResting)
+            divisor *= restFactorValue;
+        float secondsToRefillTheEnergy = ((GetMaxEnergy () - energyData.energy) / divisor);
+
+        return secondsToRefillTheEnergy;
+    }
+
     void OnApplicationFocus(bool hasFocus)
     {
         if(!hasFocus)
@@ -206,7 +217,7 @@ public class EnergyManager : MonoBehaviour
             var title = "Energy Full";
             var subtitle = "Login to create a video.";
             var text = new string[]{"Ready to create another masterpiece?", "You're ready to create another video.","You did a good job resting, it's time to get back to work again!"};
-            var timeTrigger = SecondsToFillEnergy();
+            var timeTrigger = SecondsToRefillEnergy();
             var id = 1;
             pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], timeTrigger, id);
             PlayerPrefs.SetInt("EnergyNotification", id);
