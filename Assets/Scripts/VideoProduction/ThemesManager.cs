@@ -17,9 +17,13 @@ public class ThemesManager : MonoBehaviour
 
     [SerializeField] private ScriptableTheme themesData;
     [SerializeField] private ImagePerTheme[] imagesPerTheme;
+    [Header("Push notifications")]
+    [Range(1.5f,2f)]
+    [SerializeField] private float popularityLimit = 1.8f;
+    [SerializeField] private float minutesToForecastPopularity = 30;
     private List<CustomizationThemeEffect> bounsEffect;
-    // Start is called before the first frame update
     [Inject] private SignalBus signBus;
+    [Inject] private IPushNotificationsManager pushNotification;
 
     private void Start()
     {
@@ -29,7 +33,33 @@ public class ThemesManager : MonoBehaviour
             bounsEffect.Add(new CustomizationThemeEffect(){ThemeType = themeData.themeType,themePopularityFactor = 0});
         }
         signBus.Subscribe<OnPlayerEquippedThemeItemChangedSignal>(OnPlayerEquipmentsChanged);
+
+        StartCoroutine(CheckNextPopularTheme());
+    }
+
+    private IEnumerator CheckNextPopularTheme()
+    {
+        var time = GameClock.Instance.Now.AddMinutes(minutesToForecastPopularity);
+        foreach (ThemeData theme in themesData.themesData)
+        {
+            var popularity = ThemePopularityBasedOnTime (theme, time);
+            if (popularity > popularityLimit)
+            {
+                var title = "Popular Theme";
+                var subtitle = "Login to create a video.";
+                var text = new string[] {$"{theme.themeType} is rising through the chart!", 
+                                        $"People can't stop watching {theme.themeType} at the moment!",
+                                        $"People are crazy about {theme.themeType}. Take your chance, now!"};
+                var fireTimeSeconds = minutesToForecastPopularity * 60;
+                var id = 3;
+       
+                pushNotification.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], fireTimeSeconds, id);
+                break;
+            }
+        }
         
+        yield return new WaitForSeconds(minutesToForecastPopularity * 60);
+        StartCoroutine(CheckNextPopularTheme());
     }
 
     void OnPlayerEquipmentsChanged(OnPlayerEquippedThemeItemChangedSignal playerEquippedThemeItemChangedSignal)
