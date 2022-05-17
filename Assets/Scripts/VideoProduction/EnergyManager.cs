@@ -209,12 +209,8 @@ public class EnergyManager : MonoBehaviour
         return secondsToRefillTheEnergy * Time.deltaTime;
     }
 
-void OnApplicationQuit() 
-
-//    void OnApplicationFocus(bool hasFocus)
+    void OnApplicationFocus(bool hasFocus)
     {
-
-    var hasFocus = false;
         if(!hasFocus)
         {
             SaveEnergyData ();
