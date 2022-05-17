@@ -142,12 +142,12 @@ public class EnergyManager : MonoBehaviour
             energyData.energy = maxEnergyByLevel[Mathf.Max (0, xpManager.GetPlayerLevel () - 1)];
         _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
     }
+    
     public float GetEnergyGainedPerSecond ()
     {
-        float energyGainPerSecond = GetMaxEnergy () / SecondsToFillEnergy ();
-
-        return energyGainPerSecond;
+        return GetMaxEnergy () / SecondsToFillEnergy ();
     }
+
     float SecondsToFillEnergy ()
     {
         float divisor = baseRegenerationValue;
@@ -157,16 +157,16 @@ public class EnergyManager : MonoBehaviour
 
         return secondsToFillAllTheEnergy;
     }
+
     public int GetVideoEnergyCost(VideoQuality quality)
     {
         return energyCostForEachQuality.Single (x => x.quality == quality).energyCost;
     }
+
     public void ChangePlayerRestingState ()
     {
-
         if (youTubeVideoManager.IsRecording())
             return;
-
 
         isResting = !isResting;
         playerDataManager.UpdatePlayerRestState(isResting);
@@ -193,11 +193,11 @@ public class EnergyManager : MonoBehaviour
             });
         }
     }
+
     public bool GetPlayerIsResting ()
     {
         return isResting;
     }
-
 
     float SecondsToRefillEnergy ()
     {
@@ -206,11 +206,15 @@ public class EnergyManager : MonoBehaviour
             divisor *= restFactorValue;
         float secondsToRefillTheEnergy = ((GetMaxEnergy () - energyData.energy) / divisor);
 
-        return secondsToRefillTheEnergy;
+        return secondsToRefillTheEnergy * Time.deltaTime;
     }
 
-    void OnApplicationFocus(bool hasFocus)
+void OnApplicationQuit() 
+
+//    void OnApplicationFocus(bool hasFocus)
     {
+
+    var hasFocus = false;
         if(!hasFocus)
         {
             SaveEnergyData ();
