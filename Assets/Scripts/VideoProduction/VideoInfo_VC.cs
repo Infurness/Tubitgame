@@ -63,10 +63,11 @@ public class VideoInfo_VC : MonoBehaviour
     [SerializeField] private GameObject subsIconHolder;
 
    private EnergyManager energyManager;
-    // Start is called before the first frame update
+   
+    [Inject] private IPushNotificationsManager pushNotifications;
+    private bool hasScheduledNotification = false;
     void Start ()
     {
-        //moneyButton.onClick.AddListener (RecollectMoney);
         if (videoRef == null)
             StartRecordingVideo ();
         else
@@ -233,11 +234,34 @@ public class VideoInfo_VC : MonoBehaviour
         {
             StopAllCoroutines();
             StartCoroutine(FillTheRecordImage(maxInternalRecordTime, internalRecordTime));
-            signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = youTubeVideoManager.GetUnpublishedVideoByName(videoName) });
+            var unplublishedVideo = youTubeVideoManager.GetUnpublishedVideoByName(videoName);
+            signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = unplublishedVideo});
+
+            if(unplublishedVideo.GetSecondsLeftToPublish() > 0)
+            {
+                if(!hasScheduledNotification)
+                {
+                    ScheduleNotification((float)unplublishedVideo.GetSecondsLeftToPublish());
+                    hasScheduledNotification = true;
+                }
+            }
         }  
         else
             Debug.LogError($"Cant Start coroutine of gameobject {name}, because is deactivated");
     }
+
+    private void ScheduleNotification(float secondsLeftToPublish)
+    {
+        var id = 2;
+        var title = "Your Video is Ready!";
+        var subtitle = "Login to the game to publish your video.";
+        var text = new string[] {"Great job editing your video! Now, isn't it the right time to get your video published?",
+                                "Those caffeines and energy drinks weren't for nothing. Your video is ready to air now!",
+                                "Hey there, your video is ready to publish!"};
+
+        pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], secondsLeftToPublish, id);
+    }
+
     void VideoReadyToPublish ()
     {
         videoProgressBarCountText.text = $"Completed";
@@ -276,6 +300,7 @@ public class VideoInfo_VC : MonoBehaviour
             PublishVideo ();
         }
     }
+
     void PublishVideo ()
     {
      
@@ -292,9 +317,6 @@ public class VideoInfo_VC : MonoBehaviour
     {
         if (TutorialManager.Instance != null)
             return;
-        //signalBus.Fire<CancelVideoRecordingSignal> (new CancelVideoRecordingSignal () { name= videoName });
-        //int energyLeftToSpend = (int)(energyCost *(internalRecordTime / maxInternalRecordTime)); 
-        //signalBus.Fire<AddEnergySignal>(new AddEnergySignal() { energyAddition = energyLeftToSpend });
 
         GetComponent<Animator>().Play("Cancel_Video");
 
@@ -316,7 +338,6 @@ public class VideoInfo_VC : MonoBehaviour
 
     }
     
-
     void CheckVirality ()
     {
         if (videoRef!=null && videoRef.isViral)
@@ -324,6 +345,7 @@ public class VideoInfo_VC : MonoBehaviour
             viralVisual.SetActive(true);
         }     
     }
+
     void ActivateVirality(VFX_ActivateViralAnimation signal)
     {
         if(videoName == signal.videoName)
@@ -335,16 +357,6 @@ public class VideoInfo_VC : MonoBehaviour
     }
     void SkipVideoProduction()
     {
-        //if (TutorialManager.Instance != null)
-        //{
-        //    youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
-        //    createdTime = new DateTime(2000, 1, 1); //Set to the past
-        //    youTubeVideoManager.UpdateUnpublishedVideos();
-        //    RestartProductionBar();
-        //    GetComponent<Animator>().Play("Haste_Video");
-        //    StartCoroutine(AutoFillProductionBar());
-        //}
-        //else 
         if (TutorialManager.Instance != null || youTubeVideoManager.ConsumeHardCurrency((int)skipMoney))
         {
             youTubeVideoManager.GetUnpublishedVideoByName(videoName).createdTime = new DateTime(2000, 1, 1);
