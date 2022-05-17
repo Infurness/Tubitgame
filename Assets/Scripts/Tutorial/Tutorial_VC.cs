@@ -91,6 +91,14 @@ public class Tutorial_VC : MonoBehaviour
        
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TutorialManager.Instance.GoToNextScene();
+        }
+    }
+
     void HidePermanently()
     {
         foreach(GameObject obj in objects)
@@ -137,7 +145,7 @@ public class Tutorial_VC : MonoBehaviour
             case 0: //OpenSettings
                 ActivateAndSetSpeechBubble(new string[] { "Hello.", "It's me.", "Let's show you how all this works.", "Okay, start by clicking on your profile picture, in the top left corner." });
 
-                SendHandTo(openSettingsHandPos.position);
+                SendHandTo(openSettingsHandPos);
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(1); };
                 openSettingsButton.GetComponentInChildren<Button>().interactable = true;
                 openSettingsButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
@@ -146,7 +154,7 @@ public class Tutorial_VC : MonoBehaviour
 
             case (TutorialPhase)1: //SetName
                 ActivateAndSetSpeechBubble(new string[] { "This is the settings menu.", "Let's change your player name.", "Touch the current name, and then write your own." });
-                SendHandTo(inputNameHandPos.position);
+                SendHandTo(inputNameHandPos);
                 TMP_InputField inputField = inputNameField.GetComponentInChildren<TMP_InputField>();
                 fieldAction = (inputString) => { TutorialManager.Instance.GoToNextPhase(2); };
                 inputField.onDeselect.AddListener(fieldAction);
@@ -157,7 +165,7 @@ public class Tutorial_VC : MonoBehaviour
                 break;
             case (TutorialPhase)2: //Confirm name
                 ActivateAndSetSpeechBubble(new string[] { "Now click on the confirm button." });
-                SendHandTo(confirmNameHandPos.position);
+                SendHandTo(confirmNameHandPos);
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(3); };
                 confirmNameField.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 confirmNameField.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(confirmNameField.GetComponentInChildren<Button>(), btnAction));
@@ -169,7 +177,7 @@ public class Tutorial_VC : MonoBehaviour
                 signalBus.Fire<CloseSettingPanelSignal>();
                 videoManagerButton.SetActive(true);
 
-                SendHandTo(videoManagerButtonHandPos.position);
+                SendHandTo(videoManagerButtonHandPos);
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(4); };
                 videoManagerButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 videoManagerButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(videoManagerButton.GetComponentInChildren<Button>(), btnAction));
@@ -181,19 +189,19 @@ public class Tutorial_VC : MonoBehaviour
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(5); };
                 openVideoCreatorButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 openVideoCreatorButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(openVideoCreatorButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(recordVideoButtonHandPos.position);
+                SendHandTo(recordVideoButtonHandPos);
                 break;
             case (TutorialPhase)5:
                 ActivateAndSetSpeechBubble(new string[] { "Select the themes your video is about", "Click the + icon." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(6); };
                 SetThemesButtonsNextPhase(btnAction);
-                SendHandTo(themeSelectionHandPos.position);
+                SendHandTo(themeSelectionHandPos);
                 break;
             case (TutorialPhase)6:
                 confirmThemesButton.GetComponentInChildren<Button>().interactable = false;
                 ActivateAndSetSpeechBubble(new string[] { "Now drag one of the themes to the empty boxes above it." });
                 signalBus.Subscribe<DropThemeSignal>(ThemeDropped);
-                SendHandTo(themeDropHandPos.position);
+                SendHandTo(themeDropHandPos);
                 break;
             case (TutorialPhase)7:
                 ActivateAndSetSpeechBubble(new string[] { "Hit the confirm button to set the themes as selected." });
@@ -207,7 +215,7 @@ public class Tutorial_VC : MonoBehaviour
                 confirmThemesButton.GetComponentInChildren<Button>().interactable = true;
                 confirmThemesButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 confirmThemesButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(confirmThemesButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(confirmThemesHandPos.position);
+                SendHandTo(confirmThemesHandPos);
                 break;
             case (TutorialPhase)8:
 
@@ -221,27 +229,27 @@ public class Tutorial_VC : MonoBehaviour
                 recordVideoButton.GetComponentInChildren<Button>().interactable = true;
                 recordVideoButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 recordVideoButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(recordVideoButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(recordVideoButtonHandPos.position);
+                SendHandTo(recordVideoButtonHandPos);
                 backButtonsPanel.SetActive(false);
                 break;
             case (TutorialPhase)9:
                 backButtonsPanel.SetActive(false);
                 ActivateAndSetSpeechBubble(new string[] { "Waiting is boring, hit the skip button.", "This time will be free." });
                 signalBus.Subscribe<VideoSkippedSignal>(SkippedVideo);
-                SendHandTo(skipVideoHandPos.position);
+                SendHandTo(skipVideoHandPos);
                 backButtonsPanel.SetActive(false);
                 break;
             case (TutorialPhase)10:
                 backButtonsPanel.SetActive(false);
                 ActivateAndSetSpeechBubble(new string[] { "Now that the video is done production, let's publish it." });
                 signalBus.Subscribe<OnHitPublishButtonSignal>(PublishedVideo);
-                SendHandTo(publishVideoHandPos.position);
+                SendHandTo(publishVideoHandPos);
                 break;
             case (TutorialPhase)11:
                 backButtonsPanel.SetActive(false);
                 ActivateAndSetSpeechBubble(new string[] { "We don't have time to see ads, so just for you, this time will be free, if you want." });
                 signalBus.Subscribe<OnHitConfirmAdButtonSignal>(ConfirmDoubleAd);
-                SendHandTo(doubleViewsHandPos.position);
+                SendHandTo(doubleViewsHandPos);
                 break;
             case (TutorialPhase)12:
 
@@ -250,7 +258,7 @@ public class Tutorial_VC : MonoBehaviour
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(13); };
                 shopButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 shopButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(shopButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(shopHandPosition.position);
+                SendHandTo(shopHandPosition);
                 OpenHomeScreen();
                 NotInteractables();
                 break;
@@ -259,21 +267,21 @@ public class Tutorial_VC : MonoBehaviour
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(14); };
                 clothingTab.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 clothingTab.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(clothingTab.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(clothingTabHandPosition.position);
+                SendHandTo(clothingTabHandPosition);
                 break;
             case (TutorialPhase)14:
                 ActivateAndSetSpeechBubble(new string[] { "Another one here also, so you have an easier start." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(15); };
                 furnitureTab.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 furnitureTab.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(furnitureTab.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(furnitureTabHandPosition.position);
+                SendHandTo(furnitureTabHandPosition);
                 break;
             case (TutorialPhase)15:
                 backButtonsPanel.SetActive(true);
                 ActivateAndSetSpeechBubble(new string[] { "Let's get back to the room whenever you are finished." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(16); };
                 signalBus.Subscribe<BackButtonClickedSignal>(() => ClickBackButton(btnAction));
-                SendHandTo(backButtonHandPosition.position);
+                SendHandTo(backButtonHandPosition);
                 break;
             case (TutorialPhase)16:
                 OpenHomeScreen();
@@ -282,7 +290,7 @@ public class Tutorial_VC : MonoBehaviour
                 customButton.SetActive(true);
                 customizeButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 customizeButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(customizeButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(customizeButtonHandPosition.position);
+                SendHandTo(customizeButtonHandPosition);
                 break;
             case (TutorialPhase)17:
                 ActivateAndSetSpeechBubble(new string[] { "Here you will be able to change your appearance." });
@@ -291,14 +299,14 @@ public class Tutorial_VC : MonoBehaviour
                 roomCustomizationButton.GetComponentInChildren<Button>().interactable = false;
                 playerCustomizationButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 playerCustomizationButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(playerCustomizationButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(playerCustomizationButtonHandPosition.position);
+                SendHandTo(playerCustomizationButtonHandPosition);
                 break;
             case (TutorialPhase)18:
                 backButtonsPanel.SetActive(true);
                 ActivateAndSetSpeechBubble(new string[] { "Let's get back to the room whenever you are finished." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(19); };
                 signalBus.Subscribe<BackButtonClickedSignal>(() => ClickBackButton(btnAction));
-                SendHandTo(backButtonHandPosition.position);
+                SendHandTo(backButtonHandPosition);
                 break;
             case (TutorialPhase)19:
                 OpenHomeScreen();
@@ -307,7 +315,7 @@ public class Tutorial_VC : MonoBehaviour
                 customButton.SetActive(true);
                 customizeButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 customizeButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(customizeButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(customizeButtonHandPosition.position);
+                SendHandTo(customizeButtonHandPosition);
                 break;
             case (TutorialPhase)20:
                 ActivateAndSetSpeechBubble(new string[] { "Now hit this button to open the room customization." });
@@ -317,7 +325,7 @@ public class Tutorial_VC : MonoBehaviour
                 roomCustomizationButton.GetComponentInChildren<Button>().interactable = true;
                 roomCustomizationButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 roomCustomizationButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(roomCustomizationButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(roomCustomizationButtonHandPosition.position);
+                SendHandTo(roomCustomizationButtonHandPosition);
                 break;
             case (TutorialPhase)21:
                 backButtonsPanel.SetActive(true);
@@ -326,7 +334,7 @@ public class Tutorial_VC : MonoBehaviour
                                                           "And once more, let's get back whenever you are ready." });
                 btnAction = () => { TutorialManager.Instance.GoToNextPhase(22); };
                 signalBus.Subscribe<BackButtonClickedSignal>(() => ClickBackButton(btnAction));
-                SendHandTo(backButtonHandPosition.position);
+                SendHandTo(backButtonHandPosition);
                 break;
             case (TutorialPhase)22:
                 signalBus.Fire<OpenHomeScreenSignal>();
@@ -335,7 +343,7 @@ public class Tutorial_VC : MonoBehaviour
                 videoManagerButton.SetActive(true);
                 videoManagerButton.GetComponentInChildren<Button>().onClick.AddListener(btnAction);
                 videoManagerButton.GetComponentInChildren<Button>().onClick.AddListener(() => DeleteGoToNextPhaseListener(videoManagerButton.GetComponentInChildren<Button>(), btnAction));
-                SendHandTo(videoManagerButtonHandPos.position);
+                SendHandTo(videoManagerButtonHandPos);
                 break;
             case (TutorialPhase)23:
                 DeactivateHand();
@@ -417,12 +425,17 @@ public class Tutorial_VC : MonoBehaviour
     {
         floatingHand.gameObject.SetActive(false);
     }
-    void SendHandTo(Vector3 position)
+    void SendHandTo(RectTransform objetivePosition)
     {
         if (!cam)
             cam = Camera.main;
         floatingHand.gameObject.SetActive(true);
-        floatingHand.position = position;
+        Vector3 position = objetivePosition.position;
+
+        floatingHand.anchorMin = objetivePosition.anchorMin;
+        floatingHand.anchorMax = objetivePosition.anchorMax;
+        floatingHand.pivot = objetivePosition.pivot;
+        floatingHand.position = objetivePosition.position;
 
         Vector2 viewportCoordinates = cam.ScreenToViewportPoint(floatingHand.localPosition);
         Debug.Log(viewportCoordinates);
