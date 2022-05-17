@@ -16,7 +16,7 @@ public class AlgorithmManager : MonoBehaviour
 
     private bool shouldUpdate=true;
     [SerializeField] private float updateTime = 15;
-    [SerializeField] public int baseNum=500;
+    [SerializeField] public int baseNum=100;
     private float themeBonus = 0;
     private int viewsBonus = 1;
     [SerializeField] int[] baseTimeToBeProduced;
@@ -49,52 +49,14 @@ public class AlgorithmManager : MonoBehaviour
     }
     public ulong GetVideoSubscribers (ulong _views, float _videoQuality, bool isViral)
     {
-        //ulong subs = (ulong)(_views * ((_videoQuality * 0.2f) * 0.01f));
         ulong subs = (ulong)(_views * 0.01);
-        //if (isViral)
-        //    subs = (ulong)(_views * ((_videoQuality * 0.2f) * 0.3f));
         if (isViral)
             subs = (ulong)(_views * 0.3f);
         return subs;
     }
     public ulong GetVideoSoftCurrency (ulong maxViews)
     {
-        int level = experienceManager.GetPlayerLevel();
-        int moneyMultiplier = 3;
-        switch (level)
-        {
-            case 1:
-                moneyMultiplier = 20;
-                break;
-            case 2:
-                moneyMultiplier = 25;
-                break;
-            case 3:
-                moneyMultiplier = 30;
-                break;
-            case 4:
-                moneyMultiplier = 35;
-                break;
-            case 5:
-                moneyMultiplier = 40;
-                break;
-            case 6:
-                moneyMultiplier = 50;
-                break;
-            case 7:
-                moneyMultiplier = 70;
-                break;
-            case 8:
-                moneyMultiplier = 95;
-                break;
-            case 9:
-                moneyMultiplier = 95;
-                break;
-            case 10:
-                moneyMultiplier =95;
-                break;
-        }
-        return maxViews/1000 *(ulong)moneyMultiplier;
+        return maxViews/25 *(ulong)1.2;
     }
     int GetVirality ()
     {
