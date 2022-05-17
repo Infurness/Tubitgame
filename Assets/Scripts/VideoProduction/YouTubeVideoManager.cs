@@ -20,6 +20,9 @@ public class VideoNameWords
 }
 public class YouTubeVideoManager : MonoBehaviour
 {
+    [Header("Viral Rate")]
+    [SerializeField] float baseRate = 5f;
+    [SerializeField] float factor = 0.00002f;
     [Inject] private SignalBus _signalBus;
     [Inject] private PlayerDataManager playerDataManager;
     [Inject] private AlgorithmManager algorithmManager;
@@ -47,7 +50,6 @@ public class YouTubeVideoManager : MonoBehaviour
     }
     public void SetIsRecording (bool recording)
     {
-        //print("iS Recorded S");
         isRecording = recording;
     }
    
@@ -55,71 +57,39 @@ public class YouTubeVideoManager : MonoBehaviour
     {
         string videoName = signal.videoName;
         ThemeType[] videoThemes = signal.videoThemes;
-        Video newVideo = new Video (GameClock.Instance.Now);
+        Video newVideo = new Video(GameClock.Instance.Now);
         newVideo.name = videoName;
-        newVideo.themes = (ThemeType[]) videoThemes.Clone();
+        newVideo.themes = (ThemeType[])videoThemes.Clone();
         newVideo.selectedQuality = signal.videoSelectedQuality;
         newVideo.quality = playerDataManager.GetQuality();
 
-        int level = experienceManager.GetPlayerLevel();
-        int percentage = 5;
-        switch (level)
-        {
-            case 1:
-                percentage = 4;
-                break;
-            case 2:
-                percentage = 7;
-                break;
-            case 3:
-                percentage = 9;
-                break;
-            case 4:
-                percentage = 11;
-                break;
-            case 5:
-                percentage = 14;
-                break;
-            case 6:
-                percentage = 17;
-                break;
-            case 7:
-                percentage = 19;
-                break;
-            case 8:
-                percentage = 21;
-                break;
-            case 9:
-                percentage = 18;
-                break;
-            case 10:
-                percentage = 17;
-                break;
-        }
+        float themesPopularity = GetThemesPopularity(videoThemes);
+        var percentage = GetViralPercentage(themesPopularity, newVideo.selectedQuality);
 
-        if (Random.Range (0, 101) >= 100 - percentage) //5% chance of being viral
+        if (Random.Range(0, 101) >= 100 - percentage)
         {
             newVideo.isViral = true;
             gameAnalyticsManager.SendCustomEvent("viral_event");
         }
-        var subscribers = playerDataManager.GetSubscribers();
-        List<float> themeValues = new List<float> ();
 
-        ulong videoViews = algorithmManager.GetVideoViews 
+        var subscribers = playerDataManager.GetSubscribers();
+        List<float> themeValues = new List<float>();
+
+        ulong videoViews = algorithmManager.GetVideoViews
                                 (
-                                playerDataManager.GetSubscribers (), 
-                                videoThemes, 
-                                playerDataManager.GetQuality (),
-                                newVideo.isViral
+                                playerDataManager.GetSubscribers(),
+                                playerDataManager.GetQuality(),
+                                newVideo.isViral,
+                                themesPopularity
                                 );
 
         newVideo.maxViews = videoViews;
-        newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews, playerDataManager.GetQuality ());
+        newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews, playerDataManager.GetQuality());
         newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
-        newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManager.GetQuality (), newVideo.isViral);
+        newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManager.GetQuality(), newVideo.isViral);
         newVideo.videoMaxSoftCurrency = algorithmManager.GetVideoSoftCurrency(videoViews);
-        float qualityNumber = (float)newVideo.selectedQuality / (float) Enum.GetValues (typeof(VideoQuality)).Length * 2;
-        newVideo.lifeTimeHours = (float)(algorithmManager.GetVideoLifetime (videoViews, qualityNumber, 0.9f))/3600f; //Fromseconds to hours
+        float qualityNumber = (float)newVideo.selectedQuality / (float)Enum.GetValues(typeof(VideoQuality)).Length * 2;
+        newVideo.lifeTimeHours = (float)(algorithmManager.GetVideoLifetime(videoViews, qualityNumber, 0.9f)) / 3600f; //Fromseconds to hours
         newVideo.lastUpdateTime = GameClock.Instance.Now;
 
         ulong currentTotalSubs = playerDataManager.GetSubscribers();
@@ -137,16 +107,34 @@ public class YouTubeVideoManager : MonoBehaviour
 
         newVideo.bonusViews = videoViews / 100 * (ulong)percentage;
         newVideo.bonusSubscribers = videoViews / 50;
-        newVideo.bonusLikes = videoViews / 20; 
+        newVideo.bonusLikes = videoViews / 20;
         newVideo.bonusComments = videoViews / 100;
         newVideo.bonusLifeTimeHours = 24 * 10; //10 days
         newVideo.daysSinceLastUpdate = 0;
 
-        playerDataManager.AddVideo (newVideo);
-        DeleteUnpublishedVideo (newVideo.name);
+        playerDataManager.AddVideo(newVideo);
+        DeleteUnpublishedVideo(newVideo.name);
 
-        _signalBus.Fire<EndPublishVideoSignal> ();
+        _signalBus.Fire<EndPublishVideoSignal>();
     }
+
+    private float GetThemesPopularity(ThemeType[] videoThemes)
+    {
+        var themesPopularity = 0f;
+        foreach (var theme in videoThemes)
+        {
+            themesPopularity += themesManager.GetThemePopularity(theme, GameClock.Instance.Now);
+        }
+
+        return themesPopularity;
+    }
+
+    private float GetViralPercentage(float themesPopularity, VideoQuality quality)
+    {
+        var baseTimeToCompleteVideo = algorithmManager.GetBaseTimeToBeProduced((int)quality);
+        return baseRate + (themesPopularity * baseTimeToCompleteVideo * factor);
+    }
+
     public void DeleteUnpublishedVideo (string name)
     {
         playerDataManager.DeleteUnpublishVideo (name);

@@ -26,13 +26,8 @@ public class AlgorithmManager : MonoBehaviour
         StartCoroutine (UpdateTimer());
     }
 
-    public ulong GetVideoViews (ulong _subscribers, ThemeType[] _themes, float _videoQuality, bool isViral)
+    public ulong GetVideoViews (ulong _subscribers, float _videoQuality, bool isViral, float themesPopularity)
     {
-        float themesPopularity = 0;
-        foreach (var theme in _themes)
-        {
-            themesPopularity += themesManager.GetThemePopularity (theme, GameClock.Instance.Now);
-        }
         ulong viewers = (ulong)(((ulong)baseNum + _subscribers) + (((ulong)baseNum + _subscribers) * (themesPopularity + UseThemeBonus()) * _videoQuality));
         if(isViral)
             viewers *= (ulong)GetVirality ();
@@ -72,6 +67,15 @@ public class AlgorithmManager : MonoBehaviour
         int seconds = (int)Math.Pow ((totalViews * videoQuality), balanceFactor);
         return seconds;
     }
+
+    public int GetBaseTimeToBeProduced(int index)
+    {
+        if(index < baseTimeToBeProduced.Length)
+            return baseTimeToBeProduced[index];
+        
+        throw new IndexOutOfRangeException("Base time to be produced index out of range");
+    }
+
     public void SetThemeBonus ( float bonus)
     {
         themeBonus = bonus;
