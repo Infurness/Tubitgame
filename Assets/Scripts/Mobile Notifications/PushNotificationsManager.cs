@@ -1,5 +1,6 @@
 #if UNITY_IOS
-    using Unity.Notifications.iOS;
+using System;
+using Unity.Notifications.iOS;
 #elif UNITY_ANDROID
     using Unity.Notifications.Android;
 #endif
@@ -39,7 +40,7 @@ public class PushNotificationsManager : IPushNotificationsManager
 #elif UNITY_IOS
         var timeTrigger = new iOSNotificationTimeIntervalTrigger()
         {
-            TimeInterval = new TimeSpan(0, 0, FireTimeSeconds),
+            TimeInterval = new TimeSpan(0, 0, (int)FireTimeSeconds),
             Repeats = false
         };
 
