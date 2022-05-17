@@ -358,9 +358,7 @@ public class VideoManager_VC : MonoBehaviour
                                 );
             vc.SetTimeLeftToPublish (video.createdTime);
 
-            int secondsPassed = (video.createdTime - System.DateTime.Now).Seconds;
-            int secondsLeft = video.secondsToBeProduced - secondsPassed;
-            if (secondsLeft > 0)
+            if (video.GetSecondsLeftToPublish() > 0)
                 _signalBus.Fire<VideoStartedSignal>(new VideoStartedSignal { startedVideo = video });
         }
     }

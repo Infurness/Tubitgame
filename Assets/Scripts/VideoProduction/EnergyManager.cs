@@ -35,6 +35,7 @@ public class EnergyManager : MonoBehaviour
     [SerializeField] float restFactorValue = 6f;
     bool isResting;
     bool energyChargeBlocked = false;
+    [Inject] private IPushNotificationsManager pushNotifications;
 
     // Start is called before the first frame update
     void Start()
@@ -141,12 +142,12 @@ public class EnergyManager : MonoBehaviour
             energyData.energy = maxEnergyByLevel[Mathf.Max (0, xpManager.GetPlayerLevel () - 1)];
         _signalBus.Fire<EnergyValueSignal> (new EnergyValueSignal () { energy = energyData.energy });
     }
+    
     public float GetEnergyGainedPerSecond ()
     {
-        float energyGainPerSecond = GetMaxEnergy () / SecondsToFillEnergy ();
-
-        return energyGainPerSecond;
+        return GetMaxEnergy () / SecondsToFillEnergy ();
     }
+
     float SecondsToFillEnergy ()
     {
         float divisor = baseRegenerationValue;
@@ -156,16 +157,16 @@ public class EnergyManager : MonoBehaviour
 
         return secondsToFillAllTheEnergy;
     }
+
     public int GetVideoEnergyCost(VideoQuality quality)
     {
         return energyCostForEachQuality.Single (x => x.quality == quality).energyCost;
     }
+
     public void ChangePlayerRestingState ()
     {
-
         if (youTubeVideoManager.IsRecording())
             return;
-
 
         isResting = !isResting;
         playerDataManager.UpdatePlayerRestState(isResting);
@@ -192,13 +193,43 @@ public class EnergyManager : MonoBehaviour
             });
         }
     }
+
     public bool GetPlayerIsResting ()
     {
         return isResting;
     }
 
-    private void OnApplicationQuit ()
+    float SecondsToRefillEnergy ()
     {
-        SaveEnergyData ();
+        float divisor = baseRegenerationValue;
+        if (isResting)
+            divisor *= restFactorValue;
+        float secondsToRefillTheEnergy = ((GetMaxEnergy () - energyData.energy) / divisor);
+
+        return secondsToRefillTheEnergy * Time.deltaTime;
+    }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if(!hasFocus)
+        {
+            SaveEnergyData ();
+            var title = "Energy Full";
+            var subtitle = "Login to create a video.";
+            var text = new string[]{"Ready to create another masterpiece?", "You're ready to create another video.","You did a good job resting, it's time to get back to work again!"};
+            var timeTrigger = SecondsToRefillEnergy();
+            var id = 1;
+            pushNotifications.ScheduleNotification(title, subtitle, text[UnityEngine.Random.Range(0, text.Length)], timeTrigger, id);
+            PlayerPrefs.SetInt("EnergyNotification", id);
+        }
+        else
+        {
+            if(PlayerPrefs.HasKey("EnergyNotification"))
+            {
+                var id = PlayerPrefs.GetInt("EnergyNotification");
+                pushNotifications.UnScheduleNotification(id);
+                PlayerPrefs.DeleteKey("EnergyNotification");
+            }
+        }
     }
 }
