@@ -18,6 +18,8 @@ public class PlayerData
     public bool isResting=false;
     //Leveling System 
     public ExperienceData xpData;
+
+    public EnergyData? energyData;
 }
 [System.Serializable]
 public struct ExperienceData

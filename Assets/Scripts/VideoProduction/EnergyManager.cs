@@ -61,25 +61,21 @@ public class EnergyManager : MonoBehaviour
     }
     public void GetEnergyData ()
     {
-        GetUserDataRequest dataRequest = new GetUserDataRequest ();
-        dataRequest.Keys = new List<string> () { };
-        PlayFabClientAPI.GetUserData (dataRequest, (result =>
+
+        var initialEnergyData = PlayerDataManager.Instance.GetPlayerEnergyInitialData();
+
+        if(initialEnergyData != null)
         {
-            UserDataRecord datarecord;
+            energyData = (EnergyData)initialEnergyData;
+            UpdateEnergyOnStart ();
+        }
+        else
+        {
+            energyData = new EnergyData { energy = maxEnergyByLevel[0], lastTimeUpdated = gameClock.Now };
+            SaveEnergyData();
+        }
 
-
-            if (result.Data.TryGetValue ("Energy", out datarecord))
-            {
-                energyData = JsonConvert.DeserializeObject<EnergyData> (datarecord.Value);
-                UpdateEnergyOnStart ();
-            }
-            else
-            {
-                energyData = new EnergyData { energy = maxEnergyByLevel[0], lastTimeUpdated = gameClock.Now };
-                SaveEnergyData();
-            }
-            _signalBus.Fire<HUDStartingEnergySignal>(new HUDStartingEnergySignal { energy = energyData.energy });
-        }), (error => { print ("Cant Retrieve User energy data"); }));
+        _signalBus.Fire<HUDStartingEnergySignal>(new HUDStartingEnergySignal { energy = energyData.energy });
 
         
     }
