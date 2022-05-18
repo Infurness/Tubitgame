@@ -91,14 +91,6 @@ public class Tutorial_VC : MonoBehaviour
        
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            TutorialManager.Instance.GoToNextScene();
-        }
-    }
-
     void HidePermanently()
     {
         foreach(GameObject obj in objects)
