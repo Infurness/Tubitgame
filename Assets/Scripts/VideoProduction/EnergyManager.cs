@@ -72,18 +72,17 @@ public class EnergyManager : MonoBehaviour
         else
         {
             energyData = new EnergyData { energy = maxEnergyByLevel[0], lastTimeUpdated = gameClock.Now };
-            SaveEnergyData();
         }
 
         _signalBus.Fire<HUDStartingEnergySignal>(new HUDStartingEnergySignal { energy = energyData.energy });
-
-        
     }
+
     void SaveEnergyData ()
     {
         energyData.lastTimeUpdated = gameClock.Now;
         PlayerDataManager.Instance.UpdateEnergyData (energyData);
     }
+    
     void UpdateEnergyOnStart ()
     {
         if (!youTubeVideoManager.IsRecording ())
