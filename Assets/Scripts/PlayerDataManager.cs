@@ -44,7 +44,7 @@ public class PlayerDataManager : MonoBehaviour
 
         }));
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += ((arg0, mode) =>
-        {
+        {   
             signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
         });
         signalBus.Subscribe<RemoteAssetsCheckSignal>(GetPlayerInventory);
@@ -115,7 +115,7 @@ public class PlayerDataManager : MonoBehaviour
 
    private void GetPlayerInventory()
     {
-          GetUserDataRequest dataRequest = new GetUserDataRequest();
+        var dataRequest = new GetUserDataRequest();
         dataRequest.Keys = new List<string>() { "Inventory","Avatar"};
         PlayFabClientAPI.GetUserData(dataRequest, (result =>
         {
@@ -254,6 +254,12 @@ public class PlayerDataManager : MonoBehaviour
             {
                 playerData.isResting = JsonConvert.DeserializeObject<bool>(datarecord.Value);
             }
+
+            if (result.Data.TryGetValue("Energy", out datarecord))
+            {   
+                playerData.energyData = JsonConvert.DeserializeObject<EnergyData> (datarecord.Value);
+            }
+
         }), (error => { print("Cant Retrieve User data"); }));
     }
 
@@ -669,5 +675,10 @@ public class PlayerDataManager : MonoBehaviour
     public bool GetPlayerRestState()
     {
         return playerData.isResting;
+    }
+
+    public EnergyData? GetPlayerEnergyInitialData()
+    {
+        return playerData.energyData;
     }
 }
