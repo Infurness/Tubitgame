@@ -485,11 +485,6 @@ public class VideoManager_VC : MonoBehaviour
     }
     void SetQualityTag (float value)
     {
-        if (value > 0.615)
-        {
-            qualitySelector.value = 0.615f;
-            return;
-        }
         float qualityStep = 1f / Enum.GetValues (typeof(VideoQuality)).Length;
         int qualityTagIndex = (int)(value / qualityStep);
         selectedQuality = (VideoQuality)qualityTagIndex+1;
