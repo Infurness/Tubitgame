@@ -125,47 +125,30 @@ public class PlayerDataManager : MonoBehaviour
             if (result.Data.TryGetValue("Inventory",out datarecord))
             {
                 
-                 inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
-                 if (result.Data.TryGetValue("Avatar",out datarecord))
-                 {
-                     avatarData=JsonConvert.DeserializeObject<CharacterAvatarAddressedData>(datarecord.Value);
-                     signalBus.Fire(new OnPlayerInventoryFetchedSignal()
-                     {
-                         PlayerInventoryAddressedData = inventorydata,
-                         CharacterAvatarAddressedData = avatarData
-                     });
-
-               
-                 }
-                 else
-                 {
-                    CharacterAvatarAddressedData newCharacterAvatarData = new CharacterAvatarAddressedData();
-                     signalBus.Fire(new OnPlayerInventoryFetchedSignal()
-                     {
-                         PlayerInventoryAddressedData = inventorydata,
-                         CharacterAvatarAddressedData = newCharacterAvatarData
-                     });
-                     UpdateCharacterAvatar(newCharacterAvatarData);
-                 }
-                 
-               
+                inventorydata = JsonConvert.DeserializeObject<PlayerInventoryAddressedData>(datarecord.Value);
             }
             else
             {
-                CharacterAvatarAddressedData newCharacterAvatarData = new CharacterAvatarAddressedData();
-                PlayerInventoryAddressedData newPlayerInventoryData = new PlayerInventoryAddressedData();
-                signalBus.Fire<OnPlayerInventoryFetchedSignal>(new OnPlayerInventoryFetchedSignal()
-                {
-                    PlayerInventoryAddressedData = newPlayerInventoryData
-                });
-
-                UpdatePlayerInventoryData(newPlayerInventoryData);
-                UpdateCharacterAvatar(newCharacterAvatarData);
+                inventorydata = new PlayerInventoryAddressedData(); 
+                UpdatePlayerInventoryData(inventorydata);
+            }
+                
+            if (result.Data.TryGetValue("Avatar",out datarecord))
+            {
+                avatarData = JsonConvert.DeserializeObject<CharacterAvatarAddressedData>(datarecord.Value);
+            }
+            else
+            {
+                avatarData = new CharacterAvatarAddressedData();
+                UpdateCharacterAvatar(avatarData);
             }
 
-
-
-        }), (error => { Debug.LogError("Cant Retrieve Inventorey data"); }));
+            signalBus.Fire(new OnPlayerInventoryFetchedSignal()
+            {
+                PlayerInventoryAddressedData = inventorydata,
+                CharacterAvatarAddressedData = avatarData
+            });
+        }), (error => { Debug.LogError("Cant Retrieve Inventory data"); }));
     }
 
     private void GetUserData()
@@ -265,7 +248,6 @@ public class PlayerDataManager : MonoBehaviour
 
     private void UpdateUserDatabase(string[] keys, object[] data, Action onsuccess = null, Action onFailed = null,UserDataPermission permission=UserDataPermission.Private)
     {
-
         var dataRequest = new UpdateUserDataRequest();
         dataRequest.Data = new Dictionary<string, string>();
         for (int i = 0; i < keys.Length; i++)

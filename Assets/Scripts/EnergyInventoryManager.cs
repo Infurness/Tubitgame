@@ -55,7 +55,7 @@ public class EnergyInventoryManager : MonoBehaviour
                 {
                     for(int i=0;i<10;i++)
                     {
-                        AddItem (item.IDLable, 1);
+                        AddItem (item.IDLable, 1, false);
                     }
                 }     
             }
@@ -83,7 +83,7 @@ public class EnergyInventoryManager : MonoBehaviour
         }        
     }
 
-    public void AddItem(string ID, int quantity)
+    public void AddItem(string ID, int quantity, bool saveInventory = true)
     {
         List<EnergyItemData> energyitems = GetEnergyItems ().ToList ();
 
@@ -104,7 +104,10 @@ public class EnergyInventoryManager : MonoBehaviour
         }
 
         inventoryData.items = energyitems.ToArray ();
-        SaveEnergyInventoryData ();
+        if(saveInventory)
+        {
+            SaveEnergyInventoryData ();
+        }
     }
     bool RemoveItem (string ID)
     {
