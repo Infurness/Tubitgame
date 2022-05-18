@@ -81,7 +81,6 @@ public class PlayerInventory : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
     }
 
     void Start()
@@ -96,11 +95,11 @@ public class PlayerInventory : MonoBehaviour
 
     async Task LoadCharacterData()
     {
-        var caharacterItemsLoadOp = Addressables.LoadAssetsAsync<ThemeCustomizationItem>("character", null);
-        await caharacterItemsLoadOp.Task;
-        if (caharacterItemsLoadOp.Status == AsyncOperationStatus.Succeeded)
+        var characterItemsLoadOp = Addressables.LoadAssetsAsync<ThemeCustomizationItem>("character", null);
+        await characterItemsLoadOp.Task;
+        if (characterItemsLoadOp.Status == AsyncOperationStatus.Succeeded)
         {
-            var chItems = (List<ThemeCustomizationItem>) caharacterItemsLoadOp.Result;
+            var chItems = (List<ThemeCustomizationItem>) characterItemsLoadOp.Result;
             ownedCharacterItems = chItems.FindAll(item => item.Owned || playerInventoryAddressedData.characterItemsNames.Contains(item.name) );
             
             ownedCharacterItems.ForEach((it)=>it.Owned=true);
@@ -138,14 +137,10 @@ public class PlayerInventory : MonoBehaviour
         {
             equippedCharacterAvatar = new CharacterAvatar(defaultMaleAvatar);
         }
-
-
-
     }
 
     async Task LoadRoomThemeEffectAssets()
     {
-
         var themeEffectAssets = Addressables.LoadAssetsAsync<ThemeCustomizationItem>("roomtheme", null);
         await themeEffectAssets.Task;
         if (themeEffectAssets.Status == AsyncOperationStatus.Succeeded)
@@ -158,7 +153,6 @@ public class PlayerInventory : MonoBehaviour
                 {
                     item.Owned = true;
                     ownedRoomThemeEffectItems.Add(item);
-
                 }
             }
             ownedRoomThemeEffectItems.ForEach((it)=>it.Owned=true);
@@ -172,21 +166,14 @@ public class PlayerInventory : MonoBehaviour
                     if (eqItem)
                     {
                         equippedThemeEffectRoomItems.Add(eqItem);
-
                     }
                 }
             }
-
-
-
         }
         else
         {
-            print("Failed to load Assets ");
+            Debug.LogError("Failed to load Assets.");
         }
-
-
-
     }
 
     async Task LoadVideoQualityAddressedAssets()
@@ -217,12 +204,10 @@ public class PlayerInventory : MonoBehaviour
                         ownedVideoQualityRoomItems.Find((it => it.name == qualityItemsName)));
                 }
             }
-
-
         }
         else
         {
-            print("Failed to load Assets ");
+            Debug.LogError("Failed to load Assets.");
         }
     }
 
@@ -234,7 +219,6 @@ public class PlayerInventory : MonoBehaviour
         {
             var vcItems = (List<RealEstateCustomizationItem>) realEstateAddressedItems.Result;
 
-
             foreach (var realStateItemName in playerInventoryAddressedData.ownedRealEstateItemsNames)
             {
                 var item = vcItems.Find((item => (item.name == realStateItemName)));
@@ -243,8 +227,6 @@ public class PlayerInventory : MonoBehaviour
                     item.Owned = true;
                     ownedRealEstateItems.Add(item);
                 }
-              
-
             }
 
             equippedHouse = vcItems.Find((rsItem => rsItem.name == playerInventoryAddressedData.equippedHouse));
@@ -252,15 +234,13 @@ public class PlayerInventory : MonoBehaviour
             {
                 equippedHouse = defaultHouse;
             }
-
         }
         else
         {
-            print("Failed to load Assets ");
+            Debug.LogError("Failed to load Assets.");
         }
 
         ownedRealEstateItems.Add(defaultHouse);
-
     }
 
     async Task LoadCarsAssets()
@@ -293,6 +273,7 @@ public class PlayerInventory : MonoBehaviour
         {
             playerInventoryAddressedData.currentRoomLayout = defaultRoomLayout;
         }
+
         await LoadRoomThemeEffectAssets();
         await LoadVideoQualityAddressedAssets();
         await LoadCharacterData();
@@ -301,6 +282,7 @@ public class PlayerInventory : MonoBehaviour
 
         signalBus.Fire<AssetsLoadedSignal>();
     }
+
     public void AddCharacterItem(ThemeCustomizationItem themeCustomizationItem)
     {
         
@@ -338,7 +320,6 @@ public class PlayerInventory : MonoBehaviour
         ownedCars.Add(car);
         playerInventoryAddressedData.ownedCarNames.Add(car.name);
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
-        
     }
 
     public void SetEquippedCar(Car car)
@@ -346,7 +327,6 @@ public class PlayerInventory : MonoBehaviour
         equippedCar = car;
         playerInventoryAddressedData.equippedCarName = car.name;
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
-
     }
 
     public void SetEquippedHouse(RealEstateCustomizationItem realEstateCustomizationItem)
@@ -354,8 +334,6 @@ public class PlayerInventory : MonoBehaviour
         equippedHouse = realEstateCustomizationItem;
         playerInventoryAddressedData.equippedHouse = equippedHouse.name;
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
-
-        
     }
     public void ChangeAvatar(CharacterAvatar avatar)
     {
@@ -372,31 +350,29 @@ public class PlayerInventory : MonoBehaviour
         {
             NewAvatar = avatar
         });
+
         var totalThemeEquippedItems = new List<ThemeCustomizationItem>(avatar.GetThemesEffectItems());
         totalThemeEquippedItems.AddRange(EquippedThemeEffectRoomItems);
         signalBus.Fire(new OnPlayerEquippedThemeItemChangedSignal()
         {
             CustomizationItems =totalThemeEquippedItems
         });
+
        playerDataManager.UpdateCharacterAvatar(characterAvatarAddressedData);
        gameAnalyticsManager.SendCustomEvent("PlayerAvatarChanged");
-
     }
 
     public  void UpdateRoomData( RoomLayout roomLayout)
     {
-        
         playerInventoryAddressedData.currentRoomLayout=new RoomLayout(roomLayout);
-           equippedThemeEffectRoomItems.Clear();
+        equippedThemeEffectRoomItems.Clear();
         foreach (var themeItemName in roomLayout.equippedThemeITems)
         {
             var item = ownedRoomThemeEffectItems.Find((it) => it.name == themeItemName);
             if (item)
             {
                 equippedThemeEffectRoomItems.Add(item);
-
             }
-        
         }
       
         equippedVideoQualityRoomItems.Clear();
@@ -406,9 +382,9 @@ public class PlayerInventory : MonoBehaviour
             if (item)
             {
                 equippedVideoQualityRoomItems.Add(item);
-
             }
         }
+
         var allThemItems = new List<ThemeCustomizationItem>();
         allThemItems.AddRange(equippedCharacterAvatar.GetThemesEffectItems());
         allThemItems.AddRange(EquippedThemeEffectRoomItems);
@@ -419,10 +395,7 @@ public class PlayerInventory : MonoBehaviour
         playerDataManager.UpdatePlayerQuality(equippedVideoQualityRoomItems.Sum((item => item.videoQualityBonus)));
         playerDataManager.UpdatePlayerInventoryData(playerInventoryAddressedData);
         gameAnalyticsManager.SendCustomEvent("Room Changed");
-
     }
-
-    
 
     public void TestThemeEffectRoomITem(ThemeCustomizationItem themeCustomizationItem)
     {
@@ -434,16 +407,12 @@ public class PlayerInventory : MonoBehaviour
     {
         signalBus.Fire(new TestRoomVideoQualityITemSignal(){VideoQualityCustomizationItem = videoQualityCustomizationItem});
         gameAnalyticsManager.SendCustomEvent("Room Room Video Quality Item Equipped",new []{videoQualityCustomizationItem.name});
-
     }
 
     public RoomLayout GetRoomLayout()
     {
-        return   playerInventoryAddressedData.currentRoomLayout;
+        return playerInventoryAddressedData.currentRoomLayout;
     }
-
-
-
 }
 [System.Serializable]
     public class PlayerInventoryAddressedData
@@ -464,7 +433,6 @@ public class PlayerInventory : MonoBehaviour
             ownedRealEstateItemsNames = new List<string>();
             ownedCarNames = new List<string>();
             currentRoomLayout = new RoomLayout();
-
         } 
     }
 [System.Serializable]

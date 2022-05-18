@@ -45,21 +45,7 @@ public class StreetView_VC : MonoBehaviour
         MoveSpriteNextToOther (streetViewTransform, houseViewTransform);
 
     }
-    void ResizeForCameraHeight (Transform resizeableTransform)
-    {
-        SpriteRenderer sr = resizeableTransform.GetComponent<SpriteRenderer>();
-        if (sr == null)
-            return;
-
-        // Set filterMode
-        sr.sprite.texture.filterMode = FilterMode.Point;
-
-        // Get stuff
-        double height = sr.sprite.bounds.size.y;
-        double worldScreenHeight = mainCamera.orthographicSize * 2.0;
-        // Resize
-        resizeableTransform.localScale = new Vector2 (1, 1) * (float)(worldScreenHeight / height);
-    }
+    
     void ResizeForCameraWidth (Transform resizeableTransform)
     {
         SpriteRenderer sr = resizeableTransform.GetComponent<SpriteRenderer> ();
