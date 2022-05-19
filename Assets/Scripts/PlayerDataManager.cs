@@ -37,6 +37,8 @@ public class PlayerDataManager : MonoBehaviour
         
         signalBus.Subscribe<OnPlayFabLoginSuccessesSignal>((signal =>
         {
+            playerData.playerId = signal.PlayerID;
+            
             if (!signal.NewPlayer)
             {
                 GetUserData();
@@ -154,7 +156,7 @@ public class PlayerDataManager : MonoBehaviour
     private void GetUserData()
     {
         
-        GetUserDataRequest dataRequest = new GetUserDataRequest();
+        var dataRequest = new GetUserDataRequest();
         dataRequest.Keys = new List<string>() { };
         PlayFabClientAPI.GetUserData(dataRequest, (result =>
         {
@@ -662,5 +664,10 @@ public class PlayerDataManager : MonoBehaviour
     public EnergyData? GetPlayerEnergyInitialData()
     {
         return playerData.energyData;
+    }
+
+    public string GetPlayerID()
+    {
+        return playerData.playerId;
     }
 }

@@ -1283,8 +1283,8 @@ MonoBehaviour:
     energyCost: 117
   - quality: 11
     energyCost: 125
-  maxEnergyByLevel: 82000000910000009b000000a5000000af000000b9000000c8000000dc000000eb000000fa000000
-  baseRegenerationValue: 0.0018
+  maxEnergyByLevel: 410000004b0000005a000000690000007800000091000000a0000000be000000d2000000e6000000
+  baseRegenerationValue: 0.0045
   restFactorValue: 6
 --- !u!114 &70403864
 MonoBehaviour:
@@ -35639,6 +35639,7 @@ MonoBehaviour:
   musicVolumeSlider: {fileID: 492038263}
   effectsVolumeSlider: {fileID: 355226687}
   leaderboardsButton: {fileID: 1891458038}
+  userID: {fileID: 949045903925306300}
 --- !u!1 &989118432
 GameObject:
   m_ObjectHideFlags: 0
@@ -82654,6 +82655,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 949045903977347200, guid: 051286079360f274abe721b5b11cd7ef, type: 3}
   m_PrefabInstance: {fileID: 949045903925306297}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &949045903925306300 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 949045903925217586, guid: 051286079360f274abe721b5b11cd7ef, type: 3}
+  m_PrefabInstance: {fileID: 949045903925306297}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1017825812421773447
 MonoBehaviour:
   m_ObjectHideFlags: 0
