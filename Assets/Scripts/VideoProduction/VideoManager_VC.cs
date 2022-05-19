@@ -97,6 +97,7 @@ public class VideoManager_VC : MonoBehaviour
         _signalBus.Subscribe<ConfirmThemesSignal> (SetConfirmedThemes);
         _signalBus.Subscribe<EndPublishVideoSignal> (ResetVideoCreationInfo);
         _signalBus.Subscribe<EndPublishVideoSignal>(StartSortNextFrame);
+        _signalBus.Subscribe<EndPublishVideoSignal>(UpdateGlobalVideos);
         _signalBus.Subscribe<CancelVideoRecordingSignal> (ResetVideoCreationInfo);
         _signalBus.Subscribe<CancelVideoRecordingSignal> (CancelVideoRecording);
         _signalBus.Subscribe<ChangePlayerSubsSignal> (UpdateGlobalSubsFromSignal);
@@ -199,7 +200,7 @@ public class VideoManager_VC : MonoBehaviour
     {
         uploadedVideosText.text = $"{PlayerDataManager.Instance.GetPlayerTotalVideos()}";
     }
-    // Update is called once per frame
+    
     void Update()
     {
         if (Input.GetMouseButtonUp (0) && makeAVideoPanel.activeSelf)
