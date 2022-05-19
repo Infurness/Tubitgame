@@ -20,7 +20,8 @@ public class Settings_VC : MonoBehaviour
     [SerializeField] Slider effectsVolumeSlider;
 
     [SerializeField] private Button leaderboardsButton;
-    // Start is called before the first frame update
+    [SerializeField] private TextMeshProUGUI userID;
+    
     void Start ()
     {
         inputField.onDeselect.AddListener (OnConfirm);
@@ -47,36 +48,44 @@ public class Settings_VC : MonoBehaviour
 
         inputField.interactable = false;
         RefreshPlayerName ();
+        userID.text = $"ID: {PlayerDataManager.Instance.GetPlayerID()}";
     }
+
     void EditName ()
     {
         inputField.interactable = true;
         inputField.Select ();
     }
+
     void OnConfirm (string value)
     {
         Debug.Log (value);
         UpdatePlayerName (value);
         inputField.interactable = false;
     }
+
     public void UpdatePlayerName (string value)
     {
         PlayerDataManager.Instance.SetPLayerName (value);
         StartCoroutine (RefreshName());
     }
+
     void RefreshPlayerName ()
     {
         inputField.text = PlayerDataManager.Instance.GetPlayerName ();
     }
+
     IEnumerator RefreshName ()
     {
         yield return new  WaitForSecondsRealtime (1);
         signalBus.Fire<ChangeUsernameSignal> ();
     }
+
     void OpenDeleteAccount ()
     {
         signalBus.Fire<OpenDeleteAccountSignal> ();
     }
+    
     void OpenLeaderboards()
     {
         signalBus.Fire<OpenLeaderboardsSignal>();

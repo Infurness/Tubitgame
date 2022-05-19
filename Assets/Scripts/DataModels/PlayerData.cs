@@ -10,16 +10,12 @@ public class PlayerData
     public float quality = 0.1f;
     public ulong softCurrency;
     public ulong hardCurrency;
-
     public bool noAds = false;
-
     public bool hasDoubleEnergy = false;
-
     public bool isResting=false;
-    //Leveling System 
     public ExperienceData xpData;
-
     public EnergyData? energyData;
+    public string playerId;
 }
 [System.Serializable]
 public struct ExperienceData
