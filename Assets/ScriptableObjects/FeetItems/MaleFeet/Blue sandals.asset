@@ -22,7 +22,7 @@ MonoBehaviour:
   rareness: 1
   descriptionText: 
   newStatsText: 
-  Owned: 0
+  Owned: 1
   PriceType: 1
   HCPrice: 90
   SCPrice: 50
@@ -30,4 +30,9 @@ MonoBehaviour:
   IdleFeet: {fileID: 21300000, guid: 697d514d123c1e74e810d9d011315d25, type: 3}
   FeetItemType: 1
   GenderItemType: 0
-  FeetVariants: []
+  FeetVariants:
+  - {fileID: 24300145733591284, guid: a516fb2cff6351e46826c979341c4339, type: 3}
+  - {fileID: 24300145733591284, guid: 88647cf809a39884a91b638f136f50b2, type: 3}
+  - {fileID: 24300145733591284, guid: 78e9d8c960955aa42abf3c78d6c5be47, type: 3}
+  - {fileID: 24300145733591284, guid: edc560b58f18c944889f17bee999a793, type: 3}
+  - {fileID: 24300145733591284, guid: 0fd6ef47c8e9ca646a9ad45824bd6eff, type: 3}

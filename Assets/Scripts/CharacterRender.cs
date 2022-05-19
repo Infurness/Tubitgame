@@ -107,7 +107,7 @@ public class CharacterRender : MonoBehaviour
         idleLegsRender.sprite = avatar.legsItem == null ? null : avatar.legsItem.IdleLegs;
         legsRender.transform.localPosition = body.legsPosition;
 
-        Sprite newFeet = avatar.feetItem == null ? null : avatar.feetItem.sprite;
+        Sprite newFeet = avatar.feetItem == null ? null : avatar.feetItem.FeetVariants[variantIndex];
         if (TutorialManager.Instance == null && feetRender.sprite != newFeet)
         {
             signalBus.Fire<ChangeClothesAnimationSignal>(new ChangeClothesAnimationSignal { oldCloth = feetRender.sprite, newCloth = newFeet, layerOrder = feetRender.sortingOrder, worldPos = feetRender.gameObject.transform.position, rotation = feetRender.gameObject.transform.rotation });
