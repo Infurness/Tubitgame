@@ -31,7 +31,7 @@ public class EnergyManager : MonoBehaviour
         public int energyCost;
     }
     [SerializeField] private int[] maxEnergyByLevel;
-    [SerializeField] float baseRegenerationValue = 0.0018f;
+    [SerializeField] float baseRegenerationValue = 0.0045f;
     [SerializeField] float restFactorValue = 6f;
     bool isResting;
     bool energyChargeBlocked = false;
