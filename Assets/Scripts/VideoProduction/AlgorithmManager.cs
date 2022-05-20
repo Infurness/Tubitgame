@@ -20,6 +20,11 @@ public class AlgorithmManager : MonoBehaviour
     private float themeBonus = 0;
     private int viewsBonus = 1;
     [SerializeField] int[] baseTimeToBeProduced;
+
+    private const int OneHundredK = 100000;
+    private const int OneMillion = 1000000;
+    private const int TenMillion = 10000000;
+
     private void Start()
     {
         shouldUpdate = false;
@@ -53,10 +58,31 @@ public class AlgorithmManager : MonoBehaviour
     {
         return maxViews/25 *(ulong)1.2;
     }
+
     int GetVirality ()
     {
-        return Random.Range (25, 101);
+        var subscribers = PlayerDataManager.Instance.GetSubscribers();
+
+        if(subscribers < OneHundredK)
+        {
+            return Random.Range(5, 10);
+        }
+        if(subscribers < OneMillion)
+        {
+            return Random.Range(3, 8);
+        }
+        if(subscribers < TenMillion)
+        {
+            return Random.Range(3, 6);
+        }
+        if(subscribers > TenMillion)
+        {
+            return Random.Range(2, 3);
+        }
+
+        throw new ApplicationException("Get subscribers error.");
     }
+    
     public int GetVideoSecondsToBeProduced (float qualityValue, int numberOfThemes)
     {
         int indexInArray = (int)(qualityValue * baseTimeToBeProduced.Length / 2)-1;
