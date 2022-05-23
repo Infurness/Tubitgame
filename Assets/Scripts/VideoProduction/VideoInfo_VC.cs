@@ -200,10 +200,8 @@ public class VideoInfo_VC : MonoBehaviour
             {
                 subsIconHolder.GetComponent<Animator>().Play("NewSubscriber_Stack");
             }
-            if(videoRef.videoSoftCurrency <= videoRef.videoMaxSoftCurrency)
-                moneyText.text = $"{videoRef.videoSoftCurrency}";
-            else
-                moneyText.text = "0";
+
+            moneyText.text = $"{videoRef.videoSoftCurrency}";
             viewsText.text = $"{videoRef.views}";
             likesText.text = $"{videoRef.likes}";
             subscribersText.text = $"+{videoRef.newSubscribers}"; 
