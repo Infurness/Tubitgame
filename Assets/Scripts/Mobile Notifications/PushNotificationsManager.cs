@@ -52,7 +52,7 @@ public class PushNotificationsManager : IPushNotificationsManager
             Title = title,
             Body = text,
             Subtitle = subtitle,
-            ShowInForeground = true,
+            ShowInForeground = false,
             ForegroundPresentationOption = (PresentationOption.Alert | PresentationOption.Sound),
             CategoryIdentifier = "category_a",
             ThreadIdentifier = "thread1",
@@ -75,7 +75,17 @@ public class PushNotificationsManager : IPushNotificationsManager
             Description = "Generic notifications",
         };
         AndroidNotificationCenter.RegisterNotificationChannel(channel);
+
+        AndroidNotificationCenter.NotificationReceivedCallback receivedNotificationHandler = 
+        delegate(AndroidNotificationIntentData data)
+        {
+            AndroidNotificationCenter.CancelNotification(data.Id);
+        };
+
+        AndroidNotificationCenter.OnNotificationReceived += receivedNotificationHandler;
+
 #elif UNITY_IOS
+        iOSNotificationCenter.OnRemoteNotificationReceived += notification =>{};
 #endif
     }
 
