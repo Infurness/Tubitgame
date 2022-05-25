@@ -47,6 +47,7 @@ public class PlayerDataManager : MonoBehaviour
         }));
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += ((arg0, mode) =>
         {   
+            signalBus.TryUnsubscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
             signalBus.Subscribe<ProcessPurchaseSignal>(ProcessSuccessesPurchases);
         });
         signalBus.Subscribe<RemoteAssetsCheckSignal>(GetPlayerInventory);
