@@ -30,7 +30,7 @@ public class SigninWithGoogle
         {
             try
             {
-                var loginTask = GoogleSignIn.DefaultInstance.SignInSilently();
+                var loginTask = GoogleSignIn.DefaultInstance.SignIn();
                 await loginTask;
             
                 OnAuthenticationFinished(loginTask);
