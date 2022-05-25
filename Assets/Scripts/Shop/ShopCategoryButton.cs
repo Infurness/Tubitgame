@@ -22,11 +22,6 @@ public class ShopCategoryButton : MonoBehaviour
         SetButtonUnSelected();
     }
 
-    void Start()
-    {
-        
-    }
-
     public void SetButtonSelected()
     {
         deSelcectAll.Invoke();
@@ -39,10 +34,13 @@ public class ShopCategoryButton : MonoBehaviour
     public void SetButtonUnSelected()
     {
         buttonText.color = Color.gray;
-        iconImage.color = Color.gray;
-        highlightImage.gameObject.SetActive(false);
-        bgImage.gameObject.SetActive(true);
-
+        if(iconImage != null)
+            iconImage.color = Color.gray;
+        if(highlightImage != null)
+            highlightImage.gameObject.SetActive(false);
+        if(bgImage != null)
+            bgImage.gameObject.SetActive(true);
+  
     }
 
 }
