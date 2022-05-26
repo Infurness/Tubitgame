@@ -84,8 +84,8 @@ public class YouTubeVideoManager : MonoBehaviour
                                 );
 
         newVideo.maxViews = videoViews;
-        newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews, playerDataManager.GetQuality());
-        newVideo.maxComments = algorithmManager.GetVideoComments(videoViews);
+        newVideo.maxLikes = algorithmManager.GetVideoLikes(videoViews);
+        newVideo.maxComments = algorithmManager.GetVideoComments(newVideo.maxLikes);
         newVideo.maxNewSubscribers = algorithmManager.GetVideoSubscribers(videoViews, playerDataManager.GetQuality(), newVideo.isViral);
         newVideo.videoMaxSoftCurrency = algorithmManager.GetVideoSoftCurrency(videoViews);
         float qualityNumber = (float)newVideo.selectedQuality / (float)Enum.GetValues(typeof(VideoQuality)).Length * 2;
