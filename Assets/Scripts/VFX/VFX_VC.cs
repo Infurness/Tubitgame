@@ -32,8 +32,6 @@ public class VFX_VC : MonoBehaviour
     private float mainNightColorAlpha;
     [SerializeField] private GameObject computerLight;
     private float computerLightAlpha;
-    [SerializeField] private GameObject windowsLight;
-    private float windowsLightAlpha;
     [SerializeField] private GameObject colorCorrection;
     private float colorCorrectionAlpha;
     [SerializeField] private GameObject sleepParticles;
@@ -57,8 +55,6 @@ public class VFX_VC : MonoBehaviour
         mainNightColorAlpha = mainNightColor.GetComponent<SpriteRenderer>().color.a;
         if (computerLight != null)
             computerLightAlpha = computerLight.GetComponent<SpriteRenderer>().color.a;
-        if (windowsLight != null)
-            windowsLightAlpha = windowsLight.GetComponent<SpriteRenderer>().color.a;
         if (colorCorrection != null)
             colorCorrectionAlpha = colorCorrection.GetComponent<SpriteRenderer>().color.a;
 
@@ -76,13 +72,6 @@ public class VFX_VC : MonoBehaviour
             tempColor = computerLight.GetComponent<SpriteRenderer>().color;
             tempColor.a = 0;
             computerLight.GetComponent<SpriteRenderer>().color = tempColor;
-        }
-
-        if (windowsLight != null)
-        {
-            tempColor = windowsLight.GetComponent<SpriteRenderer>().color;
-            tempColor.a = 0;
-            windowsLight.GetComponent<SpriteRenderer>().color = tempColor;
         }
 
         if (colorCorrection != null)
@@ -199,9 +188,7 @@ public class VFX_VC : MonoBehaviour
     {
         if(computerLight)
             computerLight.SetActive(signal.activate);
-        if (windowsLight)
-            windowsLight.SetActive(signal.activate);
-        if (mainNightColor)
+  
             mainNightColor.SetActive(signal.activate);
     }
     void GoToSleep(VFX_GoToSleepSignal signal)
@@ -234,7 +221,6 @@ public class VFX_VC : MonoBehaviour
         {
             nightColorAlpha = mainNightColorAlpha;
             computerAlpha = computerLightAlpha;
-            windowsAlpha = windowsLightAlpha;
             correctionAlpha = colorCorrectionAlpha;
         }
         Color tempColor;
@@ -244,7 +230,6 @@ public class VFX_VC : MonoBehaviour
             while (
                 nightColorAlpha < mainNightColorAlpha ||
                 computerAlpha < computerLightAlpha ||
-                windowsAlpha < windowsLightAlpha ||
                 correctionAlpha < colorCorrectionAlpha
             )
             {
@@ -261,10 +246,8 @@ public class VFX_VC : MonoBehaviour
                 tempColor.a = computerAlpha;
                 computerLight.GetComponent<SpriteRenderer>().color = tempColor;
 
-                tempColor = windowsLight.GetComponent<SpriteRenderer>().color;
                 tempColor.a = windowsAlpha;
-                windowsLight.GetComponent<SpriteRenderer>().color = tempColor;
-
+             
                 tempColor = colorCorrection.GetComponent<SpriteRenderer>().color;
                 tempColor.a = correctionAlpha;
                 colorCorrection.GetComponent<SpriteRenderer>().color = tempColor;
@@ -275,8 +258,6 @@ public class VFX_VC : MonoBehaviour
                 if (computerAlpha > computerLightAlpha)
                     computerAlpha = computerLightAlpha;
 
-                if (windowsAlpha > windowsLightAlpha)
-                    windowsAlpha = windowsLightAlpha;
 
                 if (correctionAlpha > colorCorrectionAlpha)
                     correctionAlpha = colorCorrectionAlpha;
@@ -305,10 +286,6 @@ public class VFX_VC : MonoBehaviour
                 tempColor = computerLight.GetComponent<SpriteRenderer>().color;
                 tempColor.a = computerAlpha;
                 computerLight.GetComponent<SpriteRenderer>().color = tempColor;
-
-                tempColor = windowsLight.GetComponent<SpriteRenderer>().color;
-                tempColor.a = windowsAlpha;
-                windowsLight.GetComponent<SpriteRenderer>().color = tempColor;
 
                 tempColor = colorCorrection.GetComponent<SpriteRenderer>().color;
                 tempColor.a = correctionAlpha;
