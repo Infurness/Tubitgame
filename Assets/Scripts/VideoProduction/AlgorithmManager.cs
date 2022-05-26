@@ -39,13 +39,13 @@ public class AlgorithmManager : MonoBehaviour
         return viewers * (ulong)UseViewsBonus ();
     }
 
-    public ulong GetVideoLikes (ulong _views, float _videoQuality)
+    public ulong GetVideoLikes (ulong _views)
     {
-        return (ulong)(_views * (_videoQuality * 0.05f));
+        return (ulong)(_views * 0.08f);
     }
-    public ulong GetVideoComments (ulong _views)
+    public ulong GetVideoComments (ulong _likes)
     {
-        return (ulong)(_views * 0.04f);
+        return (ulong)(_likes * 0.02f);
     }
     public ulong GetVideoSubscribers (ulong _views, float _videoQuality, bool isViral)
     {
