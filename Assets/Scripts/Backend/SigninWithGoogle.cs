@@ -30,8 +30,14 @@ public class SigninWithGoogle
         {
             try
             {
-                var loginTask = GoogleSignIn.DefaultInstance.SignIn();
+                var loginTask = GoogleSignIn.DefaultInstance.SignInSilently();
                 await loginTask;
+                if(string.IsNullOrEmpty(loginTask.Result.UserId))
+                {
+                    loginTask = GoogleSignIn.DefaultInstance.SignIn();
+                    await loginTask;
+                }
+
             
                 OnAuthenticationFinished(loginTask);
                 return loginTask.Result;
@@ -42,7 +48,6 @@ public class SigninWithGoogle
                 signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal() );
                 throw;
             }
-           
         }
         
         
