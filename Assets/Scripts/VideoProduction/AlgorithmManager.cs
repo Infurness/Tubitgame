@@ -146,7 +146,11 @@ public class AlgorithmManager : MonoBehaviour
 
                     video.likes = (ulong)(video.maxLikes*completePercentage);
                     video.comments =(ulong) (video.maxComments*completePercentage);
-                    video.videoSoftCurrency =((ulong)(video.videoMaxSoftCurrency*completePercentage))-video.collectedCurrencies;
+
+                    if(video.collectedCurrencies < video.videoMaxSoftCurrency*completePercentage)
+                    {
+                        video.videoSoftCurrency =((ulong)(video.videoMaxSoftCurrency*completePercentage))-video.collectedCurrencies;
+                    }
 
                     ulong previousSubs = video.newSubscribers;
                     video.newSubscribers = (ulong) (video.maxNewSubscribers*completePercentage);
@@ -212,7 +216,10 @@ public class AlgorithmManager : MonoBehaviour
 
                     subscribers += video.newSubscribers;
 
-                    video.videoSoftCurrency = ((video.views/100) + video.videoMaxSoftCurrency) - video.collectedCurrencies;
+                    if(video.collectedCurrencies < (video.views/100) + video.videoMaxSoftCurrency)
+                    {
+                        video.videoSoftCurrency = ((video.views/100) + video.videoMaxSoftCurrency) - video.collectedCurrencies;
+                    }
 
                     video.lastUpdateTime = GameClock.Instance.Now;
                     if (daysSinceMiningWasCompleted >= video.bonusLifeTimeHours/24)
