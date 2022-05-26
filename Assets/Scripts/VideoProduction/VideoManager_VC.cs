@@ -218,7 +218,7 @@ public class VideoManager_VC : MonoBehaviour
         }
         else
         {
-            _signalBus.Fire<OpenDefaultMessagePopUpSignal> (new OpenDefaultMessagePopUpSignal { message = "Video creation is no available when resting" });
+            _signalBus.Fire<OpenDefaultMessagePopUpSignal> (new OpenDefaultMessagePopUpSignal { message = "Video creation is not available when resting" });
         }
            
     }
