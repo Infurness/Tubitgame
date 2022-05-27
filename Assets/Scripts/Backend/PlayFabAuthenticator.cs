@@ -49,7 +49,6 @@ public class PlayFabAuthenticator : IAuthenticator
 		req.CreateAccount = true;
 		req.AndroidDeviceId = SystemInfo.deviceUniqueIdentifier;
 		PlayFabClientAPI.LoginWithAndroidDeviceID(req, OnLoginWithDeviceIDSuccess, OnLoginWithDeviceIDFailed);
-
 	}
 
    
@@ -146,7 +145,7 @@ public class PlayFabAuthenticator : IAuthenticator
 					LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
 					req.ServerAuthCode = signal.AuthCode;
 					req.CreateAccount = true;
-					PlayerPrefs.SetString("GoogleToken", signal.AuthCode);
+					PlayerPrefs.SetString("GoogleToken", signal.IdToken);
 					PlayerPrefs.Save();
 
 					LoginWithGoogleAccountRequest(req);

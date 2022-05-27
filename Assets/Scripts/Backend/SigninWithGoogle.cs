@@ -79,8 +79,8 @@ public class SigninWithGoogle
 
                 signalBus.Fire(new OnGoogleSignInSuccessSignal()
                 {
-                    AuthCode =task.Result.AuthCode
-                    
+                    AuthCode = task.Result.AuthCode,
+                    IdToken = task.Result.IdToken
                 });
                
             }
