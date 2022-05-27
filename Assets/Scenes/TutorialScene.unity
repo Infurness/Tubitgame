@@ -1324,6 +1324,123 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 61553326}
   m_CullTransparentMesh: 1
+--- !u!1001 &65689428
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1837181620, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: timeToTurnOn
+      value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 872982438240456205, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_Name
+      value: Night_Vfx
+      objectReference: {fileID: 0}
+    - target: {fileID: 872982438240456205, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.53999996
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.2600001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6087694624982336562, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640495614291380101, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.05957869
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640495614291380101, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.10762732
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640495614291380101, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.11007
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640495614291380101, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.26989
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888243065136711921, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1837181620, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+--- !u!1 &65689429 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 872982438240456205, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+  m_PrefabInstance: {fileID: 65689428}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &65689430 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7888243065136711921, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+  m_PrefabInstance: {fileID: 65689428}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &65689431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2636886189654281137, guid: 1b5e86a6b43294c499aa0ab282e9f2b8, type: 3}
+  m_PrefabInstance: {fileID: 65689428}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &65689432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65689429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adeee84914ccac3409941f3017cd5ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fX_VC: {fileID: 0}
+  vfxElements:
+  - {fileID: 65689431}
+  - {fileID: 65689430}
 --- !u!1 &68047421
 GameObject:
   m_ObjectHideFlags: 0
@@ -5471,7 +5588,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.4
+  m_fontSize: 31.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -14930,11 +15047,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432394959466, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -500.00012
+      value: -500.0001
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432618341593, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.799995
+      value: -45.8
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432747538632, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_Name
@@ -27250,10 +27367,9 @@ MonoBehaviour:
   SCBillsForVideoCancel: []
   delayBetweenCoinsMin: 0.01
   delayBetweenCoinsMax: 0.03
-  mainNightColor: {fileID: 0}
-  computerLight: {fileID: 0}
-  windowsLight: {fileID: 0}
-  colorCorrection: {fileID: 0}
+  mainNightColor: {fileID: 65689429}
+  computerLight: {fileID: 65689431}
+  colorCorrection: {fileID: 65689430}
   sleepParticles: {fileID: 1526995641}
   changeSleepParticles: {fileID: 1526995642}
 --- !u!1 &731920666
