@@ -30,15 +30,8 @@ public class SigninWithGoogle
         {
             try
             {
-                var loginTask = GoogleSignIn.DefaultInstance.SignInSilently();
+                var loginTask = GoogleSignIn.DefaultInstance.SignIn();
                 await loginTask;
-                if(string.IsNullOrEmpty(loginTask.Result.UserId))
-                {
-                    loginTask = GoogleSignIn.DefaultInstance.SignIn();
-                    await loginTask;
-                }
-
-            
                 OnAuthenticationFinished(loginTask);
                 return loginTask.Result;
             }
