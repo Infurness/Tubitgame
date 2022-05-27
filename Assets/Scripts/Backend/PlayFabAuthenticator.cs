@@ -97,9 +97,9 @@ public class PlayFabAuthenticator : IAuthenticator
 	{
 		if (swg==null)
 		{
-					swg = new SigninWithGoogle(signalBus);
-
+			swg = new SigninWithGoogle();
 		}
+
 		signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
 		{
 			LinkGoogleAccountRequest req = new LinkGoogleAccountRequest();
@@ -120,46 +120,27 @@ public class PlayFabAuthenticator : IAuthenticator
 
 			}));
 		}));
-	  await  swg.SingInWithGoogleID();
+	  	swg.SigninWithGoogleID(signalBus);
 		
 		 
 	}
 
-
 	public async void LoginWithGoogle()
-	{
-		var token = string.Empty;
-
-		if(PlayerPrefs.HasKey("GoogleToken"))
-		{
-			token = PlayerPrefs.GetString("GoogleToken");
-		}
-		
+	{		
 		if (swg==null)
 		{
-			swg = new SigninWithGoogle(signalBus);
-			if(string.IsNullOrEmpty(token))
-			{
-				signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
-				{
-					LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
-					req.ServerAuthCode = signal.AuthCode;
-					req.CreateAccount = true;
-					PlayerPrefs.SetString("GoogleToken", signal.IdToken);
-					PlayerPrefs.Save();
-
-					LoginWithGoogleAccountRequest(req);
-				}));
-			}else
+			swg = new SigninWithGoogle();
+			signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
 			{
 				LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
-				req.ServerAuthCode = token;
+				req.ServerAuthCode = signal.AuthCode;
 				req.CreateAccount = true;
+
 				LoginWithGoogleAccountRequest(req);
-			}
+			}));
 		}
 	  
-		await  swg.SingInWithGoogleID();
+		swg.SigninWithGoogleID(signalBus);
 	}
 
     private void LoginWithGoogleAccountRequest(LoginWithGoogleAccountRequest req)

@@ -1,100 +1,117 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Google;
+using Newtonsoft.Json;
 using UnityEngine;
 using Zenject;
 
 public class SigninWithGoogle
 {
-    private readonly SignalBus signalBus;
-    private GoogleSignInConfiguration configuration;
+    private GoogleSignInConfiguration _configuration;
 
-        public SigninWithGoogle(SignalBus sb=null,string webclientId="786436489167-rtuno9jd4smvkstqqmv7kjsj4rvkfdtq.apps.googleusercontent.com")
+    public SigninWithGoogle(string clintId ="786436489167-rtuno9jd4smvkstqqmv7kjsj4rvkfdtq.apps.googleusercontent.com")
+    {
+        _configuration = new GoogleSignInConfiguration()
         {
-            signalBus = sb;
-            configuration = new GoogleSignInConfiguration()
+            RequestEmail = true,
+            WebClientId = clintId,
+            RequestIdToken = true,
+            RequestAuthCode = true,
+            RequestProfile = true,
+            
+        };
+        GoogleSignIn.Configuration = _configuration;
+    }
+
+    public async void SigninWithGoogleID(SignalBus signalBus)
+    {
+        if (PlayerPrefs.HasKey("GoogleUser"))
+        {
+            var userString = PlayerPrefs.GetString("GoogleUser");
+            var savedUser = new GoogleSignInUser();
+            savedUser = JsonConvert.DeserializeObject<GoogleSignInUser>(userString);
+
+            if (!string.IsNullOrEmpty(savedUser.AuthCode))
             {
-                WebClientId = webclientId,
-                RequestIdToken = true,
-                RequestAuthCode = true ,
-                UseGameSignIn = false
-                
-            };
-            GoogleSignIn.Configuration = configuration;
+                //OnGoogleSingedIn(savedUser);
+                signalBus.Fire(new OnGoogleSignInSuccessSignal());
+            }
+            else
+            {
+                var task = GoogleSignIn.DefaultInstance.SignIn();
 
+                try
+                {
+                    await task;
+                    if (!task.IsFaulted)
+                    {
+                        Debug.Log("Login with Google Success");
+                        var googleUser = JsonConvert.SerializeObject(task.Result);
+                        PlayerPrefs.SetString("GoogleUser", googleUser);
+                        //OnGoogleSingedIn(task.Result);
+                        signalBus.Fire(new OnGoogleSignInSuccessSignal()
+                        {
+                            AuthCode = task.Result.AuthCode,
+                            IdToken = task.Result.IdToken
+                        });
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to login with google ");
+                        //OnFailed(task.Exception.Message);
+                        PlayerPrefs.DeleteKey("GoogleUser");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(task.Exception);
+                    Debug.LogException(e);
+                    PlayerPrefs.DeleteKey("GoogleUser");
+
+                    //OnFailed(e.Message);
+                    throw;
+                }
+            }
         }
-
-
-        public async Task<GoogleSignInUser> SingInWithGoogleID()
+        else
         {
+            var task = GoogleSignIn.DefaultInstance.SignIn();
             try
             {
-                var loginTask = GoogleSignIn.DefaultInstance.SignIn();
-                await loginTask;
-                OnAuthenticationFinished(loginTask);
-                return loginTask.Result;
+                await task;
+                if (!task.IsFaulted)
+                {
+                    Debug.Log("Login with Google Success");
+                    var googleUser = JsonConvert.SerializeObject(task.Result);
+                    PlayerPrefs.SetString("GoogleUser", googleUser);
+                    //OnGoogleSingedIn(task.Result);
+                    signalBus.Fire(new OnGoogleSignInSuccessSignal()
+                    {
+                        AuthCode = task.Result.AuthCode,
+                        IdToken = task.Result.IdToken
+                    });
+                }
+                else
+                {
+                    Debug.LogError("Failed to login with google ");
+                    PlayerPrefs.DeleteKey("GoogleUser");
+                    //OnFailed(task.Exception.Message);
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal() );
+                Debug.LogError(task.Exception);
+                Debug.LogException(e);
+                PlayerPrefs.DeleteKey("GoogleUser");
+
+                //OnFailed(e.Message);
                 throw;
             }
         }
-        
-        
-         void OnAuthenticationFinished(Task<GoogleSignInUser> task) {
-            if (task.IsFaulted) {
-                using (IEnumerator<System.Exception> enumerator =
-                    task.Exception.InnerExceptions.GetEnumerator()) {
-                    if (enumerator.MoveNext()) {
-                        GoogleSignIn.SignInException error =
-                            (GoogleSignIn.SignInException)enumerator.Current;
-                        Debug.Log("Got Error: " + error.Status + " " + error.Message);
-                        signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
-                        {
-                            Reason = error.Message
-                        });
-                        signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
-                        {
-                            Reason = error.Message
-                        });
-                        
-                        
-                        
-                    } else {
-                        signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal() );
-                        Debug.Log("Got Unexpected Exception?!?" + task.Exception);
-                    }
-                }
-            } else if(task.IsCanceled) {
-                Debug.Log("Canceled");
-                signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
-                {
-                    Reason = "Canceled"
-                });
-            } else  {
-                Debug.Log("Welcome: " + task.Result.AuthCode+ "!");
-
-                signalBus.Fire(new OnGoogleSignInSuccessSignal()
-                {
-                    AuthCode = task.Result.AuthCode,
-                    IdToken = task.Result.IdToken
-                });
-               
-            }
-        }
-         
-         
-         public void SignOut() {
-             Debug.Log("Calling SignOut");
-             GoogleSignIn.DefaultInstance.SignOut();
-         }
-
-         public void Disconnect() {
-             Debug.Log("Calling Disconnect");
-             GoogleSignIn.DefaultInstance.Disconnect();
-         }
-        
     }
+
+    public void LogOut()
+    {
+        GoogleSignIn.DefaultInstance.SignOut();
+        PlayerPrefs.DeleteKey("GoogleUser");
+    }
+}
