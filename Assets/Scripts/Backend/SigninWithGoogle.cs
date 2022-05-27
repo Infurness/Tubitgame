@@ -32,7 +32,6 @@ public class SigninWithGoogle
 
             if (!string.IsNullOrEmpty(savedUser.AuthCode))
             {
-                //OnGoogleSingedIn(savedUser);
                 signalBus.Fire(new OnGoogleSignInSuccessSignal());
             }
             else
@@ -57,7 +56,7 @@ public class SigninWithGoogle
                     else
                     {
                         Debug.LogError("Failed to login with google ");
-                        //OnFailed(task.Exception.Message);
+                        signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed());
                         PlayerPrefs.DeleteKey("GoogleUser");
                     }
                 }
@@ -66,8 +65,11 @@ public class SigninWithGoogle
                     Debug.LogError(task.Exception);
                     Debug.LogException(e);
                     PlayerPrefs.DeleteKey("GoogleUser");
+                    signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
+                    {
+                        Reason = e.Message
+                    });
 
-                    //OnFailed(e.Message);
                     throw;
                 }
             }
@@ -83,7 +85,7 @@ public class SigninWithGoogle
                     Debug.Log("Login with Google Success");
                     var googleUser = JsonConvert.SerializeObject(task.Result);
                     PlayerPrefs.SetString("GoogleUser", googleUser);
-                    //OnGoogleSingedIn(task.Result);
+                    
                     signalBus.Fire(new OnGoogleSignInSuccessSignal()
                     {
                         AuthCode = task.Result.AuthCode,
@@ -94,7 +96,7 @@ public class SigninWithGoogle
                 {
                     Debug.LogError("Failed to login with google ");
                     PlayerPrefs.DeleteKey("GoogleUser");
-                    //OnFailed(task.Exception.Message);
+                    signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed());
                 }
             }
             catch (Exception e)
@@ -103,7 +105,10 @@ public class SigninWithGoogle
                 Debug.LogException(e);
                 PlayerPrefs.DeleteKey("GoogleUser");
 
-                //OnFailed(e.Message);
+                signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
+                {
+                    Reason = e.Message
+                });
                 throw;
             }
         }
