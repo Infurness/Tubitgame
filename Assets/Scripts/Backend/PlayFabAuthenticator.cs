@@ -49,7 +49,6 @@ public class PlayFabAuthenticator : IAuthenticator
 		req.CreateAccount = true;
 		req.AndroidDeviceId = SystemInfo.deviceUniqueIdentifier;
 		PlayFabClientAPI.LoginWithAndroidDeviceID(req, OnLoginWithDeviceIDSuccess, OnLoginWithDeviceIDFailed);
-
 	}
 
    
@@ -98,9 +97,9 @@ public class PlayFabAuthenticator : IAuthenticator
 	{
 		if (swg==null)
 		{
-					swg = new SigninWithGoogle(signalBus);
-
+			swg = new SigninWithGoogle();
 		}
+
 		signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
 		{
 			LinkGoogleAccountRequest req = new LinkGoogleAccountRequest();
@@ -121,54 +120,54 @@ public class PlayFabAuthenticator : IAuthenticator
 
 			}));
 		}));
-	  await  swg.SingInWithGoogleID();
+	  	swg.SigninWithGoogleID(signalBus);
 		
 		 
 	}
 
-
 	public async void LoginWithGoogle()
-	{
+	{		
 		if (swg==null)
 		{
-			swg = new SigninWithGoogle(signalBus);
+			swg = new SigninWithGoogle();
 			signalBus.Subscribe<OnGoogleSignInSuccessSignal>((signal =>
 			{
 				LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
 				req.ServerAuthCode = signal.AuthCode;
 				req.CreateAccount = true;
-				
-		 
-				PlayFabClientAPI.LoginWithGoogleAccount(req, (result =>
-				{
-				 
-					signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
-					{
-						PlayerID = result.PlayFabId,
-						NewPlayer = result.NewlyCreated,
-						AuthenticationContext = result.AuthenticationContext
-					});
-					Debug.Log("PlayFabLogin with Google");
-					PlayerPrefs.SetString("LoginMethod","GoogleSignIn");
 
-				}), (error =>
-				{
-					signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
-					{
-						Reason = error.ErrorMessage
-					});
-					Debug.Log("Login Failed " + error.ErrorMessage);
-
-				}));
+				LoginWithGoogleAccountRequest(req);
 			}));
-
 		}
 	  
-		await  swg.SingInWithGoogleID();
-
+		swg.SigninWithGoogleID(signalBus);
 	}
 
-	public void LoginWithFaceBook()
+    private void LoginWithGoogleAccountRequest(LoginWithGoogleAccountRequest req)
+    {
+        PlayFabClientAPI.LoginWithGoogleAccount(req, (result =>
+        {
+            signalBus.Fire<OnPlayFabLoginSuccessesSignal>(new OnPlayFabLoginSuccessesSignal()
+            {
+                PlayerID = result.PlayFabId,
+                NewPlayer = result.NewlyCreated,
+                AuthenticationContext = result.AuthenticationContext
+            });
+            Debug.Log("PlayFabLogin with Google");
+            PlayerPrefs.SetString("LoginMethod", "GoogleSignIn");
+
+        }), (error =>
+        {
+            signalBus.Fire<OnLoginFailedSignal>(new OnLoginFailedSignal()
+            {
+                Reason = error.ErrorMessage
+            });
+            Debug.Log("Login Failed " + error.ErrorMessage);
+
+        }));
+    }
+
+    public void LoginWithFaceBook()
 	{
 		swfb.SingInFacebook();
 	}
