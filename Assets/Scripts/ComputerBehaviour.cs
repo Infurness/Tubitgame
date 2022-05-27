@@ -5,11 +5,15 @@ using Zenject;
 public class ComputerBehaviour : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
+
     private bool canBeUsed=true;
+    private GameObject roomPanel;
+
 
     private void Start()
     {
         signalBus.Subscribe<CanUseItemsInRoom>(ChangeUseState);
+        roomPanel = GameObject.Find("RoomPanel");
     }
     void ChangeUseState(CanUseItemsInRoom signal)
     {
@@ -24,10 +28,9 @@ public class ComputerBehaviour : MonoBehaviour
         {
             return;
         }
-        
-        
-            signalBus.Fire<ShowVideosStatsSignal>();
-            GlobalAudioManager.Instance.PlaySound(SoundsHolder.Instance.pushButton, AudioType.Effect);
+        roomPanel.SetActive(false);
+        signalBus.Fire<ShowVideosStatsSignal>();
+        GlobalAudioManager.Instance.PlaySound(SoundsHolder.Instance.pushButton, AudioType.Effect);
         }
 
 
