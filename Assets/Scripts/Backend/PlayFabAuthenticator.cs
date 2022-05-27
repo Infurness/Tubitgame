@@ -129,7 +129,7 @@ public class PlayFabAuthenticator : IAuthenticator
 
 	public async void LoginWithGoogle()
 	{
-		var token = string.Empty();
+		var token = string.Empty;
 
 		if(PlayerPrefs.HasKey("GoogleToken"))
 		{
