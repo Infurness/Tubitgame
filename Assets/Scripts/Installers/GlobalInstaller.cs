@@ -111,7 +111,6 @@ public class GlobalInstaller : MonoInstaller
     Container.DeclareSignal<TestRoomVideoQualityITemSignal>();
     Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
     Container.DeclareSignal<OnCharacterAvatarChanged>();
-    Container.DeclareSignal<OnPlayerInventoryFetchedSignal>();
     Container.DeclareSignal<ChangeCharacterStateSignal>();
     //VFX
     Container.DeclareSignal<VFX_EnergyChangeSignal>();
