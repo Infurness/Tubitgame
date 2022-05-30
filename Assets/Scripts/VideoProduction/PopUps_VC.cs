@@ -25,7 +25,9 @@ public class PopUps_VC : MonoBehaviour
     [SerializeField] private Button settingsPanelCloseButton;
 
     [SerializeField] private GameObject deleteAccountPanel;
-    [SerializeField] private Button[] deleteAccountPanelCloseButtons;
+    [SerializeField] private Button deleteAccountPanelCancelButton;
+
+    [SerializeField] private Button deleteAccountPanelDeleteButton;
 
     [SerializeField] private GameObject leaderboardsPanel;
     [SerializeField] private Button leaderboardsPanelCloseButton;
@@ -69,10 +71,9 @@ public class PopUps_VC : MonoBehaviour
         }
         themeSelectionPanelCloseButton.onClick.AddListener (CloseThemeSelector);
         settingsPanelCloseButton.onClick.AddListener (CloseSettings);
-        foreach(Button button in deleteAccountPanelCloseButtons)
-        {
-            button.onClick.AddListener (CloseDeleteAccount);
-        }
+        deleteAccountPanelCancelButton.onClick.AddListener (CloseDeleteAccount);
+        deleteAccountPanelDeleteButton.onClick.AddListener (DeleteAccount);
+        
         leaderboardsPanelCloseButton.onClick.AddListener (CloseLeaderboards);
         levelUpPanelCloseButton.onClick.AddListener (CloseLevelUp);
         energyInventoryPanelCloseButton.onClick.AddListener (OpenEnergyInventory);
@@ -172,6 +173,10 @@ public class PopUps_VC : MonoBehaviour
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         deleteAccountPanel.SetActive (false);
+    }
+    void DeleteAccount ()
+    {
+        PlayerDataManager.Instance.DeletePlayerAccount();
     }
 
     void OpenLeaderboards ()

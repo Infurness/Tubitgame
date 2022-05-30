@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using PlayFab;
@@ -670,5 +671,29 @@ public class PlayerDataManager : MonoBehaviour
     public string GetPlayerID()
     {
         return playerData.playerId;
+    }
+
+    public void DeletePlayerAccount()
+    {
+        var request = new PlayFab.AdminModels.DeleteMasterPlayerAccountRequest()        
+        {
+            PlayFabId = GetPlayerID()
+        };
+
+        PlayFabAdminAPI.DeleteMasterPlayerAccount(
+            request, 
+            (result)=>{StartCoroutine(ResetAccount());},
+            (error)=>{Debug.LogError($"Unable to delete account: {error.ErrorMessage} ");
+        });
+    }
+
+    IEnumerator ResetAccount()
+    {
+        PlayerPrefs.DeleteAll();
+        //playerData = new PlayerData();
+        yield return new WaitForSeconds(0.5f);
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(0);
+        Destroy(PlayerInventory.Instance);
+        Destroy(this);
     }
 }
