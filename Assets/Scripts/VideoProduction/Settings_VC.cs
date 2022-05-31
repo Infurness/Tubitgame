@@ -21,6 +21,7 @@ public class Settings_VC : MonoBehaviour
 
     [SerializeField] private Button leaderboardsButton;
     [SerializeField] private TextMeshProUGUI userID;
+    private string previousName;
     
     void Start ()
     {
@@ -48,7 +49,9 @@ public class Settings_VC : MonoBehaviour
 
         inputField.interactable = false;
         RefreshPlayerName ();
-        userID.text = $"ID: {PlayerDataManager.Instance.GetPlayerID()}";
+
+        if(TutorialManager.Instance == null)
+            userID.text = $"ID: {PlayerDataManager.Instance.GetPlayerID()}";
     }
 
     void EditName ()
@@ -59,9 +62,15 @@ public class Settings_VC : MonoBehaviour
 
     void OnConfirm (string value)
     {
-        Debug.Log (value);
-        UpdatePlayerName (value);
-        inputField.interactable = false;
+        if(!string.IsNullOrWhiteSpace(value))
+        {
+            UpdatePlayerName (value);
+            inputField.interactable = false;
+        }
+        else
+        {
+            inputField.text = previousName;
+        }
     }
 
     public void UpdatePlayerName (string value)
@@ -72,7 +81,8 @@ public class Settings_VC : MonoBehaviour
 
     void RefreshPlayerName ()
     {
-        inputField.text = PlayerDataManager.Instance.GetPlayerName ();
+        previousName = PlayerDataManager.Instance.GetPlayerName ();
+        inputField.text = previousName;
     }
 
     IEnumerator RefreshName ()
