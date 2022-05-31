@@ -50,7 +50,7 @@ public class LevelUpPopUp_VC : MonoBehaviour
     void PopulateRewards()
     {
         int playerLevel = xpManager.GetPlayerLevel();
-        reachedLevel.text = $"Rank {playerLevel + 1}";
+        reachedLevel.text = $"Rank {playerLevel}";
 
         if (playerLevel > 0)
         {
