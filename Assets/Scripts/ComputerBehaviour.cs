@@ -28,7 +28,8 @@ public class ComputerBehaviour : MonoBehaviour
         {
             return;
         }
-        roomPanel.SetActive(false);
+        if(roomPanel != null)
+            roomPanel.SetActive(false);
         signalBus.Fire<ShowVideosStatsSignal>();
         GlobalAudioManager.Instance.PlaySound(SoundsHolder.Instance.pushButton, AudioType.Effect);
         }
