@@ -156,11 +156,15 @@ public class PopUps_VC : MonoBehaviour
     {
         popUpsBlockBackgroundPanel.SetActive (true);
         settingsPanel.SetActive (true);
+        
+        signalBus.Fire<CanUseItemsInRoom>(new CanUseItemsInRoom { canUse = false }) ;
     }
     void CloseSettings ()
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         settingsPanel.SetActive (false);
+
+        signalBus.Fire<CanUseItemsInRoom>(new CanUseItemsInRoom { canUse = true }) ;
     }
 
     void OpenDeleteAccount ()
@@ -168,11 +172,15 @@ public class PopUps_VC : MonoBehaviour
         CloseSettings ();
         popUpsBlockBackgroundPanel.SetActive (true);
         deleteAccountPanel.SetActive (true);
+
+        signalBus.Fire<CanUseItemsInRoom>(new CanUseItemsInRoom { canUse = false }) ;
     }
     void CloseDeleteAccount ()
     {
         popUpsBlockBackgroundPanel.SetActive (false);
         deleteAccountPanel.SetActive (false);
+
+        signalBus.Fire<CanUseItemsInRoom>(new CanUseItemsInRoom { canUse = true }) ;
     }
     void DeleteAccount ()
     {
