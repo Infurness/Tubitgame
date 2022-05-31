@@ -186,16 +186,16 @@ public class HUD_VC : MonoBehaviour
     }
     void OpenStoreSC()
     {
+        DisableNightLights();
         gameAnalyticsManager.SendCustomEvent("ShopScreen");
-        OpenScreenPanel(HUDScreen.Store);
         OpenScreenPanel(HUDScreen.Store);
 
         _signalBus.Fire<OpenSCCurrenciesPanelSignal>();
     }
     void OpenStoreHC()
     {
+        DisableNightLights();
         gameAnalyticsManager.SendCustomEvent("ShopScreen");
-        OpenScreenPanel(HUDScreen.Store);
         OpenScreenPanel(HUDScreen.Store);
 
         _signalBus.Fire<OpenHCCurrenciesPanelSignal>();
