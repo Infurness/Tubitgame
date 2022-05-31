@@ -287,7 +287,7 @@ public class VideoManager_VC : MonoBehaviour
 
     void OnRecordButtonPressed ()
     {
-        if (_energyManager.GetEnergy() <= videoCreationEnergyCost || selectedThemes.Length == 0)
+        if (_energyManager.GetEnergy() < videoCreationEnergyCost || selectedThemes.Length == 0)
         {
                 gameAnalyticsManager.SendCustomEvent("OutOfEnergy");
             return;
