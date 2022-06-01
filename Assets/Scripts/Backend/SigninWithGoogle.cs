@@ -24,11 +24,11 @@ public class SigninWithGoogle
 
     public async void SigninWithGoogleID(SignalBus signalBus)
     {
-        if (PlayerPrefs.HasKey("GoogleUser"))
+        var hasUser = FileManager.LoadFromFile("GoogleUser.json", out string result);
+        if (hasUser)
         {
-            var userString = PlayerPrefs.GetString("GoogleUser");
             var savedUser = new GoogleSignInUser();
-            savedUser = JsonConvert.DeserializeObject<GoogleSignInUser>(userString);
+            savedUser = JsonConvert.DeserializeObject<GoogleSignInUser>(result);
 
             if (!string.IsNullOrEmpty(savedUser.AuthCode))
             {
@@ -45,7 +45,7 @@ public class SigninWithGoogle
                     {
                         Debug.Log("Login with Google Success");
                         var googleUser = JsonConvert.SerializeObject(task.Result);
-                        PlayerPrefs.SetString("GoogleUser", googleUser);
+                        FileManager.WriteToFile("GoogleUser.json", googleUser);
                         //OnGoogleSingedIn(task.Result);
                         signalBus.Fire(new OnGoogleSignInSuccessSignal()
                         {
@@ -57,14 +57,12 @@ public class SigninWithGoogle
                     {
                         Debug.LogError("Failed to login with google ");
                         signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed());
-                        PlayerPrefs.DeleteKey("GoogleUser");
                     }
                 }
                 catch (Exception e)
                 {
                     Debug.LogError(task.Exception);
                     Debug.LogException(e);
-                    PlayerPrefs.DeleteKey("GoogleUser");
                     signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
                     {
                         Reason = e.Message
@@ -84,7 +82,7 @@ public class SigninWithGoogle
                 {
                     Debug.Log("Login with Google Success");
                     var googleUser = JsonConvert.SerializeObject(task.Result);
-                    PlayerPrefs.SetString("GoogleUser", googleUser);
+                    FileManager.WriteToFile("GoogleUser.json", googleUser);
                     
                     signalBus.Fire(new OnGoogleSignInSuccessSignal()
                     {
@@ -95,7 +93,6 @@ public class SigninWithGoogle
                 else
                 {
                     Debug.LogError("Failed to login with google ");
-                    PlayerPrefs.DeleteKey("GoogleUser");
                     signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed());
                 }
             }
@@ -103,7 +100,6 @@ public class SigninWithGoogle
             {
                 Debug.LogError(task.Exception);
                 Debug.LogException(e);
-                PlayerPrefs.DeleteKey("GoogleUser");
 
                 signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
                 {
@@ -117,6 +113,5 @@ public class SigninWithGoogle
     public void LogOut()
     {
         GoogleSignIn.DefaultInstance.SignOut();
-        PlayerPrefs.DeleteKey("GoogleUser");
     }
 }
