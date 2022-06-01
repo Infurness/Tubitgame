@@ -131,10 +131,12 @@ public class Shop_VC : MonoBehaviour
     void OpenSCPanel()
     {
         SCButton.onClick.Invoke();
+        currenciesButton.GetComponent<ShopCategoryButton>().SetButtonSelected();
     }
     void OpenHCPanel()
     {
         HCButton.onClick.Invoke();
+        currenciesButton.GetComponent<ShopCategoryButton>().SetButtonSelected();
     }
 
     void OpenOffersPanel()
