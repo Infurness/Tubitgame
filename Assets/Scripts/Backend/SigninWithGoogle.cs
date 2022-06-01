@@ -24,11 +24,12 @@ public class SigninWithGoogle
 
     public async void SigninWithGoogleID(SignalBus signalBus)
     {
-        var hasUser = FileManager.LoadFromFile("GoogleUser.json", out string result);
-        if (hasUser)
+        
+        if (PlayerPrefs.HasKey("GoogleUser"))
         {
+            var user =PlayerPrefs.GetString("GoogleUser");
             var savedUser = new GoogleSignInUser();
-            savedUser = JsonConvert.DeserializeObject<GoogleSignInUser>(result);
+            savedUser = JsonConvert.DeserializeObject<GoogleSignInUser>(user);
 
             if (!string.IsNullOrEmpty(savedUser.AuthCode))
             {
@@ -45,7 +46,9 @@ public class SigninWithGoogle
                     {
                         Debug.Log("Login with Google Success");
                         var googleUser = JsonConvert.SerializeObject(task.Result);
-                        FileManager.WriteToFile("GoogleUser.json", googleUser);
+                        PlayerPrefs.SetString("GoogleUser", googleUser);
+                        PlayerPrefs.Save();
+
                         //OnGoogleSingedIn(task.Result);
                         signalBus.Fire(new OnGoogleSignInSuccessSignal()
                         {
@@ -82,8 +85,8 @@ public class SigninWithGoogle
                 {
                     Debug.Log("Login with Google Success");
                     var googleUser = JsonConvert.SerializeObject(task.Result);
-                    FileManager.WriteToFile("GoogleUser.json", googleUser);
-                    
+                    PlayerPrefs.SetString("GoogleUser", googleUser);      
+                    PlayerPrefs.Save();
                     signalBus.Fire(new OnGoogleSignInSuccessSignal()
                     {
                         AuthCode = task.Result.AuthCode,
