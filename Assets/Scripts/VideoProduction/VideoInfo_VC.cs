@@ -291,7 +291,7 @@ public class VideoInfo_VC : MonoBehaviour
       
         
         signalBus.Fire<OnHitPublishButtonSignal>();
-        if (AdsManager.Instance.IsAdLoaded () && !AdsManager.Instance.AreAdsDeactive())
+        if ((AdsManager.Instance.IsAdLoaded () && !AdsManager.Instance.AreAdsDeactive()) || TutorialManager.Instance != null)
         {
             signalBus.TryUnsubscribe<FinishedAdVisualitationRewardSignal> (PublishVideo);    
             signalBus.TryUnsubscribe<CloseAdsDefaultPopUpSignal> (PublishVideo);   
