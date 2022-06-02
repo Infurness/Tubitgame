@@ -186,8 +186,8 @@ public class RoomInventory_VC : MonoBehaviour
     {
         signalBus.Fire<SaveRoomLayoutSignal>();
         CleanEffectsCells();
-        UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
         UpdateVideoQualityItemsText(playerInventory.EquippedVideoQualityRoomItems);
+        UpdateThemeEffectItemsText(playerInventory.EquippedThemeEffectRoomItems);
     }
 
     public void DiscardRoomLayout()
