@@ -64,7 +64,7 @@ public class Settings_VC : MonoBehaviour
     {
         if(!string.IsNullOrWhiteSpace(value))
         {
-            UpdatePlayerName (value);
+            UpdatePlayerName (value.Substring(0, 25));
             inputField.interactable = false;
         }
         else
