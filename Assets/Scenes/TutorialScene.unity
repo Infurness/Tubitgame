@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657832, g: 0.49641222, b: 0.57481664, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3653,7 +3653,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &93010272
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5588,7 +5588,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.55
+  m_fontSize: 38.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -15051,7 +15051,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432618341593, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.8
+      value: -45.799995
       objectReference: {fileID: 0}
     - target: {fileID: 7546219432747538632, guid: 0e193e91b2d76f44788bfa4075018705, type: 3}
       propertyPath: m_Name
@@ -70622,9 +70622,8 @@ MonoBehaviour:
   settingsPanel: {fileID: 949045903925306299}
   settingsPanelCloseButton: {fileID: 949045903925306298}
   deleteAccountPanel: {fileID: 1084382801}
-  deleteAccountPanelCloseButtons:
-  - {fileID: 669602692}
-  - {fileID: 936355717}
+  deleteAccountPanelCancelButton: {fileID: 0}
+  deleteAccountPanelDeleteButton: {fileID: 0}
   leaderboardsPanel: {fileID: 87983500}
   leaderboardsPanelCloseButton: {fileID: 1180530532}
   LevelUpPanel: {fileID: 289325052}
