@@ -1,123 +1,112 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Google;
 using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Networking;
 using Zenject;
-
-[Serializable]
-public class TokenClassName
-{
-    public string access_token;
-}
-
 
 public class SigninWithGoogle
 {
     private GoogleSignInConfiguration _configuration;
 
-    private static void GetAccessToken(string authToken, Action<string> result)
+    public SigninWithGoogle(string clintId ="786436489167-rtuno9jd4smvkstqqmv7kjsj4rvkfdtq.apps.googleusercontent.com")
     {
-        var content = new Dictionary<string, string>();
-
-        content.Add("client_id", "786436489167-rtuno9jd4smvkstqqmv7kjsj4rvkfdtq.apps.googleusercontent.com");
-        content.Add("client_secret", "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");
-        content.Add("code", authToken);
-        content.Add("grant_type", "authorization_code");
-        content.Add("redirect_uri", "https://oauth.playfab.com/oauth2/google");
-
-        var www = UnityWebRequest.Post("https://oauth2.googleapis.com/token", content);
-
-        www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.ConnectionError)
-        {
-            string resultContent = www.downloadHandler.text;
-            TokenClassName json = JsonUtility.FromJson<TokenClassName>(resultContent);
-
-            result(json.access_token);
-        }
-        else
-        {
-            result("");
-        }
-    }
-
-
-    public SigninWithGoogle(string clientID = "786436489167-rtuno9jd4smvkstqqmv7kjsj4rvkfdtq.apps.googleusercontent.com")
-    {
-#if UNITY_IOS
-clientID = "786436489167-vi6acu8rehq7ug9ghj2k22oa43q2sb7b.apps.googleusercontent.com";
-#endif
         _configuration = new GoogleSignInConfiguration()
         {
             RequestEmail = true,
-            WebClientId = clientID,
-            RequestAuthCode = true,
+            WebClientId = clintId,
             RequestIdToken = true,
-            ForceTokenRefresh = true, 
-            UseGameSignIn = false,
+            RequestAuthCode = true,
+            RequestProfile = true,
+            
         };
         GoogleSignIn.Configuration = _configuration;
     }
 
     public async void SigninWithGoogleID(SignalBus signalBus)
     {
-    
-        await GoogleSingIn(signalBus);
-    }
+        var hasUser = FileManager.LoadFromFile("GoogleUser.json", out string result);
+        if (hasUser)
+        {
+            var savedUser = new GoogleSignInUser();
+            savedUser = JsonConvert.DeserializeObject<GoogleSignInUser>(result);
 
-    private static async Task GoogleSingIn(SignalBus signalBus)
-    {
-        Task<GoogleSignInUser> task;
-        if (PlayerPrefs.HasKey("GoogleUser"))
-        {
-            task = GoogleSignIn.DefaultInstance.SignInSilently();
-        }
-        else
-        {
-            task = GoogleSignIn.DefaultInstance.SignIn();
-        }
-
-        try
-        {
-            await task;
-            if (!task.IsFaulted)
+            if (!string.IsNullOrEmpty(savedUser.AuthCode))
             {
-                GetAccessToken(task.Result.AuthCode, (token)=>
-                {
-                    if(!string.IsNullOrEmpty(token))
-                    {
-                        signalBus.Fire(new OnGoogleSignInSuccessSignal()
-                        {
-                            AuthCode = token,
-                        });
-                    }
-                });
-
-                Debug.Log("Login with Google Success");
-                PlayerPrefs.SetString("GoogleUser", "googleUser");
-                PlayerPrefs.Save();
+                signalBus.Fire(new OnGoogleSignInSuccessSignal());
             }
             else
             {
-                Debug.LogError("Failed to login with google ");
-                signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed());
+                var task = GoogleSignIn.DefaultInstance.SignIn();
+
+                try
+                {
+                    await task;
+                    if (!task.IsFaulted)
+                    {
+                        Debug.Log("Login with Google Success");
+                        var googleUser = JsonConvert.SerializeObject(task.Result);
+                        FileManager.WriteToFile("GoogleUser.json", googleUser);
+                        //OnGoogleSingedIn(task.Result);
+                        signalBus.Fire(new OnGoogleSignInSuccessSignal()
+                        {
+                            AuthCode = task.Result.AuthCode,
+                            IdToken = task.Result.IdToken
+                        });
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to login with google ");
+                        signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(task.Exception);
+                    Debug.LogException(e);
+                    signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
+                    {
+                        Reason = e.Message
+                    });
+
+                    throw;
+                }
             }
         }
-        catch (Exception e)
+        else
         {
-            Debug.LogError(task.Exception);
-            Debug.LogException(e);
-
-            signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
+            var task = GoogleSignIn.DefaultInstance.SignIn();
+            try
             {
-                Reason = e.Message
-            });
-            throw;
+                await task;
+                if (!task.IsFaulted)
+                {
+                    Debug.Log("Login with Google Success");
+                    var googleUser = JsonConvert.SerializeObject(task.Result);
+                    FileManager.WriteToFile("GoogleUser.json", googleUser);
+                    
+                    signalBus.Fire(new OnGoogleSignInSuccessSignal()
+                    {
+                        AuthCode = task.Result.AuthCode,
+                        IdToken = task.Result.IdToken
+                    });
+                }
+                else
+                {
+                    Debug.LogError("Failed to login with google ");
+                    signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed());
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(task.Exception);
+                Debug.LogException(e);
+
+                signalBus.Fire<OnGoogleSignInFailed>(new OnGoogleSignInFailed()
+                {
+                    Reason = e.Message
+                });
+                throw;
+            }
         }
     }
 
