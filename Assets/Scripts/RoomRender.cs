@@ -130,12 +130,19 @@ public class RoomRender : MonoBehaviour
                 }
             }
         var obj = currentRoomObjects.Find(ob => (ob.slotItemType == item.SlotType) || (ob.assetName==item.name));
+
         if (obj)
         {
+            if(obj.assetName == item.name)
+            {
+                return;
+            }
+
             tempLayout.equippedThemeITems.Remove(obj.assetName);
             Destroy(obj.gameObject);
             currentRoomObjects.Remove(obj);
         }
+
         var loadOp = Addressables.InstantiateAsync(item.itemPrefab,roomTransform);
          loadOp.WaitForCompletion();
         var go = loadOp.Result;
