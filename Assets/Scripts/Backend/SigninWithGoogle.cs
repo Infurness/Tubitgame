@@ -19,16 +19,17 @@ public class SigninWithGoogle
 {
     private GoogleSignInConfiguration _configuration;
 
-    private static void GetAccessToken(Action<string> result)
+    private static void GetAccessToken(string authToken, Action<string> result)
     {
         var content = new Dictionary<string, string>();
 
-        //content.Add("grant_type", "client_credentials");
         content.Add("client_id", "786436489167-rtuno9jd4smvkstqqmv7kjsj4rvkfdtq.apps.googleusercontent.com");
         content.Add("client_secret", "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");
+        content.Add("code", authToken);
+        content.Add("grant_type", "authorization_code");
         content.Add("redirect_uri", "https://oauth.playfab.com/oauth2/google");
 
-        var www = UnityWebRequest.Post("https://someurl.com//oauth/token", content);
+        var www = UnityWebRequest.Post("https://oauth2.googleapis.com/token", content);
 
         www.SendWebRequest();
 
@@ -86,7 +87,7 @@ clientID = "786436489167-vi6acu8rehq7ug9ghj2k22oa43q2sb7b.apps.googleusercontent
             await task;
             if (!task.IsFaulted)
             {
-                GetAccessToken((token)=>
+                GetAccessToken(task.Result.AuthCode, (token)=>
                 {
                     if(!string.IsNullOrEmpty(token))
                     {
@@ -97,13 +98,9 @@ clientID = "786436489167-vi6acu8rehq7ug9ghj2k22oa43q2sb7b.apps.googleusercontent
                     }
                 });
 
-                // Debug.Log("Login with Google Success");
-                // PlayerPrefs.SetString("GoogleUser", "googleUser");
-                // PlayerPrefs.Save();
-                // signalBus.Fire(new OnGoogleSignInSuccessSignal()
-                // {
-                //     AuthCode = task.Result.AuthCode,
-                // });
+                Debug.Log("Login with Google Success");
+                PlayerPrefs.SetString("GoogleUser", "googleUser");
+                PlayerPrefs.Save();
             }
             else
             {
