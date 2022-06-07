@@ -18,7 +18,6 @@ public class OnLoginFailedSignal
  public class OnGoogleSignInSuccessSignal
  {
     public string AuthCode;
-    public string IdToken;
      
  }
 
