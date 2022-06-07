@@ -135,6 +135,7 @@ public class PlayFabAuthenticator : IAuthenticator
 				LoginWithGoogleAccountRequest req = new LoginWithGoogleAccountRequest();
 				req.ServerAuthCode = signal.AuthCode;
 				req.CreateAccount = true;
+
 				LoginWithGoogleAccountRequest(req);
 			}));
 		}
@@ -161,7 +162,6 @@ public class PlayFabAuthenticator : IAuthenticator
             {
                 Reason = error.ErrorMessage
             });
-            PlayerPrefs.DeleteKey("GoogleUser");
             Debug.Log("Login Failed " + error.ErrorMessage);
 
         }));
