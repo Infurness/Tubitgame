@@ -69,13 +69,14 @@ clientID = "786436489167-vi6acu8rehq7ug9ghj2k22oa43q2sb7b.apps.googleusercontent
     
         await GoogleSingIn(signalBus);
     }
-
     private static async Task GoogleSingIn(SignalBus signalBus)
-    {
+    {   
+        var isSilently = false;
         Task<GoogleSignInUser> task;
         if (PlayerPrefs.HasKey("GoogleUser"))
         {
             task = GoogleSignIn.DefaultInstance.SignInSilently();
+            isSilently = true;
         }
         else
         {
@@ -87,16 +88,26 @@ clientID = "786436489167-vi6acu8rehq7ug9ghj2k22oa43q2sb7b.apps.googleusercontent
             await task;
             if (!task.IsFaulted)
             {
-                GetAccessToken(task.Result.AuthCode, (token)=>
+                if(isSilently)
                 {
-                    if(!string.IsNullOrEmpty(token))
+                    GetAccessToken(task.Result.AuthCode, (token)=>
                     {
-                        signalBus.Fire(new OnGoogleSignInSuccessSignal()
+                        if(!string.IsNullOrEmpty(token))
                         {
-                            AuthCode = token,
-                        });
-                    }
-                });
+                            signalBus.Fire(new OnGoogleSignInSuccessSignal()
+                            {
+                                AuthCode = token,
+                            });
+                        }
+                    });
+                }
+                else
+                {
+                    signalBus.Fire(new OnGoogleSignInSuccessSignal()
+                    {
+                        AuthCode = task.Result.AuthCode,
+                    });
+                }
 
                 Debug.Log("Login with Google Success");
                 PlayerPrefs.SetString("GoogleUser", "googleUser");
