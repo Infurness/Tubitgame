@@ -64,8 +64,8 @@ public class Settings_VC : MonoBehaviour
     {
         if(!string.IsNullOrWhiteSpace(value))
         {
-            UpdatePlayerName (value.Substring(0, 25));
-            inputField.interactable = false;
+            UpdatePlayerName (value.Substring(0, Mathf.Min(value.Length, 25)));
+            //inputField.interactable = false;
         }
         else
         {
@@ -76,6 +76,8 @@ public class Settings_VC : MonoBehaviour
     public void UpdatePlayerName (string value)
     {
         PlayerDataManager.Instance.SetPLayerName (value);
+        inputField.text = value;
+        previousName = value;
         StartCoroutine (RefreshName());
     }
 
