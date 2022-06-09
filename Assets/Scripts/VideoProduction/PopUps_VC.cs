@@ -77,7 +77,7 @@ public class PopUps_VC : MonoBehaviour
         leaderboardsPanelCloseButton.onClick.AddListener (CloseLeaderboards);
         levelUpPanelCloseButton.onClick.AddListener (CloseLevelUp);
         energyInventoryPanelCloseButton.onClick.AddListener (OpenEnergyInventory);
-        energyTimePanelButton.onClick.AddListener (OpenCloseEnergyTimeLeftPanel);
+        energyTimePanelButton.onClick.AddListener (OpenEnergyTimeLeftPanel);
         viralPopUpCloseButton.onClick.AddListener(CloseViralPopUp);
 
         mainCam = Camera.main;
@@ -260,9 +260,10 @@ public class PopUps_VC : MonoBehaviour
         }
     }
 
-    void OpenCloseEnergyTimeLeftPanel ()
+    void OpenEnergyTimeLeftPanel ()
     {
-        energyTimePanel.SetActive (!energyTimePanel.activeSelf);
+        energyTimePanel.SetActive(true);
+        StartCoroutine (TapOutsideToClosePanel (energyTimePanel, ()=>energyTimePanel.SetActive(false)));
     }
 
     void OpenAdsDefaultPanel (OpenAdsDefaultPopUpSignal signal)
