@@ -5,10 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Zenject;
 
 public class ShopCategoryButton : MonoBehaviour
 {
-     static ShopCategoryButton selectedButton;
+
+    [Inject] private IAPManager iAPManager;
+
+    static ShopCategoryButton selectedButton;
      static UnityAction deSelcectAll;
     [SerializeField] private TMP_Text buttonText;
     [SerializeField] private Image iconImage;
@@ -33,7 +37,8 @@ public class ShopCategoryButton : MonoBehaviour
 
     public void SetButtonUnSelected()
     {
-        buttonText.color = Color.gray;
+        if(buttonText != null)
+            buttonText.color = Color.gray;
         if(iconImage != null)
             iconImage.color = Color.gray;
         if(highlightImage != null)
@@ -43,4 +48,8 @@ public class ShopCategoryButton : MonoBehaviour
   
     }
 
+    public void RestorePurchases()
+    {
+        iAPManager.RestoreApplePurchases();
+    }
 }
